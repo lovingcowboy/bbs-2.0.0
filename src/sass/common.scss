@@ -1,0 +1,24 @@
+@charset 'utf-8';
+@import "reset";
+@import "func";
+@import "variables";
+@import "sprite";
+.content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding-top: pxToRem(90px);
+    box-sizing: border-box;
+    overflow: scroll;
+    background-color: $color-white-light;
+}
+*{
+    box-sizing: border-box;
+}
+i,span {
+    display: inline-block;
+}
+.icon-arrow-grey {
+    @include background('../images/arrow-grey.png', 13px, 23px);
+}
+
