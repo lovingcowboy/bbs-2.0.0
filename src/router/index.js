@@ -27,10 +27,12 @@ Vue.use(Router)
 //   ]
 // })
 import Main from '../views/MainView.vue'
+import Center_MyView from '../views/Center_MyView.vue'
 export default new Router({
   mode: 'hash',
   routes: [
     {path: '/main', name: 'main', component: Main},
+    {path: '/center_my', name: 'center_my', component: Center_MyView},
     {path: '*', redirect: '/main'}
   ]
 })
