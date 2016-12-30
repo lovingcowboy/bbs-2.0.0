@@ -8,229 +8,124 @@
       :show="true">
     </zheader> 
     <div class="content">
-      <div class="u-info">
-        <div class="avator-cont">
-          <img src="../images/pai.png">
+      <div class="contetn-header">
+        <div class="btn-edit edit-btn" v-show="!editing" @click="onEdit();"></div>
+        <div class="btn-edit-done edit-btn" v-show="editing" @click="onEditDone();">完成</div>
+
+        <div class="avatar-wrapper">
+          <div class="avatar-mask" v-show="editing">
+            <img class="avatar-edit" src="../images/avatar-edit.png">
+          </div>
+          <img class="avatar" src='../images/icon-avatar.png'>
         </div>
-        <div class="u-det">
-          <p class="u-name">团小贷</p>
-          <p class="u-data"><span>LV2大侠</span><span>125积分</span><span>66威望</span></p>
+        <div class="name-wrapper" :class = 'isEditing' >
+          <input class="name-txt" maxlength="30" :readonly ='editing == true ? readonly : ""' :value='userInfo.username' />
         </div>
-        <div class="u-sign">
-          <div>社区签到</div>
+        <div class="level-wrapper">
+          <div class="icon-level-wrapper">
+            <span class="icon-level">{{userInfo.level}}</span>
+          </div>
+          <div class="level-name">
+            <font>LV{{userInfo.level}}</font>
+            <span class="point">LV{{userInfo.level}}</span>
+            <font>{{userInfo.level_name}}</font>
+          </div>
         </div>
+        <div class="md">
+          <div class="integral md-item">{{userInfo.credit}}积分</div>
+          <div class="line"></div>
+          <div class="prestige md-item">{{userInfo.prestige}}威望</div>
+        </div>
+        <div class="label">还差{{userInfo.disparity}}积分升级成为“{{userInfo.next_level_name}}”</div>
       </div>
-      <div class="tabs">
-        <span class="tab active" data-type="0">热门</span>
-        <span class="tab" data-type="1">精华</span>
-        <span class="tab-module" data-type="2"><i class="icon-module"></i>板块</span>
+      <div class="sign-wrapper">
+        <div class="sign-text">已连续签到<font>{{userInfo.series_sign_num}}</font>天</div>
+        <div class="sign-btn btn-blue" v-show="!userInfo.yes_sign" @click="onSign();">马上签到</div>
+        <div class="sign-done btn-blue" v-show="!!userInfo.yes_sign">已签到</div>
       </div>
-      <div class="recommend-cont">
-        <div class="r-title">
-          <span>小编推荐</span>
-          <span>更多<i class="icon-arrow-grey"></i></span>
-        </div>
-        <div class="swiper-container">
-          <!-- <swipe :show-indicators="false">
-            <swipe-item>1</swipe-item>
-            <swipe-item>2</swipe-item>
-            <swipe-item>3</swipe-item>
-          </swipe> -->
-        </div>
-      </div>
+      <ul class="ubody">
+        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+          <span class="icon icon-post"></span>
+          <font>我的帖子</font>
+          <span class="icon-arrow-right"></span>
+        </li>
+        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+          <span class="icon icon-reply"></span>
+          <font>我的回复</font>
+          <span class="icon-arrow-right"></span>
+        </li>
+        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+          <span class="icon icon-message"></span>
+          <font>我的消息</font>
+          <span class="icon-arrow-right"></span>
+        </li>
+        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+          <span class="icon icon-heart"></span>
+          <font>我的收藏</font>
+          <span class="icon-arrow-right"></span>
+        </li>
+
+        <li class="urow" @click="goUItemDetail('/user/changetb',2);">
+          <span class="icon icon-coin"></span>
+          <font>威望兑团币</font>
+          <span class="icon-arrow-right"></span>
+        </li>
+    </ul>
+    <div class="logoutbtn" @click="goLogout();" v-show="!isApp">退出登录</div>
     </div>
   </div>
 </template>
 
 <script>
 import Zheader from '../components/Header.vue'
-// import { Swipe, SwipeItem } from 'mint-ui'
-// import Swipe from '../components/swipe'
-// import SwipeItem from '../components/swipe-item'
+
 export default {
   name: 'mission',
   components: {
-    Zheader,
-    // Swipe,
-    // SwipeItem
+    Zheader
   },
   data () {
-    return {}
-  },
-  methods: {
-    headerRightBtnFun () {
-      console.info('11111')
+    return {
+      userInfo: {
+        avatar: "../images/icon-avatar.png",
+        username: "团小贷",
+        level:2,
+        level_name:"社区大虾",
+        credit :165,
+        prestige: 120,
+        disparity: 20,
+        next_level_name: "社区能手",
+        series_sign_num : 0,
+        yes_sign: 0
+      },
+      editing: false,
+      isEditing: ""
     }
   },
-  beforeMount () {}
+  methods: {
+    onEdit() {
+      this.editing = true;
+      this.isEditing = "editing"
+    },
+
+    onEditDone() {
+       this.editing = false;
+       this.isEditing = ""
+    },
+    onSign() {
+      
+      this.userInfo.yes_sign = 1;
+      console.log("签到");
+    }
+   
+  },
+  beforeMount () {
+
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../sass/variables.scss";
-@import "../sass/func.scss";
-.u-info {
-  width: 100%;
-  height: pxToRem(166px);
-  background-color: $color-white;
-  border-bottom: 1px solid $border-color;
-  font-size: 0;
-  white-space: nowrap;
-  // padding: 0 pxToRem(30px);
-  &>div {
-    height: 100%;
-    display: inline-block;
-    vertical-align: text-bottom;
-    position: relative;
-    // display: flex;
-    // flex-direction: column;
-    // align-items: center;
-    // justify-content: center;
-  }
-  .avator-cont {
-    width: pxToRem(140px);
-    img {
-      width: pxToRem(80px);
-      height: pxToRem(80px);
-      border-radius: pxToRem(80px);
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      margin-left: pxToRem(-40px);
-      margin-top: pxToRem(-40px);
-    }
-  }
-  .u-det {
-    width: pxToRem(400px);
-    padding-top: pxToRem(50px);
-    &>p {
-      // display: inline-block;
-      width: 100%;
-    }
-    .u-name {
-      font-size: pxToRem($font-size-30);
-      color: $txt-color-black;
-    }
-  }
-  .u-data {
-    font-size: pxToRem($font-size-24);
-    color: $txt-color-grey;
-    margin-top: pxToRem(20px);
-    &>span:not(:last-child) {
-      margin-right: pxToRem(30px);
-      position: relative;
-      &:before {
-        content: "";
-        width: pxToRem(8px);
-        height: pxToRem(8px);
-        border-radius: pxToRem(8px);
-        background-color: #e8e8e8;
-        position: absolute;
-        top: 50%;
-        right: pxToRem(-18px);
-        margin-top: pxToRem(-4px);
-      }
-    }
-  }
-  .u-sign {
-    width: pxToRem(210px);
-    &>div {
-      width: pxToRem(140px);
-      height: pxToRem(70px);
-      line-height: pxToRem(70px);
-      text-align: center;
-      background-image: linear-gradient( 0deg, rgb(25,166,255) 0%, rgb(40,201,255) 100%);
-      box-shadow: 0px pxToRem(4px) pxToRem(10px) 0px rgb( 29, 194, 255 );
-      border-radius: pxToRem(10px);
-      position: absolute;
-      right: pxToRem(30px);
-      top: 50%;
-      margin-top: pxToRem(-35px);
-      color: $color-white;
-      font-size: pxToRem(26px);
-    }
-  }
-}
-
-
-
-.tabs {
-  width: 100%;
-  height: pxToRem(78px);
-  line-height: pxToRem(78px);
-  background-color: $color-white;
-  color: $txt-color-grey;
-  text-align: center;
-  font-size: 0;
-  white-space: nowrap;
-  .tab {
-    font-size: pxToRem($font-size-30);
-    width: pxToRem(180px);
-  }
-  .active {
-    color: $txt-color-blue;
-    border-bottom: pxToRem(2px) solid $txt-color-blue;
-  }
-  .tab-module {
-    width: pxToRem(390px);
-    font-size: pxToRem($font-size-30);
-    text-align: right;
-    padding-right: pxToRem(30px);
-    position: relative;
-  }
-  .icon-module {
-    @include background('../images/icon-module.png', 26px, 26px);
-    position: absolute;
-    right: pxToRem(100px);
-    top: 50%;
-    margin-top: pxToRem(-13px);
-  }
-}
-.recommend-cont {
-  width: 100%;
-  height: pxToRem(310px);
-  background-color: $color-white;
-  margin-top: pxToRem(20px);
-  padding: pxToRem(36px) pxToRem(30px);
-}
-.r-title {
-  width: 100%;
-  height: pxToRem(30px);
-  line-height: pxToRem(30px);
-  font-size: 0;
-  white-space: nowrap;
-  &>span {
-    width: 49.99%;
-    font-size: pxToRem($font-size-30);
-  }
-  &>span:first-child {
-    color: $txt-color-black;
-    position: relative;
-    padding-left: pxToRem(20px);
-    &:before {
-      content: "";
-      width: pxToRem(9px);
-      height: pxToRem(30px);
-      background-color: $txt-color-blue;
-      position: absolute;
-      left: 0;
-      top: 0
-    }
-  }
-  &>span:last-child {
-    text-align: right;
-    color: $txt-color-grey-light;
-  }
-  .icon-arrow-grey {
-    margin-left: pxToRem(10px);
-  }
-}
-.swiper-container {
-  width: 100%;
-  height: pxToRem(240px);
-}
-
-
-
+@import "../sass/center_my.scss";
 
 </style>
