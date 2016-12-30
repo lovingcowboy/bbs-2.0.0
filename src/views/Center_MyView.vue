@@ -41,7 +41,10 @@
       <div class="sign-wrapper">
         <div class="sign-text">已连续签到<font>{{userInfo.series_sign_num}}</font>天</div>
         <div class="sign-btn btn-blue" v-show="!userInfo.yes_sign" @click="onSign();">马上签到</div>
-        <div class="sign-done btn-blue" v-show="!!userInfo.yes_sign">已签到</div>
+        <div class="sign-done btn-grey" v-show="!!userInfo.yes_sign">
+          <span class="icon icon-signed"></span>
+          <font>已签到</font>
+        </div>
       </div>
       <ul class="ubody">
         <li class="urow" @click="goUItemDetail('/user/mypost',0);">

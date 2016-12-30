@@ -204,9 +204,29 @@
             color: #ff8420;
         }
     }
-    .btn-blue {
+    .sign-btn {
         float: right;
         margin-top: pxToRem(26px);
+    }
+    .sign-done {
+        float: right;
+        margin-top: pxToRem(26px);
+        position: relative;
+        font-size: 0;
+        white-space: nowrap;
+        .icon-signed {
+            @include background("../images/icon-signed.png",
+            32px,
+            32px);
+            display: inline-block;
+            vertical-align: middle;
+        }
+        font {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: pxToRem(8px);
+            font-size: pxToRem(26px);
+        }
     }
 }
 
@@ -268,14 +288,14 @@
             width: pxToRem(16px);
             height: 100%;
         }
-        &:nth-last-child(2), &:last-child {
+        &:nth-last-child(2),
+        &:last-child {
             margin-bottom: pxToRem(20px);
             &:after {
                 border: none;
             }
         }
     }
-    
 }
 
 .logoutbtn {
