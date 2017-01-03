@@ -30,6 +30,7 @@ import Main from '../views/MainView.vue'
 import CenterMyView from '../views/CenterMyView.vue'
 import CenterOtherView from '../views/CenterOtherView.vue'
 import PostDetail from '../views/PostDetailView.vue'
+import ChangeTBView from '../views/ChangeTBView.vue'
 export default new Router({
   mode: 'hash',
   routes: [
@@ -37,6 +38,7 @@ export default new Router({
     {path: '/postdetail/:id', name: 'postdetail', component: PostDetail},
     {path: '/centerMy', name: 'centerMy', component: CenterMyView},
     {path: '/centerOther', name: 'centerOther', component: CenterOtherView},
+    {path: '/user/changetb', name: 'changetb', component: ChangeTBView},
     {path: '*', redirect: '/main'}
   ]
 })

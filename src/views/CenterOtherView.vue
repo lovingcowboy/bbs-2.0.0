@@ -97,11 +97,11 @@
 
 <script>
 import Zheader from '../components/Header.vue'
-
+import Toast from '../components/toast'
 export default {
-  name: 'mission',
   components: {
-    Zheader
+    Zheader,
+    Toast
   },
   data () {
     return {

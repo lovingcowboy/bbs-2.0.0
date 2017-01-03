@@ -81,11 +81,12 @@
 
 <script>
 import Zheader from '../components/Header.vue'
-
+import Toast from '../components/toast'
+import Validate from '../js/lib/validate.js';
 export default {
-  name: 'mission',
   components: {
-    Zheader
+    Zheader,
+    Toast
   },
   data () {
     return {
@@ -116,10 +117,52 @@ export default {
        this.isEditing = ""
     },
     onSign() {
-      
       this.userInfo.yes_sign = 1;
       console.log("签到");
-    }
+    },
+   goUItemDetail: function(url, type) {
+        let uid = "";
+        if(window.mySessionStorage) {
+          uid = window.mySessionStorage['uid'];
+        }else{
+          uid = window.sessionStorage['uid'];
+        }
+        let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+       
+        this.$router.push({
+            name: 'changetb'
+          });
+
+        return;
+        if (isLogined_cookie || uid) {
+          if (type == 2) {
+            this.$router.push({
+              name: 'changetb'
+            });
+          } else {
+            this.$router.push({
+              name: 'mypost',
+              params: {
+                'type': type
+              }
+            });
+          }
+        } else {
+          var returnUrl = window.location.href;
+          Validate.openLogin(returnUrl, function() {
+            if (type == 2) {
+              this.$router.push(url);
+            } else {
+              this.$router.push({
+                name: 'mypost',
+                params: {
+                  'type': type
+                }
+              });
+            }
+          });
+        }
+      }
    
   },
   beforeMount () {
