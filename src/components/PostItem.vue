@@ -1,0 +1,141 @@
+<template>
+<li class="post-row" >
+  <div class="item-title">
+    <span>
+      <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}
+    </span>
+    <span>{{data.time}}</span>
+  </div>
+  <div class="item-desc">
+    <div :class="['post', {'no-img': !data.hasImg}]">
+      <p>{{data.pTitle}}</p>
+      <p>{{data.pDesc}}</p>
+    </div>
+    <div class="p-img" v-show="data.hasImg">
+      <img src="../images/img.png">
+    </div>
+  </div>
+  <div class="item-message">
+    <span class="post-view">{{data.view}}</span>
+    <span class="post-reply">{{data.reply}}</span>
+  </div>
+</li>
+</template>
+<script>
+export default {
+	name: 'postItem',
+	props: ['data', 'index'],
+}
+</script>
+<style lang="scss">
+@import "../sass/variables.scss";
+@import "../sass/func.scss";
+.post-list {
+  width: 100%;
+  min-height: 100%;
+  background-color: $color-white;
+  padding-left: pxToRem(30px);
+  font-size: 0;
+  // margin-top: pxToRem(20px);
+  &>li:not(:last-child) {
+    border-bottom: 1px solid $border-color;
+  }
+}
+.post-row {
+  width: 100%;
+  padding: pxToRem(40px) pxToRem(30px) pxToRem(40px) 0;
+  white-space: normal;
+  
+}
+.item-title {
+  height: pxToRem(42px);
+  line-height: pxToRem(42px);
+  white-space: nowrap;
+  &>span{
+    font-size: pxToRem(24px);
+    color: $txt-color-grey-light;
+  }
+  &>span:first-child {
+    width: 60%;
+    font {
+      color: $txt-color-grey-dark;
+      margin-right: pxToRem(10px);
+    }
+  }
+  &>span:last-child {
+    width: 39.9%;
+    text-align: right;
+  }
+  img {
+    width: pxToRem(42px);
+    height: pxToRem(42px);
+    border-radius: pxToRem(42px);
+    vertical-align: top;
+    margin-right: pxToRem(20px);
+  }
+ 
+}
+.item-desc {
+  width: 100%;
+  // white-space: nowrap;
+  margin: pxToRem(40px) 0;
+  .no-img {
+    width: 100% !important;
+  }
+  .post {
+    display: inline-block;
+    width: pxToRem(450px);
+    font-size: pxToRem($font-size-48);
+    p {
+      width: 100%;
+      word-wrap: break-word;
+      word-break: break-all; 
+    }
+    &>p:first-child {
+      font-size: pxToRem($font-size-30);
+      color: $txt-color-black;
+      line-height: pxToRem(48px);
+    }
+    &>p:last-child {
+      font-size: pxToRem($font-size-24);
+      color: $txt-color-grey;
+      line-height: pxToRem(42px);
+      margin-top: pxToRem(30px);
+    }
+  }
+  .p-img {
+    display: inline-block;
+    width: pxToRem(240px);
+    text-align: right;
+    vertical-align: top;
+    img {
+      width: pxToRem(200px);
+      height: pxToRem(200px);
+    }
+  }
+}
+.item-message {
+  width: 100%;
+  font-size: pxToRem($font-size-20);
+  color: $txt-color-grey-light;
+  span {
+    width: pxToRem(152px);
+    // display: inline-block;
+    height: pxToRem(22px);
+    line-height: pxToRem(22px);
+    background-repeat: no-repeat;
+    background-position: left;
+  }
+  .post-view {
+    background-image: url('../images/icon-view.png');
+    background-size: pxToRem(26px) pxToRem(18px);
+    padding-left: pxToRem(36px);
+  }
+  .post-reply {
+    background-image: url('../images/icon-msg.png');
+    background-size: pxToRem(22px) pxToRem(20px);
+    padding-left: pxToRem(32px);
+  }
+}
+
+</style>

@@ -9,7 +9,9 @@
     height: 100%;
     padding-top: pxToRem(90px);
     box-sizing: border-box;
-    overflow: scroll;
+    // overflow: scroll;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background-color: $color-white-light;
 }
 

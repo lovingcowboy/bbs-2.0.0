@@ -1,5 +1,5 @@
 <template>
-  <header id="header" class="header-bar">
+  <header id="header" class="header-bar" v-show="show">
     <i class="icon-back" v-show="hasBack" @click="goBack">{{backTxt}}</i>
       {{headerTitle}}
     <i v-show="hasRightbtn" class="refresh-btn" @click="rightBtnFunc"></i>
