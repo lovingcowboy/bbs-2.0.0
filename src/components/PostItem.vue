@@ -6,7 +6,7 @@
     </span>
     <span>{{data.time}}</span>
   </div>
-  <div class="item-desc">
+  <div class="item-desc" @click="onItemClick">
     <div :class="['post', {'no-img': !data.hasImg}]">
       <p>{{data.pTitle}}</p>
       <p>{{data.pDesc}}</p>
@@ -25,6 +25,11 @@
 export default {
 	name: 'postItem',
 	props: ['data', 'index'],
+	methods: {
+		onItemClick: function() {
+			this.$emit('onItemClick')
+		}
+	}
 }
 </script>
 <style lang="scss">
@@ -126,16 +131,7 @@ export default {
     background-repeat: no-repeat;
     background-position: left;
   }
-  .post-view {
-    background-image: url('../images/icon-view.png');
-    background-size: pxToRem(26px) pxToRem(18px);
-    padding-left: pxToRem(36px);
-  }
-  .post-reply {
-    background-image: url('../images/icon-msg.png');
-    background-size: pxToRem(22px) pxToRem(20px);
-    padding-left: pxToRem(32px);
-  }
+  
 }
 
 </style>

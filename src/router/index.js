@@ -29,12 +29,14 @@ Vue.use(Router)
 import Main from '../views/MainView.vue'
 import CenterMyView from '../views/CenterMyView.vue'
 import CenterOtherView from '../views/CenterOtherView.vue'
+import PostDetail from '../views/PostDetailView.vue'
 export default new Router({
   mode: 'hash',
   routes: [
     {path: '/main', name: 'main', component: Main},
+    {path: '/postdetail/:id', name: 'postdetail', component: PostDetail},
     {path: '/centerMy', name: 'centerMy', component: CenterMyView},
-     {path: '/centerOther', name: 'centerOther', component: CenterOtherView},
+    {path: '/centerOther', name: 'centerOther', component: CenterOtherView},
     {path: '*', redirect: '/main'}
   ]
 })

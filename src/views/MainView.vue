@@ -48,7 +48,7 @@
           </ul>
         </div>
         <ul class="post-list">
-          <post-item v-for="item in hotList" :data="item"></post-item>
+          <post-item v-for="(item, index) in hotList" :data="item" v-on:onItemClick="goDetail(item.id)"></post-item>
           <!-- <li class="post-row" v-for="item in hotList">
             <div class="item-title">
               <span>
@@ -170,6 +170,11 @@ export default {
       Toast({
         message: '签到成功，积分+3，威望+5'
       })
+    },
+    goDetail (id) {
+      // console.info('id------', id)
+      var url = '/postdetail/' + id
+      this.$router.push(url)
     }
   },
   beforeMount () {
@@ -194,7 +199,8 @@ export default {
         pTitle: '团贷网大踏步走在紧拥监管，跨越发展之路上',
         pDesc: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
         view: 12 * i,
-        reply: 25 * i
+        reply: 25 * i,
+        id: i * 10
       }
       if ( i === 1) {
         item.hasImg = true

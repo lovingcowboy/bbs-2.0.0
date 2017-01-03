@@ -27,6 +27,7 @@ span {
 .icon-arrow-grey {
     @include background('../images/arrow-grey.png', 13px, 23px);
 }
+
 .no-header {
     .content {
         padding-top: 0 !important;
@@ -52,7 +53,7 @@ span {
     z-index: 1000;
     transition: opacity .3s linear;
     padding: pxToRem(30px) pxToRem(20px);
-    box-shadow: 0px 0px pxToRem(20px) 0px rgba( 0, 0, 0, .1 );
+    box-shadow: 0px 0px pxToRem(20px) 0px rgba( 0, 0, 0, .1);
 }
 
 .mint-toast.is-placebottom {
@@ -124,7 +125,6 @@ span {
     text-align: center;
 }
 
-
 .btn-grey {
     border-radius: pxToRem(10px);
     background-image: -webkit-linear-gradient( 90deg, rgb(204, 204, 204) 0%, rgb(221, 221, 221) 100%);
@@ -135,4 +135,16 @@ span {
     font-size: pxToRem(26px);
     color: #fff;
     text-align: center;
+}
+
+.post-view {
+    background-image: url('../images/icon-view.png');
+    background-size: pxToRem(26px) pxToRem(18px);
+    padding-left: pxToRem(36px);
+}
+
+.post-reply {
+    background-image: url('../images/icon-msg.png');
+    background-size: pxToRem(22px) pxToRem(20px);
+    padding-left: pxToRem(32px);
 }
