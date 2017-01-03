@@ -29,21 +29,68 @@
             </div>
           </div>
         </div>
-       
         <div class="level-wrapper">
-          <span class="icon-level"></span>
+          <span class="icon-star"></span>
           <div class="level-name">
-            {{userInfo.level_name}}
+            {{userInfo.level_text}}
           </div>
         </div>
-        <div class="md">
-          <div class="integral md-item">{{userInfo.credit}}积分</div>
-          <div class="line"></div>
-          <div class="prestige md-item">{{userInfo.prestige}}威望</div>
+        <div class="md02">
+          <div class="integral">
+            <span class="icon-integral"></span>
+            <font>{{userInfo.credit}}积分</font>
+          </div>
+          <div class="prestige">
+            <span class="icon-prize"></span>
+            <font>{{userInfo.prestige}}威望</font>
+          </div>
+          <div class="btn-message">发消息</div>
         </div>
-        <div class="label">还差{{userInfo.disparity}}积分升级成为“{{userInfo.next_level_name}}”</div>
       </div>
-    
+      <div class="dynamic">
+        <div class="label">TA的动态</div>
+         <ul class="post-list">
+          <li class="post-row">
+            <div class="item-title">
+              <span>
+                <img src="../images/pai.png"><font>神采飞扬</font>发表了帖子
+              </span>
+              <span>32分钟前</span>
+            </div>
+            <div class="item-desc">
+              <div class="post">
+                <p>团贷网大踏步走在紧拥监管，跨越发展之路上</p>
+                <p>如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！</p>
+              </div>
+              <div class="p-img">
+                <img src="../images/img.png">
+              </div>
+            </div>
+            <div class="item-message">
+              <span class="post-view">1234</span>
+              <span class="post-reply">789</span>
+            </div>
+          </li>
+          <li class="post-row">
+            <div class="item-title">
+              <span>
+                <img src="../images/pai.png"><font>神采飞扬</font>发表了帖子
+              </span>
+              <span>32分钟前</span>
+            </div>
+            <div class="item-desc">
+              <div class="post no-img">
+                <p>团贷网大踏步走在紧拥监管，跨越发展之路上</p>
+                <p>如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！</p>
+              </div>
+            </div>
+            <div class="item-message">
+              <span class="post-view">1234</span>
+              <span class="post-reply">789</span>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -63,6 +110,7 @@ export default {
         username: "萱萱宝贝",
         level:2,
         level_name:"社区大虾",
+        level_text: "有问必答、畅所欲言等4个版块的版主",
         credit :165,
         prestige: 120,
         disparity: 20,

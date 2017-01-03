@@ -1,27 +1,30 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
 .contetn-header {
-    background-color: #fff;
+    background-color: $color-white;
     padding-top: pxToRem(36px);
-     padding-left: pxToRem(30px);
+    padding-left: pxToRem(30px);
+    margin-bottom: pxToRem(20px);
     @at-root .md01 {
         white-space: nowrap;
+        // height: auto;
+        margin-bottom: pxToRem(40px);
+        font-size: 0;
         .avatar {
             width: pxToRem(160px);
             display: inline-block;
         }
         .userInfo-right {
-            display: inline-block;
             width: pxToRem(550px);
             float: right;
             .username {
                 font-size: pxToRem(30px);
-                color: #333;
+                color: $txt-color-black;
                 position: relative;
                 padding-bottom: pxToRem(20px);
                 margin-top: pxToRem(8px);
                 &:after {
-                    @include border(bottom, #e6e6e6);
+                    @include border(bottom, $border-color);
                 }
             }
             .other-baseinfo {
@@ -33,17 +36,209 @@
             .baseinfo-row {
                 display: inline-block;
                 vertical-align: middle;
-                 font-size: pxToRem(30px);
-                color: #333;
+                font-size: pxToRem(30px);
+                color: $txt-color-black;
                 text-align: center;
                 margin-right: pxToRem(110px);
-
                 .label {
                     font-size: pxToRem(22px);
-                    color: #999;
+                    color: $txt-color-grey;
                     margin-top: pxToRem(20px);
                 }
             }
+        }
+    }
+    @at-root .level-wrapper {
+        font-size: 0;
+        padding-bottom: pxToRem(20px);
+        position: relative;
+        &:after {
+            @include border(bottom, $border-color);
+        }
+        .icon-star {
+            @include background("../images/icon-star.png", 26px, 32px);
+            vertical-align: middle;
+        }
+        .level-name {
+            display: inline-block;
+            vertical-align: middle;
+            color: $txt-color-black;
+            font-size: pxToRem(26px);
+            margin-left: pxToRem(20px);
+        }
+    }
+    @at-root .md02 {
+        font-size: 0;
+        padding: pxToRem(12px) 0;
+        height: pxToRem(88px);
+        position: relative;
+        .integral {
+            display: inline-block;
+            margin-right: pxToRem(60px);
+            line-height: pxToRem(64px);
+            .icon-integral {
+                display: inline-block;
+                vertical-align: middle;
+                @include background("../images/icon-integral.png", 28px, 34px);
+            }
+            font {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: pxToRem(22px);
+                margin-left: pxToRem(8px);
+                width: pxToRem(106px);
+            }
+        }
+        .prestige {
+            display: inline-block;
+            line-height: pxToRem(64px);
+            .icon-prize {
+                display: inline-block;
+                vertical-align: middle;
+                @include background("../images/icon-prize.png", 31px, 34px);
+            }
+            font {
+                display: inline-block;
+                vertical-align: middle;
+                font-size: pxToRem(22px);
+                margin-left: pxToRem(8px);
+                width: pxToRem(106px);
+            }
+        }
+        .btn-message {
+            border-style: solid;
+            border-width: 1px;
+            border-color: rgb(25, 166, 255);
+            border-radius: pxToRem(10px);
+            font-size: pxToRem(26px);
+            width: pxToRem(144px);
+            height: pxToRem(64px);
+            line-height: pxToRem(60px);
+            text-align: center;
+            color: $txt-color-blue;
+            float: right;
+            margin-right: pxToRem(28px);
+        }
+    }
+}
+
+.dynamic {
+    width: 100%;
+    background-color: $color-white;
+    padding-top: pxToRem(40px);
+    padding-left: pxToRem(30px);
+    .label {
+        font-size: pxToRem(30px);
+        color: $txt-color-black;
+        margin-bottom: pxToRem(20px);
+        &:before {
+            border-left: pxToRem(8px) solid $txt-color-blue;
+            content: "";
+            height: pxToRem(30px);
+            margin-right: pxToRem(12px);
+        }
+    }
+    .post-list {
+        width: 100%;
+        background-color: $color-white;
+        font-size: 0;
+        margin-top: pxToRem(20px);
+        &>li:not(:last-child) {
+            border-bottom: 1px solid $border-color;
+        }
+    }
+    .post-row {
+        width: 100%;
+        padding: pxToRem(40px) pxToRem(30px) pxToRem(40px) 0;
+        // white-space: nowrap;
+    }
+    .item-title {
+        height: pxToRem(42px);
+        line-height: pxToRem(42px);
+        white-space: nowrap;
+        &>span {
+            font-size: pxToRem(24px);
+            color: $txt-color-grey-light;
+        }
+        &>span:first-child {
+            width: 60%;
+            font {
+                color: $txt-color-grey-dark;
+                margin-right: pxToRem(10px);
+            }
+        }
+        &>span:last-child {
+            width: 39.9%;
+            text-align: right;
+        }
+        img {
+            width: pxToRem(42px);
+            height: pxToRem(42px);
+            border-radius: pxToRem(42px);
+            vertical-align: top;
+            margin-right: pxToRem(20px);
+        }
+    }
+    .item-desc {
+        width: 100%;
+        // white-space: nowrap;
+        margin: pxToRem(40px) 0;
+        .no-img {
+            width: 100% !important;
+        }
+        .post {
+            display: inline-block;
+            width: pxToRem(450px);
+            font-size: pxToRem($font-size-48);
+            p {
+                width: 100%;
+                word-wrap: break-word;
+                word-break: break-all;
+            }
+            &>p:first-child {
+                font-size: pxToRem($font-size-30);
+                color: $txt-color-black;
+                line-height: pxToRem(48px);
+            }
+            &>p:last-child {
+                font-size: pxToRem($font-size-24);
+                color: $txt-color-grey;
+                line-height: pxToRem(42px);
+                margin-top: pxToRem(30px);
+            }
+        }
+        .p-img {
+            display: inline-block;
+            width: pxToRem(240px);
+            text-align: right;
+            vertical-align: top;
+            img {
+                width: pxToRem(200px);
+                height: pxToRem(200px);
+            }
+        }
+    }
+    .item-message {
+        width: 100%;
+        font-size: pxToRem($font-size-20);
+        color: $txt-color-grey-light;
+        span {
+            width: pxToRem(152px);
+            // display: inline-block;
+            height: pxToRem(22px);
+            line-height: pxToRem(22px);
+            background-repeat: no-repeat;
+            background-position: left;
+        }
+        .post-view {
+            background-image: url('../images/icon-view.png');
+            background-size: pxToRem(26px) pxToRem(18px);
+            padding-left: pxToRem(36px);
+        }
+        .post-reply {
+            background-image: url('../images/icon-msg.png');
+            background-size: pxToRem(22px) pxToRem(20px);
+            padding-left: pxToRem(32px);
         }
     }
 }

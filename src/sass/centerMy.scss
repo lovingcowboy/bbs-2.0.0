@@ -74,6 +74,7 @@
         &.editing:after {
             @include border(bottom,
             #f3ec0b);
+            transform: scale(1);
         }
         .name-txt {
             background-color: transparent;
@@ -85,11 +86,9 @@
             margin: auto;
             text-align: center;
             border: none;
-            // border-bottom: 1px solid #fff;
             outline: none;
-            &:read-only {
-                border: none;
-            }
+            -webkit-highlight: none;
+
         }
     }
     @at-root .level-wrapper {
@@ -132,7 +131,7 @@
         }
         .level-name {
             font-size: 0;
-            color: #19b6ff;
+            color: $txt-color-blue;
             background-color: #fff;
             border-radius: pxToRem(20px);
             height: pxToRem(40px);
@@ -174,10 +173,7 @@
             height: pxToRem(24px);
             width: 1px;
             position: relative;
-            &:after {
-                @include border(left,
-                #fff);
-            }
+            border-left: 1px solid #fff;
         }
     }
     .label {
@@ -191,7 +187,7 @@
     width: 100%;
     height: pxToRem(110px);
     line-height: pxToRem(110px);
-    color: #333;
+    color: $txt-color-black;
     font-size: 0;
     background-color: #fff;
     margin-bottom: pxToRem(18px);
@@ -200,7 +196,7 @@
         display: inline-block;
         font-size: pxToRem(30px);
         font {
-            color: #ff8420;
+            color: $txt-color-orange;
         }
     }
     .sign-btn {
@@ -224,14 +220,14 @@
         font-size: 0;
         line-height: pxToRem(110px);
         &:after {
-            @include border(bottom,
-            #e6e6e6);
+            @include border(bottom,$border-color )
+            transform: scale(1);
             left: pxToRem(30px);
         }
         font {
             display: inline-block;
             font-size: pxToRem(30px);
-            color: #333;
+            color: $txt-color-black;
             vertical-align: middle;
         }
         .icon {
@@ -287,7 +283,7 @@
     line-height: pxToRem(88px);
     text-align: center;
     margin: auto;
-    color: #333;
+    color: $txt-color-black;
     background-color: #fff;
     font-size: pxToRem(30px);
     margin-bottom: pxToRem(50px);
