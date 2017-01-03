@@ -11,7 +11,7 @@
   @component-namespace mint {
     @component toast {
       position: fixed;
-      max-width: 80%;
+      /*max-width: 80%;*/
       border-radius: 5px;
       background: rgba(0, 0, 0, 0.7);
       color: #fff;
