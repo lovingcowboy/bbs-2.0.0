@@ -210,22 +210,6 @@
     .sign-done {
         float: right;
         margin-top: pxToRem(26px);
-        position: relative;
-        font-size: 0;
-        white-space: nowrap;
-        .icon-signed {
-            @include background("../images/icon-signed.png",
-            32px,
-            32px);
-            display: inline-block;
-            vertical-align: middle;
-        }
-        font {
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: pxToRem(8px);
-            font-size: pxToRem(26px);
-        }
     }
 }
 
