@@ -56,7 +56,7 @@
         content: '';
         position: absolute;
         top: 50%;
-        // @include background('../images/back.png', 16px, 28px);
+        @include background('../images/icon-arrow-left.png', 23px, 41px);
         left: pxToRem(30px);
         margin-top: pxToRem(-14px);
       }

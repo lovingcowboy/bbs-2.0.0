@@ -1,0 +1,311 @@
+@import "../sass/variables.scss";
+@import "../sass/func.scss";
+// @import "../sass/common.scss";
+.contetn-header {
+    background-image: url("../images/bg-center-header.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: pxToRem(520px);
+    position: relative;
+    padding-top: pxToRem(54px);
+    .edit-btn {
+        width: pxToRem(70px);
+        height: pxToRem(50px);
+        position: absolute;
+        top: pxToRem(24px);
+        right: pxToRem(20px);
+        color: #fff;
+        font-size: pxToRem(30px);
+        text-align: center;
+        line-height: pxToRem(50px);
+        white-space: nowrap;
+        &.btn-edit {
+            width: pxToRem(50px);
+            background-image: url("../images/icon-edit.png");
+            background-size: pxToRem(32px) pxToRem(38px);
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+        }
+    }
+    @at-root .avatar-wrapper {
+        width: pxToRem(180px);
+        height: pxToRem(180px);
+        box-shadow: 0px pxToRem(8px) pxToRem(12px) 0px rgba(0, 156, 228, 0.004);
+        background-color: rgba(255, 255, 255, 0.16);
+        border-radius: 50%;
+        position: relative;
+        margin: auto;
+        padding: pxToRem(10px) 0;
+        margin-bottom: pxToRem(14px);
+        .avatar-mask {
+            position: absolute;
+            z-index: 99;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: pxToRem(160px);
+            height: pxToRem(160px);
+            background-color: rgba(0, 0, 0, .5);
+            border-radius: 50%;
+            .avatar-edit {
+                margin: auto;
+                width: pxToRem(76px);
+                height: pxToRem(76px);
+                position: absolute;
+                z-index: 99;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+        .avatar {
+            width: pxToRem(160px);
+            height: pxToRem(160px);
+            display: block;
+            border-radius: 50%;
+            margin: auto;
+        }
+    }
+    @at-root .name-wrapper {
+        position: relative;
+        width: pxToRem(200px);
+        margin: auto;
+        margin-bottom: pxToRem(14px);
+        &.editing:after {
+            @include border(bottom,
+            #f3ec0b);
+        }
+        .name-txt {
+            background-color: transparent;
+            width: 100%;
+            height: pxToRem(48px);
+            font-size: pxToRem(30px);
+            color: #fff;
+            display: block;
+            margin: auto;
+            text-align: center;
+            border: none;
+            // border-bottom: 1px solid #fff;
+            outline: none;
+            &:read-only {
+                border: none;
+            }
+        }
+    }
+    @at-root .level-wrapper {
+        position: relative;
+        width: pxToRem(234px);
+        height: pxToRem(40px);
+        margin: auto;
+        margin-bottom: pxToRem(46px);
+        .icon-level-wrapper {
+            background-color: #fff000;
+            box-shadow: 0px 0px pxToRem(26px) 0px rgba(0, 173, 255, 0.3);
+            width: pxToRem(52px);
+            height: pxToRem(52px);
+            position: absolute;
+            left: pxToRem(-26px);
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            text-align: center;
+            .icon-level {
+                background-image: url("../images/icon-level.png");
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+                width: pxToRem(60px);
+                height: pxToRem(59px);
+                line-height: pxToRem(59px);
+                font-size: pxToRem(26px);
+                display: block;
+                margin: auto;
+                font-weight: bold;
+                color: #fff;
+                text-align: center;
+                border-radius: 50%;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 0;
+            }
+        }
+        .level-name {
+            font-size: 0;
+            color: #19b6ff;
+            background-color: #fff;
+            border-radius: pxToRem(20px);
+            height: pxToRem(40px);
+            line-height: pxToRem(40px);
+            text-align: center;
+            box-shadow: 0px 0px pxToRem(24px) 0px rgba(25, 181, 255, 0.3);
+            .point {
+                display: inline-block;
+                vertical-align: middle;
+                border-radius: 50%;
+                background-color: rgb(25, 182, 255);
+                width: pxToRem(4px);
+                height: pxToRem(4px);
+                margin: 0 pxToRem(6px);
+            }
+            font {
+                font-size: pxToRem(26px);
+                display: inline-block;
+                vertical-align: middle;
+                height: pxToRem(40px);
+                line-height: pxToRem(40px);
+            }
+        }
+    }
+    @at-root .md {
+        font-size: 0;
+        color: #fefefe;
+        text-align: center;
+        margin-bottom: pxToRem(24px);
+        .md-item {
+            display: inline-block;
+            font-size: pxToRem(26px);
+            vertical-align: middle;
+        }
+        .line {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0 pxToRem(16px);
+            height: pxToRem(24px);
+            width: 1px;
+            position: relative;
+            &:after {
+                @include border(left,
+                #fff);
+            }
+        }
+    }
+    .label {
+        font-size: pxToRem(22px);
+        color: rgba(181, 239, 254, 0.6);
+        text-align: center;
+    }
+}
+
+.sign-wrapper {
+    width: 100%;
+    height: pxToRem(110px);
+    line-height: pxToRem(110px);
+    color: #333;
+    font-size: 0;
+    background-color: #fff;
+    margin-bottom: pxToRem(18px);
+    padding: 0 pxToRem(30px);
+    .sign-text {
+        display: inline-block;
+        font-size: pxToRem(30px);
+        font {
+            color: #ff8420;
+        }
+    }
+    .sign-btn {
+        float: right;
+        margin-top: pxToRem(26px);
+    }
+    .sign-done {
+        float: right;
+        margin-top: pxToRem(26px);
+        position: relative;
+        font-size: 0;
+        white-space: nowrap;
+        .icon-signed {
+            @include background("../images/icon-signed.png",
+            32px,
+            32px);
+            display: inline-block;
+            vertical-align: middle;
+        }
+        font {
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: pxToRem(8px);
+            font-size: pxToRem(26px);
+        }
+    }
+}
+
+.ubody {
+    width: 100%;
+    li {
+        width: 100%;
+        height: pxToRem(110px);
+        padding-left: pxToRem(30px);
+        background-color: #fff;
+        position: relative;
+        font-size: 0;
+        line-height: pxToRem(110px);
+        &:after {
+            @include border(bottom,
+            #e6e6e6);
+            left: pxToRem(30px);
+        }
+        font {
+            display: inline-block;
+            font-size: pxToRem(30px);
+            color: #333;
+            vertical-align: middle;
+        }
+        .icon {
+            width: pxToRem(38px);
+            height: pxToRem(38px);
+            vertical-align: middle;
+            display: inline-block;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: 50% 50%;
+            margin-right: pxToRem(32px);
+            &.icon-post {
+                background-image: url('../images/icon-post.png');
+            }
+            &.icon-reply {
+                background-image: url('../images/icon-write.png');
+            }
+            &.icon-message {
+                background-image: url('../images/icon-message.png');
+            }
+            &.icon-heart {
+                background-image: url('../images/icon-heart.png');
+            }
+            &.icon-coin {
+                background-image: url('../images/icon-coin.png');
+            }
+        }
+        .icon-arrow-right {
+            vertical-align: middle;
+            display: inline-block;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: 50% 50%;
+            float: right;
+            margin-right: pxToRem(30px);
+            background-image: url('../images/icon-arrow-right.png');
+            width: pxToRem(16px);
+            height: 100%;
+        }
+        &:nth-last-child(2),
+        &:last-child {
+            margin-bottom: pxToRem(20px);
+            &:after {
+                border: none;
+            }
+        }
+    }
+}
+
+.logoutbtn {
+    width: 100%;
+    height: pxToRem(88px);
+    line-height: pxToRem(88px);
+    text-align: center;
+    margin: auto;
+    color: #333;
+    background-color: #fff;
+    font-size: pxToRem(30px);
+    margin-bottom: pxToRem(50px);
+}
