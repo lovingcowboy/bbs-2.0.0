@@ -1,0 +1,49 @@
+@import "../sass/variables.scss";
+@import "../sass/func.scss";
+.contetn-header {
+    background-color: #fff;
+    padding-top: pxToRem(36px);
+     padding-left: pxToRem(30px);
+    @at-root .md01 {
+        white-space: nowrap;
+        .avatar {
+            width: pxToRem(160px);
+            display: inline-block;
+        }
+        .userInfo-right {
+            display: inline-block;
+            width: pxToRem(550px);
+            float: right;
+            .username {
+                font-size: pxToRem(30px);
+                color: #333;
+                position: relative;
+                padding-bottom: pxToRem(20px);
+                margin-top: pxToRem(8px);
+                &:after {
+                    @include border(bottom, #e6e6e6);
+                }
+            }
+            .other-baseinfo {
+                font-size: 0;
+                white-space: nowrap;
+                overflow: hidden;
+                padding-top: pxToRem(20px);
+            }
+            .baseinfo-row {
+                display: inline-block;
+                vertical-align: middle;
+                 font-size: pxToRem(30px);
+                color: #333;
+                text-align: center;
+                margin-right: pxToRem(110px);
+
+                .label {
+                    font-size: pxToRem(22px);
+                    color: #999;
+                    margin-top: pxToRem(20px);
+                }
+            }
+        }
+    }
+}
