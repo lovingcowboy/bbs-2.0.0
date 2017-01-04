@@ -14,9 +14,9 @@
 
         <div class="avatar-wrapper">
           <div class="avatar-mask" v-show="editing">
-            <img class="avatar-edit" src="../images/avatar-edit.png">
+            <img class="avatar-edit" src="../images/avatar-edit.png" />
           </div>
-          <img class="avatar" src='../images/icon-avatar.png'>
+          <img class="avatar" src='../images/icon-avatar.png' />
         </div>
         <div class="name-wrapper" :class = 'isEditing' >
           <input class="name-txt" maxlength="30" :readonly ='editing == true ? readonly : ""' :value='userInfo.username' />
@@ -47,28 +47,28 @@
         </div>
       </div>
       <ul class="ubody">
-        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+        <li class="urow" @click="goUItemDetail('/user/mypost',2);">
           <span class="icon icon-post"></span>
           <font>我的帖子</font>
           <span class="icon-arrow-right"></span>
         </li>
-        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+        <li class="urow" @click="goUItemDetail('/user/mypost',3);">
           <span class="icon icon-reply"></span>
           <font>我的回复</font>
           <span class="icon-arrow-right"></span>
         </li>
-        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+        <li class="urow" @click="goUItemDetail('/user/myMessage',0);">
           <span class="icon icon-message"></span>
           <font>我的消息</font>
           <span class="icon-arrow-right"></span>
         </li>
-        <li class="urow" @click="goUItemDetail('/user/mypost',0);">
+        <li class="urow" @click="goUItemDetail('/user/mypost',4);">
           <span class="icon icon-heart"></span>
           <font>我的收藏</font>
           <span class="icon-arrow-right"></span>
         </li>
 
-        <li class="urow" @click="goUItemDetail('/user/changetb',2);">
+        <li class="urow" @click="goUItemDetail('/user/changetb',1);">
           <span class="icon icon-coin"></span>
           <font>威望兑团币</font>
           <span class="icon-arrow-right"></span>
@@ -128,10 +128,22 @@ export default {
           uid = window.sessionStorage['uid'];
         }
         let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
-       
-        this.$router.push({
-            name: 'changetb'
-          });
+     
+        switch(type) {
+          case 0:   //我的消息 
+            this.$router.push({
+              name: 'messagemy'
+            });
+            break;
+          case 1:  //兑换团币
+            this.$router.push({
+              name: 'changetb'
+            });
+            break;
+          case 2:   //我的帖子、我的收藏、我的回复 
+           
+            break;
+        }
 
         return;
         if (isLogined_cookie || uid) {

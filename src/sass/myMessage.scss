@@ -1,0 +1,103 @@
+@import "../sass/variables.scss";
+@import "../sass/func.scss";
+.content {
+    .tab {
+        background-color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        font-size: 0;
+        height: pxToRem(88px);
+        line-height: pxToRem(88px);
+        margin-bottom: pxToRem(20px);
+        .tab-item {
+            display: inline-block;
+            width: 50%;
+            text-align: center;
+            font-size: 0;
+            font {
+                font-size: pxToRem(30px);
+                text-align: center;
+                color: $txt-color-grey;
+                text-align: center;
+                vertical-align: middle;
+            }
+            .message-num {
+                border-radius: pxToRem(16px);
+                background-color: rgb(250, 76, 47);
+                color: #fff;
+                height: pxToRem(32px);
+                padding: 0 pxToRem(8px);
+                font-size: pxToRem(18px);
+                text-align: center;
+                vertical-align: middle;
+                // line-height: pxToRem(20px);
+                margin-left: pxToRem(10px);
+                line-height: pxToRem(32px);
+            }
+            &.active {
+                font {
+                    color: $txt-color-blue;
+                }
+            }
+        }
+    }
+    .message-list-wrapper {
+        position: absolute;
+        width: 100%;
+        top: pxToRem(198px);
+        bottom: 0;
+        background-color: #fff;
+        padding-left: pxToRem(30px);
+        font-size: 0;
+        @at-root .message-person-item {
+            font-size: 0;
+            clear: both;
+            .left {
+                width: pxToRem(90px);
+                position: relative;
+                display: inline-block;
+                padding: pxToRem(22px) 0;
+                .avatar {
+                    width: 100%;
+                }
+                .point-new {
+                    border: pxToRem(2px) solid #fff;
+                    background-color: rgb(250, 76, 47);
+                    height: pxToRem(24px);
+                    width: pxToRem(24px);
+                    border-radius: 50%;
+                    position: absolute;
+                    top: pxToRem(20px);
+                    right: 0;
+                }
+            }
+            .right {
+                width: pxToRem(600px);
+                float: right;
+                border-bottom: 1px solid $border-color;
+                padding: pxToRem(20px) 0;
+                line-height: pxToRem(46px);
+                font-size: 0;
+                .username {
+                    color: $txt-color-black;
+                    font-size: pxToRem(30px);
+                    display: inline-block;
+                }
+                .msg-date {
+                    font-size: pxToRem(24px);
+                    color: $txt-color-grey;
+                    float: right;
+                    margin-right: pxToRem(26px);
+                }
+                .msg-body {
+                    font-size: pxToRem(24px);
+                    color: $txt-color-grey;
+                    max-width: pxToRem(510px);
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+            }
+        }
+    }
+}
