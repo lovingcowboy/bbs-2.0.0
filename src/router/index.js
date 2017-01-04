@@ -31,14 +31,18 @@ import CenterMyView from '../views/CenterMyView.vue'
 import CenterOtherView from '../views/CenterOtherView.vue'
 import PostDetail from '../views/PostDetailView.vue'
 import ChangeTBView from '../views/ChangeTBView.vue'
+import MyMessageView from '../views/MyMessageView.vue'
+import MessageDetailView from '../views/MessageDetailView.vue'
 export default new Router({
   mode: 'hash',
   routes: [
     {path: '/main', name: 'main', component: Main},
     {path: '/postdetail/:id', name: 'postdetail', component: PostDetail},
-    {path: '/centerMy', name: 'centerMy', component: CenterMyView},
-    {path: '/centerOther', name: 'centerOther', component: CenterOtherView},
+    {path: '/centermy', name: 'centermy', component: CenterMyView},
+    {path: '/centerother', name: 'centerother', component: CenterOtherView},
     {path: '/user/changetb', name: 'changetb', component: ChangeTBView},
+    {path: '/user/messagemy', name: 'messagemy', component: MyMessageView},
+     {path: '/user/messagedetail', name: 'messagedetail', component: MessageDetailView},
     {path: '*', redirect: '/main'}
   ]
 })
