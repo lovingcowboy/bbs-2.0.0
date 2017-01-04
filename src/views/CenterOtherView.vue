@@ -50,45 +50,7 @@
       <div class="dynamic">
         <div class="label">TA的动态</div>
          <ul class="post-list">
-          <li class="post-row">
-            <div class="item-title">
-              <span>
-                <img src="../images/pai.png"><font>神采飞扬</font>发表了帖子
-              </span>
-              <span>32分钟前</span>
-            </div>
-            <div class="item-desc">
-              <div class="post">
-                <p>团贷网大踏步走在紧拥监管，跨越发展之路上</p>
-                <p>如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！</p>
-              </div>
-              <div class="p-img">
-                <img src="../images/img.png">
-              </div>
-            </div>
-            <div class="item-message">
-              <span class="post-view">1234</span>
-              <span class="post-reply">789</span>
-            </div>
-          </li>
-          <li class="post-row">
-            <div class="item-title">
-              <span>
-                <img src="../images/pai.png"><font>神采飞扬</font>发表了帖子
-              </span>
-              <span>32分钟前</span>
-            </div>
-            <div class="item-desc">
-              <div class="post no-img">
-                <p>团贷网大踏步走在紧拥监管，跨越发展之路上</p>
-                <p>如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！</p>
-              </div>
-            </div>
-            <div class="item-message">
-              <span class="post-view">1234</span>
-              <span class="post-reply">789</span>
-            </div>
-          </li>
+          <post-item v-for="(item, index) in postList" :data="item" v-on:onItemClick="goDetail(item.id)"></post-item>
         </ul>
       </div>
     </div>
@@ -98,13 +60,16 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
+import PostItem from '../components/PostItem.vue'
 export default {
   components: {
     Zheader,
-    Toast
+    Toast,
+    PostItem
   },
   data () {
     return {
+
       userInfo: {
         avatar: "../images/icon-avatar.png",
         username: "萱萱宝贝",
@@ -121,7 +86,7 @@ export default {
         friends: 10,
         post:120
       },
-     
+      postList: []
     }
   },
   methods: {
@@ -129,6 +94,26 @@ export default {
   },
   beforeMount () {
 
+  },
+  mounted () {
+    let that = this
+    for (let i = 0; i < 5; i++) {
+      let item = {
+        name: '神采飞扬',
+        act: '发表了帖子',
+        time: i * 10 + '分钟前',
+        pTitle: '团贷网大踏步走在紧拥监管，跨越发展之路上',
+        pDesc: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
+        view: 12 * i,
+        reply: 25 * i,
+        id: i * 10
+      }
+      if ( i === 1) {
+        item.hasImg = true
+      }
+      that.postList.push(item)
+      
+    }
   }
 }
 </script>
