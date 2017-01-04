@@ -381,7 +381,7 @@
   height: pxToRem(90px);
   z-index: 100;
   opacity: 0.8;
-  box-shadow: 0px 4px 10px 0px rgba( 29, 194, 255, .35);
+  box-shadow: 0px pxToRem(4px) pxToRem(10px) 0px rgba( 29, 194, 255, .35);
   position: absolute;
   right: pxToRem(30px);
   bottom: pxToRem(40px);

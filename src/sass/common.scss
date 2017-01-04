@@ -141,10 +141,14 @@ span {
     background-image: url('../images/icon-view.png');
     background-size: pxToRem(26px) pxToRem(18px);
     padding-left: pxToRem(36px);
+    background-repeat: no-repeat;
+    background-position: left center;
 }
 
 .post-reply {
     background-image: url('../images/icon-msg.png');
     background-size: pxToRem(22px) pxToRem(20px);
     padding-left: pxToRem(32px);
+    background-repeat: no-repeat;
+    background-position: left center;
 }

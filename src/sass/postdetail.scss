@@ -1,2 +1,325 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
+.post-cont {
+    width: 100%;
+    background-color: $color-white;
+    padding: pxToRem(40px) pxToRem(30px);
+}
+
+.p-title {
+    font-size: pxToRem(48px);
+    color: $txt-color-black;
+    line-height: pxToRem(66px);
+    text-align: justifyLeft;
+    font-weight: bold;
+}
+
+.p-poster {
+    width: 100%;
+    height: pxToRem(70px);
+    line-height: pxToRem(70px);
+    margin-top: pxToRem(38px);
+    font-size: pxToRem(30px);
+    color: $txt-color-blue;
+    img {
+        width: pxToRem(70px);
+        height: pxToRem(70px);
+        border-radius: 50%;
+    }
+    span {
+        height: 100%;
+        vertical-align: text-bottom;
+        margin-left: pxToRem(20px);
+    }
+}
+
+.p-msg {
+    width: 100%;
+    font-size: pxToRem($font-size-24);
+    color: $txt-color-grey-light;
+    margin: pxToRem(20px) 0;
+    &>span {
+        margin-right: pxToRem(36px);
+    }
+}
+
+.p-content {
+    width: 100%;
+    font-size: pxToRem($font-size-30);
+    color: $txt-color-black;
+    text-align: justify;
+    line-height: 2;
+}
+
+.vote-cont {
+    width: 100%;
+    margin: pxToRem(20px) 0;
+    box-shadow: 0px pxToRem(4px) pxToRem(20px) 0px rgba( 0, 0, 0, .12);
+    padding-top: pxToRem(48px);
+    border-top: pxToRem(2px) solid $txt-color-blue;
+    font-size: pxToRem($font-size-28);
+    .v-question {
+        color: $txt-color-black;
+        vertical-align: super;
+        padding: 0 pxToRem(30px);
+    }
+    .v-answer {
+        width: 100%;
+        color: $txt-color-grey-dark;
+        display: inline-block;
+        margin-top: pxToRem(46px);
+        padding: 0 pxToRem(30px);
+        height: pxToRem(32px);
+        line-height: pxToRem(32px);
+    }
+    input[type='radio'],
+    input[type='checkbox'] {
+        display: none;
+    }
+    .v-btn {
+        width: 100%;
+        height: pxToRem(90px);
+        line-height: pxToRem(90px);
+        text-align: center;
+        font-size: pxToRem($font-size-30);
+        color: $txt-color-blue;
+        border-top: 1px solid $border-color;
+        margin-top: pxToRem(50px);
+    }
+    .icon-input {
+        width: pxToRem(32px);
+        height: pxToRem(32px);
+        border: pxToRem(2px) solid $border-color;
+        background-color: #fff;
+        background-image: url('../images/check.png');
+        background-size: pxToRem(22px) pxToRem(15px);
+        background-repeat: no-repeat;
+        background-position: center;
+        vertical-align: text-top;
+        margin-right: pxToRem(30px);
+        display: inline-block;
+    }
+    .icon-radio {
+        border-radius: 50%;
+    }
+    .icon-checkbox {
+        border-radius: pxToRem(4px);
+    }
+    input[type='radio']:checked+.icon-radio,
+    input[type='checkbox']:checked+.icon-checkbox {
+        background-color: $txt-color-blue;
+        border-color: $txt-color-blue;
+    }
+    .vote-nums {
+        width: pxToRem(486px);
+        height: pxToRem(10px);
+        background-color: $border-color;
+        margin-left: pxToRem(90px);
+        margin-top: pxToRem(30px);
+        position: relative;
+        .vote-progress {
+            width: 0;
+            height: 100%;
+            background-color: $txt-color-blue;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition-property: width;
+            transition-duration: .3s;
+        }
+    }
+}
+
+.vote-disable {
+    input[type='radio']:checked+.icon-radio,
+    input[type='checkbox']:checked+.icon-checkbox {
+        background-color: $border-color !important;
+        border-color: $border-color !important;
+    }
+}
+
+.rm-cont {
+    width: 100%;
+    background-color: #fff;
+    margin-top: pxToRem(20px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.rm-tabs {
+    width: 100%;
+    height: pxToRem(80px);
+    line-height: pxToRem(80px);
+    text-align: center;
+    font-size: 0;
+    border-bottom: 1px solid $border-color;
+    a {
+        display: inline-block;
+        width: 49.9%;
+        font-size: pxToRem($font-size-30);
+        color: $txt-color-grey;
+    }
+    .active {
+        color: $txt-color-blue !important;
+    }
+}
+.float-tabs {
+  position: absolute;
+  top: pxToRem(80px);
+  left: 0;
+  background-color: $color-white;
+}
+
+.rm {
+    // width: 100%;
+    white-space: nowrap;
+    font-size: 0;
+    padding-bottom: pxToRem(116px);
+    .rm-list {
+        width: 100%;
+        padding-left: pxToRem(30px);
+        display: inline-block;
+        vertical-align: text-top;
+        // max-height: pxToRem(500px);
+        overflow-y: scroll;
+        &>li {
+            padding: pxToRem(40px) 0;
+            font-size: 0;
+        }
+        &>li:not(:last-child) {
+            border-bottom: 1px solid $border-color;
+        }
+    }
+}
+
+.rm-u {
+    width: 100%;
+    height: pxToRem(70px);
+    font-size: 0;
+    position: relative;
+    &>div {
+        display: inline-block;
+    }
+    .u-avator {
+        width: pxToRem(70px);
+        height: pxToRem(70px);
+        img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+    }
+    .rm-det {
+        width: pxToRem(550px);
+        height: 100%;
+        font-size: pxToRem($font-size-30);
+        color: $txt-color-grey-dark;
+        padding-left: pxToRem(20px);
+    }
+    .u-vip {
+        font-size: pxToRem(22px);
+        color: $txt-color-grey-light;
+        height: pxToRem(30px);
+        line-height: pxToRem(30px);
+        padding: 0 pxToRem(10px);
+        border-radius: pxToRem(15px);
+        border: 1px solid $border-color;
+        margin-left: pxToRem(20px);
+    }
+    .r-time {
+        font-size: pxToRem($font-size-24);
+        color: $txt-color-grey-light;
+        margin-top: pxToRem(10px);
+    }
+    .icon-msg-big {
+        @include background('../images/icon-msg-big.png',
+        37px,
+        34px);
+        position: absolute;
+        right: pxToRem(30px);
+        top: 50%;
+        margin-top: pxToRem(-17px);
+    }
+}
+
+.rm-txt {
+    margin: pxToRem(40px) pxToRem(30px) 0 pxToRem(70px);
+    white-space: normal;
+    .txt-blue {
+        color: $txt-color-blue;
+        // margin-right: pxToRem(20px);
+    }
+}
+
+.rm-txt1 {
+    font-size: pxToRem($font-size-30);
+    color: $txt-color-black;
+    line-height: 1.5;
+    // .txt-blue {
+    //   margin-left: pxToRem(20px);
+    // }
+}
+
+.rm-txt2 {
+    background-color: #f6f6f6;
+    padding: pxToRem(30px) pxToRem(20px);
+    font-size: pxToRem($font-size-24);
+    color: $txt-color-grey;
+    line-height: 1.5;
+    .txt-blue {
+        margin-right: pxToRem(20px);
+    }
+}
+
+.rm-txt3 {
+    font-size: pxToRem($font-size-24);
+    color: $txt-color-grey;
+}
+
+.post-foot {
+    width: 100%;
+    height: pxToRem(114px);
+    background-color: #f2f2f0;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 0;
+    padding-top: pxToRem(20px);
+    .f-container {
+        background-color: $color-white;
+        height: pxToRem(94px);
+        width: 100%;
+        padding: 0 pxToRem(30px);
+        white-space: nowrap;
+    }
+    .f-reply {
+        width: pxToRem(380px);
+        height: pxToRem(66px);
+        line-height: pxToRem(66px);
+        border-radius: pxToRem(10px);
+        background-color: #f6f6f6;
+        font-size: pxToRem($font-size-30);
+        color: $txt-color-grey-light;
+        margin-top: pxToRem(14px);
+        padding-left: pxToRem(30px);
+    }
+    i {
+        background-repeat: no-repeat;
+        background-position: right center;
+        width: pxToRem(100px);
+        height: 100%;
+        vertical-align: top;
+    }
+    .icon-zan {
+        background-image: url('../images/icon-zan.png');
+        background-size: pxToRem(44px) pxToRem(40px);
+    }
+    .icon-mark {
+        background-image: url('../images/icon-mark.png');
+        background-size: pxToRem(42px) pxToRem(40px);
+    }
+    .icon-share {
+        background-image: url('../images/icon-share.png');
+        background-size: pxToRem(36px) pxToRem(43px);
+    }
+}
