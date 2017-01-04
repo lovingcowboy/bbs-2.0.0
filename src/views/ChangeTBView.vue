@@ -40,7 +40,7 @@ export default {
       max_num:9,
 
     },
-     exchangeNum: 0,
+     exchangeNum: "",
     canChange:false,
     canChangeNum:0
     }
@@ -82,10 +82,11 @@ export default {
       this.onInput();
     },
     onExchange() {
-      if(this.exchangeNum === 0) {
+      let exchangeNum = Number(this.exchangeNum);
+      if(isNaN(exchangeNum) || exchangeNum === 0 || exchangeNum % 3 !== 0) {
         return;
       }
-      console.log("马上兑换")
+      Toast("兑换成功");
     }
   },
   beforeMount () {
