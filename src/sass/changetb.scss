@@ -1,2 +1,93 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
+.content {
+    background-color: $color-white;
+    .tips {
+        background-color: #ebf9ff;
+        color: $txt-color-blue;
+        font-size: pxToRem(22px);
+        line-height: pxToRem(48px);
+        padding-left: pxToRem(30px);
+    }
+    .prestige {
+        padding-left: pxToRem(30px);
+        font {
+            padding: pxToRem(40px) 0;
+            display: block;
+            border-bottom: 1px solid $border-color;
+            color: $txt-color-black;
+            font-size: pxToRem(30px);
+        }
+    }
+    @at-root .change-content {
+        padding: 0 pxToRem(30px);
+        font-size: 0;
+        .change-text {
+            padding: pxToRem(40px) 0;
+            font-size: pxToRem(30px);
+            color: $txt-color-black;
+            .change-maxnum {
+                color: $txt-color-grey;
+                font-size: pxToRem(24px);
+            }
+        }
+        .change-wrapper {
+            width: 100%;
+            position: relative;
+            margin-bottom: pxToRem(40px);
+            border: 1px solid $border-color;
+            border-radius: pxToRem(8px);
+            .change-input {
+                display: block;
+                width: 100%;
+                height: pxToRem(88px);
+                -webkit-appearance: none;
+                position: relative;
+                font-size: pxToRem(30px);
+                vertical-align: baseline;
+                color: $txt-color-black;
+                outline: none;
+                -webkit-highlight: none;
+                border: none;
+                padding-left: pxToRem(20px);
+                padding-right: pxToRem(160px);
+                border-radius: pxToRem(8px);
+            }
+            .change-input::-webkit-input-placeholder {
+                color: $txt-color-grey;
+            }
+            .btn-change-all {
+                position: absolute;
+                z-index: 99;
+                right: pxToRem(24px);
+                color: $txt-color-blue;
+                font-size: pxToRem(30px);
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+        .change-result-num {
+            font-size: pxToRem(30px);
+            margin-bottom: pxToRem(80px);
+            font {
+                margin: 0 pxToRem(12px);
+                color: $txt-color-grey;
+                &.orange {
+                    color: $txt-color-orange;
+                }
+            }
+        }
+    }
+    .btn-exchange {
+        border-radius: pxToRem(16px);
+        background-image: -webkit-linear-gradient( 90deg, rgb(25, 166, 255) 0%, rgb(25, 187, 255) 100%);
+        box-shadow: 0px pxToRem(10px) pxToRem(20px) 0px rgba(25, 166, 255, 0.2);
+        width: pxToRem(690px);
+        height: pxToRem(88px);
+        line-height: pxToRem(88px);
+        margin: auto;
+        font-size: pxToRem(36px);
+        text-align: center;
+        color: #fff;
+    }
+}
