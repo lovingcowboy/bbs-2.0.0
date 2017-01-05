@@ -9,7 +9,7 @@
     @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
-    <div class="content" @scroll="scrollMove()">
+    <div class="content"  @scroll="scrollMove()">
       <div class="post-cont">
         <p class="p-title">1218越来越近了，大家对爱心日的“天量”预期会有多少呢...</p>
         <p class="p-poster"><img src="../images/icon-avatar.png"><span>蓝色的枫叶</span></p>
@@ -48,8 +48,8 @@
           <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复(263)</a>
           <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分(56)</a>
         </nav>
-        <div class="rm" :style="{transform: scrollX}">
-          <ul class="reply-list rm-list">
+        <div class="rm" :style="{'transform': scrollX, 'min-height': rmHeight, 'overflow-y': overflowY}">
+          <ul class="reply-list rm-list" v-show="tabType === 0">
             <li class="reply-row">
               <div class="rm-u">
                 <div class="u-avator">
@@ -105,7 +105,7 @@
               <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p>
             </li>
           </ul>
-          <ul class="reply-list rm-list">
+          <ul class="reply-list rm-list" v-show="tabType === 1">
             <li class="reply-row">
               <div class="rm-u">
                 <div class="u-avator">
@@ -158,9 +158,11 @@ export default {
        hasVoted: false,
        btnTxt: '投票',
        postHeight: 0,
+       tabsOffsetTop: 0,
        contentObj : null,
-       showFloat: false
-       // rmHeight: '0'
+       showFloat: false,
+       rmHeight: '100%',
+       overflowY: 'scroll',
     }
   },
   computed: {
@@ -172,8 +174,8 @@ export default {
     },
     triggerTab (type) {
       this.tabType = type
-      let num = +type * (-100)
-      this.scrollX = 'translateX(' + num + '%)'
+      // let num = +type * (-100)
+      // this.scrollX = 'translateX(' + num + '%)'
     },
      percentage (count, total) {
       return (count / total * 100) + "%"
@@ -199,12 +201,17 @@ export default {
         this.btnTxt = '隐藏投票结果'
       }
     },
+    
     scrollMove () {
       // console.info(this.contentObj.scrollTop, this.postHeight)
-      if(this.contentObj.scrollTop >= this.postHeight) {
+      if (this.contentObj.scrollTop > this.postHeight + 22) {
         this.showFloat = true
-      }else{
+        // this.overflowY = 'scroll'
+        // this.rmHeight = document.documentElement.offsetHeight + 'px'
+      } else {
         this.showFloat = false
+        // this.overflowY = 'hidden'
+        // this.rmHeight = '100%'
       }
     }
   },
@@ -240,9 +247,11 @@ export default {
    
   },
   mounted () {
-    this.postHeight = document.querySelector('.post-cont').clientHeight
+    this.postHeight = document.querySelector('.post-cont').offsetHeight
     this.contentObj = document.querySelector('.content')
-    // this.rmHeight = document.documentElement.clientHeight - 110 + 'px'
+    this.tabsOffsetTop = document.querySelector('.rm-tabs').offsetTop
+    // this.rmHeight = document.documentElement.offsetHeight - 110 + 'px'
+    this.rmHeight = document.documentElement.offsetHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight + 20 + 'px'
   }
 
 
