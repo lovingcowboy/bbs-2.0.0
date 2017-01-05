@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="changetb-view scroll" :class="{'scroll-active': isScrollActive}">
   <zheader 
     :header-title="'威望兑团币'" 
     :has-back="true" 
@@ -35,6 +35,7 @@ export default {
   },
   data () {
     return {
+      isScrollActive: true,
       exchangeInfo: {
       prestige:10,
       max_num:9,

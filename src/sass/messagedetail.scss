@@ -42,7 +42,7 @@
                         width: pxToRem(12px);
                         height: pxToRem(12px);
                         top: pxToRem(22px);
-                        left: pxToRem(-12px);
+                        left: pxToRem(-10px);
                     }
                 }
             }
@@ -62,14 +62,14 @@
                         width: pxToRem(12px);
                         height: pxToRem(12px);
                         top: pxToRem(22px);
-                        right: pxToRem(-12px);
+                        right: pxToRem(-10px);
                     }
                 }
             }
         }
     }
     .btn-message {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         width: 100%;
         height: pxToRem(100px);

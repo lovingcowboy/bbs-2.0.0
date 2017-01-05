@@ -1,5 +1,5 @@
 <template>
-  <div class="center-my-view">
+  <div class="center-my-view scroll" :class="{'scroll-active': isScrollActive}">
     <zheader 
       :header-title="'个人中心'" 
       :has-back="true" 
@@ -69,7 +69,7 @@ export default {
   },
   data () {
     return {
-
+      isScrollActive: true,
       userInfo: {
         avatar: "../images/icon-avatar.png",
         username: "萱萱宝贝",

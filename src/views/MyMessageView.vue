@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="changetb-view scroll" :class="{'scroll-active': isScrollActive}">
   <zheader 
     :header-title="'我的消息'" 
     :has-back="true" 
@@ -25,7 +25,83 @@
             <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
           </div>
         </div>
+         <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
         <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
+        </div>
+         <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
+        </div>
+         <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
+        </div>
+         <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
+        </div>
+         <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
+        </div>
+        <div class="message-person-item" @click="goMessageDetail('1')">
+          <div class="left">
+            <img class="avatar" src='../images/icon-avatar.png' />
+            <span class="point-new"></span>
+          </div>
+          <div class="right">
+            <div class="username">小叮当</div>
+            <div class="msg-date">10-17</div>
+            <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
+          </div>
+        </div>
+         <div class="message-person-item" @click="goMessageDetail('1')">
           <div class="left">
             <img class="avatar" src='../images/icon-avatar.png' />
             <span class="point-new"></span>
@@ -55,6 +131,7 @@ export default {
   },
   data () {
     return {
+      isScrollActive: true,
       exchangeInfo: {
       prestige:10,
       max_num:9,

@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="messagedetail-view scroll" :class="{'scroll-active': isScrollActive}">
   <zheader 
     :header-title="username" 
     :has-back="true" 
@@ -81,23 +81,24 @@ export default {
   data () {
     return {
       username:"小叮当",
-      isShowDialog: false
+      isShowDialog: false,
+      isScrollActive: true
     }
   },
   methods: {
     onMessage() {
       this.isShowDialog = true;
-      Util.disableScrolling();
+      this.isScrollActive = false;
     },
     onCancel() {
       this.isShowDialog = false;
-      Util.enableScrolling();
+      this.isScrollActive = true;
     },
     onSend() {
       // TODO:展示，需要删除
       Toast("发送消息");
       this.isShowDialog = false;
-      Util.enableScrolling();
+      this.isScrollActive = true;
     }
   },
   beforeMount () {
