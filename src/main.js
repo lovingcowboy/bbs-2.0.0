@@ -11,6 +11,9 @@ import Fastclick from 'fastclick'
 // 全局化css
 import './sass/common.scss'
 
+// 全局化工具库Util
+import './js/Util.js'
+
 /* eslint-disable no-new */
 
 // sync(store, router)
