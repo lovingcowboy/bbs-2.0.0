@@ -42,7 +42,7 @@ export default new Router({
     {path: '/centerother', name: 'centerother', component: CenterOtherView},
     {path: '/user/changetb', name: 'changetb', component: ChangeTBView},
     {path: '/user/messagemy', name: 'messagemy', component: MyMessageView},
-     {path: '/user/messagedetail', name: 'messagedetail', component: MessageDetailView},
+     {path: '/user/messagedetail/:id', name: 'messagedetail', component: MessageDetailView},
     {path: '*', redirect: '/main'}
   ]
 })

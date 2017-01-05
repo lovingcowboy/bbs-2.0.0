@@ -14,7 +14,7 @@
     </div>
     <div class="message-list-wrapper">
       <div class="message-person-list">
-        <div class="message-person-item">
+        <div class="message-person-item" @click="goMessageDetail('1')">
           <div class="left">
             <img class="avatar" src='../images/icon-avatar.png' />
             <span class="point-new"></span>
@@ -25,7 +25,7 @@
             <div class="msg-body">我觉得投定期理财还是不错的，利率也很合理，打算继续加大投资</div>
           </div>
         </div>
-        <div class="message-person-item">
+        <div class="message-person-item" @click="goMessageDetail('1')">
           <div class="left">
             <img class="avatar" src='../images/icon-avatar.png' />
             <span class="point-new"></span>
@@ -64,7 +64,10 @@ export default {
     }
   },
   methods: {
-    
+    goMessageDetail(id) {
+       var url = '/user/messagedetail/' + id
+      this.$router.push(url)
+    }
   },
   beforeMount () {
 
