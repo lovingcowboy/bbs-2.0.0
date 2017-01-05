@@ -184,6 +184,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../sass/centerMy.scss";
+@import "../sass/centermy.scss";
 
 </style>

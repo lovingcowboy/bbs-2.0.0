@@ -119,6 +119,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../sass/centerOther.scss";
+@import "../sass/centerother.scss";
 
 </style>
