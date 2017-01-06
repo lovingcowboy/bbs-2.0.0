@@ -49,10 +49,11 @@
         background-color: #fff;
         padding-left: pxToRem(30px);
         font-size: 0;
-        .message-person-list {
+        .message-person-list,
+        .message-system-list {
             height: 100%;
             overflow: auto;
-color: #ccc;
+            color: #ccc;
         }
         @at-root .message-person-item {
             font-size: 0;
@@ -101,6 +102,62 @@ color: #ccc;
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
+                }
+            }
+        }
+        @at-root .message-system-item {
+            position: relative;
+            white-space: nowrap;
+            font-size: 0;
+            padding: pxToRem(30px);
+            padding-left: 0;
+            border-bottom: 1px solid $border-color;
+            &.isNew {
+                padding-left: pxToRem(20px);
+                .point-new {
+                    height: pxToRem(30px);
+                    width: pxToRem(10px);
+                    position: absolute;
+                    margin-right: pxToRem(10px);
+                    top: pxToRem(30px);
+                    left: 0;
+                    &:after {
+                        content: "";
+                        width: pxToRem(10px);
+                        height: pxToRem(10px);
+                        border-radius: 50%;
+                        background-color: rgb(250, 76, 47);
+                        position: absolute;
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                    }
+                }
+            }
+            .message-content {
+                display: inline-block;
+                vertical-align: text-top;
+                white-space: normal;
+                .msg-body {
+                    font-size: pxToRem(30px);
+                    color: $txt-color-black;
+                    margin-bottom: pxToRem(22px);
+                    line-height: pxToRem(48px);
+                }
+                .time-wrapper {
+                    font-size: 0;
+                    .msg-date {
+                        color: $txt-color-grey;
+                        font-size: pxToRem(24px);
+                        vertical-align: middle;
+                        display: inline-block;
+                        margin-right: pxToRem(34px);
+                    }
+                    .msg-time {
+                          color: $txt-color-grey;
+                        font-size: pxToRem(24px);vertical-align: middle;
+                        display: inline-block;
+                    }
                 }
             }
         }
