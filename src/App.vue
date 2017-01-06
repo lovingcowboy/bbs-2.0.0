@@ -55,17 +55,6 @@ export default {
 @import "./sass/variables.scss";
 @import "./sass/func.scss";
 
-html,body {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  // overflow: hidden;
-  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-overflow-scrolling: touch !important;
-}
 #app {
   width: 100%;
   height: 100%;
@@ -82,13 +71,12 @@ a {
 .view {
   width: pxToRem(750px);
   height: 100%;
-  // max-height: 828px;
   margin: 0 auto;
-  // padding-top: 60px;
   position: relative;
   transition: all .3s ease-in-out;
   padding-bottom: pxToRem(98px);
   box-sizing: border-box;
+  overflow: hidden;
 }
 .no-footer {
   padding-bottom: 0 !important;
