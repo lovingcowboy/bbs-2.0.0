@@ -1,24 +1,27 @@
 <template>
   <div class="changetb-view">
-  <zheader 
-    :header-title="'威望兑团币'" 
-    :has-back="true" 
-    :has-rightbtn="false"
-    :prevent-back="false"
-    :show="true">
-  </zheader> 
-  <div class="content">
-    <div class="tips">3社区威望可兑换1个团币</div>
-    <div class="prestige"><font>您的社区威望：{{exchangeInfo.prestige}}</font></div>
-    <div class="change-content">
-      <div class="change-text">兑换数量<font class="change-maxnum">（最大兑换数量：{{exchangeInfo.max_num}}）</font></div>
-      <div class="change-wrapper">
-        <input class="change-input" type="text" v-model="exchangeNum" maxlength=20 placeholder="请输入兑换数量" @input="onInput">
-        <div class="btn-change-all" @click="onChangeAll">全部兑换</div>
+    <zheader 
+      :header-title="'威望兑团币'" 
+      :has-back="true" 
+      :has-rightbtn="false"
+      :prevent-back="false"
+      :show="true">
+    </zheader> 
+    <div class="scroll" :class="{'scroll-active': isScrollActive}">  
+      <div class="content">
+        <div class="tips">3社区威望可兑换1个团币</div>
+        <div class="prestige"><font>您的社区威望：{{exchangeInfo.prestige}}</font></div>
+        <div class="change-content">
+          <div class="change-text">兑换数量<font class="change-maxnum">（最大兑换数量：{{exchangeInfo.max_num}}）</font></div>
+          <div class="change-wrapper">
+            <input class="change-input" type="text" v-model="exchangeNum" maxlength=20 placeholder="请输入兑换数量" @input="onInput">
+            <div class="btn-change-all" @click="onChangeAll">全部兑换</div>
+          </div>
+          <div class="change-result-num">可获<font :class="canChange ? 'orange' : ''">{{canChangeNum}}</font>个团币</div>
+        </div>
+        <div class="btn-exchange" @click="onExchange">马上兑换</div>
       </div>
-      <div class="change-result-num">可获<font :class="canChange ? 'orange' : ''">{{canChangeNum}}</font>个团币</div>
     </div>
-    <div class="btn-exchange" @click="onExchange">马上兑换</div>
   </div>
 </template>
 
@@ -35,6 +38,7 @@ export default {
   },
   data () {
     return {
+      isScrollActive: true,
       exchangeInfo: {
       prestige:10,
       max_num:9,

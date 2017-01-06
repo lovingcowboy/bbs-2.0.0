@@ -49,6 +49,11 @@
         background-color: #fff;
         padding-left: pxToRem(30px);
         font-size: 0;
+        .message-person-list {
+            height: 100%;
+            overflow: auto;
+color: #ccc;
+        }
         @at-root .message-person-item {
             font-size: 0;
             clear: both;

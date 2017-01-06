@@ -6,52 +6,54 @@
       :has-rightbtn="false"
       :prevent-back="false"
       :show="true">
-    </zheader> 
-    <div class="content">
-      <div class="contetn-header">
-        <div class="md01">
-          <img class="avatar" src="../images/icon-avatar.png">
-          <div class="userInfo-right">
-            <div class="username">{{userInfo.username}}</div>
-            <div class="other-baseinfo">
-              <div class="row01 baseinfo-row">
-                <div class="post">{{userInfo.post}}</div>
-                <div class="label">TA的主题</div>
-              </div>
-              <div class="row02 baseinfo-row">
-                <div class="reply">{{userInfo.reply}}</div>
-                <div class="label">TA的回帖</div>
-              </div>
-              <div class="row03 baseinfo-row">
-                <div class="friends">{{userInfo.friends}}</div>
-                <div class="label">TA的好友</div>
+    </zheader>
+    <div class="scroll" :class="{'scroll-active': isScrollActive}">  
+      <div class="content">
+        <div class="contetn-header">
+          <div class="md01">
+            <img class="avatar" src="../images/icon-avatar.png">
+            <div class="userInfo-right">
+              <div class="username">{{userInfo.username}}</div>
+              <div class="other-baseinfo">
+                <div class="row01 baseinfo-row">
+                  <div class="post">{{userInfo.post}}</div>
+                  <div class="label">TA的主题</div>
+                </div>
+                <div class="row02 baseinfo-row">
+                  <div class="reply">{{userInfo.reply}}</div>
+                  <div class="label">TA的回帖</div>
+                </div>
+                <div class="row03 baseinfo-row">
+                  <div class="friends">{{userInfo.friends}}</div>
+                  <div class="label">TA的好友</div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="level-wrapper">
-          <span class="icon-star"></span>
-          <div class="level-name">
-            {{userInfo.level_text}}
+          <div class="level-wrapper">
+            <span class="icon-star"></span>
+            <div class="level-name">
+              {{userInfo.level_text}}
+            </div>
+          </div>
+          <div class="md02">
+            <div class="integral">
+              <span class="icon-integral"></span>
+              <font>{{userInfo.credit}}积分</font>
+            </div>
+            <div class="prestige">
+              <span class="icon-prize"></span>
+              <font>{{userInfo.prestige}}威望</font>
+            </div>
+            <div class="btn-message">发消息</div>
           </div>
         </div>
-        <div class="md02">
-          <div class="integral">
-            <span class="icon-integral"></span>
-            <font>{{userInfo.credit}}积分</font>
-          </div>
-          <div class="prestige">
-            <span class="icon-prize"></span>
-            <font>{{userInfo.prestige}}威望</font>
-          </div>
-          <div class="btn-message">发消息</div>
+        <div class="dynamic">
+          <div class="label">TA的动态</div>
+           <ul class="post-list">
+            <post-item v-for="(item, index) in postList" :data="item" v-on:onItemClick="goDetail(item.id)"></post-item>
+          </ul>
         </div>
-      </div>
-      <div class="dynamic">
-        <div class="label">TA的动态</div>
-         <ul class="post-list">
-          <post-item v-for="(item, index) in postList" :data="item" v-on:onItemClick="goDetail(item.id)"></post-item>
-        </ul>
       </div>
     </div>
   </div>
@@ -69,7 +71,7 @@ export default {
   },
   data () {
     return {
-
+      isScrollActive: true,
       userInfo: {
         avatar: "../images/icon-avatar.png",
         username: "萱萱宝贝",
