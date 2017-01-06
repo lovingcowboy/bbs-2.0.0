@@ -147,7 +147,7 @@ export default {
     return {
       isSystemMsgNew: true,
       isScrollActive: true,
-      isShowProsonMsg: false,
+      isShowProsonMsg: true,
       exchangeInfo: {
       prestige:10,
       max_num:9,

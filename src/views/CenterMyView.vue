@@ -48,28 +48,28 @@
           </div>
         </div>
         <ul class="ubody">
-          <li class="urow" @click="goUItemDetail('/user/mypost',2);">
+          <li class="urow" @click="goUItemDetail('/user/mypost');">
             <span class="icon icon-post"></span>
             <font>我的帖子</font>
             <span class="icon-arrow-right"></span>
           </li>
-          <li class="urow" @click="goUItemDetail('/user/mypost',3);">
+          <li class="urow" @click="goUItemDetail('/user/myreply');">
             <span class="icon icon-reply"></span>
             <font>我的回复</font>
             <span class="icon-arrow-right"></span>
           </li>
-          <li class="urow" @click="goUItemDetail('/user/myMessage',0);">
+          <li class="urow" @click="goUItemDetail('/user/mymessage');">
             <span class="icon icon-message"></span>
             <font>我的消息</font>
             <span class="icon-arrow-right"></span>
           </li>
-          <li class="urow" @click="goUItemDetail('/user/mypost',4);">
+          <li class="urow" @click="goUItemDetail('/user/mycollection');">
             <span class="icon icon-heart"></span>
             <font>我的收藏</font>
             <span class="icon-arrow-right"></span>
           </li>
 
-          <li class="urow" @click="goUItemDetail('/user/changetb',1);">
+          <li class="urow" @click="goUItemDetail('/user/changetb');">
             <span class="icon icon-coin"></span>
             <font>威望兑团币</font>
             <span class="icon-arrow-right"></span>
@@ -123,7 +123,7 @@ export default {
       this.userInfo.yes_sign = 1;
       console.log("签到");
     },
-   goUItemDetail: function(url, type) {
+   goUItemDetail: function(url) {
         let uid = "";
         if(window.mySessionStorage) {
           uid = window.mySessionStorage['uid'];
@@ -131,22 +131,9 @@ export default {
           uid = window.sessionStorage['uid'];
         }
         let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
-     
-        switch(type) {
-          case 0:   //我的消息 
-            this.$router.push({
-              name: 'messagemy'
-            });
-            break;
-          case 1:  //兑换团币
-            this.$router.push({
-              name: 'changetb'
-            });
-            break;
-          case 2:   //我的帖子、我的收藏、我的回复 
-           
-            break;
-        }
+        
+        this.$router.push(url);
+       
 
         return;
         if (isLogined_cookie || uid) {
