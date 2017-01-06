@@ -33,7 +33,7 @@
   @import "../sass/variables";
   @import "../sass/func";
   .header-bar {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0;
     left: 0;
