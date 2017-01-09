@@ -163,11 +163,12 @@
         color: $txt-color-blue !important;
     }
 }
+
 .float-tabs {
-  position: absolute;
-  top: pxToRem(80px);
-  left: 0;
-  background-color: $color-white;
+    position: absolute;
+    top: pxToRem(80px);
+    left: 0;
+    background-color: $color-white;
 }
 
 .rm {
@@ -266,6 +267,15 @@
     font-size: pxToRem($font-size-24);
     color: $txt-color-grey;
     line-height: 1.5;
+    span {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
     .txt-blue {
         margin-right: pxToRem(20px);
     }

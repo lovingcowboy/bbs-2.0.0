@@ -37,12 +37,14 @@ import MyReplyView from '../views/MyReplyView.vue'
 import MyCollectionView from '../views/MyCollectionView.vue'
 import MessageDetailView from '../views/MessageDetailView.vue'
 import ReplyView from '../views/ReplyView.vue'
+import MarkView from '../views/MarkView.vue'
 export default new Router({
   mode: 'hash',
   routes: [
     {path: '/main', name: 'main', component: MainView},
     {path: '/postdetail/:id', name: 'postdetail', component: PostDetailView},
     {path: '/postdetail/reply/:id', name: 'reply', component: ReplyView},
+    {path: '/postdetail/mark/:id', name: 'mark', component: MarkView},
     {path: '/centermy', name: 'centermy', component: CenterMyView},
     {path: '/centerother', name: 'centerother', component: CenterOtherView},
     {path: '/user/changetb', name: 'changetb', component: ChangeTBView},

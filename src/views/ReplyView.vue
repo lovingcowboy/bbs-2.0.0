@@ -104,6 +104,7 @@ export default {
     },
     postReply () {
       console.info('postReply-------')
+      window.history.back()
     }
   },
   beforeMount () {

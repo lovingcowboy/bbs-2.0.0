@@ -75,8 +75,8 @@
                 </div>
                 <i class="icon-msg-big"></i>
               </div>
-              <p class="rm-txt2 rm-txt"><span class="txt-blue">贪吃小和尚</span>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p>
-              <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p>
+              <p class="rm-txt2 rm-txt"><span><font class="txt-blue">贪吃小和尚</font>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p>
+              <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p></p>
             </li>
             <li class="reply-row">
               <div class="rm-u">
@@ -102,8 +102,8 @@
                 </div>
                 <i class="icon-msg-big"></i>
               </div>
-              <p class="rm-txt2 rm-txt"><span class="txt-blue">贪吃小和尚</span>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p>
-              <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p>
+             <p class="rm-txt2 rm-txt"><span><font class="txt-blue">贪吃小和尚</font>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p>
+              <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p></p>
             </li>
           </ul>
           <ul class="reply-list rm-list" v-show="tabType === 1">
@@ -129,7 +129,7 @@
         <div class="f-container">
           <span class="f-reply" @click="goReply()">发表回复…</span>
           <i class="icon-zan"></i>
-          <i class="icon-mark"></i>
+          <i class="icon-mark" @click="goMark()"></i>
           <i class="icon-share"></i>
         </div>
       </div>
@@ -219,6 +219,10 @@ export default {
     },
     goReply () {
       let url = '/postdetail/reply/aa'
+      this.$router.push(url)
+    },
+    goMark () {
+      let url = '/postdetail/mark/aa'
       this.$router.push(url)
     }
   },

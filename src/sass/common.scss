@@ -3,7 +3,6 @@
 @import "func";
 @import "variables";
 @import "sprite";
-
 html,
 body {
     position: relative;
@@ -39,7 +38,7 @@ body {
     // overflow-x: hidden;
     // overflow-y: scroll;
     // overflow: hidden;
-     overflow-x: hidden;
+    overflow-x: hidden;
     overflow-y: auto;
     // overflow: auto;
     background-color: $color-white-light;
@@ -181,4 +180,17 @@ span {
     padding-left: pxToRem(32px);
     background-repeat: no-repeat;
     background-position: left center;
+}
+input,textarea {
+    border: 0 !important;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
 }

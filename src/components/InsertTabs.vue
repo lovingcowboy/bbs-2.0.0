@@ -178,6 +178,7 @@ export default {
     },
     btnClickFunc () {
       this.$emit('btnClickFunc')
+      
     }
 	}
 }
