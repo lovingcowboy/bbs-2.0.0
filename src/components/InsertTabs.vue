@@ -1,16 +1,16 @@
 <template>
 <div>
 <div class="insert-tabs">
-  <i class="icon-image"></i>
+  <i class="icon-image" @click="imgClickFunc"></i>
   <i class="icon-emoji" @click="triggerEmotion()"></i>
   <i class="icon-vote" v-show="hasVote">（投票）</i>
-  <div class="btn-send btn-blue">发表</div>
+  <div class="btn-send btn-blue" @click="btnClickFunc">发表</div>
 </div>
 <section class="emotions" v-show="showEmotion">
   <swipe :auto="0" :speed="100">
     <swipe-item v-for="page in emotions" class="emocont">
       <div v-for="row in page.rows" class="emorow">
-        <div v-for="item in row.emotions" :data-code="item.code" @click="insertEmo(item.code)">
+        <div v-for="item in row.emotions" :data-code="item.code" @click="emotionClickFunc(item.code)">
           <i :class="['icon-emotion', item.emotion]"></i>
         </div>
       </div>
@@ -163,24 +163,21 @@ export default {
       }]
     }
   },
-	props: ['hasVote', 'data', 'inputSelector', 'selectPostion'],
+	props: ['hasVote'],
 	methods: {
 		triggerEmotion () {
       this.showEmotion = !this.showEmotion
     },
-    insertEmo (code) {
-      
-        let that = this;
-        // if(code === 'close') {
-        //   let _cont = this.data
-        //   this.data = _cont.substring(0, _cont.length - 1)
-        //   return
-        // }
-        // let _t = document.querySelector(this.inputSelector)
-        // let startPos = that.selectPostion.selectionStart
-        // let endPos = that.selectPostion.selectionEnd
-        // let content = that.data
-        // that.data = content.substring(0, startPos) + code + content.substring(endPos, _t.value.length)
+    emotionClickFunc (code) {
+      // console.info('code-----', code)
+      this.$emit('emotionClickFunc', code)
+    },
+    imgClickFunc () {
+      this.showEmotion = false
+      this.$emit('imgClickFunc')
+    },
+    btnClickFunc () {
+      this.$emit('btnClickFunc')
     }
 	}
 }

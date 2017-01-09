@@ -206,7 +206,7 @@ export default {
     },
     
     scrollMove () {
-      // console.info(this.contentObj.scrollTop, this.postHeight)
+      console.info(this.contentObj.scrollTop, this.postHeight)
       if (this.contentObj.scrollTop >= this.postHeight + 22) {
         this.showFloat = true
         // this.overflowY = 'scroll'

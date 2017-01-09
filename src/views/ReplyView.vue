@@ -28,9 +28,9 @@
       </div> -->
       <insert-tabs
         :hasVote="false"
-        :data="inputContent"
-        :inputSelector='"#inputMsg"'
-        :selectPostion='selectPostion'
+        @emotionClickFunc="insertEmo"
+        @imgClickFunc="insertImg"
+        @btnClickFunc="postReply"
       ></insert-tabs>
     </div>
     </div>
@@ -41,6 +41,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import InsertTabs from '../components/InsertTabs.vue'
+import Vue from 'vue'
 export default {
   name: 'reply',
   components: {
@@ -69,12 +70,41 @@ export default {
       let $target = event.currentTarget;
       if ($target.selectionStart || $target.selectionStart == '0') {
         this.selectPostion = {
-          "selectionStart": $target.selectionStart,
-          "selectionEnd": $target.selectionEnd
+          'selectionStart': $target.selectionStart,
+          'selectionEnd': $target.selectionEnd
         }
 
       }
     },
+    insertEmo (code) {
+      // console.info('insertEmo-----', code)
+      let that = this;
+      if (code === "close") {
+        let _cont = that.inputContent;
+        that.inputContent = _cont.substring(0, _cont.length - 1);
+        return;
+      }
+      console.log(that.inputContent);
+      let $t = document.querySelector('#inputMsg');
+      let  startPos = that.selectPostion.selectionStart,
+        endPos = that.selectPostion.selectionEnd,
+        content = that.inputContent;
+      that.inputContent = content.substring(0, startPos) + code + content.substring(endPos, $t.value.length);
+      // this.focus();
+
+      Vue.nextTick(function() {
+        that.selectPostion = {
+          "selectionStart": startPos + code.length,
+          "selectionEnd": startPos + code.length
+        }
+      });
+    },
+    insertImg () {
+      console.info('insertImg------')
+    },
+    postReply () {
+      console.info('postReply-------')
+    }
   },
   beforeMount () {
     let that = this;
