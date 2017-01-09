@@ -9,7 +9,8 @@
     @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
-    <div class="content"  @scroll="scrollMove()">
+    <div class="scroll" :class="{'scroll-active': isScrollActive}" @scroll="scrollMove()">
+    <div class="content" >
       <div class="post-cont">
         <p class="p-title">1218越来越近了，大家对爱心日的“天量”预期会有多少呢...</p>
         <p class="p-poster"><img src="../images/icon-avatar.png"><span>蓝色的枫叶</span></p>
@@ -18,7 +19,7 @@
           控件会接口hi骨坏死U盾会返回就几号放假可视电话复健科京东方很快就收到回复可接受的我已uuehhfkjhjhskdjfjkh基督教黑uuhgkjdfk空间的hi文化开放看
         </p>
         <div :class="['vote-cont', {'vote-disable': hasVoted}]">
-          <span class="v-question">{{voteData.question}}{{selectedOptions}}</span>
+          <span class="v-question">{{voteData.question}}</span>
           <template v-if="voteData.limit > 1">
             <template v-for="(option, index) in voteData.options">
               <label class="v-answer"  :for="option.id">
@@ -123,9 +124,10 @@
         </div>
       </div>
     </div>
+    </div>
       <div class="post-foot">
         <div class="f-container">
-          <span class="f-reply">发表回复…</span>
+          <span class="f-reply" @click="goReply()">发表回复…</span>
           <i class="icon-zan"></i>
           <i class="icon-mark"></i>
           <i class="icon-share"></i>
@@ -163,6 +165,7 @@ export default {
        showFloat: false,
        rmHeight: '100%',
        overflowY: 'scroll',
+       isScrollActive: true
     }
   },
   computed: {
@@ -204,7 +207,7 @@ export default {
     
     scrollMove () {
       // console.info(this.contentObj.scrollTop, this.postHeight)
-      if (this.contentObj.scrollTop > this.postHeight + 22) {
+      if (this.contentObj.scrollTop >= this.postHeight + 22) {
         this.showFloat = true
         // this.overflowY = 'scroll'
         // this.rmHeight = document.documentElement.offsetHeight + 'px'
@@ -213,6 +216,10 @@ export default {
         // this.overflowY = 'hidden'
         // this.rmHeight = '100%'
       }
+    },
+    goReply () {
+      let url = '/postdetail/reply/aa'
+      this.$router.push(url)
     }
   },
   beforeMount () {
@@ -248,7 +255,7 @@ export default {
   },
   mounted () {
     this.postHeight = document.querySelector('.post-cont').offsetHeight
-    this.contentObj = document.querySelector('.content')
+    this.contentObj = document.querySelector('.scroll')
     this.tabsOffsetTop = document.querySelector('.rm-tabs').offsetTop
     // this.rmHeight = document.documentElement.offsetHeight - 110 + 'px'
     this.rmHeight = document.documentElement.offsetHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight + 20 + 'px'

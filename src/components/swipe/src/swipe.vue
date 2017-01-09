@@ -1,5 +1,4 @@
 <style>
-  
 .mint-swipe {
     overflow: hidden;
     position: relative;
@@ -31,16 +30,17 @@
             transform: translateX(-50%);
 }
 .mint-swipe-indicator {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     display: inline-block;
     border-radius: 100%;
-    background: #000;
-    opacity: 0.2;
-    margin: 0 3px;
+    /*background: #000;
+    opacity: 0.2;*/
+    background-color: rgba(0, 0, 0, .2);
+    margin: 0 10px;
 }
 .mint-swipe-indicator.is-active {
-    background: #fff;
+    background-color: #007aff;
 }
 
 </style>

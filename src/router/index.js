@@ -26,18 +26,20 @@ Vue.use(Router)
 //     {path: '*', redirect: '/mission'}
 //   ]
 // })
-import Main from '../views/MainView.vue'
+import MainView from '../views/MainView.vue'
 import CenterMyView from '../views/CenterMyView.vue'
 import CenterOtherView from '../views/CenterOtherView.vue'
-import PostDetail from '../views/PostDetailView.vue'
+import PostDetailView from '../views/PostDetailView.vue'
 import ChangeTBView from '../views/ChangeTBView.vue'
 import MyMessageView from '../views/MyMessageView.vue'
 import MessageDetailView from '../views/MessageDetailView.vue'
+import ReplyView from '../views/ReplyView.vue'
 export default new Router({
   mode: 'hash',
   routes: [
-    {path: '/main', name: 'main', component: Main},
-    {path: '/postdetail/:id', name: 'postdetail', component: PostDetail},
+    {path: '/main', name: 'main', component: MainView},
+    {path: '/postdetail/:id', name: 'postdetail', component: PostDetailView},
+    {path: '/postdetail/reply/:id', name: 'reply', component: ReplyView},
     {path: '/centermy', name: 'centermy', component: CenterMyView},
     {path: '/centerother', name: 'centerother', component: CenterOtherView},
     {path: '/user/changetb', name: 'changetb', component: ChangeTBView},
