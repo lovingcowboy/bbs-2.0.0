@@ -32,6 +32,9 @@ import CenterOtherView from '../views/CenterOtherView.vue'
 import PostDetailView from '../views/PostDetailView.vue'
 import ChangeTBView from '../views/ChangeTBView.vue'
 import MyMessageView from '../views/MyMessageView.vue'
+import MyPostView from '../views/MyPostView.vue'
+import MyReplyView from '../views/MyReplyView.vue'
+import MyCollectionView from '../views/MyCollectionView.vue'
 import MessageDetailView from '../views/MessageDetailView.vue'
 import ReplyView from '../views/ReplyView.vue'
 export default new Router({
@@ -43,8 +46,11 @@ export default new Router({
     {path: '/centermy', name: 'centermy', component: CenterMyView},
     {path: '/centerother', name: 'centerother', component: CenterOtherView},
     {path: '/user/changetb', name: 'changetb', component: ChangeTBView},
-    {path: '/user/messagemy', name: 'messagemy', component: MyMessageView},
-     {path: '/user/messagedetail/:id', name: 'messagedetail', component: MessageDetailView},
+    {path: '/user/mymessage', name: 'mymessage', component: MyMessageView},
+    {path: '/user/mypost', name: 'mypost', component: MyPostView},
+    {path: '/user/myreply', name: 'myreply', component: MyReplyView},
+    {path: '/user/mycollection', name: 'mycollection', component: MyCollectionView},
+    {path: '/user/messagedetail/:id', name: 'messagedetail', component: MessageDetailView},
     {path: '*', redirect: '/main'}
   ]
 })
