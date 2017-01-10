@@ -46,7 +46,7 @@ export default new Router({
     {path: '/postdetail/reply/:id', name: 'reply', component: ReplyView},
     {path: '/postdetail/mark/:id', name: 'mark', component: MarkView},
     {path: '/centermy', name: 'centermy', component: CenterMyView},
-    {path: '/centerother', name: 'centerother', component: CenterOtherView},
+    {path: '/centerother/:id', name: 'centerother', component: CenterOtherView},
     {path: '/user/changetb', name: 'changetb', component: ChangeTBView},
     {path: '/user/mymessage', name: 'mymessage', component: MyMessageView},
     {path: '/user/mypost', name: 'mypost', component: MyPostView},
