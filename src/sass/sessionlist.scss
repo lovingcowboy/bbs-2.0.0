@@ -1,0 +1,51 @@
+@import "../sass/variables.scss";
+@import "../sass/func.scss";
+.content {
+    .content-header {
+        background-color: #fff;
+        width: 100%;
+        padding: 0 pxToRem(30px);
+        color: $txt-color-black;
+        height: pxToRem(92px);
+        line-height: pxToRem(92px);
+        font-size: 0;
+        .session-name {
+            font-size: pxToRem(30px);
+            display: inline-block;
+            &:before {
+                border-left: pxToRem(8px) solid $txt-color-blue;
+                content: "";
+                height: pxToRem(30px);
+                margin-right: pxToRem(14px);
+            }
+        }
+        .btn-wrapper {
+            float: right;
+            height: 100%;
+            .btn {
+                font-size: pxToRem(30px);
+                color: rgba(51, 51, 51, 0.5);
+                display: inline-block;
+                line-height: pxToRem(92px);
+                position: relative;
+                &.btn-all {
+                    margin-right: pxToRem(84px);
+                }
+                &.btn-essence {
+                    margin-right: pxToRem(20px);
+                }
+                &.active {
+                    color: $txt-color-blue;
+                    &:after {
+                        content: "";
+                        border-bottom: pxToRem(4px) solid $txt-color-blue;
+                        position: absolute;
+                        bottom: 0;
+                        width: 100%;
+                        left: 0;
+                    }
+                }
+            }
+        }
+    }
+}
