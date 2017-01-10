@@ -1,7 +1,7 @@
 <template>
 <li class="post-row" >
   <div class="item-title">
-    <span>
+    <span @click="onUserClick">
       <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}
     </span>
     <span>{{data.time}}</span>
@@ -26,9 +26,12 @@ export default {
 	name: 'postItem',
 	props: ['data', 'index'],
 	methods: {
-		onItemClick: function() {
+		onItemClick () {
 			this.$emit('onItemClick')
-		}
+		},
+    onUserClick () {
+      this.$emit('onUserClick')
+    }
 	}
 }
 </script>

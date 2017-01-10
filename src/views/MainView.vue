@@ -11,7 +11,7 @@
     </zheader> 
     <div class="content">
       <div class="u-info">
-        <div :class="[{'has-unread': hasUnRead&&isLogin}, {'u-welcome' : !isLogin}, 'avator-cont']" :data-content="unReadNum">
+        <div :class="[{'has-unread': hasUnRead&&isLogin}, {'u-welcome' : !isLogin}, 'avator-cont']" :data-content="unReadNum" @click="goMyCenter()">
           <img src="../images/pai.png" class="u-avator" v-show="isLogin">
           <!-- <img :src="userInfo.avator" class="u-avator" v-show="isLogin"> -->
         </div>
@@ -48,7 +48,7 @@
           </ul>
         </div>
         <ul class="post-list">
-          <post-item v-for="(item, index) in hotList" :data="item" v-on:onItemClick="goDetail(item.id)"></post-item>
+          <post-item v-for="(item, index) in hotList" :data="item" v-on:onItemClick="goDetail(item.id)" v-on:onUserClick="goUserCenter(item.id)"></post-item>
           <!-- <li class="post-row" v-for="item in hotList">
             <div class="item-title">
               <span>
@@ -174,6 +174,14 @@ export default {
     goDetail (id) {
       // console.info('id------', id)
       var url = '/postdetail/' + id
+      this.$router.push(url)
+    },
+    goMyCenter () {
+      var url = '/centermy'
+      this.$router.push(url)
+    },
+    goUserCenter (id) {
+      var url = '/centerother'
       this.$router.push(url)
     }
   },
