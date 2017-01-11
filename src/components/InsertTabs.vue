@@ -1,20 +1,11 @@
 <template>
 <div>
 <div class="insert-tabs">
-  <i class="icon-image" @click="imgClickFunc"></i>
-  <i class="icon-emoji" @click="triggerEmotion()"></i>
+  <i class="icon-emoji" @click="triggerEmotion"></i>
+  <i class="icon-image" @click="triggerImg"></i>
   <i class="icon-vote" v-show="hasVote">（投票）</i>
   <div class="btn-send btn-blue" @click="btnClickFunc">发表</div>
 </div>
-<section id="imgs" class="imgs">
-  <ul class="img-container" id="">
-    <li>
-      <img src="../images/img.png">
-      <i class="icon-del">a</i>
-    </li>
-
-  </ul>
-</section>
 <section class="emotions" v-show="showEmotion">
   <swipe :auto="0" :speed="100">
     <swipe-item v-for="page in emotions" class="emocont">
@@ -26,26 +17,29 @@
     </swipe-item>
   </swipe>
 </section>
- <!-- <section id="imgs" v-show="showImgList">
-            <ul class="img-container" id="img_container">
-              <li v-for="(index,img) in imgList" track-by="photoID">
-                  <img :src="img.photoContent">
-                  <div class="close-part" @click="delImg(index)">
-                    <i class="icon-close"></i>
-                  </div>
-              </li>
-              <li class="add-img" @click="chooseImgFun" v-show="addImg && isApp && isNewVersion">
-              </li>
-              <li class="add-img"  v-show="addImg && (!isApp || !isNewVersion)" >
-                <input id="file" type="file" accept="image/*"  @change="chooseImgFunWeb($event)" @click="prevenDefault($event)"/>
-              </li>
-          </ul>
-          </section> -->
+<section id="imgs" class="imgs" v-show="showImgList">
+  <ul class="img-container" id="">
+    <!-- <li>
+      <img src="../images/img.png">
+      <i class="icon-del"></i>
+    </li> -->
+    <li v-for="(img, index) in imgList">
+      <img :src="img.photoUrl">
+      <i class="icon-del" @click="imgDelFunc(index)"></i>
+    </li>
+    <li class="img-add" v-show="isApp && addImg" @click="addImgFunc($event, 'app')"></li>
+    <li class="img-add"  v-show="addImg && !isApp" >
+      <input id="file" type="file" accept="image/*"  @change="addImgFunc($event, 'web')" @click="prevenDefault($event)"/>
+    </li>
+  </ul>
+</section>
+ 
 </div>
 </template>
 <script>
 import Swipe from '../components/swipe'
 import SwipeItem from '../components/swipe-item'
+import { isApp } from '../filters'
 export default {
 	name: 'insertTabs',
   components: {
@@ -55,6 +49,7 @@ export default {
   data () {
     return {
       showEmotion: false,
+      showImgList: false,
       emotions: [{
         "pid": "page1",
         "rows": [{
@@ -172,23 +167,49 @@ export default {
       }]
     }
   },
-	props: ['hasVote'],
+  computed: {
+    isApp: function() {
+      return isApp();
+    }
+  },
+	props: ['hasVote', 'imgList', 'addImg', 'canAddImg'],
 	methods: {
 		triggerEmotion () {
       this.showEmotion = !this.showEmotion
+      this.showImgList = false
     },
     emotionClickFunc (code) {
       // console.info('code-----', code)
       this.$emit('emotionClickFunc', code)
     },
-    imgClickFunc () {
+    triggerImg () {
       this.showEmotion = false
-      this.$emit('imgClickFunc')
+      this.showImgList = !this.showImgList
+      // this.$emit('imgClickFunc')
+    },
+    imgDelFunc (index) {
+      this.$emit('imgDelFunc', index)
     },
     btnClickFunc () {
       this.$emit('btnClickFunc')
       
+    },
+    prevenDefault (e) {
+      if (!this.canAddImg) {
+        e.preventDefault();
+      }
+    },
+    addImgFunc (e, type) {
+      this.$emit('addImgFunc', e, type)
     }
+    /*chooseImgFun () {
+      if(this.isApp) {
+        this.$emit('chooseImgFun')
+      }
+    },
+    chooseImgFunWeb (e) {
+      this.$emit('chooseImgFunWeb', e)
+    }*/
 	}
 }
 </script>
@@ -261,14 +282,14 @@ export default {
           border-left: pxToRem(16px) solid transparent;
           border-right: pxToRem(16px) solid transparent;
           border-bottom: pxToRem(16px) solid $border-color;
-          left: pxToRem(156px);
+          left: pxToRem(46px);
           top: pxToRem(-16px);
       }
       &:after {
           border-left: pxToRem(16px) solid transparent;
           border-right: pxToRem(16px) solid transparent;
           border-bottom: pxToRem(16px) solid #fafafa;
-          left: pxToRem(156px);
+          left: pxToRem(46px);
           top: pxToRem(-14px);
       }
   }
@@ -453,27 +474,56 @@ export default {
     margin-left: pxToRem(30px);
     position: relative;
     margin-bottom: pxToRem(30px);
+    vertical-align: bottom;
     img {
       width: 100%;
       height: 100%;
     }
     .icon-del {
       position: absolute;
-      right: 0;
-      top: 0;
+      top: pxToRem(-16px);
+      right: pxToRem(-12px);
+    }
+  }
+  .img-add {
+    border: pxToRem(2px) dashed $txt-color-grey-light;
+    font-size: pxToRem(60px);
+    color: $txt-color-grey-light;
+    background-image: url('../images/icon-plus.png');
+    background-size: pxToRem(50px) pxToRem(50px);
+    background-repeat: no-repeat;
+    background-position: center;
+    #file {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      opacity:0;
+      z-index:9;
     }
   }
 }
+
+
 .icon-del {
   width: pxToRem(46px);
   height: pxToRem(44px);
-  line-height: pxToRem(44px);
   border-radius: 50%;
   border: pxToRem(2px) solid $color-white;
   background-color: #fa4c2f;
-  font-size: pxToRem(40px);
-  color: $color-white;
-  text-align: center;
+
+  &:before {
+    content: '';
+    width: pxToRem(18px);
+    height: pxToRem(3px);
+    background-color: $color-white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: pxToRem(-9px);
+    margin-top: pxToRem(-2px);
+  }
 }
 
 

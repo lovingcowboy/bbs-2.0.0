@@ -18,7 +18,7 @@
         </p>
         <p class="item-type item-ww">威望</p>
         <p class="prestige-container">
-          <input type="tel" name="prestige" placeholder="请输入威望数量" v-model="markDetail.prestige">
+          <input type="number"  pattern="[0-9]*" name="prestige" placeholder="请输入威望数量" v-model="markDetail.prestige">
         </p>
         <p class="item-type">留言</p>
         <p class="msg-cont">
