@@ -17,7 +17,7 @@ import ReplyView from '../views/ReplyView.vue'
 import MarkView from '../views/MarkView.vue'
 import PostView from '../views/PostView.vue'
 import SessionListView from '../views/SessionListView.vue'
-export default new Router({
+const router = new Router({
   mode: 'hash',
   routes: [
     {path: '/main', name: 'main', component: MainView},
@@ -37,3 +37,5 @@ export default new Router({
     {path: '*', redirect: '/main'}
   ]
 })
+
+export default router

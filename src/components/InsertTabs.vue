@@ -33,6 +33,30 @@
     </li>
   </ul>
 </section>
+<div class="add-vote-container" v-show="shoAddVote">
+  <section class="add-vote">
+    <div class="v-title">
+      <input type="text" name="vtitle" placeholder="请输入投票标题" />
+    </div>
+    <div class="v-option v-row">
+      <div><i class="icon-del"></i></div>
+      <div>
+        <input type="text" name="options" placeholder="请输入投票选项信息" />
+      </div>
+    </div>
+    <div class="v-option v-row">
+      <div><i class="icon-del"></i></div>
+      <div>
+        <input type="text" name="options" placeholder="请输入投票选项信息" />
+      </div>
+    </div>
+    <div class="v-bottom v-row">
+      <span class="v-add">添加选项</span>
+      <span class="v-save v-btn">保存</span>
+      <span class="v-cancle v-btn">取消</span>
+    </div>
+  </section>
+</div>
  
 </div>
 </template>
@@ -50,6 +74,7 @@ export default {
     return {
       showEmotion: false,
       showImgList: false,
+      shoAddVote: false,
       emotions: [{
         "pid": "page1",
         "rows": [{
@@ -314,6 +339,188 @@ export default {
          
       }
   }
+
+.imgs {
+  width: 100%;
+  padding-top: pxToRem(40px);
+  background-color: transprent;
+}
+.img-container {
+  width: 100%;
+  font-size: 0;
+  li {
+    display: inline-block;
+    width: pxToRem(146px);
+    height: pxToRem(146px);
+    margin-left: pxToRem(30px);
+    position: relative;
+    margin-bottom: pxToRem(30px);
+    vertical-align: bottom;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    .icon-del {
+      position: absolute;
+      top: pxToRem(-16px);
+      right: pxToRem(-12px);
+      width: pxToRem(46px);
+      height: pxToRem(44px);
+      border: pxToRem(2px) solid $color-white;
+    }
+  }
+  .img-add {
+    border: pxToRem(2px) dashed $txt-color-grey-light;
+    font-size: pxToRem(60px);
+    color: $txt-color-grey-light;
+    background-image: url('../images/icon-plus.png');
+    background-size: pxToRem(50px) pxToRem(50px);
+    background-repeat: no-repeat;
+    background-position: center;
+    #file {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      opacity:0;
+      z-index:9;
+    }
+  }
+}
+
+
+.icon-del {
+  border-radius: 50%;
+  background-color: #fa4c2f;
+  &:before {
+    content: '';
+    width: pxToRem(18px);
+    height: pxToRem(2px);
+    background-color: $color-white;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: pxToRem(-9px);
+    // margin-top: pxToRem(-2px);
+  }
+}
+
+.add-vote-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  right: 0;
+  bottom: 0;
+  background-color: $color-white-light;
+  z-index: 100;
+  padding-top: pxToRem(150px);
+}
+.add-vote {
+  width: pxToRem(692px);
+  min-height: pxToRem(388px);
+  background-color: $color-white;
+  border-radius: pxToRem(10px);
+  margin: auto;
+  &>div {
+    width: 100%;
+    padding: 0 pxToRem(30px);
+  }
+  input {
+    width: 100%;
+    height: 100%;
+    color: $txt-color-black;
+  }
+  input::-webkit-input-placeholder {
+    color: $txt-color-grey-light;
+  }
+  .v-title {
+    height: pxToRem(110px);
+    input {
+      font-size: pxToRem(36px);
+      font-weight: bolder;
+    }
+  }
+  .v-icon {
+    width: pxToRem(36px);
+    height: pxToRem(36px);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: pxToRem(-18px);
+  }
+  .v-option {
+    font-size: 0;
+    white-space: nowrap;
+    &>div {
+      display: inline-block;
+      height: 100%;
+      vertical-align: bottom;
+    }
+    &>div:first-child {
+      width: pxToRem(60px);
+      position: relative;
+    }
+    &>div:last-child {
+      width: pxToRem(570px);
+    }
+    input {
+      font-size: pxToRem(30px);
+    }
+    .icon-del {
+      @extend .v-icon;
+    }
+  }
+
+  .v-row {
+    width: 100%;
+    height: pxToRem(90px);
+    line-height: pxToRem(90px);
+    // padding-left: pxToRem(90px);
+    border-top: 1px dashed $border-color;
+  }
+  .v-bottom {
+    font-size: pxToRem($font-size-30);
+  }
+  .v-add {
+    height: 100%;
+    width: pxToRem(250px);
+    padding-left: pxToRem(60px);
+    position: relative;
+    color: $txt-color-blue;
+    &:before {
+      content: "";
+      background-color: $txt-color-blue;
+      border-radius: 50%;
+      @extend .v-icon;
+      z-index: 100;
+    }
+    &:after {
+      content: "";
+      @include background('../images/icon-plus-white.png', 18px, 18px);
+      position: absolute;
+      left: pxToRem(10px);
+      top: 50%;
+      // margin-left: pxToRem(-9px);
+      margin-top: pxToRem(-9px);
+      z-index: 101; 
+    }
+  }
+  .v-btn {
+    width: pxToRem(120px);
+    text-align: right;
+    float: right;
+  }
+  .v-cancle {
+    color: $txt-color-grey;
+  }
+  .v-save {
+    color: $txt-color-blue;
+  }
+}
+
+
+
 /* emotionsprite */
 .emotion-sprite {
   display: block;
@@ -459,72 +666,5 @@ export default {
   width: pxToRem(56px);
   height: pxToRem(56px);
 }
-.imgs {
-  width: 100%;
-  padding-top: pxToRem(40px);
-  background-color: transprent;
-}
-.img-container {
-  width: 100%;
-  font-size: 0;
-  li {
-    display: inline-block;
-    width: pxToRem(146px);
-    height: pxToRem(146px);
-    margin-left: pxToRem(30px);
-    position: relative;
-    margin-bottom: pxToRem(30px);
-    vertical-align: bottom;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-    .icon-del {
-      position: absolute;
-      top: pxToRem(-16px);
-      right: pxToRem(-12px);
-    }
-  }
-  .img-add {
-    border: pxToRem(2px) dashed $txt-color-grey-light;
-    font-size: pxToRem(60px);
-    color: $txt-color-grey-light;
-    background-image: url('../images/icon-plus.png');
-    background-size: pxToRem(50px) pxToRem(50px);
-    background-repeat: no-repeat;
-    background-position: center;
-    #file {
-      position:absolute;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      opacity:0;
-      z-index:9;
-    }
-  }
-}
-
-
-.icon-del {
-  width: pxToRem(46px);
-  height: pxToRem(44px);
-  border-radius: 50%;
-  border: pxToRem(2px) solid $color-white;
-  background-color: #fa4c2f;
-
-  &:before {
-    content: '';
-    width: pxToRem(18px);
-    height: pxToRem(3px);
-    background-color: $color-white;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: pxToRem(-9px);
-    margin-top: pxToRem(-2px);
-  }
-}
-
 
 </style>

@@ -26,15 +26,7 @@
         </div>
       </div>
      
-      <!-- <div class="reply-cont">
-        <div class="r-head">
-          <img src="../images/icon-avatar.png">
-          <span><font>蓝枫：</font>太保守了，我估计20个亿太保守了，我估计20个亿太保守了，我估计20个亿</span>
-        </div>
-        <div class="r-input">
-          <textarea class="input-area" placeholder="请输入…" v-model="inputContent" id="inputMsg" @blur="blurFun"></textarea>
-        </div>
-      </div> -->
+    </div>
       <!-- hasVote:是否显示投票图标；imgList：添加图片列表； addImg：是否显示添加图片图标；canAddImg：web端是否可上传图片；emotionClickFunc：点击表情图片事件；imgDelFunc：删除图片事件；btnClickFunc：发表按钮点击事件；addImgFunc：上传图片-->
       <insert-tabs
         :hasVote="true"
@@ -46,7 +38,6 @@
         @btnClickFunc="goPost"
         @addImgFunc="addImgFunc"
       ></insert-tabs>
-    </div>
     </div>
   </div>
 </template>

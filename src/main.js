@@ -42,12 +42,12 @@ app.$mount('#app')
 //   router: router
 // })
 
-Vue.use(router)
+// Vue.use(router)
 
-router.beforeEach(function () {
+// router.beforeEach(function () {
 
-})
+// })
 
-router.afterEach(function ({to, next}) {
+// router.afterEach(function ({to, next}) {
 
-})
+// })
