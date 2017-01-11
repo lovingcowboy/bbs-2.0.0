@@ -7,16 +7,16 @@
     <span>{{data.time}}</span>
   </div> -->
   <slot name="itemhead"></slot>
-  <div class="item-desc" @click="onItemClick">
-    <div :class="['post', {'no-img': !data.hasImg}]">
-      <p>{{data.pTitle}}</p>
-      <p>{{data.pDesc}}</p>
+  <div class="item-desc">
+    <div :class="['post', {'no-img': !data.hasImg}]" data-type="itemclick" :data-id="data.id">
+      <p data-type="itemclick" >{{data.pTitle}}</p>
+      <p data-type="itemclick" >{{data.pDesc}}</p>
     </div>
-    <div class="p-img" v-show="data.hasImg">
+    <div class="p-img" v-show="data.hasImg" data-type="itemclick" :data-id="data.id">
       <img src="../images/img.png">
     </div>
   </div>
-  <div class="item-message">
+  <div class="item-message" data-type="itemclick" :data-id="data.id">
     <span class="post-view">{{data.view}}</span>
     <span class="post-reply">{{data.reply}}</span>
   </div>
@@ -27,9 +27,9 @@ export default {
 	name: 'postItem',
 	props: ['data', 'index'],
 	methods: {
-		onItemClick () {
-			this.$emit('onItemClick')
-		},
+		// onItemClick () {
+		// 	this.$emit('onItemClick')
+		// },
     // onUserClick () {
     //   this.$emit('onUserClick')
     // }

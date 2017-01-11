@@ -48,10 +48,10 @@
             </li>
           </ul>
         </div>
-        <ul class="post-list">
-          <post-item v-for="(item, index) in hotList" :data="item" v-on:onItemClick="goDetail(item.id)">
+        <ul class="post-list" @click="listClickFunc($event,0)">
+          <post-item v-for="(item, index) in hotList" :data="item">
             <div class="item-title" slot="itemhead">
-              <span @click="goUserCenter(item.id)">
+              <span data-type="userclick" :data-id="item.id">
                 <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
               </span>
               <span>{{item.time}}</span>
@@ -196,6 +196,22 @@ export default {
     },
     goPost () {
       this.$router.push('/post')
+    },
+    listClickFunc (e) {
+      // console.info(e.target.parentElement
+      // console.info(e.target,e.target.getAttribute('dataid'))
+      let parentObj = e.target.parentElement
+      let type = parentObj.getAttribute('data-type')
+      let id = parentObj.getAttribute('data-id')
+      if(!type) {
+        type = e.target.getAttribute('data-type')
+        id = e.target.getAttribute('data-id')
+      }
+      if (type === 'userclick') {
+        this.goUserCenter(id)
+      } else if (type === 'itemclick') {
+        this.goDetail(id)
+      }
     }
   },
   beforeMount () {
