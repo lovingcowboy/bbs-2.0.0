@@ -181,7 +181,9 @@ span {
     background-repeat: no-repeat;
     background-position: left center;
 }
-input,textarea {
+
+input,
+textarea {
     border: 0 !important;
     background-color: transparent;
     margin: 0;
@@ -272,3 +274,38 @@ input::-webkit-inner-spin-button {
         }
     }
 }
+
+.msg-cont {
+    width: 100%;
+    margin-top: pxToRem(40px);
+    font-size: 0;
+    .msg-item {
+        height: pxToRem(50px);
+        line-height: pxToRem(50px);
+        padding: 0 pxToRem(20px);
+        border-radius: pxToRem(10px);
+        font-size: pxToRem($font-size-24);
+        margin-right: pxToRem(30px);
+        margin-bottom: pxToRem(30px);
+        // display: inline-block;
+    }
+    .msg-row {
+        width: 100%;
+    }
+    .msg-default {
+        background-color: #f6f6f6;
+        color: $txt-color-grey;
+    }
+    .msg-add {
+        border: 1px solid $txt-color-blue;
+        color: $txt-color-blue;
+    }
+    .active {
+        background-color: $txt-color-blue !important;
+        color: $color-white !important;
+        border: 0 !important;
+    }
+}
+::-webkit-scrollbar{width: 0;}
+
+

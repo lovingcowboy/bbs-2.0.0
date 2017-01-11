@@ -9,6 +9,7 @@
     @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
+    <div class="scroll" :class="{'scroll-active': isScrollActive}">
     <div class="content">
       <div class="u-info">
         <div :class="[{'has-unread': hasUnRead&&isLogin}, {'u-welcome' : !isLogin}, 'avator-cont']" :data-content="unReadNum" @click="goMyCenter()">
@@ -123,7 +124,8 @@
       </div>
       </div>
     </div>
-      <i class="post-add"></i>
+    </div>
+      <i class="post-add" @click="goPost"></i>
   </div>
 </template>
 
@@ -140,6 +142,7 @@ export default {
   },
   data () {
     return {
+      isScrollActive: true,
       hasUnRead: false,
       unReadNum: 0,
       isLogin: true,
@@ -183,6 +186,9 @@ export default {
     goUserCenter (id) {
       var url = '/centerother'
       this.$router.push(url)
+    },
+    goPost () {
+      this.$router.push('/post')
     }
   },
   beforeMount () {

@@ -22,12 +22,12 @@
         </p>
         <p class="item-type">留言</p>
         <p class="msg-cont">
-          <span>
+          <span class="msg-row">
             <!-- <i class="msg-default">谢谢楼主分享</i>
             <i class="msg-default">加分支持</i> -->
-            <i class="msg-default" v-for="(msg, index) in msgList" @click="pickMsg(msg, index)" :class="{'active': msgActive == index}">{{msg}}</i>
+            <i class="msg-default msg-item" v-for="(msg, index) in msgList" @click="pickMsg(msg, index)" :class="{'active': msgActive == index}">{{msg}}</i>
             </span>
-            <i class="msg-add" @click="goAdd">+自定义留言</i>
+            <i class="msg-add msg-item" @click="goAdd">+自定义留言</i>
         </p>
         <div class="btn-blue btn-mark" @click="markPost">评分</div>
       </div>
