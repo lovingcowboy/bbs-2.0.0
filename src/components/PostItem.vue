@@ -1,11 +1,12 @@
 <template>
 <li class="post-row" >
-  <div class="item-title">
+  <!-- <div class="item-title">
     <span @click="onUserClick">
       <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}
     </span>
     <span>{{data.time}}</span>
-  </div>
+  </div> -->
+  <slot name="itemhead"></slot>
   <div class="item-desc" @click="onItemClick">
     <div :class="['post', {'no-img': !data.hasImg}]">
       <p>{{data.pTitle}}</p>
@@ -29,9 +30,9 @@ export default {
 		onItemClick () {
 			this.$emit('onItemClick')
 		},
-    onUserClick () {
-      this.$emit('onUserClick')
-    }
+    // onUserClick () {
+    //   this.$emit('onUserClick')
+    // }
 	}
 }
 </script>

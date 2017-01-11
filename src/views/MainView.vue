@@ -49,7 +49,14 @@
           </ul>
         </div>
         <ul class="post-list">
-          <post-item v-for="(item, index) in hotList" :data="item" v-on:onItemClick="goDetail(item.id)" v-on:onUserClick="goUserCenter(item.id)"></post-item>
+          <post-item v-for="(item, index) in hotList" :data="item" v-on:onItemClick="goDetail(item.id)">
+            <div class="item-title" slot="itemhead">
+              <span @click="goUserCenter(item.id)">
+                <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
+              </span>
+              <span>{{item.time}}</span>
+            </div>
+          </post-item>
           <!-- <li class="post-row" v-for="item in hotList">
             <div class="item-title">
               <span>
@@ -184,7 +191,7 @@ export default {
       this.$router.push(url)
     },
     goUserCenter (id) {
-      var url = '/centerother'
+      var url = '/centerother/' + id
       this.$router.push(url)
     },
     goPost () {
