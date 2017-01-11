@@ -11,16 +11,18 @@
     </zheader> 
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
     <div class="content" >
-      <p class="p-txt1"><span>选择版块</span><span>发帖规则</span></p>
-      <p class="msg-cont">
-          <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="pickMsg(item.name, index)" :class="{'active': moduleActive == index}">{{item.name}}</i>
-      </p>
-      <div class="p-form">
-        <div class="p-title">
-          <input type="text" name="pTitle" placeholder="帖子标题" class="i-title">
-        </div>
-        <div class="p-content">
-          <textarea placeholder="帖子内容" class="i-content"></textarea>
+      <div class="pc">
+        <p class="p-txt1"><span>选择版块</span><span>发帖规则</span></p>
+        <p class="msg-cont">
+            <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="pickMsg(item.name, index)" :class="{'active': moduleActive == index}">{{item.name}}</i>
+        </p>
+        <div class="p-form">
+          <div class="p-title">
+            <input type="text" name="pTitle" placeholder="帖子标题" class="i-title">
+          </div>
+          <div class="p-content">
+            <textarea placeholder="帖子内容" class="i-content"></textarea>
+          </div>
         </div>
       </div>
      

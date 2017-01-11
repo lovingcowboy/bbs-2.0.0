@@ -6,6 +6,15 @@
   <i class="icon-vote" v-show="hasVote">（投票）</i>
   <div class="btn-send btn-blue" @click="btnClickFunc">发表</div>
 </div>
+<section id="imgs" class="imgs">
+  <ul class="img-container" id="">
+    <li>
+      <img src="../images/img.png">
+      <i class="icon-del">a</i>
+    </li>
+
+  </ul>
+</section>
 <section class="emotions" v-show="showEmotion">
   <swipe :auto="0" :speed="100">
     <swipe-item v-for="page in emotions" class="emocont">
@@ -17,21 +26,21 @@
     </swipe-item>
   </swipe>
 </section>
-<!-- <section class="emotions" v-show="showEmotion">
-    <div id="swiper" class="swipe">
-        <div class="swipe-wrap">
-          <div v-for="page in emotions" track-by="pid" class="swiper-slide emocont">
-            <div v-for="row in page.rows" track-by="rid" class="emorow">
-              <div v-for="item in row.emotions" track-by="eid" @click="insertEmo" data-code="{{item.code}}">
-                <i class="icon-emotion sprite-icon-{{item.emotion}}" ></i>
-              </div>
-            </div>
-          </div>
-          
-        </div>
-        <div class="swiper-pagination"><i v-for="item in pagination" :class="{'active':item}"></i></div>
-    </div>
-</section> -->
+ <!-- <section id="imgs" v-show="showImgList">
+            <ul class="img-container" id="img_container">
+              <li v-for="(index,img) in imgList" track-by="photoID">
+                  <img :src="img.photoContent">
+                  <div class="close-part" @click="delImg(index)">
+                    <i class="icon-close"></i>
+                  </div>
+              </li>
+              <li class="add-img" @click="chooseImgFun" v-show="addImg && isApp && isNewVersion">
+              </li>
+              <li class="add-img"  v-show="addImg && (!isApp || !isNewVersion)" >
+                <input id="file" type="file" accept="image/*"  @change="chooseImgFunWeb($event)" @click="prevenDefault($event)"/>
+              </li>
+          </ul>
+          </section> -->
 </div>
 </template>
 <script>
@@ -429,8 +438,43 @@ export default {
   width: pxToRem(56px);
   height: pxToRem(56px);
 }
-
-
+.imgs {
+  width: 100%;
+  padding-top: pxToRem(40px);
+  background-color: transprent;
+}
+.img-container {
+  width: 100%;
+  font-size: 0;
+  li {
+    display: inline-block;
+    width: pxToRem(146px);
+    height: pxToRem(146px);
+    margin-left: pxToRem(30px);
+    position: relative;
+    margin-bottom: pxToRem(30px);
+    img {
+      width: 100%;
+      height: 100%;
+    }
+    .icon-del {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  }
+}
+.icon-del {
+  width: pxToRem(46px);
+  height: pxToRem(44px);
+  line-height: pxToRem(44px);
+  border-radius: 50%;
+  border: pxToRem(2px) solid $color-white;
+  background-color: #fa4c2f;
+  font-size: pxToRem(40px);
+  color: $color-white;
+  text-align: center;
+}
 
 
 </style>
