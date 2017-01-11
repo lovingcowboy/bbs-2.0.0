@@ -14,7 +14,9 @@
         <div class="change-content">
           <div class="change-text">兑换数量<font class="change-maxnum">（最大兑换数量：{{exchangeInfo.max_num}}）</font></div>
           <div class="change-wrapper">
-            <input class="change-input" type="text" v-model="exchangeNum" maxlength=20 placeholder="请输入兑换数量" @input="onInput">
+            <!-- <input class="change-input" type="text" v-model="exchangeNum" maxlength=20 placeholder="请输入兑换数量" @input="onInput"> -->
+
+            <input type="number" pattern="[0-9]*"  class="change-input" v-model="exchangeNum" maxlength=20  placeholder="请输入兑换数量"  @input="onInput" />
             <div class="btn-change-all" @click="onChangeAll">全部兑换</div>
           </div>
           <div class="change-result-num">可获<font :class="canChange ? 'orange' : ''">{{canChangeNum}}</font>个团币</div>
