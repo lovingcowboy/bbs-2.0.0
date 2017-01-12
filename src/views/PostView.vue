@@ -103,7 +103,7 @@ export default {
         console.info('11111')
       },
       blurFun(event) {
-        let $target = event.currentTarget;
+        let $target = event.currentTarget
         if ($target.selectionStart || $target.selectionStart == '0') {
           this.selectPostion = {
             'selectionStart': $target.selectionStart,
@@ -115,91 +115,92 @@ export default {
       insertEmo(code) {
         // console.info('insertEmo-----', code)
         //插入表情
-        let that = this;
+        let that = this
         if (code === "close") {
-          let _cont = that.post.content;
-          that.post.content = _cont.substring(0, _cont.length - 1);
-          return;
+          let _cont = that.post.content
+          that.post.content = _cont.substring(0, _cont.length - 1)
+          return
         }
-        console.log(that.post.content);
-        let $t = document.querySelector('#postContent');
+        console.log(that.post.content)
+        let $t = document.querySelector('#postContent')
         let startPos = that.selectPostion.selectionStart,
           endPos = that.selectPostion.selectionEnd,
-          content = that.post.content;
-        that.post.content = content.substring(0, startPos) + code + content.substring(endPos, $t.value.length);
-        // this.focus();
+          content = that.post.content
+        that.post.content = content.substring(0, startPos) + code + content.substring(endPos, $t.value.length)
+        // this.focus()
 
         Vue.nextTick(function() {
           that.selectPostion = {
             "selectionStart": startPos + code.length,
             "selectionEnd": startPos + code.length
           }
-        });
+        })
       },
       delImg(i) {
         //删除图片
-        let path = this.imgList[i].src;
+        let path = this.imgList[i].src
         this.imgList = this.imgList.filter((item, index) => {
           return i != index
-        });
-        if (path == $("#file").val()) {
-          $("#file").val("");
+        })
+        let fileObj = document.querySelector('#file')
+        if (path === fileObj.value) {
+          fileObj.value = ''
         }
         if (this.imgList.length > 10) {
-          this.addImg = false;
+          this.addImg = false
         } else {
-          this.addImg = true;
+          this.addImg = true
         }
       },
       addImgFunc(e, type) {
-        // console.info(e, type);
+        // console.info(e, type)
         if (type === 'app') {
-          this.chooseImgFun();
+          this.chooseImgFun()
         } else {
           this.chooseImgFunWeb(e)
         }
       },
       chooseImgFun() {
         //app端插入图片
-        let that = this;
-        let _count = 9 - that.imgList.length;
+        let that = this
+        let _count = 9 - that.imgList.length
         console.info('chooseImgFun----', _count)
         return
         that.execOriginFun(function() {
           Bbsbridge.exec('getThumbnail', _count, function(data) {
-            // alert("获取缩略图成功！");
-            data = JSON.parse(data);
+            // alert("获取缩略图成功！")
+            data = JSON.parse(data)
             if (data.code == 200) {
-              let _data = data.data;
+              let _data = data.data
               _data.forEach((item, i) => {
-                item.photoContent = "data:img/jpg;base64," + item.photoContent
-              });
-              that.imgList = that.imgList.concat(_data);
+                item.photoContent = "data:img/jpgbase64," + item.photoContent
+              })
+              that.imgList = that.imgList.concat(_data)
               if (that.imgList.length >= 9) {
-                that.addImg = false;
+                that.addImg = false
               } else {
-                that.addImg = true;
+                that.addImg = true
               }
             } else {
-              Toast('图片选择失败，请重新尝试！');
+              Toast('图片选择失败，请重新尝试！')
             }
 
-          });
-        });
+          })
+        })
       },
       chooseImgFunWeb(e) {
         //web端插入图片
-        let that = this;
+        let that = this
         if (e.target.files.length <= 0) {
-          return;
+          return
         }
-        // console.log(e.target.files[0],e.target.value);
-        let _file_url = e.target.value;
-        // let _name = e.target.files[0].name;
+        // console.log(e.target.files[0],e.target.value)
+        let _file_url = e.target.value
+        // let _name = e.target.files[0].name
 
-        that.canPost = false;
-        that.canAddImg = false;
-        // that.$refs.loading.$emit("show");
+        that.canPost = false
+        that.canAddImg = false
+        // that.$refs.loading.$emit("show")
 
         lrz(e.target.files[0], {
             "fieldName": "Filedata"
@@ -209,99 +210,100 @@ export default {
               "photoID": new Date().getTime(),
               "photoUrl": _file_url,
               "photoContent": rst.base64,
-            };
+            }
             //如果有这张图片，则不实现
             let _file = that.imgList.filter((item) => {
               return item.photoContent === rst.base64
-            });
+            })
             if (_file.length > 0) {
-              Toast('此图片已存在！');
-              that.canPost = true;
-              that.canAddImg = true;
-              // that.$refs.loading.$emit("hide");
-              return;
+              Toast('此图片已存在！')
+              that.canPost = true
+              that.canAddImg = true
+              // that.$refs.loading.$emit("hide")
+              return
             }
-            that.imgList.push(_img);
-            return;
+            that.imgList.push(_img)
+            that.canAddImg = true
+            return
 
-            var xhr = new XMLHttpRequest();
-            // console.log(Config.baseUrl);
-            // xhr.withCredentials = true;
-            xhr.open('POST', "bbs5.tuandai.com/app/index.php");
+            var xhr = new XMLHttpRequest()
+            // console.log(Config.baseUrl)
+            // xhr.withCredentials = true
+            xhr.open('POST', "bbs5.tuandai.com/app/index.php")
 
             xhr.onload = function() {
               if (xhr.status === 200) {
                 // 上传成功
-                // console.log(xhr.response);
-                var data = xhr.response ? JSON.parse(xhr.response) : {};
+                // console.log(xhr.response)
+                var data = xhr.response ? JSON.parse(xhr.response) : {}
                 if (data.code == 200) {
-                  _img.attachID = data.data.aid;
-                  that.imgList.push(_img);
+                  _img.attachID = data.data.aid
+                  that.imgList.push(_img)
                   if (that.imgList.length >= 9) {
-                    that.addImg = false;
+                    that.addImg = false
                   }
                 } else {
-                  Toast(data.message);
+                  Toast(data.message)
                 }
 
               } else {
                 // 处理其他情况
-                Toast("上传失败！");
+                Toast("上传失败！")
               }
-            };
+            }
 
             xhr.onerror = function() {
               // 处理错误
-              Toast("上传失败！");
-            };
+              Toast("上传失败！")
+            }
 
             xhr.onreadystatechange = function() {
-              // console.log(xhr.readyState);
-              // if(xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) console.log(xmlhttp.responseText);
+              // console.log(xhr.readyState)
+              // if(xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) console.log(xmlhttp.responseText)
               if (xhr.readyState === xhr.DONE) {
-                // console.log("done==========",xhr.status);
-                that.canPost = true;
-                that.canAddImg = true;
-                that.$refs.loading.$emit("hide");
+                // console.log("done==========",xhr.status)
+                that.canPost = true
+                that.canAddImg = true
+                that.$refs.loading.$emit("hide")
 
               }
-            };
+            }
 
             xhr.upload.onprogress = function(e) {
               // 上传进度
-              var percentComplete = ((e.loaded / e.total) || 0) * 100;
-              // console.log(percentComplete);
-            };
+              var percentComplete = ((e.loaded / e.total) || 0) * 100
+              // console.log(percentComplete)
+            }
 
             // 添加参数
-            rst.formData.append("version", 4);
-            rst.formData.append("module", "forumupload");
-            // rst.formData.append("Filedata",rst.file);
+            rst.formData.append("version", 4)
+            rst.formData.append("module", "forumupload")
+            // rst.formData.append("Filedata",rst.file)
 
             // 触发上传
-            xhr.send(rst.formData);
+            xhr.send(rst.formData)
             /* ==================================================== */
 
-            return rst;
-            // that.imgList.push(_img);
+            return rst
+            // that.imgList.push(_img)
             // if(that.imgList.length > 10) {
-            //  that.addImg = false;
+            //  that.addImg = false
             // }
 
 
           })
           .catch(function(error) {
-            console.log(error);
+            console.log(error)
           })
           .always(function() {
-            // e.target.value = '';
-          });
+            // e.target.value = ''
+          })
       },
       execOriginFun: function(callback) {
         if (isAndroid()) { //如果是android,先缓存
-          this.saveDataFun(callback);
+          this.saveDataFun(callback)
         } else {
-          callback();
+          callback()
         }
       },
       //保存 数据
@@ -310,39 +312,39 @@ export default {
           'module': this.post.module,
           'title': this.post.title,
           'content': this.post.content
-        };
-        // console.log(postdata);
+        }
+        // console.log(postdata)
         Bbsbridge.exec('setSharePreference', {
           'key': 'postdata',
           'value': JSON.stringify(postdata)
         }, function(data) {
-          data = JSON.parse(data);
+          data = JSON.parse(data)
           if (data.code == 200) {
             if (callback) {
-              callback();
+              callback()
             }
           } else {
-            Toast('自动保存数据失败！');
+            Toast('自动保存数据失败！')
           }
-        });
+        })
       },
       titleChangeFun(event) {
-        // console.log(this.comstart);
+        // console.log(this.comstart)
         if (this.comstart) {
-          return;
+          return
         }
-        let _title = this.post.title;
-        _title = _title.replace(/\ud83c[\udf00-\udfff]|\ud83d[\udc00-\ude4f]|\ud83d[\ude80-\udeff]/g, ""); //不允许输入emoji
+        let _title = this.post.title
+        _title = _title.replace(/\ud83c[\udf00-\udfff]|\ud83d[\udc00-\ude4f]|\ud83d[\ude80-\udeff]/g, "") //不允许输入emoji
         if (_title.length > 80) {
-          _title = _title.substring(0, 80);
+          _title = _title.substring(0, 80)
         }
-        this.post.title = _title;
+        this.post.title = _title
       },
       compositionstartFun() {
-        this.comstart = true;
+        this.comstart = true
       },
       compositionendFun() {
-        this.comstart = false;
+        this.comstart = false
       },
       goPost() {
         //发表帖子
@@ -350,6 +352,7 @@ export default {
         window.history.back()
       },
       selectModule(module, index) {
+        //选择模块
         this.post.module = module
         this.moduleActive = index
       },
@@ -357,11 +360,21 @@ export default {
         //显示发帖规则
       },
       addVoteFunc (data) {
+        //添加投票
         this.postVote = data
+      },
+      preventScroll (status) {
+        //阻止页面滑动
+        console.info('preventScroll----', typeof status)
+        if (status === 0) {
+          this.isScrollActive = false
+        } else {
+          this.isScrollActive = true
+        }
       }
   },
   beforeMount () {
-    let that = this;
+    let that = this
   },
   mounted () {
   }

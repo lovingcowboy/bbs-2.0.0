@@ -1,9 +1,9 @@
 <template>
 <div>
 <div class="insert-tabs">
-  <i class="icon-emoji" @click="triggerEmotion"></i>
-  <i class="icon-image" @click="triggerImg"></i>
-  <i class="icon-vote" v-show="hasVote" @click="triggerVote">（投票）</i>
+  <i :class="['icon-emoji', {'active': showEmotion}]" @click="triggerEmotion"></i>
+  <i :class="['icon-image', {'active': showImgList}]" @click="triggerImg"></i>
+  <i :class="['icon-vote', {'active': showVote}]" v-show="hasVote" @click="triggerVote">（投票）</i>
   <div class="btn-send btn-blue" @click="btnClickFunc">发表</div>
 </div>
 <section class="emotions" v-show="showEmotion">
@@ -19,10 +19,6 @@
 </section>
 <section id="imgs" class="imgs" v-show="showImgList">
   <ul class="img-container" id="">
-    <!-- <li>
-      <img src="../images/img.png">
-      <i class="icon-del"></i>
-    </li> -->
     <li v-for="(img, index) in imgList">
       <img :src="img.photoUrl">
       <i class="icon-del" @click="imgDelFunc(index)"></i>
@@ -44,6 +40,7 @@
   </ul>
 </section>
 <div class="add-vote-container" v-show="showAddVote">
+<header id="header" class="header-bar"><i class="icon-back" @click="completeAddVote('cancle')"></i>发帖</header>
   <section class="add-vote">
     <div class="v-title">
       <input type="text" name="vtitle" placeholder="请输入投票标题" v-model="addVoteData.title"/>
@@ -54,12 +51,6 @@
         <input type="text" name="options" placeholder="请输入投票选项信息" v-model="addVoteData.options[index].text" :value="opt.text"/>
       </div>
     </div>
-    <!-- <div class="v-option v-row">
-      <div><i class="icon-del"></i></div>
-      <div>
-        <input type="text" name="options" placeholder="请输入投票选项信息" v-model="addVoteData.options[1]" />
-      </div>
-    </div> -->
     <div class="v-bottom v-row">
       <span class="v-add" @click="addVoteOption">添加选项</span>
       <span class="v-save v-btn" @click="completeAddVote('save')">保存</span>
@@ -74,6 +65,7 @@
 import Swipe from '../components/swipe'
 import SwipeItem from '../components/swipe-item'
 import { isApp } from '../filters'
+import Util from '../js/Util.js'
 export default {
 	name: 'insertTabs',
   components: {
@@ -215,7 +207,7 @@ export default {
   },
   computed: {
     isApp: function() {
-      return isApp();
+      return isApp()
     }
   },
 	props: ['hasVote', 'imgList', 'addImg', 'canAddImg', 'postVote'],
@@ -223,6 +215,7 @@ export default {
     triggerEmotion() {
         this.showEmotion = !this.showEmotion
         this.showImgList = false
+        this.showVote = false
       },
       emotionClickFunc(code) {
         // console.info('code-----', code)
@@ -231,6 +224,7 @@ export default {
       triggerImg() {
         this.showEmotion = false
         this.showImgList = !this.showImgList
+        this.showVote = false
           // this.$emit('imgClickFunc')
       },
       imgDelFunc(index) {
@@ -241,31 +235,39 @@ export default {
 
       },
       prevenDefault(e) {
+        console.info(this.canAddImg)
         if (!this.canAddImg) {
           e.preventDefault();
         }
       },
       addImgFunc(e, type) {
+        console.info('-----addImgFunc')
         this.$emit('addImgFunc', e, type)
       },
       triggerVote() {
         // this.showAddVote = !this.showAddVote
-        if (this.postVote) {
-          this.showVote = !this.showVote
-        } else {
+        this.showEmotion = false
+        this.showImgList = false
+        if (!this.postVote || this.postVote === '') {
           this.showAddVote = true
+          this.showVote = false
+        } else {
+          this.showVote = !this.showVote
         }
       },
       editVote () {
+        //编辑投票
         if (this.postVote) {
-          let data = this.postVote
+          // let data = this.postVote
+          let data = Util.unFreeze(Util.myExtend(this.postVote));
           this.addVoteData = data
           // this.addVoteData = this.postVote
         } 
         this.showAddVote = true
-
+        this.showVote =false
       },
       delVote () {
+        //删除投票
         this.addVoteData = {
           title: '',
           options: [{
@@ -293,21 +295,23 @@ export default {
                 text: ''
               }]
             }
-          }else{
-            console.info('postVote------', this.postVote)
+          } else {
+            this.showVote = true
           }
         } else {
-          // this.postVote = this.addVoteData
-          console.info('111')
+          console.info('vote save edit')
           let data = this.addVoteData
+          //去除空白项
+          data.options = data.options.filter((item, index) => {
+            return item.text != ''
+          })
           this.$emit('addVoteFunc', data)
+          this.showVote = true
         }
-        /*if (type === 'save') {
-          this.$emit('addVoteFunc', this.addVoteData)
-        }*/
         this.showAddVote = false
       },
       addVoteOption() {
+        //添加投票选项
         let opt = {
           id: this.addVoteData.options.length,
           text: ''
@@ -315,20 +319,18 @@ export default {
         this.addVoteData.options.push(opt)
       },
       delVoteOption(id) {
+        //删除投票选项
         this.addVoteData.options = this.addVoteData.options.filter((item, index) => {
           return item.id != id
         })
-        console.info(this.addVoteData.options)
+        // console.info(this.addVoteData.options)
       }
-      /*chooseImgFun () {
-        if(this.isApp) {
-          this.$emit('chooseImgFun')
-        }
-      },
-      chooseImgFunWeb (e) {
-        this.$emit('chooseImgFunWeb', e)
-      }*/
-	}
+
+	},
+  beforeMount() {
+    
+
+  }
 }
 </script>
 <style lang="scss">
@@ -354,10 +356,16 @@ export default {
   .icon-image {
     background-image: url('../images/icon-image.png');
     background-size: pxToRem(42px) pxToRem(34px);
+    &.active {
+      background-image: url('../images/icon-image-selected.png') !important;
+    }
   }
   .icon-emoji {
     background-image: url('../images/icon-emoji.png');
     background-size: pxToRem(42px) pxToRem(42px);
+    &.active {
+      background-image: url('../images/icon-emoji-selected.png') !important;
+    }
   }
   .icon-vote {
     background-image: url('../images/icon-vote.png');
@@ -366,6 +374,9 @@ export default {
     color: $txt-color-grey-light;
     width: pxToRem(150px);
     padding-left: pxToRem(52px);
+    &.active {
+      background-image: url('../images/icon-vote-selected.png') !important;
+    }
   }
   .btn-send {
     width: pxToRem(100px) !important;
@@ -375,6 +386,30 @@ export default {
     top: 50%;
     right: pxToRem(30px);
     margin-top: pxToRem(-28px);
+  }
+}
+.triangle {
+  position: relative;
+  &:before,
+  &:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 0;
+  }
+  &:before {
+      border-left: pxToRem(16px) solid transparent;
+      border-right: pxToRem(16px) solid transparent;
+      border-bottom: pxToRem(16px) solid $border-color;
+      // left: pxToRem(46px);
+      top: pxToRem(-16px);
+  }
+  &:after {
+      border-left: pxToRem(16px) solid transparent;
+      border-right: pxToRem(16px) solid transparent;
+      border-bottom: pxToRem(16px) solid #fafafa;
+      // left: pxToRem(46px);
+      top: pxToRem(-14px);
   }
 }
 .emotions {
@@ -387,29 +422,12 @@ export default {
       width: 100%;
       // min-height: pxToRem(100px);
       height: pxToRem(420px);
-      position: relative;
       // padding: pxToRem(56px) pxToRem(52px);
-      &:before,
-      &:after {
-          content: '';
-          position: absolute;
-          width: 0;
-          height: 0;
+      @extend .triangle;
+      &:before, &:after {
+        left: pxToRem(46px);
       }
-      &:before {
-          border-left: pxToRem(16px) solid transparent;
-          border-right: pxToRem(16px) solid transparent;
-          border-bottom: pxToRem(16px) solid $border-color;
-          left: pxToRem(46px);
-          top: pxToRem(-16px);
-      }
-      &:after {
-          border-left: pxToRem(16px) solid transparent;
-          border-right: pxToRem(16px) solid transparent;
-          border-bottom: pxToRem(16px) solid #fafafa;
-          left: pxToRem(46px);
-          top: pxToRem(-14px);
-      }
+      
   }
   .emocont {
       padding-top: pxToRem(56px);
@@ -436,7 +454,14 @@ export default {
 .imgs {
   width: 100%;
   padding-top: pxToRem(40px);
-  background-color: transprent;
+  background-color: #f2f2f0;
+  @extend .triangle;
+  &:before, &:after {
+    left: pxToRem(150px);
+  }
+  &:after {
+    border-bottom: pxToRem(16px) solid #f2f2f0 !important;
+  }
 }
 .img-container {
   width: 100%;
@@ -506,8 +531,9 @@ export default {
   right: 0;
   bottom: 0;
   background-color: $color-white-light;
-  z-index: 100;
+  z-index: 889;
   padding-top: pxToRem(150px);
+  
 }
 .add-vote {
   width: pxToRem(692px);
@@ -614,6 +640,14 @@ export default {
 .show-vote-container {
   width: 100%;
   padding: pxToRem(30px) 0;
+  background-color: #f2f2f0;
+  @extend .triangle;
+  &:before, &:after {
+    left: pxToRem(264px);
+  }
+  &:after {
+    border-bottom: pxToRem(16px) solid #f2f2f0 !important;
+  }
   .sv-bg {
     width: pxToRem(690px);
     min-height: pxToRem(380px);
