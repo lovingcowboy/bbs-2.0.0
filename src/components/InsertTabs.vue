@@ -3,7 +3,7 @@
 <div class="insert-tabs">
   <i class="icon-emoji" @click="triggerEmotion"></i>
   <i class="icon-image" @click="triggerImg"></i>
-  <i class="icon-vote" v-show="hasVote">（投票）</i>
+  <i class="icon-vote" v-show="hasVote" @click="triggerVote">（投票）</i>
   <div class="btn-send btn-blue" @click="btnClickFunc">发表</div>
 </div>
 <section class="emotions" v-show="showEmotion">
@@ -33,27 +33,37 @@
     </li>
   </ul>
 </section>
-<div class="add-vote-container" v-show="shoAddVote">
+<section class="show-vote-container" v-show="showVote">
+  <ul class="sv-bg" v-if="postVote">
+    <li class="sv-title">{{postVote.title}}</li>
+    <li class="sv-option" v-for="opt in postVote.options"><i class="sv-radio"></i>{{opt.text}}</li>
+    <li class="sv-btns">
+      <div class="sv-btn-edit" @click="editVote"><i class="sv-icon-edit"></i>编辑</div>
+      <div class="sv-btn-del" @click="delVote"><i class="sv-icon-del"></i>删除</div>
+    </li>
+  </ul>
+</section>
+<div class="add-vote-container" v-show="showAddVote">
   <section class="add-vote">
     <div class="v-title">
-      <input type="text" name="vtitle" placeholder="请输入投票标题" />
+      <input type="text" name="vtitle" placeholder="请输入投票标题" v-model="addVoteData.title"/>
     </div>
-    <div class="v-option v-row">
-      <div><i class="icon-del"></i></div>
+    <div class="v-option v-row" v-for="(opt, index) in addVoteData.options">
+      <div @click="delVoteOption(index)"><i class="icon-del"></i></div>
       <div>
-        <input type="text" name="options" placeholder="请输入投票选项信息" />
+        <input type="text" name="options" placeholder="请输入投票选项信息" v-model="addVoteData.options[index].text" :value="opt.text"/>
       </div>
     </div>
-    <div class="v-option v-row">
+    <!-- <div class="v-option v-row">
       <div><i class="icon-del"></i></div>
       <div>
-        <input type="text" name="options" placeholder="请输入投票选项信息" />
+        <input type="text" name="options" placeholder="请输入投票选项信息" v-model="addVoteData.options[1]" />
       </div>
-    </div>
+    </div> -->
     <div class="v-bottom v-row">
-      <span class="v-add">添加选项</span>
-      <span class="v-save v-btn">保存</span>
-      <span class="v-cancle v-btn">取消</span>
+      <span class="v-add" @click="addVoteOption">添加选项</span>
+      <span class="v-save v-btn" @click="completeAddVote('save')">保存</span>
+      <span class="v-cancle v-btn" @click="completeAddVote('cancle')">取消</span>
     </div>
   </section>
 </div>
@@ -74,7 +84,18 @@ export default {
     return {
       showEmotion: false,
       showImgList: false,
-      shoAddVote: false,
+      showAddVote: false,
+      showVote: false,
+      addVoteData: {
+        title: '',
+        options: [{
+          id: 0,
+          text: ''
+        },{
+          id: 1,
+          text: ''
+        }]
+      },
       emotions: [{
         "pid": "page1",
         "rows": [{
@@ -197,44 +218,116 @@ export default {
       return isApp();
     }
   },
-	props: ['hasVote', 'imgList', 'addImg', 'canAddImg'],
+	props: ['hasVote', 'imgList', 'addImg', 'canAddImg', 'postVote'],
 	methods: {
-		triggerEmotion () {
-      this.showEmotion = !this.showEmotion
-      this.showImgList = false
-    },
-    emotionClickFunc (code) {
-      // console.info('code-----', code)
-      this.$emit('emotionClickFunc', code)
-    },
-    triggerImg () {
-      this.showEmotion = false
-      this.showImgList = !this.showImgList
-      // this.$emit('imgClickFunc')
-    },
-    imgDelFunc (index) {
-      this.$emit('imgDelFunc', index)
-    },
-    btnClickFunc () {
-      this.$emit('btnClickFunc')
-      
-    },
-    prevenDefault (e) {
-      if (!this.canAddImg) {
-        e.preventDefault();
+    triggerEmotion() {
+        this.showEmotion = !this.showEmotion
+        this.showImgList = false
+      },
+      emotionClickFunc(code) {
+        // console.info('code-----', code)
+        this.$emit('emotionClickFunc', code)
+      },
+      triggerImg() {
+        this.showEmotion = false
+        this.showImgList = !this.showImgList
+          // this.$emit('imgClickFunc')
+      },
+      imgDelFunc(index) {
+        this.$emit('imgDelFunc', index)
+      },
+      btnClickFunc() {
+        this.$emit('btnClickFunc')
+
+      },
+      prevenDefault(e) {
+        if (!this.canAddImg) {
+          e.preventDefault();
+        }
+      },
+      addImgFunc(e, type) {
+        this.$emit('addImgFunc', e, type)
+      },
+      triggerVote() {
+        // this.showAddVote = !this.showAddVote
+        if (this.postVote) {
+          this.showVote = !this.showVote
+        } else {
+          this.showAddVote = true
+        }
+      },
+      editVote () {
+        if (this.postVote) {
+          let data = this.postVote
+          this.addVoteData = data
+          // this.addVoteData = this.postVote
+        } 
+        this.showAddVote = true
+
+      },
+      delVote () {
+        this.addVoteData = {
+          title: '',
+          options: [{
+            id: 0,
+            text: ''
+          }, {
+            id: 1,
+            text: ''
+          }]
+        }
+        this.$emit('addVoteFunc', '')
+        this.showVote = false
+      },
+      completeAddVote(type) {
+        // console.info(this.addVoteData)
+        if (type === 'cancle') {
+          if (!this.postVote || this.postVote === '') {
+            this.addVoteData = {
+              title: '',
+              options: [{
+                id: 0,
+                text: ''
+              }, {
+                id: 1,
+                text: ''
+              }]
+            }
+          }else{
+            console.info('postVote------', this.postVote)
+          }
+        } else {
+          // this.postVote = this.addVoteData
+          console.info('111')
+          let data = this.addVoteData
+          this.$emit('addVoteFunc', data)
+        }
+        /*if (type === 'save') {
+          this.$emit('addVoteFunc', this.addVoteData)
+        }*/
+        this.showAddVote = false
+      },
+      addVoteOption() {
+        let opt = {
+          id: this.addVoteData.options.length,
+          text: ''
+        }
+        this.addVoteData.options.push(opt)
+      },
+      delVoteOption(id) {
+        this.addVoteData.options = this.addVoteData.options.filter((item, index) => {
+          return item.id != id
+        })
+        console.info(this.addVoteData.options)
       }
-    },
-    addImgFunc (e, type) {
-      this.$emit('addImgFunc', e, type)
-    }
-    /*chooseImgFun () {
-      if(this.isApp) {
-        this.$emit('chooseImgFun')
-      }
-    },
-    chooseImgFunWeb (e) {
-      this.$emit('chooseImgFunWeb', e)
-    }*/
+      /*chooseImgFun () {
+        if(this.isApp) {
+          this.$emit('chooseImgFun')
+        }
+      },
+      chooseImgFunWeb (e) {
+        this.$emit('chooseImgFunWeb', e)
+      }*/
 	}
 }
 </script>
@@ -518,6 +611,76 @@ export default {
     color: $txt-color-blue;
   }
 }
+.show-vote-container {
+  width: 100%;
+  padding: pxToRem(30px) 0;
+  .sv-bg {
+    width: pxToRem(690px);
+    min-height: pxToRem(380px);
+    background-color: $color-white;
+    border-radius: pxToRem(10px);
+    box-shadow: 0px pxToRem(4px) pxToRem(20px) 0px rgba( 0, 0, 0, .15 );
+    margin: auto;
+    padding-top: pxToRem(30px);
+    &>li {
+      width: 100%;
+      padding: 0 pxToRem(30px);
+    }
+  }
+  .sv-title {
+    font-size: pxToRem($font-size-28);
+    color: $txt-color-black;
+    font-weight: bolder;
+  }
+  .sv-option {
+    height: pxToRem(40px);
+    margin-top: pxToRem(50px);
+    line-height: pxToRem(40px);
+    font-size: pxToRem($font-size-28);
+    // padding: 0 pxToRem(30px);
+    color: $txt-color-grey-dark;
+    .sv-radio {
+      width: pxToRem(36px);
+      height: pxToRem(36px);
+      border-radius: 50%;
+      border: pxToRem(2px) solid #e7e7e7;
+      margin-right: pxToRem(30px);
+      vertical-align: text-bottom;
+    }
+  }
+  .sv-btns {
+    margin-top: pxToRem(50px);
+    border-top: 1px solid $border-color;
+    font-size: 0;
+    white-space: nowrap;
+    // padding: 0 pxToRem(30px);
+    height: pxToRem(90px);
+    line-height: pxToRem(90px);
+    &>div {
+      width: 50%;
+      text-align: center;
+      font-size: pxToRem($font-size-28);
+      display: inline-block;
+    }
+    i {
+      margin-right: pxToRem(20px);
+      vertical-align: text-bottom;
+    }
+    .sv-btn-edit {
+      color: $txt-color-blue;
+    }
+    .sv-btn-del {
+      color: #fa4c2f;
+    }
+    .sv-icon-edit {
+      @include background('../images/icon-edit-blue.png', 25px, 26px);
+    }
+    .sv-icon-del {
+      @include background('../images/icon-del.png', 30px, 27px);
+    }
+  }
+}
+
 
 
 

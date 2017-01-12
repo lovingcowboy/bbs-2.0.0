@@ -206,7 +206,7 @@ export default {
     },
     
     scrollMove () {
-      console.info(this.contentObj.scrollTop, this.postHeight)
+      // console.info(this.contentObj.scrollTop, this.postHeight)
       if (this.contentObj.scrollTop >= this.postHeight + 22) {
         this.showFloat = true
         // this.overflowY = 'scroll'
@@ -231,7 +231,7 @@ export default {
     that.voteData = {
       question: '1218当天的交易额有多少？',
       total: 100,
-      limit: 2,
+      limit: 1,
       options: [{
         'content': '5亿',
         'count': 10,

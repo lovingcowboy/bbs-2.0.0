@@ -33,10 +33,12 @@
         :imgList="imgList"
         :addImg="addImg"
         :canAddImg="canAddImg"
+        :postVote="postVote"
         @emotionClickFunc="insertEmo"
         @imgDelFunc="delImg"
         @btnClickFunc="goPost"
         @addImgFunc="addImgFunc"
+        @addVoteFunc="addVoteFunc"
       ></insert-tabs>
     </div>
   </div>
@@ -89,7 +91,8 @@ export default {
       addImg: true, //是否显示添加图片图标
       canAddImg: true, //web端是否可上传图片
       canPost: true, //是否可发表帖子
-      comstart: false
+      comstart: false,
+      postVote: null //发起投票信息
     }
   },
   computed: {
@@ -352,6 +355,9 @@ export default {
       },
       showRule () {
         //显示发帖规则
+      },
+      addVoteFunc (data) {
+        this.postVote = data
       }
   },
   beforeMount () {
