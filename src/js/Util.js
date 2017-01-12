@@ -12,6 +12,24 @@
     }
 
     let Util = {
+        getElemetByTarget: function(target, cls, until) {
+            let result = target;
+            if(!result) {   //不存在target
+                return false;
+            }
+            let classList = Array.from(result.classList);   //转换成数组
+            
+            // 寻找到until类名位置为止，默认为body
+            if(classList.indexOf(until) > -1 || result.tagName.toLocaleLowerCase() === "body") {
+                return false;
+            }
+            
+            if(classList.indexOf(cls) > -1) {   //存在该类名
+                return result;
+            } else {
+               this.getElemetByTarget(result.parentElement, cls); 
+            }
+        },
         disableScrolling: function() {
             if (global.addEventListener) {
                 global.addEventListener('DOMMouseScroll', scrolling, false);
@@ -38,3 +56,7 @@
 
     global.Util = Util;
 })(window);
+
+if (typeof(module) !== undefined) {
+    module.exports = Util;
+}
