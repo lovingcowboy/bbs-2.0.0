@@ -34,7 +34,7 @@
             <template v-for="(option, index) in voteData.options">
               <label class="v-answer" :for="option.id">
                 <input type="radio" name="answer" :id="option.id" :value="option.id" v-model="picked" v-if="!hasVoted">
-                <input type="checkbox" name="answer" :id="option.id" :value="option.id" v-model="picked" disabled v-else>
+                <input type="radio" name="answer" :id="option.id" :value="option.id" v-model="picked" disabled v-else>
                 <label class="icon-radio icon-input" :for="option.id"></label>{{option.content}}
               </label>
               <i class="vote-nums" v-show="showVotes"><i class="vote-progress" :style="{width: option.percentage}"></i></i>
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="rm-cont" >
-        <nav class="rm-tabs">
+        <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
           <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复(263)</a>
           <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分(56)</a>
         </nav>
@@ -184,6 +184,7 @@ export default {
       return (count / total * 100) + "%"
     },
     goVote () {
+      console.info(this.selectedOptions, this.picked)
       if (this.hasVoted) {
         if (this.showVotes) {
           this.showVotes = false

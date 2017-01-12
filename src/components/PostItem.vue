@@ -1,5 +1,5 @@
 <template>
-<li class="post-row" >
+<li class="post-row c-event" data-type="itemclick" :data-id="data.id">
   <!-- <div class="item-title">
     <span @click="onUserClick">
       <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}
@@ -7,16 +7,16 @@
     <span>{{data.time}}</span>
   </div> -->
   <slot name="itemhead"></slot>
-  <div class="item-desc">
-    <div :class="['post', {'no-img': !data.hasImg}]" data-type="itemclick" :data-id="data.id">
+  <div class="item-desc" >
+    <div :class="['post', {'no-img': !data.hasImg}]" >
       <p data-type="itemclick" >{{data.pTitle}}</p>
       <p data-type="itemclick" >{{data.pDesc}}</p>
     </div>
-    <div class="p-img" v-show="data.hasImg" data-type="itemclick" :data-id="data.id">
+    <div class="p-img" v-show="data.hasImg">
       <img src="../images/img.png">
     </div>
   </div>
-  <div class="item-message" data-type="itemclick" :data-id="data.id">
+  <div class="item-message">
     <span class="post-view">{{data.view}}</span>
     <span class="post-reply">{{data.reply}}</span>
   </div>
