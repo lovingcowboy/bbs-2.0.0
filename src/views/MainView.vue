@@ -51,7 +51,7 @@
         <ul class="post-list" @click="listClickFunc($event,0)">
           <post-item v-for="(item, index) in hotList" :data="item">
             <div class="item-title" slot="itemhead">
-              <span data-type="userclick" :data-id="item.id">
+              <span data-type="userclick" :data-id="item.id" class="c-event">
                 <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
               </span>
               <span>{{item.time}}</span>
@@ -121,12 +121,26 @@
       </div>
       <div class="scroll-list">
         <ul class="post-list">
-          <post-item v-for="item in newList" :data="item"></post-item>
+          <post-item v-for="item in newList" :data="item">
+            <div class="item-title" slot="itemhead">
+              <span data-type="userclick" :data-id="item.id" class="c-event">
+                <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
+              </span>
+              <span>{{item.time}}</span>
+            </div>
+          </post-item>
         </ul>
       </div>
       <div class="scroll-list">
         <ul class="post-list">
-          <post-item v-for="item in essenceList" :data="item"></post-item>
+          <post-item v-for="item in essenceList" :data="item">
+            <div class="item-title" slot="itemhead">
+              <span data-type="userclick" :data-id="item.id" class="c-event">
+                <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
+              </span>
+              <span>{{item.time}}</span>
+            </div>
+          </post-item>
         </ul>
       </div>
       </div>
@@ -140,6 +154,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
+import Util from '../js/Util.js'
 export default {
   name: 'mainView',
   components: {
@@ -200,9 +215,10 @@ export default {
     listClickFunc (e) {
       // console.info(e.target.parentElement
       // console.info(e.target,e.target.getAttribute('dataid'))
-      let parentObj = e.target.parentElement
-      let type = parentObj.getAttribute('data-type')
-      let id = parentObj.getAttribute('data-id')
+      let obj = Util.getElemetByTarget(e.target, 'c-event', 'post-list')
+      // let parentObj = e.target.parentElement
+      let type = obj.getAttribute('data-type')
+      let id = obj.getAttribute('data-id')
       if(!type) {
         type = e.target.getAttribute('data-type')
         id = e.target.getAttribute('data-id')
