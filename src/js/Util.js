@@ -97,7 +97,7 @@
             if (classList.indexOf(cls) > -1) { //存在该类名
                 return result;
             } else {
-                this.getElemetByTarget(result.parentElement, cls);
+                return this.getElemetByTarget(result.parentElement, cls);
             }
         },
         disableScrolling: function() {
