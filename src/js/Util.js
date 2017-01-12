@@ -11,23 +11,96 @@
         e.returnValue = false;
     }
 
+    let ArrayProto = Array.prototype;
+    let slice = ArrayProto.slice;
+    let nativeForEach = ArrayProto.forEach;
+    // Establish the object that gets returned to break out of a loop iteration.
+    let breaker = {};
+
+    let each = function(obj, iterator, context) {
+        if (obj == null) return obj;
+        if (nativeForEach && obj.forEach === nativeForEach) {
+            obj.forEach(iterator, context);
+        } else if (obj.length === +obj.length) {
+            for (var i = 0, length = obj.length; i < length; i++) {
+                if (iterator.call(context, obj[i], i, obj) === breaker) return;
+            }
+        }
+        /*else {
+               var keys = _.keys(obj);
+               for (var i = 0, length = keys.length; i < length; i++) {
+                   if (iterator.call(context, obj[keys[i]], keys[i], obj) === breaker) return;
+               }
+           }*/
+        return obj;
+    }
+
     let Util = {
+        unFreeze: function(obj) {
+            var ob = {};
+
+            if (obj) {
+                if (Array.isArray(obj)) {
+                    ob = [];
+                }
+                for (let prop in obj) {
+                    var o = obj[prop];
+                    if (typeof obj[prop] === "object") {
+                        o = this.unFreeze(obj[prop]);
+                    }
+                    ob[prop] = o;
+                }
+            }
+            return ob;
+        },
+        myExtend: function(obj) { //扩展对象，并不影响原来的对象
+            var ob = {};
+            if (Object.isFrozen(obj)) {
+                return obj;
+            }
+            if (obj) {
+                if (Array.isArray(obj)) {
+                    ob = [];
+                }
+                for (let prop in obj) {
+
+                    if (typeof obj[prop] === "object") {
+                        var o = this.myExtend(obj[prop]);
+                        debugger
+                        obj[prop] = o;
+                    }
+
+
+                    ob[prop] = obj[prop];
+                }
+            }
+
+            each(slice.call(arguments, 1), function(source) {
+                if (source) {
+                    for (let prop in source) {
+                        ob[prop] = source[prop];
+                    }
+                }
+            });
+
+            return Object.freeze(ob);
+        },
         getElemetByTarget: function(target, cls, until) {
             let result = target;
-            if(!result) {   //不存在target
+            if (!result) { //不存在target
                 return false;
             }
-            let classList = Array.from(result.classList);   //转换成数组
-            
+            let classList = Array.from(result.classList); //转换成数组
+
             // 寻找到until类名位置为止，默认为body
-            if(classList.indexOf(until) > -1 || result.tagName.toLocaleLowerCase() === "body") {
+            if (classList.indexOf(until) > -1 || result.tagName.toLocaleLowerCase() === "body") {
                 return false;
             }
-            
-            if(classList.indexOf(cls) > -1) {   //存在该类名
+
+            if (classList.indexOf(cls) > -1) { //存在该类名
                 return result;
             } else {
-               this.getElemetByTarget(result.parentElement, cls); 
+                this.getElemetByTarget(result.parentElement, cls);
             }
         },
         disableScrolling: function() {
