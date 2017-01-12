@@ -1,7 +1,7 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
 .content {
-    .content-header {
+    @at-root .content-header {
         background-color: #fff;
         width: 100%;
         padding: 0 pxToRem(30px);
@@ -22,7 +22,7 @@
         .btn-wrapper {
             float: right;
             height: 100%;
-            .btn {
+            @at-root .btn {
                 font-size: pxToRem(30px);
                 color: rgba(51, 51, 51, 0.5);
                 display: inline-block;
@@ -44,6 +44,81 @@
                         width: 100%;
                         left: 0;
                     }
+                }
+            }
+        }
+    }
+    @at-root .list-all {
+        margin-top: pxToRem(20px);
+        .list-top {
+            margin-bottom: pxToRem(20px);
+            background-color: #fff;
+            padding-left: pxToRem(30px);
+            .top-item {
+                font-size: 0;
+                line-height: pxToRem(90px);
+                border-bottom: 1px solid $border-color;
+                .post-title {
+                    font-size: pxToRem(28px);
+                    color: $txt-color-black;
+                    display: inline-block;
+                    vertical-align: middle;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    width: pxToRem(630px);
+                }
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+            .top-label {
+                width: pxToRem(74px);
+                height: pxToRem(34px);
+                line-height: pxToRem(32px);
+                font-size: pxToRem(24px);
+                color: #ff8420;
+                border: 1px solid #ff8420;
+                margin-right: pxToRem(10px);
+                border-radius: pxToRem(4px);
+                display: inline-block;
+                vertical-align: middle;
+                text-align: center;
+            }
+        }
+        .btn-wrapper {
+            width: 100%;
+            border-bottom: 1px solid $border-color;
+            padding-left: pxToRem(30px);
+            background-color: #fff;
+            white-space: nowrap;
+            font-size: 0;
+            .btn {
+                width: 50%;
+                text-align: center;
+            }
+        }
+        .list-newpost,
+        .list-newreply {
+            padding-left: pxToRem(30px);
+            background-color: #fff;
+            .item-title {
+                font-size: 0;
+                font {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+                .level {
+                    color: $txt-color-grey;
+                    font-size: pxToRem(20px);
+                    width: pxToRem(120px);
+                    height: pxToRem(26px);
+                    line-height: pxToRem(26px);
+                    text-align: center;
+                    border-radius: pxToRem(13px);
+                    border: 1px solid #ccc;
+                    display: inline-block;
+                    vertical-align: middle;
                 }
             }
         }
