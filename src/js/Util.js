@@ -66,11 +66,8 @@
 
                     if (typeof obj[prop] === "object") {
                         var o = this.myExtend(obj[prop]);
-                        debugger
                         obj[prop] = o;
                     }
-
-
                     ob[prop] = obj[prop];
                 }
             }
