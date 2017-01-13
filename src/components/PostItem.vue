@@ -110,8 +110,15 @@ export default {
       color: $txt-color-grey;
       line-height: pxToRem(42px);
       margin-top: pxToRem(30px);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+
     }
   }
+
   .p-img {
     display: inline-block;
     width: pxToRem(240px);
