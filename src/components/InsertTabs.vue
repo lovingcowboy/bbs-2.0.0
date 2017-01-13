@@ -259,7 +259,7 @@ export default {
         //编辑投票
         if (this.postVote) {
           // let data = this.postVote
-          let data = Util.unFreeze(Util.myExtend(this.postVote));
+          let data = Util.myExtend(this.postVote);
           this.addVoteData = data
           // this.addVoteData = this.postVote
         } 

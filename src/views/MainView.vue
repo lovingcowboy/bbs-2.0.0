@@ -33,7 +33,7 @@
         <span :class="[{'active': tabType === 0}, 'tab']" @click="triggerTab(0)">热门</span>
         <span :class="[{'active': tabType === 1}, 'tab']" @click="triggerTab(1)">最新</span>
         <span :class="[{'active': tabType === 2}, 'tab']" @click="triggerTab(2)">精华</span>
-        <span class="tab-module" ><i class="icon-module"></i>板块</span>
+        <span class="tab-module" @click="triggerModules(1)"><i class="icon-module"></i>板块</span>
       </div>
       <div class="s-container" :style="{height: sHeight + 'px', transform: scrollX}">
       <div class="scroll-list">
@@ -147,6 +147,47 @@
     </div>
     </div>
       <i class="post-add" @click="goPost"></i>
+      <section class="message-dialog" v-show="showModules">
+        <div class="masker" @click="triggerModules(0)"></div>
+        <ul class="module-list" @click="goModuleList($event)">
+          <li class="p-module" data-id="0">
+            <i class="icon-module icon-module-invest"></i>
+            <span class="module-txt">投资交流</span>
+          </li>
+          <li class="p-module" data-id="1">
+            <i class="icon-module icon-module-hot"></i>
+            <span class="module-txt">热门活动</span>
+          </li>
+          <li class="p-module" data-id="2">
+            <i class="icon-module icon-module-question"></i>
+            <span class="module-txt">有问必答</span>
+          </li>
+          <li class="p-module" data-id="3">
+            <i class="icon-module icon-module-suggest"></i>
+            <span class="module-txt">团粉建言</span>
+          </li>
+          <li class="p-module" data-id="4">
+            <i class="icon-module icon-module-speak"></i>
+            <span class="module-txt">畅所欲言</span>
+          </li>
+          <li class="p-module" data-id="5">
+            <i class="icon-module icon-module-news"></i>
+            <span class="module-txt">财经新闻</span>
+          </li>
+          <li class="p-module" data-id="6">
+            <i class="icon-module icon-module-td-news"></i>
+            <span class="module-txt">团贷动态</span>
+          </li>
+          <li class="p-module" data-id="7">
+            <i class="icon-module icon-module-video"></i>
+            <span class="module-txt">团贷视频</span>
+          </li>
+          <li class="p-module" data-id="8">
+            <i class="icon-module icon-module-ceo"></i>
+            <span class="module-txt">CEO专栏</span>
+          </li>
+        </ul>
+      </section>
   </div>
 </template>
 
@@ -176,7 +217,8 @@ export default {
       scrollX: 'translateX(0)',
       hotList: [],
       newList: [],
-      essenceList: []
+      essenceList: [],
+      showModules: false
     }
   },
   computed: {
@@ -216,10 +258,13 @@ export default {
       // console.info(e.target.parentElement
       // console.info(e.target,e.target.getAttribute('dataid'))
       let obj = Util.getElemetByTarget(e.target, 'c-event', 'post-list')
-      // let parentObj = e.target.parentElement
-      let type = obj.getAttribute('data-type')
-      let id = obj.getAttribute('data-id')
-      if(!type) {
+        // let parentObj = e.target.parentElement
+        // let type = obj.getAttribute('data-type')
+        // let id = obj.getAttribute('data-id')
+      if (!obj) return
+      let type = obj.dataset.type
+      let id = obj.dataset.id
+      if (!type) {
         type = e.target.getAttribute('data-type')
         id = e.target.getAttribute('data-id')
       }
@@ -228,6 +273,23 @@ export default {
       } else if (type === 'itemclick') {
         this.goDetail(id)
       }
+    },
+    triggerModules (type) {
+      if (type === 0) {
+        this.showModules = false
+      } else {
+
+        this.showModules = true
+      }
+    },
+    goModuleList (e) {
+      let _module = Util.getElemetByTarget(e.target, 'p-module', 'p-module')
+      if (_module) {
+        let moduleId = _module.dataset.id
+        console.info(moduleId)
+        this.showModules = false
+      }
+
     }
   },
   beforeMount () {

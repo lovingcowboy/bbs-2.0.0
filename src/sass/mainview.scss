@@ -1,5 +1,6 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
+@import "../sass/modulesprite.scss";
 .u-info {
   width: 100%;
   height: pxToRem(166px);
@@ -410,4 +411,28 @@
   overflow: scroll;
   display: inline-block;
   // overflow-y: scroll;
+}
+.module-list {
+  width: 100%;
+  padding: pxToRem(60px) 0;
+  background-color: $color-white;
+  z-index: 999;
+  position: absolute;
+  bottom: 0;
+  font-size: 0;
+  &>li {
+    width: 33.3%;
+    // margin-top: pxToRem(90px);
+    text-align: center;
+    display: inline-block;
+    span {
+      width: 100%;
+      font-size: pxToRem(24px);
+      color: $txt-color-black;
+      margin-top: pxToRem(50px);
+    }
+  }
+  &>li:nth-child(n+4) {
+    margin-top: pxToRem(90px);
+  }
 }
