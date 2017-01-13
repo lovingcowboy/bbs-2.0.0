@@ -88,7 +88,7 @@
         }
         .btn-wrapper {
             width: 100%;
-            border-bottom: 1px solid $border-color;
+            
             padding-left: pxToRem(30px);
             background-color: #fff;
             white-space: nowrap;
@@ -96,6 +96,7 @@
             .btn {
                 width: 50%;
                 text-align: center;
+                border-bottom: 1px solid $border-color;
             }
         }
         .list-newpost,
