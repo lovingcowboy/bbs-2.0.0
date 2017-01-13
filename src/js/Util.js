@@ -36,7 +36,7 @@
     }
 
     let Util = {
-        unFreeze: function(obj) {
+        unFreeze: function(obj) { //解冻对象
             var ob = {};
 
             if (obj) {
@@ -53,7 +53,7 @@
             }
             return ob;
         },
-        myExtend: function(obj) { //扩展对象，并不影响原来的对象
+        freeze: function(obj) { //冻结对象
             var ob = {};
             if (Object.isFrozen(obj)) {
                 return obj;
@@ -65,7 +65,7 @@
                 for (let prop in obj) {
 
                     if (typeof obj[prop] === "object") {
-                        var o = this.myExtend(obj[prop]);
+                        var o = this.freeze(obj[prop]);
                         obj[prop] = o;
                     }
                     ob[prop] = obj[prop];
@@ -81,6 +81,9 @@
             });
 
             return Object.freeze(ob);
+        },
+        myExtend: function(obj, etdObj) { //扩展对象，并不影响原来的对象
+            return this.unFreeze(this.freeze(obj, etdObj));
         },
         getElemetByTarget: function(target, cls, until) {
             let result = target;
