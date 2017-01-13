@@ -29,7 +29,7 @@
             <div class="btn btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
             <div class="btn btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
           </div>          
-          <ul class="list-newpost">
+          <ul class="list-newpost post-list">
             <post-item v-for="(item, index) in newPostList" :data="item">
               <div class="item-title" slot="itemhead">
                 <span data-type="userclick" :data-id="item.id">
@@ -39,7 +39,7 @@
               </div>
             </post-item>
           </ul>
-          <ul class="list-newreply">
+          <ul class="list-newreply post-list">
             <post-item v-for="(item, index) in newReplyList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.id" >
@@ -50,7 +50,17 @@
           </post-item>
           </ul>
         </div>
-        <div class="list-essence" v-show="!isListAllActive"></div>
+        <ul class="list-essence post-list" v-show="!isListAllActive">
+            <post-item v-for="(item, index) in essenceList" :data="item">
+            <div class="item-title" slot="itemhead">
+              <span data-type="userclick" :data-id="item.id" >
+                <img src="../images/pai.png"><font>{{item.name}}</font><font class="level">{{item.level}}</font>
+              </span>
+              <span>{{item.time}}</span>
+            </div>
+          </post-item>
+          </ul>
+        
       </div>
     </div>
   </div>
@@ -75,6 +85,7 @@ export default {
       isListNewpostActive: true,
       newPostList: [],
       newReplyList: [],
+      essenceList: []
     }
   },
   methods: {
@@ -112,7 +123,7 @@ export default {
       }
       that.newPostList.push(item)
       that.newReplyList.push(item)
-
+      that.essenceList.push(item)
     }
   }
   
