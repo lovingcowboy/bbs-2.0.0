@@ -37,7 +37,7 @@
       <div class="masker" v-show="isShowDialog"></div>
       <div class="dialog-content">
         <div class="dialog-title">添加自定义留言</div>
-        <textarea class="reply-content" placeholder="请输入留言" v-model="msgAdd"></textarea>
+        <textarea class="reply-content" placeholder="请输入留言" v-model.trim="msgAdd"></textarea>
         <div class="btn-wrapper">
           <div class="btn-cancel" @click="onCancel">取消</div>
           <div class="btn-send" @click="onSave">保存</div>

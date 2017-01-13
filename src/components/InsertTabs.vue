@@ -43,12 +43,12 @@
 <header id="header" class="header-bar"><i class="icon-back" @click="completeAddVote('cancle')"></i>发帖</header>
   <section class="add-vote">
     <div class="v-title">
-      <input type="text" name="vtitle" placeholder="请输入投票标题" v-model="addVoteData.title"/>
+      <input type="text" name="vtitle" placeholder="请输入投票标题" v-model.trim="addVoteData.title"/>
     </div>
     <div class="v-option v-row" v-for="(opt, index) in addVoteData.options">
       <div @click="delVoteOption(index)"><i class="icon-del"></i></div>
       <div>
-        <input type="text" name="options" placeholder="请输入投票选项信息" v-model="addVoteData.options[index].text" :value="opt.text"/>
+        <input type="text" name="options" placeholder="请输入投票选项信息" v-model.trim="addVoteData.options[index].text" :value="opt.text"/>
       </div>
     </div>
     <div class="v-bottom v-row">
@@ -66,11 +66,13 @@ import Swipe from '../components/swipe'
 import SwipeItem from '../components/swipe-item'
 import { isApp } from '../filters'
 import Util from '../js/Util.js'
+import Toast from '../components/toast'
 export default {
 	name: 'insertTabs',
   components: {
     Swipe,
-    SwipeItem
+    SwipeItem,
+    Toast
   },
   data () {
     return {
@@ -302,9 +304,41 @@ export default {
           console.info('vote save edit')
           let data = this.addVoteData
           //去除空白项
-          data.options = data.options.filter((item, index) => {
-            return item.text != ''
-          })
+          // data.options = data.options.filter((item, index) => {
+          //   return item.text != ''
+          // })
+
+          if(!data.title || data.title === '') {
+            Toast({
+              message: '请填写投票题目'
+            })
+            return
+          }
+          if(data.options.length < 2) {
+            Toast({
+              message: '至少要有两个投票选项'
+            })
+            return
+          }
+          if(data.options.length > 25) {
+            Toast({
+              message: '最多支持25个选项'
+            })
+            return
+          }
+          let flag = true
+          for(let opt of data.options) {
+            if(opt.text === '') {
+              flag = false
+              break
+            }
+          }
+          if(!flag) {
+            Toast({
+              message: '投票选项不可为空'
+            })
+            return
+          }
           this.$emit('addVoteFunc', data)
           this.showVote = true
         }
@@ -320,6 +354,12 @@ export default {
       },
       delVoteOption(id) {
         //删除投票选项
+        if(this.addVoteData.options.length <= 2)  {
+          Toast({
+            message: '至少要有两个投票选项'
+          })
+          return
+        }
         this.addVoteData.options = this.addVoteData.options.filter((item, index) => {
           return item.id != id
         })

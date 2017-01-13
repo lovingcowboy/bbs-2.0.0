@@ -17,7 +17,7 @@
           <span><font>蓝枫：</font>太保守了，我估计20个亿太保守了，我估计20个亿太保守了，我估计20个亿</span>
         </div>
         <div class="r-input">
-          <textarea class="input-area" placeholder="请输入…" v-model="inputContent" id="inputMsg" @blur="blurFun"></textarea>
+          <textarea class="input-area" placeholder="请输入…" v-model.trim="replyData.content" id="inputMsg" @blur="blurFun"></textarea>
         </div>
       </div>
       <!-- <div class="insert-tabs">
@@ -26,11 +26,15 @@
         <i class="icon-vote">（投票）</i>
         <div class="btn-send btn-blue">发表</div>
       </div> -->
-      <insert-tabs
+       <insert-tabs
         :hasVote="false"
+        :imgList="imgList"
+        :addImg="addImg"
+        :canAddImg="canAddImg"
         @emotionClickFunc="insertEmo"
-        @imgClickFunc="insertImg"
+        @imgDelFunc="delImg"
         @btnClickFunc="postReply"
+        @addImgFunc="addImgFunc"
       ></insert-tabs>
     </div>
     </div>
@@ -52,10 +56,16 @@ export default {
   data () {
     return {
       isScrollActive: true,
-      inputContent: '',
       selectPostion: {
         selectionStart: 0,
         selectionEnd: 0
+      },
+      imgList: [],
+      addImg: true, //是否显示添加图片图标
+      canAddImg: true, //web端是否可上传图片
+      comstart: false,
+      replyData: {
+        content: ''
       }
     }
   },
@@ -63,49 +73,53 @@ export default {
    
   },
   methods: {
-    headerRightBtnFun () {
-      console.info('11111')
-    },
-    blurFun(event) {
-      let $target = event.currentTarget;
-      if ($target.selectionStart || $target.selectionStart == '0') {
-        this.selectPostion = {
-          'selectionStart': $target.selectionStart,
-          'selectionEnd': $target.selectionEnd
-        }
+    headerRightBtnFun() {
+        console.info('11111')
+      },
+      blurFun(event) {
+        let $target = event.currentTarget;
+        if ($target.selectionStart || $target.selectionStart == '0') {
+          this.selectPostion = {
+            'selectionStart': $target.selectionStart,
+            'selectionEnd': $target.selectionEnd
+          }
 
-      }
-    },
-    insertEmo (code) {
-      // console.info('insertEmo-----', code)
-      let that = this;
-      if (code === "close") {
-        let _cont = that.inputContent;
-        that.inputContent = _cont.substring(0, _cont.length - 1);
-        return;
-      }
-      console.log(that.inputContent);
-      let $t = document.querySelector('#inputMsg');
-      let  startPos = that.selectPostion.selectionStart,
-        endPos = that.selectPostion.selectionEnd,
-        content = that.inputContent;
-      that.inputContent = content.substring(0, startPos) + code + content.substring(endPos, $t.value.length);
-      // this.focus();
-
-      Vue.nextTick(function() {
-        that.selectPostion = {
-          "selectionStart": startPos + code.length,
-          "selectionEnd": startPos + code.length
         }
-      });
-    },
-    insertImg () {
-      console.info('insertImg------')
-    },
-    postReply () {
-      console.info('postReply-------')
-      window.history.back()
-    }
+      },
+      insertEmo(code) {
+        // console.info('insertEmo-----', code)
+        //插入表情
+        let that = this
+        if (code === "close") {
+          let _cont = that.replyData.content
+          that.replyData.content = _cont.substring(0, _cont.length - 1)
+          return
+        }
+        console.log(that.replyData.content)
+        let $t = document.querySelector('#inputMsg')
+        let startPos = that.selectPostion.selectionStart,
+          endPos = that.selectPostion.selectionEnd,
+          content = that.replyData.content
+        that.replyData.content = content.substring(0, startPos) + code + content.substring(endPos, $t.value.length)
+          // this.focus()
+
+        Vue.nextTick(function() {
+          that.selectPostion = {
+            "selectionStart": startPos + code.length,
+            "selectionEnd": startPos + code.length
+          }
+        })
+      },
+      addImgFunc () {
+
+      },
+      delImg() {
+        console.info('delImg------')
+      },
+      postReply() {
+        console.info('postReply-------')
+        window.history.back()
+      }
   },
   beforeMount () {
     let that = this;

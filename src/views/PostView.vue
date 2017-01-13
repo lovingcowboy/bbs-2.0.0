@@ -18,10 +18,10 @@
         </p>
         <div class="p-form">
           <div class="p-title">
-            <input type="text" name="pTitle" placeholder="帖子标题" class="i-title" v-model="post.title" @input="titleChangeFun" @compositionstart="compositionstartFun" @compositionend="compositionendFun">
+            <input type="text" name="pTitle" placeholder="帖子标题" class="i-title" v-model.trim="post.title" @input="titleChangeFun" @compositionstart="compositionstartFun" @compositionend="compositionendFun">
           </div>
           <div class="p-content">
-            <textarea placeholder="帖子内容" class="i-content" id="postContent" v-model="post.content" @blur="blurFun" ></textarea>
+            <textarea placeholder="帖子内容" class="i-content" id="postContent" v-model.trim="post.content" @blur="blurFun" ></textarea>
           </div>
         </div>
       </div>

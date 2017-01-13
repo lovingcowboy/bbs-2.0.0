@@ -7,6 +7,9 @@
     padding: pxToRem(80px) pxToRem(30px) 0 pxToRem(30px);
     font-size: 0;
 }
+.scroll {
+    background-color: $color-white;
+}
 
 .item-type {
     width: 100%;

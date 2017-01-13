@@ -143,7 +143,7 @@
     background-color: #fff;
     margin-top: pxToRem(20px);
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .rm-tabs {
@@ -185,7 +185,7 @@
         display: inline-block;
         vertical-align: text-top;
         // max-height: pxToRem(500px);
-        overflow-y: scroll;
+        overflow-y: auto;
         &>li {
             padding: pxToRem(40px) 0;
             font-size: 0;
