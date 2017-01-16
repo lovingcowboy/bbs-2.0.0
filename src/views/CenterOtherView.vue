@@ -45,13 +45,13 @@
               <span class="icon-prize"></span>
               <font>{{userInfo.prestige}}威望</font>
             </div>
-            <div class="btn-message">发消息</div>
+            <div class="btn-message" @click='onSendMsg'>发消息</div>
           </div>
         </div>
         <div class="dynamic">
           <div class="label">TA的动态</div>
-           <ul class="post-list">
-            <post-item v-for="(item, index) in postList" :data="item" v-on:onItemClick="goDetail(item.id)">
+           <ul class="post-list" @click="goPostDetail">
+            <post-item v-for="(item, index) in postList" :data="item" >
               <div class="item-title" slot="itemhead">
                 <span data-type="userclick" :data-id="item.id" class="c-event">
                   <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
@@ -70,6 +70,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
+import Util from '../js/Util.js'
 export default {
   components: {
     Zheader,
@@ -99,7 +100,19 @@ export default {
     }
   },
   methods: {
-   
+   onSendMsg(){
+    let id = "12";
+    let url = '/user/messagedetail/' + id
+    this.$router.push(url)
+   },
+   goPostDetail(e) {
+      /*let obj = Util.getElemetByTarget(e.target, 'post-row', 'post-list');  //获取点击到的帖子item
+      if (!obj) return
+      let id = obj.dataset.id   //获取到id
+      
+      var url = '/postdetail/' + id
+      this.$router.push(url)*/
+   }
   },
   beforeMount () {
 

@@ -168,7 +168,7 @@ export default {
       }
     },
     goMessageDetail(id) {
-       var url = '/user/messagedetail/' + id
+      let url = '/user/messagedetail/' + id
       this.$router.push(url)
     }
   },

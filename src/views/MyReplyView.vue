@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-       <div class="reply-list">
+       <div class="reply-list"  @click="goPostDetail">
          <div class="reply-item">
           <div class="line01 reply-body">
             团贷网大踏步走在紧拥监管，跨越发展之路上, 团贷网大踏步走在紧拥监管，跨越发展之路上,团贷网大踏步走在紧拥监管，跨越发展之路上
@@ -92,7 +92,11 @@ export default {
     }
   },
   methods: {
-   
+   goPostDetail() {
+    let id = "1";
+    let url = '/postdetail/' + id
+    this.$router.push(url)
+   }
   },
   beforeMount () {
 

@@ -49,13 +49,13 @@ export default {
   &>li:not(:last-child) {
     border-bottom: 1px solid $border-color;
   }
+   .post-row {
+    width: 100%;
+    padding: pxToRem(40px) pxToRem(30px) pxToRem(40px) 0;
+    white-space: normal;
+  }
 }
-.post-row {
-  width: 100%;
-  padding: pxToRem(40px) pxToRem(30px) pxToRem(40px) 0;
-  white-space: normal;
-  
-}
+
 .item-title {
   height: pxToRem(42px);
   line-height: pxToRem(42px);
@@ -79,7 +79,7 @@ export default {
     width: pxToRem(42px);
     height: pxToRem(42px);
     border-radius: pxToRem(42px);
-    vertical-align: top;
+    vertical-align: middle;
     margin-right: pxToRem(20px);
   }
  
@@ -141,8 +141,7 @@ export default {
     line-height: pxToRem(22px);
     background-repeat: no-repeat;
     background-position: left;
-  }
-  
+  } 
 }
 
 </style>

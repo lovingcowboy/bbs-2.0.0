@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-      <ul class="collection-list post-list">
+      <ul class="collection-list post-list"  @click="goPostDetail">
         <post-item v-for="(item, index) in collectionList" :data="item">
           <div class="item-title" slot="itemhead">
             <span data-type="userclick" :data-id="item.id">
@@ -43,7 +43,14 @@ export default {
     }
   },
   methods: {
-   
+   goPostDetail(e) {
+    let obj = Util.getElemetByTarget(e.target, 'post-row', 'post-list');  //获取点击到的帖子item
+      if (!obj) return
+      let id = obj.dataset.id   //获取到id
+      
+      var url = '/postdetail/' + id
+      this.$router.push(url)
+   }
   },
   beforeMount () {
     let that = this
