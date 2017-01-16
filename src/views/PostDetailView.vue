@@ -143,6 +143,7 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
+import service from '../services'
 export default {
   name: 'postDetail',
   components: {
@@ -256,6 +257,39 @@ export default {
       item.percentage = (item.count / total * 100) + '%'
     })
     // console.info(that.voteData)
+  // service.postData('/v1/task/index.html', {'device_id': window.sessionStorage['deviceId']})
+  //     .then((response) => {
+  //       console.info('response-------', response)
+  //       let _body = response.body
+  //       if (_body.code === 200) {
+  //         let _data = _body.data
+  //         that.curTasks = _data.cur_task
+  //         that.finishTasks = _data.finish_task
+  //         that.futureTasks = _data.future_task
+  //         that.dayMoney = _data.day_money
+  //         let myMission = _data.cur_task.filter(function (item) {
+  //           return item.IsDoing === 1 && item.Type === 'test'
+  //         })
+  //         if (myMission.length > 0) {
+  //           that.hasDoing = true
+  //           that.intervalTime = myMission[0].IntervalTime * 60000
+  //           // console.info('myMission--------', that.intervalTime)
+  //           // that.time = that.timeFormate(that.intervalTime)
+  //           that.interval = setInterval(function () {
+  //             if (that.intervalTime >= 1000) {
+  //               that.time = that.timeFormate(that.intervalTime)
+  //               that.intervalTime -= 1000
+  //             } else {
+  //               that.time = '00:00'
+  //               clearInterval(that.interval)
+  //             }
+  //           }, 1000)
+  //         }
+  //       }
+  //     },
+  //     (response) => {
+  //       console.log(response)
+  //     })
    
   },
   mounted () {
@@ -264,7 +298,7 @@ export default {
     this.tabsOffsetTop = document.querySelector('.rm-tabs').offsetTop
     // this.rmHeight = document.documentElement.offsetHeight - 110 + 'px'
     this.rmHeight = document.documentElement.offsetHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight + 20 + 'px'
-  }
+  },
 
 
 }
