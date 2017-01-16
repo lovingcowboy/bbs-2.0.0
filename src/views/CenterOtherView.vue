@@ -51,7 +51,14 @@
         <div class="dynamic">
           <div class="label">TA的动态</div>
            <ul class="post-list">
-            <post-item v-for="(item, index) in postList" :data="item" v-on:onItemClick="goDetail(item.id)"></post-item>
+            <post-item v-for="(item, index) in postList" :data="item" v-on:onItemClick="goDetail(item.id)">
+              <div class="item-title" slot="itemhead">
+                <span data-type="userclick" :data-id="item.id" class="c-event">
+                  <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}}
+                </span>
+                <span>{{item.time}}</span>
+              </div>
+            </post-item>
           </ul>
         </div>
       </div>
