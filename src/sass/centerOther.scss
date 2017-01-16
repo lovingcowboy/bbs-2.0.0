@@ -126,11 +126,12 @@
     width: 100%;
     background-color: $color-white;
     padding-top: pxToRem(40px);
-    padding-left: pxToRem(30px);
+    // padding-left: pxToRem(30px);
     .label {
         font-size: pxToRem(30px);
         color: $txt-color-black;
         margin-bottom: pxToRem(20px);
+        padding-left: pxToRem(30px);
         &:before {
             border-left: pxToRem(8px) solid $txt-color-blue;
             content: "";
