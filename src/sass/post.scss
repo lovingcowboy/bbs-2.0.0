@@ -38,10 +38,17 @@
 		}
 	}
 }
+.ml-container {
+	width: 100%;
+	height: pxToRem(90px);
+	overflow: hidden;
+	// border-bottom: 1px solid $border-color;
+}
 .msg-cont {
 	white-space: nowrap;
 	overflow: auto;
-	border-bottom: 1px solid $border-color;
+	height: pxToRem(96px);
+	margin-top: 0 !important;
 	&>i:first-child {
 		margin-left: pxToRem(30px);
 	}
@@ -56,6 +63,7 @@
 .p-form {
 	width: 100%;
 	padding-left: pxToRem(30px);
+	border-top: 1px solid $border-color;
 	.p-title {
 		width: 100%;
 		height: pxToRem(90px);

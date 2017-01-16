@@ -13,9 +13,11 @@
     <div class="content" >
       <div class="pc">
         <p class="p-txt1"><span>选择版块</span><span @click="showRule">发帖规则</span></p>
-        <p class="msg-cont">
-            <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="selectModule(item.name, index)" :class="{'active': moduleActive == index}">{{item.name}}</i>
-        </p>
+        <div class="ml-container">
+          <p class="msg-cont">
+              <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="selectModule(item.name, index)" :class="{'active': moduleActive == index}">{{item.name}}</i>
+          </p>
+        </div>
         <div class="p-form">
           <div class="p-title">
             <input type="text" name="pTitle" placeholder="帖子标题" class="i-title" v-model.trim="post.title" @input="titleChangeFun" @compositionstart="compositionstartFun" @compositionend="compositionendFun">
