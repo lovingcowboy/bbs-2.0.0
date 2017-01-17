@@ -35,7 +35,7 @@
         <span :class="[{'active': tabType === 2}, 'tab']" @click="triggerTab(2)">精华</span>
         <span class="tab-module" @click="triggerModules(1)"><i class="icon-module"></i>板块</span>
       </div>
-      <div class="s-container" :style="{height: sHeight + 'px', transform: scrollX}">
+      <div class="s-container" :style="{height: sHeight + 'rem', transform: scrollX}">
       <div class="scroll-list">
         <div class="recommend-cont">
           <div class="r-title">
@@ -320,7 +320,8 @@ export default {
   },
   mounted () {
     let that = this
-    this.sHeight = document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop
+    this.sHeight = Util.pxToRem(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop);
+    console.log(this.sHeight)
     for (let i = 0; i < 5; i++) {
       let item = {
         name: '神采飞扬',
