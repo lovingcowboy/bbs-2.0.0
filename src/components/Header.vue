@@ -45,7 +45,17 @@
     color: #212121;
     font-size: pxToRem(40px);
     z-index: 888;
-    border-bottom: 1px solid $border-color;
+    transform: translateZ(0px);
+    &:after {
+      content: "";
+      position: absolute;
+      border-bottom: 1px solid $border-color;
+      left: 0;
+      right: 0;
+      bottom: pxToRem(1px);
+      z-index: 999;
+      transform: translateZ(0px);
+    }
     .icon-back {
       position: absolute;
       top: 0;
