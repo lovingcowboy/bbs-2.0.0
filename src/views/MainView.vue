@@ -40,7 +40,7 @@
         <div class="recommend-cont">
           <div class="r-title">
             <span>小编推荐</span>
-            <span>更多<i class="icon-arrow-grey"></i></span>
+            <span @click="goRecomment">更多<i class="icon-arrow-grey"></i></span>
           </div>
           <ul class="swiper-container">
             <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts">
@@ -302,6 +302,9 @@ export default {
     afterLeave () {
       // console.info('afterLeave-----', new Date().getTime())
       this.showModulesContainer = false
+    },
+    goRecomment () {
+      this.$router.push('/recomment')
     }
   },
   beforeMount () {

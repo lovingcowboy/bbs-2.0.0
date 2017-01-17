@@ -28,6 +28,7 @@ body {
     background-color: $color-white-light;
     padding-top: pxToRem(90px);
 }
+
 .scroll.isApp {
     padding-top: 0;
 }
@@ -316,3 +317,15 @@ input::-webkit-inner-spin-button {
     width: 0;
 }
 
+.level {
+    color: $txt-color-grey;
+    font-size: pxToRem(20px);
+    width: pxToRem(120px);
+    height: pxToRem(26px);
+    line-height: pxToRem(26px);
+    text-align: center;
+    border-radius: pxToRem(13px);
+    border: 1px solid #ccc;
+    display: inline-block;
+    vertical-align: middle;
+}

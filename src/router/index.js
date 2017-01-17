@@ -17,10 +17,12 @@ import ReplyView from '../views/ReplyView.vue'
 import MarkView from '../views/MarkView.vue'
 import PostView from '../views/PostView.vue'
 import SessionListView from '../views/SessionListView.vue'
+import RecommentView from '../views/RecommentView.vue'
 const router = new Router({
   mode: 'hash',
   routes: [
     {path: '/main', name: 'main', component: MainView},
+    {path: '/recomment', name: 'recomment', component: RecommentView},
     {path: '/postdetail/:id', name: 'postdetail', component: PostDetailView},
     {path: '/postdetail/reply/:id', name: 'reply', component: ReplyView},
     {path: '/postdetail/mark/:id', name: 'mark', component: MarkView},
