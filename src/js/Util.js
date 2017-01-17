@@ -36,6 +36,19 @@
     }
 
     let Util = {
+        pxToRem: function(px, basePx) {
+            var basePx = basePx || 75;
+
+            return px / basePx;
+        },
+        remToPx: function(rem, basePx) {
+            var basePx = basePx || parseInt(document.querySelector("html").style.fontSize);
+
+            return rem * basePx;
+        },
+        pxToPx: function(px, basePx) {
+            return this.remToPx(this.pxToRem(px, basePx), basePx);
+        },
         unFreeze: function(obj) { //解冻对象
             var ob = {};
 

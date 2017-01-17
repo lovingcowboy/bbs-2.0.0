@@ -48,6 +48,16 @@
             }
         }
     }
+    @at-root #outerWrapper {
+        position: absolute;
+        top: pxToRem(92px);
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 999;
+        overflow: hidden;
+        min-height: auto;
+    }
     @at-root .list-all {
         margin-top: pxToRem(20px);
         .list-top {
@@ -86,23 +96,52 @@
                 text-align: center;
             }
         }
-        .btn-wrapper {
+        @at-root .sticky-header {
             width: 100%;
-            
             padding-left: pxToRem(30px);
             background-color: #fff;
             white-space: nowrap;
             font-size: 0;
-            .btn {
+            &.sticky {
+                position: absolute;
+                top: pxToRem(180px);
+                left: 0;
+                background-color: $color-white;
+                z-index: 999;
+            }
+            & > div {
                 width: 50%;
                 text-align: center;
+                font-size: pxToRem(30px);
+                color: rgba(51, 51, 51, 0.5);
+                display: inline-block;
+                line-height: pxToRem(92px);
+                position: relative;
                 border-bottom: 1px solid $border-color;
+                &.active {
+                    color: $txt-color-blue;
+                }
             }
         }
         .list-newpost,
         .list-newreply {
             padding-left: pxToRem(30px);
             background-color: #fff;
+            /* position: absolute;
+            top: pxToRem(314px);
+            bottom: 0;
+            left: 0; */
+            position: relative;
+            width: 100%;
+            z-index: 999;
+            overflow: hidden;
+            min-height: auto;
+            // li:first-child {
+            //     border-top: 1px solid $border-color;
+            // }
+            li:last-child {
+                border-bottom: 1px solid $border-color;
+            }
             .item-title {
                 font-size: 0;
                 font {
@@ -126,7 +165,10 @@
     }
     .list-essence {
         li:first-child {
-        border-top: 1px solid $border-color;
+            border-top: 1px solid $border-color;
+        }
+        li:last-child {
+            border-bottom: 1px solid $border-color;
         }
     }
 }
