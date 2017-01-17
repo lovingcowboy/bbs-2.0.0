@@ -28,8 +28,10 @@
                 display: inline-block;
                 line-height: pxToRem(92px);
                 position: relative;
+                width: pxToRem(80px);
+                text-align: center;
                 &.btn-all {
-                    margin-right: pxToRem(84px);
+                    margin-right: pxToRem(74px);
                 }
                 &.btn-essence {
                     margin-right: pxToRem(20px);
@@ -49,10 +51,10 @@
         }
     }
     @at-root #outerWrapper {
-        position: absolute;
+       /*  position: absolute;
         top: pxToRem(92px);
         bottom: 0;
-        left: 0;
+        left: 0; */
         width: 100%;
         z-index: 999;
         overflow: hidden;
@@ -104,10 +106,11 @@
             font-size: 0;
             &.sticky {
                 position: absolute;
-                top: pxToRem(180px);
+                top: pxToRem(-1px);
                 left: 0;
                 background-color: $color-white;
-                z-index: 999;
+                z-index: 777;
+                // border-top: 1px solid $border-color;
             }
             & > div {
                 width: 50%;

@@ -8,18 +8,16 @@
       :show="true">
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
-      <div class="content">
-        <div class="content-header">
-          <div class="session-name">{{session}}</div>
-          <div class="btn-wrapper" @click="onSwitchAllList">
-            <div class="btn btn-all" :class="{'active': isListAllActive}">全部</div>
-            <div class="btn btn-essence" :class="{'active': !isListAllActive}">精华</div>
-          </div>
-        </div>
-        <div class="">
-        </div>
-        <div class="listwrap wrapper" id="outerWrapper">
+      <div class="content wrapper" id="outerWrapper">
+        <!-- <div class="listwrap wrapper" id="outerWrapper"> -->
           <ul class="scroller">
+            <div class="content-header">
+              <div class="session-name">{{session}}</div>
+              <div class="btn-wrapper" @click="onSwitchAllList">
+                <div class="btn btn-all" :class="{'active': isListAllActive}">全部</div>
+                <div class="btn btn-essence" :class="{'active': !isListAllActive}">精华</div>
+              </div>
+            </div>
             <div class="list-all" v-show="isListAllActive">
               <div class="list-top">
                 <div class="top-item post-row">
@@ -29,7 +27,7 @@
                   <font class="top-label">置顶</font><font class="post-title">红包不在多，能匹配合适资金用上最好。红包不在多，能匹配合适资金用上最好。</font>
                 </div>
               </div>
-              <div class="btn-wrapper sticky-header" @click="onSwitchList">
+              <div class="btn-wrapper sticky-header" @click="onSwitchList" :style="{visibility: showFloat == true ? 'hidden' : 'visible'}">
                 <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
                 <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
               </div>          
@@ -65,13 +63,15 @@
             </post-item>
             </ul>
           </ul>
+          <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList">
+            <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
+            <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
+          </div>
         </div>
-      </div>
+      <!-- </div> -->
+
     </div>
-    <div class="btn-wrapper sticky-header sticky" v-show="showFloat" @click="onSwitchList">
-      <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
-      <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
-    </div>
+   
   </div>
 </template>
 
@@ -100,16 +100,22 @@ export default {
     }
   },
   methods: {
-   onSwitchAllList(e) {
-      let target = e.target;
-      let prevClass = target._prevClass;
-      if(prevClass.indexOf("btn-essence") !== -1) {
-        this.isListAllActive = false;
-      } else if(prevClass.indexOf("btn-all") !== -1) {
-        this.isListAllActive = true;
-      }
+   onSwitchAllList(e) { //切换全部、精华列表
+    let that = this;
+    let target = e.target;
+    let prevClass = target._prevClass;
+    if(prevClass.indexOf("btn-essence") !== -1) {
+      this.isListAllActive = false;
+    } else if(prevClass.indexOf("btn-all") !== -1) {
+      this.isListAllActive = true;
+    }
+ 
+    setTimeout(function() { //延迟刷新iscroll
+      that.outerIScroll && that.outerIScroll.refresh();
+    }, 200)
+      
    },
-   onSwitchList(e) {
+   onSwitchList(e) {  //切换最新发表跟最新回复
       let target = e.target;
       let prevClass = target._prevClass;
       if(prevClass.indexOf("btn-newpost") !== -1) {
@@ -129,17 +135,18 @@ export default {
     });
 
     that.outerIScroll.on('scroll', function() {
-      console.log(this.y)
-      console.log(Util.pxToPx(218));
-      if(Math.abs(this.y) >= Util.pxToPx(218)) {
+      if(!that.isListAllActive) {  //如果不是在全部列表页面，则不做操作
+        return;
+      }
+      if(Math.abs(this.y) >= Util.pxToPx(316)) {
       
         that.showFloat = true
        
       } else {
+
         that.showFloat = false
        
       }
-    
     });
    }
   },
