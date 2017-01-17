@@ -37,7 +37,7 @@
 
     let Util = {
         pxToRem: function(px, basePx) {
-            var basePx = basePx || 75;
+            var basePx = basePx || parseInt(document.querySelector("html").style.fontSize) || 75;
 
             return px / basePx;
         },
