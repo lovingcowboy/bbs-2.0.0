@@ -1,5 +1,6 @@
 import Bbsbridge from '../lib/bbsbridge.js';
 import OpenAPI from '../../services/openapi.js';
+import service from '../../services'
 import Toast from '../../components/toast/index.js';
 
 
@@ -39,8 +40,52 @@ var Validate = {
 		if (me.requesting) {
 			return;
 		}
+		services.postData('/app/index.php', {
+			version: 4,
+			module: "member",
+			action: 'app_login',
+			v_token: loginToken,
+		}).then((response) => {
+			let v_data = response.body
+			console.info("login---bbsAppLogin--", v_data);
+			if (v_data.code == "200") {
+				// window.sessionStorage['uid'] = v_data.data.member.uid;
+				if (window.mySessionStorage) {
+					window.mySessionStorage['uid'] = v_data.data.member.uid;
+				} else {
+					window.sessionStorage['uid'] = v_data.data.member.uid;
+				}
+				if (callback && typeof callback == "function") {
+					callback.apply(this, arguments);
+				}
+				Toast('同步数据成功');
 
-		$.ajax({
+			} else {
+				// window.sessionStorage['uid'] = "";
+				if (window.mySessionStorage) {
+					window.mySessionStorage['uid'] = "";
+				} else {
+					window.sessionStorage['uid'] = "";
+				}
+				console.info("login fail------", v_data.message);
+				Toast(v_data.message);
+				if (callback && typeof callback == "function") {
+					callback.apply(this, arguments);
+				}
+			}
+		}, (response) => {
+			Toast("同步数据失败！");
+			if (window.mySessionStorage) {
+				window.mySessionStorage['uid'] = "";
+			} else {
+				window.sessionStorage['uid'] = "";
+			}
+			if (callback && typeof callback == "function") {
+				callback.apply(this, arguments);
+			}
+		})
+
+		/*$.ajax({
 			url: OpenAPI.value + "/app/index.php",
 			type: 'post',
 			dataType: 'json',
@@ -92,27 +137,25 @@ var Validate = {
 			complete: function(request, status) {
 				me.requesting = false;
 			}
-		});
+		});*/
 	},
-	bbsWebLogin: function() {
+	bbsWebLogin: function(callback) {
+		// debugger;
 		var tuandaiCookie = this.getCookie('tuandaiw');
 		if (!tuandaiCookie) {
+			if (callback && typeof callback == "function") {
+				callback.apply(this, arguments);
+			}
 			return;
 		}
-		$.ajax({
-			url: OpenAPI.value + "/app/index.php",
-			type: 'post',
-			dataType: 'json',
-			data: {
+		service.postData('/app/index.php', {
 				version: 4,
 				module: "member",
 				action: 'login',
-				tuandaiwang_cookie: tuandaiCookie,
-			},
-			beforeSend: function() {
-				Toast('用户信息同步中，请稍候...');
-			},
-			success: function(v_data) {
+				tuandaiwang_cookie: tuandaiCookie
+			}).then((response) => {
+				let v_data = response.body
+					// debugger;
 				console.info("--bbsWebLogin====data--", v_data);
 				if (v_data.code == "200") {
 					// window.sessionStorage['uid'] = v_data.data.member.uid;
@@ -121,7 +164,7 @@ var Validate = {
 					} else {
 						window.sessionStorage['uid'] = v_data.data.member.uid;
 					}
-					Toast('同步数据成功');
+					// Toast('同步数据成功');
 				} else {
 					// window.sessionStorage['uid'] = "";
 					if (window.mySessionStorage) {
@@ -132,16 +175,64 @@ var Validate = {
 					console.info("login fail------", v_data.message);
 					Toast(v_data.message);
 				}
-			},
-			error: function(e) {
+				if (callback && typeof callback == "function") {
+					callback.apply(this, arguments);
+				}
+			}, (response) => {
 				Toast('同步数据失败！');
 				if (window.mySessionStorage) {
 					window.mySessionStorage['uid'] = "";
 				} else {
 					window.sessionStorage['uid'] = "";
 				}
-			}
-		});
+				if (callback && typeof callback == "function") {
+					callback.apply(this, arguments);
+				}
+			})
+			/*
+			$.ajax({
+				url: OpenAPI.value + "/app/index.php",
+				type: 'post',
+				dataType: 'json',
+				data: {
+					version: 4,
+					module: "member",
+					action: 'login',
+					tuandaiwang_cookie: tuandaiCookie,
+				},
+				beforeSend: function() {
+					Toast('用户信息同步中，请稍候...');
+				},
+				success: function(v_data) {
+					console.info("--bbsWebLogin====data--", v_data);
+					if (v_data.code == "200") {
+						// window.sessionStorage['uid'] = v_data.data.member.uid;
+						if (window.mySessionStorage) {
+							window.mySessionStorage['uid'] = v_data.data.member.uid;
+						} else {
+							window.sessionStorage['uid'] = v_data.data.member.uid;
+						}
+						Toast('同步数据成功');
+					} else {
+						// window.sessionStorage['uid'] = "";
+						if (window.mySessionStorage) {
+							window.mySessionStorage['uid'] = "";
+						} else {
+							window.sessionStorage['uid'] = "";
+						}
+						console.info("login fail------", v_data.message);
+						Toast(v_data.message);
+					}
+				},
+				error: function(e) {
+					Toast('同步数据失败！');
+					if (window.mySessionStorage) {
+						window.mySessionStorage['uid'] = "";
+					} else {
+						window.sessionStorage['uid'] = "";
+					}
+				}
+			});*/
 	},
 	setTitle: function(titleParams) {
 		console.info("----kkk--", titleParams);
@@ -159,7 +250,7 @@ var Validate = {
 	2，app跳转到bbs时， url地址中没有带有loginToken参数，通过原生的BBSLoginToken回调返回的loginToken登录；
 	3，通过原生BBSToken回调获取到的data为空时，bbs登录采用触屏版登录方式；
 	*/
-	getLoginInfo: function() {
+	getLoginInfo: function(callback) {
 		var me = this;
 		let dataReturn; //app的loginToken回调是否返回空数据 0表示返回空
 		if (window.mySessionStorage) {
@@ -168,7 +259,7 @@ var Validate = {
 			dataReturn = window.sessionStorage['dataReturn'];
 		}
 		console.info("dataReturn-----", dataReturn);
-		//无法从app的loginToken回调中获取loginToken时，采用触屏 版登录
+		//无法从app的loginToken回调中获取loginToken时，采用触屏版登录
 		if (Bbsbridge.isNewVersion() && dataReturn != 0) {
 			var bbs_token = me.getParam("t");
 			var bbs_status = me.getParam("s");
@@ -195,7 +286,7 @@ var Validate = {
 			if (bbs_status) {
 				if (bbs_status == 1) {
 					//app已登录并获取到loginToken
-					me.bbsAppLogin(bbs_token, null);
+					me.bbsAppLogin(bbs_token, callback);
 					if (window.mySessionStorage) {
 						window.mySessionStorage['v_token'] = bbs_token;
 					} else {
@@ -204,7 +295,7 @@ var Validate = {
 					window.isAppLogined = true;
 				} else if (bbs_status == 2) {
 					//app已登录，但是未获取到loginToken
-					window.isAppLogined = false;
+					// window.isAppLogined = false;
 					if (window.mySessionStorage) {
 						window.mySessionStorage['v_token'] = "";
 						window.mySessionStorage['dataReturn'] = 0;
@@ -213,13 +304,16 @@ var Validate = {
 						window.sessionStorage['dataReturn'] = 0;
 					}
 					window.isAppLogined = true;
+					console.info('app is logined, but can not get loginToken')
+					callback();
 				}
-				
-			} else {
+
+			}
+			/*else {
 				//获取app返回的loginToken登录
 				Bbsbridge.appBbsLifeHook(function(data) {
 					console.info("lifehook----data-----", data);
-					
+
 					if (data) {
 						data = JSON.parse(data);
 						var returncode = data.ReturnCode;
@@ -242,7 +336,7 @@ var Validate = {
 							}
 							if (!uid) {
 								//防止app转入后台后重新访问重复调用接口
-								me.bbsAppLogin(v_token, null);
+								me.bbsAppLogin(v_token, callback);
 							}
 						} else {
 							var message = data.ReturnMessage;
@@ -269,37 +363,40 @@ var Validate = {
 							window.sessionStorage['v_token'] = "";
 							window.sessionStorage['dataReturn'] = 0;
 						}
+						callback();
 					}
 
 				});
-			}
+			}*/
 		} else {
-			me.bbsWebLogin();
+			me.bbsWebLogin(callback);
 		}
 
 	},
 	openLogin: function(ReturnUrl, callback) {
 		var me = this;
-		let dataReturn;
-		if (window.mySessionStorage) {
-			dataReturn = window.mySessionStorage['dataReturn'];
+		// let dataReturn;
+		// if (window.mySessionStorage) {
+		// 	dataReturn = window.mySessionStorage['dataReturn'];
+		// } else {
+		// 	dataReturn = window.sessionStorage['dataReturn'];
+		// }
+		if (Bbsbridge.isNewVersion()) {
+			// let v_token;
+			// if (window.mySessionStorage) {
+			// 	v_token = window.mySessionStorage['v_token'];
+			// } else {
+			// 	v_token = window.sessionStorage['v_token'];
+			// }
+			// if (v_token) {
+			// 	me.bbsAppLogin(v_token, callback);
+			// 	// alert('获取用户信息失败，请稍后重试！');
+			// } else {
+			// 	Bbsbridge.toAppLogin();
+			// }
+			Bbsbridge.toAppLogin();
 		} else {
-			dataReturn = window.sessionStorage['dataReturn'];
-		}
-		if (Bbsbridge.isNewVersion() && dataReturn != 0) {
-			let v_token;
-			if (window.mySessionStorage) {
-				v_token = window.mySessionStorage['v_token'];
-			} else {
-				v_token = window.sessionStorage['v_token'];
-			}
-			if (v_token) {
-				me.bbsAppLogin(v_token, callback);
-				// alert('获取用户信息失败，请稍后重试！');
-			} else {
-				Bbsbridge.toAppLogin();
-			}
-		} else {
+			ReturnUrl = ReturnUrl ? ReturnUrl : window.location.href;
 			ReturnUrl = encodeURIComponent(ReturnUrl);
 			//https://m.tuandai.com/user/login.aspx?UrlType=json&ReturnUrl={Url:"http://bbs87.tuandai.com:8080/index.php?code=2323&value=2323232"}
 			window.location.href = "https://m.tuandai.com/user/login.aspx?ReturnUrl=" + ReturnUrl;

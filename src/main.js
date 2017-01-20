@@ -34,6 +34,7 @@ const app = new Vue({
 })
 
 app.$mount('#app')
+window.mySessionStorage = {}
 
 // new Vue({
 //   el: '#app',

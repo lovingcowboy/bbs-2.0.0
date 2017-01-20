@@ -35,8 +35,8 @@
 
 .p-msg {
     width: 100%;
-    font-size: pxToRem($font-size-24);
-    color: $txt-color-grey-light;
+    font-size: pxToRem($font-size-small);
+    color: $txt-color-grey;
     margin: pxToRem(20px) 0;
     &>span {
         margin-right: pxToRem(36px);
@@ -45,10 +45,13 @@
 
 .p-content {
     width: 100%;
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
     color: $txt-color-black;
     text-align: justify;
     line-height: 2;
+    img {
+        max-width: 100% ;
+    }
 }
 
 .vote-cont {
@@ -57,7 +60,7 @@
     box-shadow: 0px pxToRem(4px) pxToRem(20px) 0px rgba( 0, 0, 0, .12);
     padding-top: pxToRem(48px);
     // border-top: pxToRem(2px) solid $txt-color-blue;
-    font-size: pxToRem($font-size-28);
+    font-size: pxToRem($font-size-smaller);
     border-radius: pxToRem(10px);
     .v-question {
         color: $txt-color-black;
@@ -82,7 +85,7 @@
         height: pxToRem(90px);
         line-height: pxToRem(90px);
         text-align: center;
-        font-size: pxToRem($font-size-30);
+        font-size: pxToRem($font-size-normal);
         color: $txt-color-blue;
         border-top: 1px solid $border-color;
         margin-top: pxToRem(50px);
@@ -117,6 +120,7 @@
         background-color: $border-color;
         margin-left: pxToRem(90px);
         margin-top: pxToRem(30px);
+        margin-right: pxToRem(20px);
         position: relative;
         .vote-progress {
             width: 0;
@@ -128,6 +132,11 @@
             transition-property: width;
             transition-duration: .3s;
         }
+    }
+    .vn-cont {
+        font-size: pxToRem(20px);
+        color: $txt-color-black;
+        vertical-align: middle;
     }
 }
 
@@ -157,7 +166,7 @@
     a {
         display: inline-block;
         width: 49.9%;
-        font-size: pxToRem($font-size-30);
+        font-size: pxToRem($font-size-normal);
         color: $txt-color-grey;
     }
     .active {
@@ -217,13 +226,13 @@
     .rm-det {
         width: pxToRem(550px);
         height: 100%;
-        font-size: pxToRem($font-size-30);
+        font-size: pxToRem($font-size-normal);
         color: $txt-color-grey-dark;
         padding-left: pxToRem(20px);
     }
     .u-vip {
         font-size: pxToRem(22px);
-        color: $txt-color-grey-light;
+        color: $txt-color-grey;
         height: pxToRem(30px);
         line-height: pxToRem(30px);
         padding: 0 pxToRem(10px);
@@ -232,8 +241,8 @@
         margin-left: pxToRem(20px);
     }
     .r-time {
-        font-size: pxToRem($font-size-24);
-        color: $txt-color-grey-light;
+        font-size: pxToRem($font-size-small);
+        color: $txt-color-grey;
         margin-top: pxToRem(10px);
     }
     .icon-msg-big {
@@ -257,7 +266,7 @@
 }
 
 .rm-txt1 {
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
     color: $txt-color-black;
     line-height: 1.5;
     // .txt-blue {
@@ -268,7 +277,7 @@
 .rm-txt2 {
     background-color: #f6f6f6;
     padding: pxToRem(30px) pxToRem(20px);
-    font-size: pxToRem($font-size-24);
+    font-size: pxToRem($font-size-small);
     color: $txt-color-grey;
     line-height: 1.5;
     span {
@@ -286,7 +295,7 @@
 }
 
 .rm-txt3 {
-    font-size: pxToRem($font-size-24);
+    font-size: pxToRem($font-size-small);
     color: $txt-color-grey;
 }
 
@@ -312,8 +321,8 @@
         line-height: pxToRem(66px);
         border-radius: pxToRem(10px);
         background-color: #f6f6f6;
-        font-size: pxToRem($font-size-30);
-        color: $txt-color-grey-light;
+        font-size: pxToRem($font-size-normal);
+        color: $txt-color-grey;
         margin-top: pxToRem(14px);
         padding-left: pxToRem(30px);
     }

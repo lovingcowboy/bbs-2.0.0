@@ -1,5 +1,5 @@
 <template>
-<li class="post-row c-event" data-type="itemclick" :data-id="data.id">
+<li class="post-row c-event" data-type="itemclick" :data-id="data.fid">
   <!-- <div class="item-title">
     <span @click="onUserClick">
       <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}
@@ -8,17 +8,17 @@
   </div> -->
   <slot name="itemhead"></slot>
   <div class="item-desc" >
-    <div :class="['post', {'no-img': !data.hasImg}]" >
-      <p data-type="itemclick" >{{data.pTitle}}</p>
-      <p data-type="itemclick" >{{data.pDesc}}</p>
+    <div :class="['post', {'no-img': !data.cover || data.cover == ''}]" >
+      <p data-type="itemclick" >{{data.subject}}</p>
+      <p data-type="itemclick" >{{data.message}}</p>
     </div>
-    <div class="p-img" v-show="data.hasImg">
-      <img src="../images/img.png">
+    <div class="p-img" v-show="data.cover && data.cover != ''">
+      <img :src="data.cover">
     </div>
   </div>
   <div class="item-message">
-    <span class="post-view">{{data.view}}</span>
-    <span class="post-reply">{{data.reply}}</span>
+    <span class="post-view">{{data.views}}</span>
+    <span class="post-reply">{{data.replies}}</span>
   </div>
 </li>
 </template>
@@ -88,25 +88,27 @@ export default {
   width: 100%;
   // white-space: nowrap;
   margin: pxToRem(40px) 0;
+  font-size: 0;
   .no-img {
     width: 100% !important;
   }
   .post {
     display: inline-block;
     width: pxToRem(450px);
-    font-size: pxToRem($font-size-48);
+    font-size: pxToRem($font-size-large);
+    vertical-align: middle;
     p {
       width: 100%;
       word-wrap: break-word;
       word-break: break-all; 
     }
     &>p:first-child {
-      font-size: pxToRem($font-size-30);
+      font-size: pxToRem($font-size-normal);
       color: $txt-color-black;
       line-height: pxToRem(48px);
     }
     &>p:last-child {
-      font-size: pxToRem($font-size-24);
+      font-size: pxToRem($font-size-small);
       color: $txt-color-grey;
       line-height: pxToRem(42px);
       margin-top: pxToRem(30px);
@@ -132,7 +134,7 @@ export default {
 }
 .item-message {
   width: 100%;
-  font-size: pxToRem($font-size-20);
+  font-size: pxToRem($font-size-tiny);
   color: $txt-color-grey-light;
   span {
     width: pxToRem(152px);

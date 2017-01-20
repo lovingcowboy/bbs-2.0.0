@@ -13,7 +13,7 @@
 
 .item-type {
     width: 100%;
-    font-size: pxToRem($font-size-24);
+    font-size: pxToRem($font-size-small);
     color: $txt-color-black;
     // padding: 0 pxToRem(30px);
 }
@@ -28,7 +28,7 @@
         text-align: center;
         border-radius: pxToRem(10px);
         border: 1px solid $border-color;
-        font-size: pxToRem($font-size-36);
+        font-size: pxToRem($font-size-larger);
         color: $txt-color-grey;
         margin-left: pxToRem(30px);
         margin-top: pxToRem(30px);
@@ -60,7 +60,7 @@
         color: $txt-color-black;
     }
     input::-webkit-input-placeholder {
-    	color: $txt-color-grey-light;
+    	color: $txt-color-grey;
     }
 }
 

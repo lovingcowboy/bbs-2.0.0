@@ -32,7 +32,7 @@
 	span {
 		width: pxToRem(600px);
 		height: 100%;
-		font-size: pxToRem($font-size-30);
+		font-size: pxToRem($font-size-normal);
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -49,14 +49,14 @@
 		height: 100%;
 		background-color: $color-white;
 		border: 0;
-		font-size: pxToRem($font-size-30);
+		font-size: pxToRem($font-size-normal);
 		color: $txt-color-black;
 		padding: pxToRem(30px) pxToRem(30px) pxToRem(30px) 0;
 		line-height: 1.5;
 		resize: none;
 	}
 	.input-area::-webkit-input-placeholder {
-		color: $txt-color-grey-light;
+		color: $txt-color-grey;
 	}
 }
 

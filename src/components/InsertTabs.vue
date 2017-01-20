@@ -411,7 +411,7 @@ export default {
     background-image: url('../images/icon-vote.png');
     background-size: pxToRem(42px) pxToRem(37px);
     font-size: pxToRem(34px);
-    color: $txt-color-grey-light;
+    color: $txt-color-grey;
     width: pxToRem(150px);
     padding-left: pxToRem(52px);
     &.active {
@@ -528,9 +528,9 @@ export default {
     }
   }
   .img-add {
-    border: pxToRem(2px) dashed $txt-color-grey-light;
+    border: pxToRem(2px) dashed $txt-color-grey;
     font-size: pxToRem(60px);
-    color: $txt-color-grey-light;
+    color: $txt-color-grey;
     background-image: url('../images/icon-plus.png');
     background-size: pxToRem(50px) pxToRem(50px);
     background-repeat: no-repeat;
@@ -591,7 +591,7 @@ export default {
     color: $txt-color-black;
   }
   input::-webkit-input-placeholder {
-    color: $txt-color-grey-light;
+    color: $txt-color-grey;
   }
   .v-title {
     height: pxToRem(110px);
@@ -639,7 +639,7 @@ export default {
     border-top: 1px dashed $border-color;
   }
   .v-bottom {
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
   }
   .v-add {
     height: 100%;
@@ -702,7 +702,7 @@ export default {
     }
   }
   .sv-title {
-    font-size: pxToRem($font-size-28);
+    font-size: pxToRem($font-size-smaller);
     color: $txt-color-black;
     font-weight: bolder;
   }
@@ -710,7 +710,7 @@ export default {
     height: pxToRem(40px);
     margin-top: pxToRem(50px);
     line-height: pxToRem(40px);
-    font-size: pxToRem($font-size-28);
+    font-size: pxToRem($font-size-smaller);
     // padding: 0 pxToRem(30px);
     color: $txt-color-grey-dark;
     .sv-radio {
@@ -733,7 +733,7 @@ export default {
     &>div {
       width: 50%;
       text-align: center;
-      font-size: pxToRem($font-size-28);
+      font-size: pxToRem($font-size-smaller);
       display: inline-block;
     }
     i {

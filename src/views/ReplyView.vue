@@ -13,8 +13,8 @@
     <div class="content" >
       <div class="reply-cont">
         <div class="r-head">
-          <img src="../images/icon-avatar.png">
-          <span><font>蓝枫：</font>太保守了，我估计20个亿太保守了，我估计20个亿太保守了，我估计20个亿</span>
+          <img :src="replyData.avatar">
+          <span><font>{{replyData.author}}：</font>{{replyData.message}}</span>
         </div>
         <div class="r-input">
           <textarea class="input-area" placeholder="请输入…" v-model.trim="replyData.content" id="inputMsg" @blur="blurFun"></textarea>
@@ -44,6 +44,7 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
+import Util from '../js/Util.js'
 import InsertTabs from '../components/InsertTabs.vue'
 import Vue from 'vue'
 export default {
@@ -123,6 +124,18 @@ export default {
   },
   beforeMount () {
     let that = this;
+    let param = Util.getSessionStorage('reply')
+    if (param) {
+      param = JSON.parse(param)
+      that.replyData = {
+        author: param.author,
+        avatar: param.avatar,
+        message: param.message,
+        pid: param.pid,
+        tid: param.tid
+      }
+      Util.setSessionStorage('reply', '')
+    }
   },
   mounted () {
   }

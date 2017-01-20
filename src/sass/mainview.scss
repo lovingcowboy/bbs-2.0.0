@@ -66,12 +66,12 @@
       width: 100%;
     }
     .u-name {
-      font-size: pxToRem($font-size-30);
+      font-size: pxToRem($font-size-normal);
       color: $txt-color-black;
     }
   }
   .u-data {
-    font-size: pxToRem($font-size-24);
+    font-size: pxToRem($font-size-small);
     color: $txt-color-grey;
     margin-top: pxToRem(20px);
     &>span:not(:last-child) {
@@ -134,7 +134,7 @@
   white-space: nowrap;
   padding-left: pxToRem(30px);
   .tab {
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
     width: pxToRem(130px);
   }
   .active {
@@ -152,7 +152,7 @@
   }
   .tab-module {
     width: pxToRem(330px);
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
     text-align: right;
     padding-right: pxToRem(30px);
     position: relative;
@@ -182,7 +182,7 @@
   padding: 0 pxToRem(30px);
   &>span {
     width: 49.99%;
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
   }
   &>span:first-child {
     color: $txt-color-black;
@@ -241,7 +241,7 @@
     width: pxToRem(302px);
     height: pxToRem(192px);
     display: inline-block;
-    font-size: pxToRem($font-size-30);
+    font-size: pxToRem($font-size-normal);
     color: $color-white;
     text-align: center;
     box-shadow: 0px pxToRem(10px) pxToRem(20px) 0px rgba( 0, 0, 0, .1);
@@ -323,19 +323,19 @@
 //   .post {
 //     display: inline-block;
 //     width: pxToRem(450px);
-//     font-size: pxToRem($font-size-48);
+//     font-size: pxToRem($font-size-large);
 //     p {
 //       width: 100%;
 //       word-wrap: break-word;
 //       word-break: break-all; 
 //     }
 //     &>p:first-child {
-//       font-size: pxToRem($font-size-30);
+//       font-size: pxToRem($font-size-normal);
 //       color: $txt-color-black;
 //       line-height: pxToRem(48px);
 //     }
 //     &>p:last-child {
-//       font-size: pxToRem($font-size-24);
+//       font-size: pxToRem($font-size-small);
 //       color: $txt-color-grey;
 //       line-height: pxToRem(42px);
 //       margin-top: pxToRem(30px);
@@ -354,7 +354,7 @@
 // }
 // .item-message {
 //   width: 100%;
-//   font-size: pxToRem($font-size-20);
+//   font-size: pxToRem($font-size-tiny);
 //   color: $txt-color-grey-light;
 //   span {
 //     width: pxToRem(152px);

@@ -12,13 +12,12 @@
     <div class="scroll" :class="{'scroll-active': isScrollActive}" @scroll="scrollMove()">
     <div class="content" >
       <div class="post-cont">
-        <p class="p-title">1218越来越近了，大家对爱心日的“天量”预期会有多少呢...</p>
-        <p class="p-poster"><img src="../images/icon-avatar.png"><span>蓝色的枫叶</span></p>
-        <p class="p-msg"><span>2016.09.19  22:00</span><span class="post-view">1111</span><span class="post-reply">222</span></p>
-        <p class="p-content">
-          控件会接口hi骨坏死U盾会返回就几号放假可视电话复健科京东方很快就收到回复可接受的我已uuehhfkjhjhskdjfjkh基督教黑uuhgkjdfk空间的hi文化开放看
+        <p class="p-title">{{thread.title}}</p>
+        <p class="p-poster"><img :src="thread.avatar"><span>{{thread.author}}</span></p>
+        <p class="p-msg"><span v-html="thread.create_time"></span><span class="post-view">{{thread.views}}</span><span class="post-reply">{{thread.replies}}</span></p>
+        <p class="p-content" v-html="thread.message">
         </p>
-        <div :class="['vote-cont', {'vote-disable': hasVoted}]">
+        <div :class="['vote-cont', {'vote-disable': hasVoted}]" v-show="voteData.options && voteData.options.length > 0">
           <span class="v-question">{{voteData.question}}</span>
           <template v-if="voteData.limit > 1">
             <template v-for="(option, index) in voteData.options">
@@ -27,7 +26,7 @@
                 <input type="checkbox" name="answer" :id="option.id" :value="option.id" v-model="selectedOptions" disabled v-else>
                 <label class="icon-checkbox icon-input" :for="option.id"></label>{{option.content}}
               </label>
-               <i class="vote-nums" v-show="showVotes"><i class="vote-progress" :style="{width: option.percentage}"></i></i>
+               <div v-show="showVotes" class="vn-cont"><i class="vote-nums" ><i class="vote-progress" :style="{width: option.percentage}"></i></i>10%</div>
             </template>
           </template>
           <template v-else>
@@ -37,7 +36,7 @@
                 <input type="radio" name="answer" :id="option.id" :value="option.id" v-model="picked" disabled v-else>
                 <label class="icon-radio icon-input" :for="option.id"></label>{{option.content}}
               </label>
-              <i class="vote-nums" v-show="showVotes"><i class="vote-progress" :style="{width: option.percentage}"></i></i>
+              <div v-show="showVotes" class="vn-cont"><i class="vote-nums" ><i class="vote-progress" :style="{width: option.percentage}"></i></i>10%</div>
             </template>
           </template>
         
@@ -46,12 +45,26 @@
       </div>
       <div class="rm-cont" >
         <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
-          <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复(263)</a>
-          <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分(56)</a>
+          <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复{{thread.replies}}</a>
+          <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分{{thread.total_rate}}</a>
         </nav>
-        <div class="rm" :style="{'transform': scrollX, 'min-height': rmHeight, 'overflow-y': overflowY}">
-          <ul class="reply-list rm-list" v-show="tabType === 0">
-            <li class="reply-row">
+        <div class="rm" :style="{'transform': scrollX, 'height': rmHeight, 'overflow-y': overflowY}">
+          <ul class="reply-list rm-list" v-show="tabType === 0" @click="replyClick($event)">
+            <li class="reply-row" v-for="(item, index) in replyData.list">
+              <div class="rm-u">
+                <div class="u-avator">
+                  <img :src="item.avatar">
+                </div>
+                <div class="rm-det">
+                  <p><span>{{item.author}}</span><span class="u-vip">LV{{item.group_level}} {{item.group_title}}</span></p>
+                  <p class="r-time" v-html="item.dateline"></p>
+                </div>
+                <i class="icon-msg-big r-event" :data-index="index"></i>
+              </div>
+             <!--  <p class="rm-txt2 rm-txt"><span><font class="txt-blue">贪吃小和尚</font>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p> -->
+              <p class="rm-txt1 rm-txt" v-html="item.message"></p>
+            </li>
+            <!-- <li class="reply-row">
               <div class="rm-u">
                 <div class="u-avator">
                   <img src="../images/icon-avatar.png">
@@ -104,21 +117,21 @@
               </div>
              <p class="rm-txt2 rm-txt"><span><font class="txt-blue">贪吃小和尚</font>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p>
               <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p></p>
-            </li>
+            </li> -->
           </ul>
           <ul class="reply-list rm-list" v-show="tabType === 1">
-            <li class="reply-row">
+            <li class="reply-row" v-for="(item, index) in MarkData.list">
               <div class="rm-u">
                 <div class="u-avator">
-                  <img src="../images/icon-avatar.png">
+                  <img :src="item.avatar">
                 </div>
                 <div class="rm-det">
-                  <p><span>小叮当</span><span class="u-vip">LV2  大侠</span></p>
-                  <p class="r-time">10分钟前</p>
+                  <p><span>{{item.nickname}}</span><span class="u-vip">LV{{item.group_level}}  {{item.group_title}}</span></p>
+                  <p class="r-time" v-html="item.dateline"></p>
                 </div>
               </div>
-              <p class="rm-txt1 rm-txt">人气 <span class="txt-blue">+3</span>，威望 <span class="txt-blue">+4</span></p>
-              <p class="rm-txt3 rm-txt">“谢谢楼主分享”</p>
+              <p class="rm-txt1 rm-txt"><span v-show="item.extcredits3 && +item.extcredits3 > 0">人气 <font class="txt-blue">{{item.extcredits3}}</font></span><span v-show="item.extcredits1 && +item.extcredits1 > 0">，威望 <font class="txt-blue">{{item.extcredits1}}</font></span><span v-show="item.extcredits2 && +item.extcredits2 > 0">，经验 <font class="txt-blue">{{item.extcredits2}}</font></span></p>
+              <p class="rm-txt3 rm-txt">{{item.reason}}</p>
             </li>
           </ul>
         </div>
@@ -134,8 +147,8 @@
         </div>
       </div>
       <nav class="rm-tabs float-tabs" v-show="showFloat">
-        <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复(263)</a>
-        <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分(56)</a>
+        <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复{{thread.replies}}</a>
+        <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分{{thread.total_rate}}</a>
       </nav>
   </div>
 </template>
@@ -144,6 +157,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import service from '../services'
+import Util from '../js/Util.js'
 export default {
   name: 'postDetail',
   components: {
@@ -152,21 +166,33 @@ export default {
   },
   data () {
     return {
-       scrollX: 'translateX(0)',
-       tabType: 0,
-       showVotes: false,
-       voteData: {},
-       selectedOptions: [], //复选框选中内容
-       picked: "", //单选框选中内容
-       hasVoted: false,
-       btnTxt: '投票',
-       postHeight: 0,
-       tabsOffsetTop: 0,
-       contentObj : null,
-       showFloat: false,
-       rmHeight: '100%',
-       overflowY: 'scroll',
-       isScrollActive: true
+      scrollX: 'translateX(0)',
+      tabType: 0,
+      showVotes: false,
+      voteData: {},
+      selectedOptions: [], //复选框选中内容
+      picked: "", //单选框选中内容
+      hasVoted: false,
+      btnTxt: '投票',
+      postHeight: 0,
+      tabsOffsetTop: 0,
+      contentObj: null,
+      showFloat: false,
+      rmHeight: '100%',
+      overflowY: 'scroll',
+      isScrollActive: true,
+      thread: {}, //帖子内容
+      replyData: { //回复内容
+        curPage: 1,
+        totalPage: 1,
+        list: []
+      }, 
+      MarkData: { //评分内容
+        curPage: 1,
+        totalPage: 1,
+        list: []
+      },
+      formhash: '' //用于验证数据合法性
     }
   },
   computed: {
@@ -180,6 +206,11 @@ export default {
       this.tabType = type
       // let num = +type * (-100)
       // this.scrollX = 'translateX(' + num + '%)'
+      if(type === 0 && this.replyData.list.length === 0) {
+        this.getPostData(1)
+      }else if(type === 1 && this.MarkData.list.length === 0) {
+        this.getMarkData(1)
+      }
     },
      percentage (count, total) {
       return (count / total * 100) + "%"
@@ -209,6 +240,7 @@ export default {
     
     scrollMove () {
       // console.info(this.contentObj.scrollTop, this.postHeight)
+      return
       if (this.contentObj.scrollTop >= this.postHeight + 22) {
         this.showFloat = true
         // this.overflowY = 'scroll'
@@ -220,17 +252,110 @@ export default {
       }
     },
     goReply () {
+      let param = Util.getSessionStorage('reply')
+      if (!param) {
+        param = {
+          avatar: this.thread.avatar,
+          author: this.thread.author,
+          message: this.thread.title,
+          pid: this.thread.pid,
+          tid: this.thread.tid,
+          fid: this.thread.fid
+        }
+        Util.setSessionStorage('reply', JSON.stringify(param))
+      }
       let url = '/postdetail/reply/aa'
       this.$router.push(url)
     },
     goMark () {
       let url = '/postdetail/mark/aa'
       this.$router.push(url)
+    },
+    getPostData (page) {
+      let that = this
+      let tid = this.$route.params.id
+        // console.info('id---', this.$route.params.id)
+      service.postData('/app/index.php', {
+        version: 4,
+        module: 'viewthread',
+        tid: tid,
+        page: page
+      }).then((response) => {
+        console.info('get post detail ----', response.body)
+        let _body = response.body
+        if (_body.code === '200') {
+          let data = _body.data
+          that.thread = data.thread
+          that.replyData = {
+            curPage: data.pager.cur_page,
+            totalPage: data.pager.total_page,
+            list: data.postlist
+          }
+          that.formhash = data.formhash
+        } else {
+          let msg = '请求失败，请稍后重试'
+          if(_body.message) {
+            msg = _body.message
+          }
+          Toast({
+            message: msg
+          })
+        }
+      }, (response) => {
+        console.info('get post data fail------', response)
+      })
+    },
+    getMarkData (page) {
+      let that = this
+      service.postData('/app/index.php', {
+        version: 4,
+        module: 'threadrate',
+        action: 'viewratings',
+        tid: that.thread.tid,
+        pid: that.thread.pid,
+        // tid: '145086',
+        // pid: '1253506',
+        formhash: that.formhash
+      }).then((response) => {
+        console.info('get mark data ----', response.body)
+        let _body = response.body
+        if(_body.code === '200') {
+          let data = _body.data
+          that.MarkData.list = data.logs
+        }else{
+          let msg = '请求失败，请稍后重试'
+          if(_body.message) {
+            Toast({
+              message: msg
+            })
+          }
+        }
+      }, (response) => {
+        console.info('get mark data faild---', response)
+      })
+    },
+    replyClick (e) {
+      // console.info(e.target)
+      let obj = e.target
+      if(!obj) return
+      let index = obj.dataset.index
+      let item = this.replyData.list[index]
+      // console.info(obj.dataset.index, this.replyData.list[index])
+      if(!item) return
+      let param = {
+        avatar: item.avatar,
+        author: item.author,
+        message: item.message,
+        tid: item.tid,
+        pid: item.pid
+      }
+      Util.setSessionStorage('reply', JSON.stringify(param))
+      this.goReply()
     }
   },
   beforeMount () {
     let that = this;
-    that.voteData = {
+    /*that.voteData = {
       question: '1218当天的交易额有多少？',
       total: 100,
       limit: 1,
@@ -255,42 +380,9 @@ export default {
     let total = that.voteData.total
     that.voteData.options.forEach(function(item) {
       item.percentage = (item.count / total * 100) + '%'
-    })
-    // console.info(that.voteData)
-  // service.postData('/v1/task/index.html', {'device_id': window.sessionStorage['deviceId']})
-  //     .then((response) => {
-  //       console.info('response-------', response)
-  //       let _body = response.body
-  //       if (_body.code === 200) {
-  //         let _data = _body.data
-  //         that.curTasks = _data.cur_task
-  //         that.finishTasks = _data.finish_task
-  //         that.futureTasks = _data.future_task
-  //         that.dayMoney = _data.day_money
-  //         let myMission = _data.cur_task.filter(function (item) {
-  //           return item.IsDoing === 1 && item.Type === 'test'
-  //         })
-  //         if (myMission.length > 0) {
-  //           that.hasDoing = true
-  //           that.intervalTime = myMission[0].IntervalTime * 60000
-  //           // console.info('myMission--------', that.intervalTime)
-  //           // that.time = that.timeFormate(that.intervalTime)
-  //           that.interval = setInterval(function () {
-  //             if (that.intervalTime >= 1000) {
-  //               that.time = that.timeFormate(that.intervalTime)
-  //               that.intervalTime -= 1000
-  //             } else {
-  //               that.time = '00:00'
-  //               clearInterval(that.interval)
-  //             }
-  //           }, 1000)
-  //         }
-  //       }
-  //     },
-  //     (response) => {
-  //       console.log(response)
-  //     })
-   
+    })*/
+    
+    that.getPostData(1)
   },
   mounted () {
     this.postHeight = document.querySelector('.post-cont').offsetHeight

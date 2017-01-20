@@ -11,7 +11,7 @@
     </zheader> 
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
     <div class="content" >
-     <ul class="post-list" @clidk="listClickFunc">
+     <ul class="post-list" @click="listClickFunc($event)">
        <post-item v-for="(item, index) in recommentList" :data="item">
          <div class="item-title" slot="itemhead">
            <span data-type="userclick" :data-id="item.id">
@@ -52,8 +52,15 @@ export default {
     headerRightBtnFun() {
       console.info('11111')
     },
-    listClickFunc () {
-      
+    listClickFunc(e) {
+        let obj = Util.getElemetByTarget(e.target, 'c-event', 'post-list')
+        if (!obj) return
+        let id = obj.dataset.id
+        if (!id) {
+          id = e.target.getAttribute('data-id')
+        }
+        let url = '/postdetail/' + id
+        this.$router.push(url)
     }
       
   },

@@ -13,8 +13,11 @@
     <div class="content" >
       <div class="m-cont">
         <p class="item-type">人气</p>
-        <p class="score">
+      <!--   <p class="score">
           <i v-for="(score, index) in scoreList" @click="mark(score, index)" :class="{'active': scoreActive == index}">{{score}}</i>
+        </p> -->
+        <p class="prestige-container">
+          <input type="number"  pattern="[0-9]*" name="prestige" placeholder="请输入人气数量" v-model="markDetail.score">
         </p>
         <p class="item-type item-ww">威望</p>
         <p class="prestige-container">
@@ -68,7 +71,7 @@ export default {
       isShowDialog: false,
       msgAdd: '',
       markDetail: {
-        score: 0,
+        score: '',
         prestige: '',
         msg: ''
       }
@@ -81,11 +84,11 @@ export default {
     headerRightBtnFun () {
       console.info('11111')
     },
-    mark (score, index) {
-      // this.selectedMark = score
-      this.markDetail.score = score
-      this.scoreActive = index
-    },
+    // mark (score, index) {
+    //   // this.selectedMark = score
+    //   this.markDetail.score = score
+    //   this.scoreActive = index
+    // },
     pickMsg (msg, index) {
       // this.selectedMsg = msg
       this.markDetail.msg = msg
