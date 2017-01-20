@@ -226,8 +226,8 @@
     .rm-det {
         width: pxToRem(550px);
         height: 100%;
-        font-size: pxToRem($font-size-normal);
-        color: $txt-color-grey-dark;
+        font-size: pxToRem($font-size-normal-small);
+        color: $txt-color-black;
         padding-left: pxToRem(20px);
     }
     .u-vip {

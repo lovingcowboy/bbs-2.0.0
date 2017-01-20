@@ -258,7 +258,7 @@ export default {
       this.$router.push(url)
     },
     goPost() {
-      if (that.isLogin) {
+      if (this.isLogin) {
         this.$router.push('/post')
       } else {
         validate.openLogin()

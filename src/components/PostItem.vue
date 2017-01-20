@@ -106,9 +106,10 @@ export default {
       font-size: pxToRem($font-size-normal);
       color: $txt-color-black;
       line-height: pxToRem(48px);
+      font-weight: bold;
     }
     &>p:last-child {
-      font-size: pxToRem($font-size-small);
+      font-size: pxToRem($font-size-normal-small);
       color: $txt-color-grey;
       line-height: pxToRem(42px);
       margin-top: pxToRem(30px);
@@ -134,7 +135,7 @@ export default {
 }
 .item-message {
   width: 100%;
-  font-size: pxToRem($font-size-tiny);
+  font-size: pxToRem($font-size-small);
   color: $txt-color-grey;
   span {
     width: pxToRem(152px);

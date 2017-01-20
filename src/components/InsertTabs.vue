@@ -702,7 +702,7 @@ export default {
     }
   }
   .sv-title {
-    font-size: pxToRem($font-size-smaller);
+    font-size: pxToRem($font-size-normal-small);
     color: $txt-color-black;
     font-weight: bolder;
   }
@@ -710,7 +710,7 @@ export default {
     height: pxToRem(40px);
     margin-top: pxToRem(50px);
     line-height: pxToRem(40px);
-    font-size: pxToRem($font-size-smaller);
+    font-size: pxToRem($font-size-normal-small);
     // padding: 0 pxToRem(30px);
     color: $txt-color-grey-dark;
     .sv-radio {
@@ -733,7 +733,7 @@ export default {
     &>div {
       width: 50%;
       text-align: center;
-      font-size: pxToRem($font-size-smaller);
+      font-size: pxToRem($font-size-normal-small);
       display: inline-block;
     }
     i {

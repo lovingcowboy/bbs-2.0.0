@@ -7,7 +7,8 @@
 	width: 100%;
 	height: pxToRem(86px);
 	line-height: pxToRem(86px);
-	font-size: pxToRem(24px);
+	// font-size: pxToRem(24px);
+	font-size: pxToRem($font-size-small);
 	white-space: nowrap;
 	padding: 0 pxToRem(30px);
 	// span {
@@ -80,10 +81,13 @@
 	}
 	input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 		color: $txt-color-grey;
+		font-weight: normal;
 	}
 	.i-title {
-		font-size: pxToRem(36px);
+		// font-size: pxToRem(36px);
 		// overflow: scroll;
+		font-size: pxToRem($font-size-normal);
+		font-weight: bold;
 	}
 	.p-content {
 		width: 100%;
@@ -93,7 +97,7 @@
 	}
 	.i-content {
 		// color: $txt-color-black;
-		font-size: pxToRem(30px);
+		font-size: pxToRem($font-size-normal-small);
 		padding: pxToRem(30px) 0;
 		resize: none;
 	}
