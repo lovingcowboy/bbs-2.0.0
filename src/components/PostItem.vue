@@ -62,7 +62,7 @@ export default {
   white-space: nowrap;
   &>span{
     font-size: pxToRem(24px);
-    color: $txt-color-grey-light;
+    color: $txt-color-grey;
   }
   &>span:first-child {
     width: 60%;
@@ -135,7 +135,7 @@ export default {
 .item-message {
   width: 100%;
   font-size: pxToRem($font-size-tiny);
-  color: $txt-color-grey-light;
+  color: $txt-color-grey;
   span {
     width: pxToRem(152px);
     // display: inline-block;
