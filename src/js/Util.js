@@ -1,15 +1,4 @@
 (function(global) {
-    function scrolling(e) {
-        preventDefault(e);
-    }
-
-    function preventDefault(e) {
-        e = e || global.event;
-        if (e.preventDefault) {
-            e.preventDefault();
-        }
-        e.returnValue = false;
-    }
 
     let ArrayProto = Array.prototype;
     let slice = ArrayProto.slice;
@@ -106,7 +95,7 @@
         myExtend: function(obj, etdObj) { //扩展对象，并不影响原来的对象
             return this.unFreeze(this.freeze(obj, etdObj));
         },
-        getElemetByTarget: function(target, cls, until) {
+        getElemetByTarget: function(target, cls, until) {   //获取某个元素的父级或同级dom节点
             let result = target;
             if (!result) { //不存在target
                 return false;
@@ -122,27 +111,6 @@
                 return result;
             } else {
                 return this.getElemetByTarget(result.parentElement, cls);
-            }
-        },
-        disableScrolling: function() {
-            if (global.addEventListener) {
-                global.addEventListener('DOMMouseScroll', scrolling, false);
-                global.addEventListener('touchmove', scrolling, false);
-                global.onmousewheel = scrolling;
-                if (global.document) {
-                    global.document.onmousewheel = scrolling;
-                }
-            }
-        },
-
-        enableScrolling: function() {
-            if (global.removeEventListener) {
-                global.removeEventListener('DOMMouseScroll', scrolling, false);
-                global.removeEventListener('touchmove', scrolling, false);
-            }
-            global.onmousewheel = null;
-            if (global.document) {
-                global.document.onmousewheel = null;
             }
         },
         getParam: function(name, url) {
@@ -182,7 +150,6 @@
             }
         }
     }
-
 
     global.Util = Util;
 })(window);
