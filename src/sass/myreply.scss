@@ -12,7 +12,7 @@
             border-bottom: 1px solid $border-color;
             font-size: 0;
             .line01 {
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal);
                 color: $txt-color-black;
                 line-height: pxToRem(48px);
                 padding-right: pxToRem(30px);
@@ -25,7 +25,7 @@
                 margin-bottom: pxToRem(22px);
             }
             .line02 {
-                font-size: pxToRem(24px);
+                font-size: pxToRem($font-size-small);
                 height: pxToRem(64px);
                 line-height: pxToRem(64px);
                 color: $txt-color-grey;
@@ -38,7 +38,7 @@
                 white-space: nowrap;
             }
             .line03 {
-                font-size: pxToRem(24px);
+                font-size: pxToRem($font-size-small);
                 color: $txt-color-grey;
             }
         }

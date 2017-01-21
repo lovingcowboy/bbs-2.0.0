@@ -36,6 +36,11 @@
     }
 
     let Util = {
+        getElHeight: function(el) {   //获取高度
+            var headerEl = document.querySelector(el);
+
+            return headerEl ? headerEl.clientHeight : 0;
+        },
         pxToRem: function(px, basePx) {
             var basePx = basePx || 75;
 

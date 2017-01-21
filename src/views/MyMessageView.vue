@@ -13,7 +13,7 @@
           <div class="tab-item" :class="{'active': isShowProsonMsg}"  @click="onShowMsg('0')"><font>个人消息</font><span class="message-num">23</span></div>
           <div class="tab-item" :class="{'active': !isShowProsonMsg}" @click="onShowMsg('1')"><font>系统消息</font><span class="message-num">11</span></div>
         </div>
-        <div class="message-list-wrapper">
+        <div class="message-list-wrapper" :style="{'min-height': msgListMinHeight + 'rem'}">
           <div class="message-person-list" v-show="isShowProsonMsg">
             <div class="message-person-item" @click="goMessageDetail('1')">
               <div class="left">
@@ -135,7 +135,7 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
-
+import Util from '../js/Util.js'
 export default {
   name: 'mission',
   components: {
@@ -147,16 +147,25 @@ export default {
     return {
       isSystemMsgNew: true,
       isScrollActive: true,
+      msgListMinHeight: 0,
       isShowProsonMsg: true,
       exchangeInfo: {
       prestige:10,
       max_num:9,
-
+    
     },
     
     }
   },
   methods: {
+    uiSetListMinHeight() {
+      let bodyHeight = Util.getElHeight("body");  //获取最大可视高度
+      let headerHeight = Util.getElHeight("#header");  //获取头部高度
+      let tabHeight = Util.getElHeight(".tab");  //获取tab高度
+
+      this.msgListMinHeight = Util.pxToRemAdapt(bodyHeight) -
+        (Util.pxToRemAdapt(headerHeight + tabHeight) + Util.pxToRem(20));
+    },
     onShowMsg(type) { //切换消息类型
       switch(type) {
         case "0":
@@ -172,8 +181,16 @@ export default {
       this.$router.push(url)
     }
   },
-  beforeMount () {
+  mounted() {
+    let that = this;
+    this.uiSetListMinHeight();
 
+    //当横屏时 重新计算最小高度 
+    let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+    window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
+  },
+  beforeMount () {
+      
   }
   
 }

@@ -18,7 +18,7 @@
             width: pxToRem(550px);
             float: right;
             .username {
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal);
                 color: $txt-color-black;
                 position: relative;
                 padding-bottom: pxToRem(20px);
@@ -36,7 +36,7 @@
             .baseinfo-row {
                 display: inline-block;
                 vertical-align: middle;
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal-small);
                 color: $txt-color-black;
                 text-align: center;
                 margin-right: pxToRem(110px);
@@ -63,7 +63,7 @@
             display: inline-block;
             vertical-align: middle;
             color: $txt-color-black;
-            font-size: pxToRem(26px);
+            font-size: pxToRem($font-size-small);
             margin-left: pxToRem(20px);
         }
     }
@@ -110,7 +110,7 @@
             border-width: 1px;
             border-color: rgb(25, 166, 255);
             border-radius: pxToRem(10px);
-            font-size: pxToRem(26px);
+            font-size: pxToRem($font-size-small);
             width: pxToRem(144px);
             height: pxToRem(64px);
             line-height: pxToRem(60px);
@@ -128,7 +128,7 @@
     padding-top: pxToRem(40px);
     // padding-left: pxToRem(30px);
     .label {
-        font-size: pxToRem(30px);
+        font-size: pxToRem($font-size-normal);
         color: $txt-color-black;
         margin-bottom: pxToRem(20px);
         padding-left: pxToRem(30px);

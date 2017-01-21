@@ -195,12 +195,17 @@ textarea {
     margin: 0;
     padding: 0;
     -webkit-appearance: none;
+    outline: none;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none !important;
     margin: 0;
+}
+
+::-webkit-input-placeholder {
+    color: $txt-color-grey-light;
 }
 
 .masker {
@@ -236,7 +241,7 @@ input::-webkit-inner-spin-button {
         font-size: 0;
         .dialog-title {
             text-align: center;
-            font-size: pxToRem(34px);
+            font-size: pxToRem($font-size-normal);
             color: $txt-color-black;
             height: pxToRem(100px);
             line-height: pxToRem(100px);
@@ -250,7 +255,7 @@ input::-webkit-inner-spin-button {
             outline: none;
             -webkit-appearance: none;
             -webkit-highlight: none;
-            font-size: pxToRem(30px);
+            font-size: pxToRem($font-size-normal);
             padding: pxToRem(30px);
             color: $txt-color-black;
         }
@@ -266,7 +271,7 @@ input::-webkit-inner-spin-button {
             .btn-cancel {
                 display: inline-block;
                 vertical-align: middle;
-                font-size: pxToRem(36px);
+                font-size: pxToRem($font-size-larger);
                 width: 50%;
                 text-align: center;
             }
@@ -319,13 +324,14 @@ input::-webkit-inner-spin-button {
 
 .level {
     color: $txt-color-grey;
-    font-size: pxToRem(20px);
-    width: pxToRem(120px);
-    height: pxToRem(26px);
-    line-height: pxToRem(26px);
+    font-size: pxToRem($font-size-tiny);
+    min-width: pxToRem(120px);
+    // height: pxToRem(26px);
+    line-height: pxToRem($font-size-tiny);
+    padding: pxToRem(4px) pxToRem(20px);
     text-align: center;
     border-radius: pxToRem(13px);
-    border: 1px solid #ccc;
+    border: 1px solid $txt-color-grey-light;
     display: inline-block;
     vertical-align: middle;
 }

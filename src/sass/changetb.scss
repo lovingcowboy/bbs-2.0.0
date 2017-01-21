@@ -5,7 +5,7 @@
     .tips {
         background-color: #ebf9ff;
         color: $txt-color-blue;
-        font-size: pxToRem(22px);
+        font-size: pxToRem($font-size-small);
         line-height: pxToRem(48px);
         padding-left: pxToRem(30px);
     }
@@ -16,7 +16,7 @@
             display: block;
             border-bottom: 1px solid $border-color;
             color: $txt-color-black;
-            font-size: pxToRem(30px);
+            font-size: pxToRem($font-size-normal);
         }
     }
     @at-root .change-content {
@@ -24,11 +24,11 @@
         font-size: 0;
         .change-text {
             padding: pxToRem(40px) 0;
-            font-size: pxToRem(30px);
+            font-size: pxToRem($font-size-normal);
             color: $txt-color-black;
             .change-maxnum {
                 color: $txt-color-grey;
-                font-size: pxToRem(24px);
+                font-size: pxToRem($font-size-small);
             }
         }
         .change-wrapper {
@@ -43,7 +43,7 @@
                 height: pxToRem(88px);
                 -webkit-appearance: none;
                 position: relative;
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal);
                 vertical-align: baseline;
                 color: $txt-color-black;
                 outline: none;
@@ -52,9 +52,6 @@
                 padding-left: pxToRem(20px);
                 padding-right: pxToRem(160px);
                 border-radius: pxToRem(8px);
-            }
-            .change-input::-webkit-input-placeholder {
-                color: $txt-color-grey;
             }
             .btn-change-all {
                 position: absolute;

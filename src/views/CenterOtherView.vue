@@ -120,14 +120,14 @@ export default {
   mounted () {
     let that = this
     for (let i = 0; i < 5; i++) {
-      let item = {
+     let item = {
         name: '神采飞扬',
-        act: '发表了帖子',
+        level: 'LV2 大咖',
         time: i * 10 + '分钟前',
-        pTitle: '团贷网大踏步走在紧拥监管，跨越发展之路上',
-        pDesc: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
-        view: 12 * i,
-        reply: 25 * i,
+        subject: '团贷网大踏步走在紧拥监管，跨越发展之路上',
+        message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
+        views: 12 * i,
+        replies: 25 * i,
         id: i * 10
       }
       if ( i === 1) {

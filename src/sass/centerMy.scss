@@ -15,7 +15,7 @@
         top: pxToRem(24px);
         right: pxToRem(20px);
         color: #fff;
-        font-size: pxToRem(30px);
+        font-size: pxToRem($font-size-normal-small);
         text-align: center;
         line-height: pxToRem(50px);
         white-space: nowrap;
@@ -80,7 +80,7 @@
             background-color: transparent;
             width: 100%;
             height: pxToRem(48px);
-            font-size: pxToRem(30px);
+            font-size: pxToRem($font-size-normal-small);
             color: #fff;
             display: block;
             margin: auto;
@@ -88,7 +88,6 @@
             border: none;
             outline: none;
             -webkit-highlight: none;
-
         }
     }
     @at-root .level-wrapper {
@@ -115,8 +114,8 @@
                 background-position: 50% 50%;
                 width: pxToRem(60px);
                 height: pxToRem(59px);
-                line-height: pxToRem(59px);
-                font-size: pxToRem(26px);
+                line-height: pxToRem(52px);
+                font-size: pxToRem($font-size-small);
                 display: block;
                 margin: auto;
                 font-weight: bold;
@@ -148,7 +147,7 @@
                 margin: 0 pxToRem(6px);
             }
             font {
-                font-size: pxToRem(26px);
+                font-size: pxToRem($font-size-small);
                 display: inline-block;
                 vertical-align: middle;
                 height: pxToRem(40px);
@@ -177,7 +176,7 @@
         }
     }
     .label {
-        font-size: pxToRem(22px);
+        font-size: pxToRem($font-size-small);
         color: rgba(181, 239, 254, 0.6);
         text-align: center;
     }
@@ -194,7 +193,7 @@
     padding: 0 pxToRem(30px);
     .sign-text {
         display: inline-block;
-        font-size: pxToRem(30px);
+        font-size: pxToRem($font-size-normal);
         font {
             color: $txt-color-orange;
         }
@@ -226,7 +225,7 @@
         }
         font {
             display: inline-block;
-            font-size: pxToRem(30px);
+            font-size: pxToRem($font-size-normal);
             color: $txt-color-black;
             vertical-align: middle;
         }
@@ -285,6 +284,6 @@
     margin: auto;
     color: $txt-color-black;
     background-color: #fff;
-    font-size: pxToRem(30px);
+    font-size: pxToRem($font-size-normal);
     margin-bottom: pxToRem(50px);
 }

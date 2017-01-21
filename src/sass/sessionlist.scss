@@ -10,12 +10,12 @@
         line-height: pxToRem(92px);
         font-size: 0;
         .session-name {
-            font-size: pxToRem(30px);
+            font-size: pxToRem($font-size-normal);
             display: inline-block;
             &:before {
                 border-left: pxToRem(8px) solid $txt-color-blue;
                 content: "";
-                height: pxToRem(30px);
+                height: pxToRem($font-size-normal);
                 margin-right: pxToRem(14px);
             }
         }
@@ -23,7 +23,7 @@
             float: right;
             height: 100%;
             @at-root .btn {
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal);
                 color: rgba(51, 51, 51, 0.5);
                 display: inline-block;
                 line-height: pxToRem(92px);
@@ -56,6 +56,7 @@
         bottom: 0;
         left: 0; */
         width: 100%;
+        height: 100%;
         z-index: 999;
         overflow: hidden;
         min-height: auto;
@@ -71,7 +72,7 @@
                 line-height: pxToRem(90px);
                 border-bottom: 1px solid $border-color;
                 .post-title {
-                    font-size: pxToRem(28px);
+                    font-size: pxToRem($font-size-normal-small);
                     color: $txt-color-black;
                     display: inline-block;
                     vertical-align: middle;
@@ -115,7 +116,7 @@
             & > div {
                 width: 50%;
                 text-align: center;
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal);
                 color: rgba(51, 51, 51, 0.5);
                 display: inline-block;
                 line-height: pxToRem(92px);
@@ -130,18 +131,12 @@
         .list-newreply {
             padding-left: pxToRem(30px);
             background-color: #fff;
-            /* position: absolute;
-            top: pxToRem(314px);
-            bottom: 0;
-            left: 0; */
             position: relative;
             width: 100%;
             z-index: 999;
             overflow: hidden;
             min-height: auto;
-            // li:first-child {
-            //     border-top: 1px solid $border-color;
-            // }
+           
             li:last-child {
                 border-bottom: 1px solid $border-color;
             }
@@ -151,18 +146,6 @@
                     display: inline-block;
                     vertical-align: middle;
                 }
-                // .level {
-                //     color: $txt-color-grey;
-                //     font-size: pxToRem(20px);
-                //     width: pxToRem(120px);
-                //     height: pxToRem(26px);
-                //     line-height: pxToRem(26px);
-                //     text-align: center;
-                //     border-radius: pxToRem(13px);
-                //     border: 1px solid #ccc;
-                //     display: inline-block;
-                //     vertical-align: middle;
-                // }
             }
         }
     }

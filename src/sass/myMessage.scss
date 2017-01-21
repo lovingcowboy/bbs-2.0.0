@@ -15,7 +15,7 @@
             text-align: center;
             font-size: 0;
             font {
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal);
                 text-align: center;
                 color: $txt-color-grey;
                 text-align: center;
@@ -42,10 +42,10 @@
         }
     }
     .message-list-wrapper {
-        position: absolute;
+        position: relative;
         width: 100%;
-        top: pxToRem(108px);
-        bottom: 0;
+        /* top: pxToRem(108px);
+        bottom: 0; */
         background-color: #fff;
         padding-left: pxToRem(30px);
         font-size: 0;
@@ -86,22 +86,23 @@
                 font-size: 0;
                 .username {
                     color: $txt-color-black;
-                    font-size: pxToRem(30px);
+                    font-size: pxToRem($font-size-normal);
                     display: inline-block;
                 }
                 .msg-date {
-                    font-size: pxToRem(24px);
+                    font-size: pxToRem($font-size-small);
                     color: $txt-color-grey;
                     float: right;
                     margin-right: pxToRem(26px);
                 }
                 .msg-body {
-                    font-size: pxToRem(24px);
+                    font-size: pxToRem($font-size-normal-small);
                     color: $txt-color-grey;
                     max-width: pxToRem(510px);
                     text-overflow: ellipsis;
                     overflow: hidden;
                     white-space: nowrap;
+                    line-height: 120%;
                 }
             }
         }
@@ -139,7 +140,7 @@
                 vertical-align: text-top;
                 white-space: normal;
                 .msg-body {
-                    font-size: pxToRem(30px);
+                    font-size: pxToRem($font-size-normal);
                     color: $txt-color-black;
                     margin-bottom: pxToRem(22px);
                     line-height: pxToRem(48px);
@@ -148,14 +149,15 @@
                     font-size: 0;
                     .msg-date {
                         color: $txt-color-grey;
-                        font-size: pxToRem(24px);
+                        font-size: pxToRem($font-size-small);
                         vertical-align: middle;
                         display: inline-block;
                         margin-right: pxToRem(34px);
                     }
                     .msg-time {
-                          color: $txt-color-grey;
-                        font-size: pxToRem(24px);vertical-align: middle;
+                        color: $txt-color-grey;
+                        font-size: pxToRem($font-size-small);
+                        vertical-align: middle;
                         display: inline-block;
                     }
                 }

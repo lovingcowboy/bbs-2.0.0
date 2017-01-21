@@ -20,7 +20,7 @@
             .message-body {
                 display: inline-block;
                 vertical-align: text-top;
-                font-size: pxToRem(30px);
+                font-size: pxToRem($font-size-normal-small);
                 color: $txt-color-black;
                 line-height: pxToRem(48px);
                 padding: pxToRem(16px) pxToRem(18px);
@@ -78,7 +78,7 @@
     height: pxToRem(100px);
     line-height: pxToRem(100px);
     text-align: center;
-    font-size: pxToRem(34px);
+    font-size: pxToRem($font-size-normal);
     background-color: #fff;
     left: 0;
     color: $txt-color-blue;
