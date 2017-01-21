@@ -307,7 +307,11 @@ function IScroll (el, options) {
 		bindToWrapper: typeof window.onmousedown === "undefined"
 	};
 
-	// if(this.options.mutationObserver) {
+	for ( var i in options ) {
+		this.options[i] = options[i];
+	}
+
+	if(this.options.mutationObserver) {
 		var that = this;
 		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 		var observer = new MutationObserver(function(mutations) {
@@ -322,10 +326,6 @@ function IScroll (el, options) {
 			attributes: true,
 			attributeFilter: ['style']
 		});
-	// }
-
-	for ( var i in options ) {
-		this.options[i] = options[i];
 	}
 
 	// Normalize options
@@ -824,6 +824,7 @@ IScroll.prototype = {
 					this._transitionTime(time);
 				}
 			this._translate(x, y);
+			this._execEvent("scrollEnd");	//增加scrollTo 在没写时间时 触发 scrollEnd事件
 		} else {
 			this._animate(x, y, time, easing.fn, notReset);
 		}
