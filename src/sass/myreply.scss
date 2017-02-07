@@ -1,12 +1,20 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
 .content {
-    .reply-list {
-        padding-left: pxToRem(30px);
-        width: 100%;
-        height: 100%;
-        background-color: #fff;
-        overflow: auto;
+    height: 100%;
+    overflow: hidden;
+     .scroll-wrapper {
+            padding-left: pxToRem(30px);
+            width: 100%;
+            background-color: #fff;
+        }
+    // .reply-list {
+  //     padding-left: pxToRem(30px);
+  //     width: 100%;
+  //     height: 100%;
+  //     background-color: #fff;
+  //     overflow: auto;
+
         @at-root .reply-item {
             padding: pxToRem(30px) 0;
             border-bottom: 1px solid $border-color;
@@ -42,5 +50,5 @@
                 color: $txt-color-grey;
             }
         }
-    }
+    // }
 }

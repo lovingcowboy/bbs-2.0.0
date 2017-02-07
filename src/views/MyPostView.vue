@@ -11,7 +11,7 @@
       <div class="content">
        <list :config.once="scrollConfig" @init="onIniList"  @loadmore="onLoadMore" ref="list" >
           <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail">
-            <div class="post-item" v-for="(item, index) in myPostList" :data-id="item.id">
+            <div class="post-item" v-for="(item, index) in myPostList" :data-id="item.tid">
              <div class="line01 post-title">
                {{item.subject}}
              </div>
@@ -98,6 +98,11 @@ export default {
                   that.$refs.list.loadmore = true; //有加载更多
                 } else {
                   that.$refs.list.loadmore = false; //有加载更多
+                  if(that.pager.cur_page > 1) {
+                    Toast({
+                      "message": "已全部加载完毕"
+                    })
+                  }
                 }
               }, 200)
             }
@@ -111,7 +116,6 @@ export default {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
-          console.log("fail")
       })
     },
 
