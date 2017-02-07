@@ -379,7 +379,9 @@ input::-webkit-inner-spin-button {
     transition: top .2s;
     top: pxToRem(-80px);
     bottom: 0;
-    // height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-color: #fff;
     &.refreshing {
         top: 0;
     }
@@ -459,6 +461,13 @@ input::-webkit-inner-spin-button {
         margin: auto;
         line-height: pxToRem(80px);
     }
+}
+
+.default-ctn {
+    font-size: pxToRem($font-size-normal);
+    color: $txt-color-black;
+    padding-top: 20%;
+    text-align: center;
 }
 
 .flip-up {

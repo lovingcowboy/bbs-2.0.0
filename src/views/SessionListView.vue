@@ -69,11 +69,11 @@
           </div>
         </list>    
         
-          <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList">
-              <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
-              <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
-          </div>
+        <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList">
+            <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
+            <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -82,7 +82,6 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
-import IScroll from '../js/lib/iscroll-probe_my.js'
 import Util from '../js/Util.js'
 import List from "components/listview"
 export default {
@@ -106,7 +105,9 @@ export default {
       // isLoading: false,
       scrollConfig: {
         wrapper: 'sessionWrapper',
-        mutationObserver: true
+        mutationObserver: true,
+        refresh: true,
+        loadmore: true
       }
     }
   },
@@ -193,11 +194,10 @@ export default {
 
     that.outerIScroll.on('scroll', function() {
       that.isScrolling = true;
-      // console.log("that.isScrolling: ",that.isScrolling)
       if(!that.isListAllActive) {  //如果不是在全部列表页面，则不做操作
         return;
       }
-   
+
       if(this.y - 1 < -that.switchListSt) { //置顶条件
         that.showFloat = true
         
@@ -207,32 +207,6 @@ export default {
       that.isListNewpostActive ? that.newPostY = this.y : that.newReplyY = this.y;  //记录位置
 
 
-     /* if(that.isLoading) {  //数据加载中状态，不修改任何状态
-        return;
-      }
-      //下拉显示刷新
-      let distance = 60;
-     
-      if (this.y >= -99) {  //提前显示下拉刷新
-        
-        if (this.y > distance) {
-          that.ricon = true;
-        } else {
-          that.ricon = false;
-        }
-        that.pulldown = true;
-        that.refreshicon = false;
-      } else if (Math.abs(this.y) >= (Math.abs(this.maxScrollY) + 5) && that.hasmore) { //上拉加载更多
-        let ovfDis = Math.abs(Math.abs(this.maxScrollY) - Math.abs(this.y));  //上拉的距离
-        if(ovfDis >= distance) {
-          that.micon = true;
-        } else {
-          that.micon = false;
-        }
-        that.moretxt = true;
-        that.moreicon = false;
-      }*/
-
     }); 
 
     that.outerIScroll.on('scrollEnd', function() {
@@ -240,40 +214,6 @@ export default {
         that.isScrolling = false;
       }, 100)
 
-
-        /*if (that.ricon) { //在可以刷新状态
-            that.refreshicon = true;  
-
-            if(that.isLoading) {  //数据加载中状态，不继续加载数据
-              return;
-            }
-            that.isLoading = true;  //数据加载中状态
-            
-            // that.$dispatch('refreshSuccess');
-            
-            that.ricon = false;
-            that.pulldown = false;
-            that.refreshicon = true;
-          }*/ /*else if (that.micon) {  //在可以加载更多数据状态
-              that.moretxt = false;
-              that.moreicon = true;
-              if(that.isLoading) {  //数据加载中状态，不继续加载数据
-
-                return;
-              }
-             
-              that.isLoading = true;
-              
-            } else {
-              that.refreshicon = false;
-              that.showrefresh = false;
-              that.moreicon = false;
-              that.showmore = false;
-              setTimeout(function() {
-                that.outerIScroll.refresh();
-              }, 10)
-            }*/
-      
     })
    },
 
@@ -307,7 +247,6 @@ export default {
    }
   },
   mounted() {
-    // this.initOuterScroller();
    
   },
   beforeMount () {

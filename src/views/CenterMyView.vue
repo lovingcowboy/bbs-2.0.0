@@ -84,7 +84,9 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
-import Validate from '../js/lib/validate.js';
+import Validate from '../js/lib/validate.js'
+import Services from '../services'
+import { isApp } from '../filters'
 export default {
   components: {
     Zheader,
@@ -93,28 +95,46 @@ export default {
   data () {
     return {
       isScrollActive: true,
-      userInfo: {
-        avatar: "../images/icon-avatar.png",
-        username: "团小贷",
-        level:2,
-        level_name:"社区大虾",
-        credit :165,
-        prestige: 120,
-        disparity: 20,
-        next_level_name: "社区能手",
-        series_sign_num : 0,
-        yes_sign: 0
-      },
+      userInfo: {},
       editing: false,
       isEditing: ""
     }
   },
+  computed: {
+    isApp:function() {
+      return isApp();
+    }
+  },
   methods: {
+    getUserInfo() { //获得用户信息
+      let that = this;
+      let param = {
+        version: 4,
+        module: 'member'
+      }
+
+      Services.postData('/app/index.php', param).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          let data = _body.data
+          console.log(data);
+          that.userInfo = data.member;
+        } else {
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
+          });
+        }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+          console.log("fail")
+      })
+    },
     onEdit() {
       this.editing = true;
       this.isEditing = "editing"
     },
-
     onEditDone() {
        this.editing = false;
        this.isEditing = ""
@@ -134,41 +154,21 @@ export default {
         
         this.$router.push(url);
        
-
         return;
-        if (isLogined_cookie || uid) {
-          if (type == 2) {
-            this.$router.push({
-              name: 'changetb'
-            });
-          } else {
-            this.$router.push({
-              name: 'mypost',
-              params: {
-                'type': type
-              }
-            });
-          }
-        } else {
+        if (isLogined_cookie || uid) {  //已登录
+           this.$router.push(url);
+        } else {  //未登录
           var returnUrl = window.location.href;
           Validate.openLogin(returnUrl, function() {
-            if (type == 2) {
-              this.$router.push(url);
-            } else {
-              this.$router.push({
-                name: 'mypost',
-                params: {
-                  'type': type
-                }
-              });
-            }
+            this.$router.push(url);
           });
         }
       }
    
   },
   beforeMount () {
-
+    
+    this.getUserInfo();  //获取用户信息
   }
 }
 </script>

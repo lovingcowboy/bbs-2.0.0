@@ -1,7 +1,7 @@
 <template>
-  <div class="listwrap wrapper" :id="config.wrapper" :class="{'refreshing':isRefresh}" @touchend="listentToTouchEnd">
+  <div class="listwrap wrapper" :id="config.wrapper" :class="{'refreshing':isRefresh || !config.refresh}" @touchend="listentToTouchEnd">
     <ul class="scroller">
-     <section  class="pull-el pull-refresh">
+     <section  class="pull-el pull-refresh" v-show="config.refresh">
         <div class="arrow-wrapper" v-show="pulldown" >
           <span v-bind:class="['scroll-icon-arrow', ricon ? 'flip-up' : 'flip-down']"></span>
         </div>
@@ -12,8 +12,8 @@
 
       <slot name="scrollContent"></slot>
 
-      <section  class="pull-el pull-down" v-show="showmore">
-        <div class="loading-wrapper">
+      <section  class="pull-el pull-down" v-show="config.loadmore && loadmore">
+        <div class="loading-wrapper" v-show="showmore">
           <span class="icon-loading"></span>
         </div>
       </section>
@@ -38,18 +38,15 @@ import spinner from '../../Spinner.vue'
         refreshicon: false, //是否显示刷新图标
         showrefresh: false, //是否显示刷新
         pulldown: false, //是否显示刷新文字
-        showmore: true, //是否显示加载更多，默认有加载更多
+        showmore: false, //是否显示加载更多
+        loadmore: true, //是否显示加载更多容器，默认有加载更多
         hasdata: true, //是否有数据
         ricon: false, //是否在可刷新状态
         micon: false,
         isRefresh: false,  //是否加载中
       }
     },
-    
     props: ['config'],
-    events: {
-
-    },
     methods: {
       init() {
         this.initScroller();
@@ -135,8 +132,8 @@ import spinner from '../../Spinner.vue'
           }*/
         });
       },
-
-      refreshDone() { //刷新结束
+      
+      refreshDone() { //刷新数据结束
         let that = this;
         that.isRefresh = false;
 
@@ -151,14 +148,39 @@ import spinner from '../../Spinner.vue'
         }, 200)
       },
 
-      loadMoreDone(hasmore) { //加载更多结束
+      loadMoreDone(hasmore) { //加载更多数据结束
         let that = this;
         that.isLoadMore = false;
         that.micon = false;
-        that.showmore = hasmore;  //是否还有加载更多
+        that.showmore = that.loadmore = hasmore;  //是否还有加载更多
          setTimeout(function() {
             that.myScroll && that.myScroll.refresh();
           }, 10)
+      },
+
+      onNoData() {
+        this.hasdata = false;
+        this.showmore = false;
+      },
+
+      refresh() { //刷新iscroll
+        let that = this;
+        if(!that.myScroll) {
+          return;
+        }
+
+        let scroller =  that.myScroll;
+        
+        if(scroller.scroller.clientHeight < scroller.wrapper.clientHeight) {
+          that.showmore = false;
+        } else {
+          that.showmore = true;
+        }
+          
+        setTimeout(function() { // 刷新iscroll
+          that.myScroll.refresh();
+        }, 10);
+
       }
     },
       
