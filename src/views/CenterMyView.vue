@@ -41,8 +41,8 @@
         </div>
         <div class="sign-wrapper">
           <div class="sign-text">已连续签到<font>{{userInfo.series_sign_num}}</font>天</div>
-          <div class="sign-btn btn-blue" v-show="!userInfo.yes_sign" @click="onSign();">马上签到</div>
-          <div class="sign-done btn-grey" v-show="!!userInfo.yes_sign">
+          <div class="sign-btn btn-blue" v-show="userInfo.yes_sign == '0' ? true : false" @click="onSign();">马上签到</div>
+          <div class="sign-done btn-grey" v-show="userInfo.yes_sign == '0' ? false : true">
             <span class="icon icon-signed"></span>
             <font>已签到</font>
           </div>
@@ -140,30 +140,79 @@ export default {
        this.isEditing = ""
     },
     onSign() {
-      this.userInfo.yes_sign = 1;
-      console.log("签到");
-    },
-   goUItemDetail: function(url) {
-        let uid = "";
-        if(window.mySessionStorage) {
-          uid = window.mySessionStorage['uid'];
-        }else{
-          uid = window.sessionStorage['uid'];
-        }
-        let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
-        
-        this.$router.push(url);
-       
-        return;
-        if (isLogined_cookie || uid) {  //已登录
-           this.$router.push(url);
-        } else {  //未登录
-          var returnUrl = window.location.href;
-          Validate.openLogin(returnUrl, function() {
-            this.$router.push(url);
+      let that = this;
+      let param = {
+        version: 4,
+        module: 'member',
+        action: 'sign'
+      }
+
+      Services.postData('/app/index.php', param).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          let data = _body.data
+
+          /*that.userInfo.series_sign_num = data.member.series_sign_num;
+          that.userInfo.yes_sign = data.member.yes_sign;*/
+          that.userInfo = data.member;
+        } else {
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
           });
         }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+      })
+    },
+    goUItemDetail(url) {
+      let uid = "";
+      if(window.mySessionStorage) {
+        uid = window.mySessionStorage['uid'];
+      }else{
+        uid = window.sessionStorage['uid'];
       }
+      let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+      
+      this.$router.push(url);
+     
+      return;
+      if (isLogined_cookie || uid) {  //已登录
+         this.$router.push(url);
+      } else {  //未登录
+        var returnUrl = window.location.href;
+        Validate.openLogin(returnUrl, function() {
+          this.$router.push(url);
+        });
+      }
+    },
+
+    goLogout() {  //登出
+      let that = this;
+      let param = {
+        version: 4,
+        module: 'member',
+        action: 'logout'
+      }
+
+      Services.postData('/app/index.php', param).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          that.$router.push("main")
+
+        
+        } else {
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
+          });
+        }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+      })
+    }
    
   },
   beforeMount () {
