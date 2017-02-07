@@ -147,7 +147,7 @@ export default {
       this.getPostList(this.param);
     },
     goPostDetail(e) {
-      let obj = Util.getElemetByTarget(e.target, 'post-item', 'scroll-wrapper');
+      let obj = Util.getElemetByTarget(e.target, 'reply-item', 'scroll-wrapper');
        
       if (!obj) return;
 
