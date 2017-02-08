@@ -17,7 +17,7 @@
           <list :config.once='personScrollConfig'  @refresh='onRefreshList' @loadmore='onLoadMore' ref='personlist' v-show='isShowProsonMsg'>
             <div class="scroll-wrapper" slot="scrollContent"  @tap='goMessageDetail'>
               <div class="message-person-list" >
-                <div class="message-person-item" v-for='(item, index) in personList' :data-id='item.plid'>
+                <div class="message-person-item" v-for='(item, index) in personList' :data-id='item.touid'>
                   <div class="left">
                     <img class="avatar" :src='item.avatar' />
                     <span class="point-new" v-show='item.isnew == "1" ? true : false'></span>

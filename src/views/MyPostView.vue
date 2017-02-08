@@ -129,7 +129,7 @@ export default {
 
     onLoadMore() {
       let that = this;
-      this.param.page = this.pager.cur_page + 1;
+      this.param.page = Number(this.pager.cur_page) + 1;
       this.getPostList(this.param);
     },
     goPostDetail(e) {

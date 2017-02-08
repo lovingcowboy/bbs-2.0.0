@@ -10,13 +10,13 @@
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
       <list :config.once="scrollConfig" @init="onInitList"  @loadmore="onLoadMore" ref="list" >
-        <div class="scroll-wrapper post-list" slot="scrollContent"  @tap="goPostDetail">
+        <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc">
           <post-item v-for="(item, index) in collectionList" :data="item">
             <div class="item-title" slot="itemhead">
-              <span data-type="userclick" :data-id="item.id">
-                <img src="../images/pai.png"><font>{{item.name}}</font>
+              <span data-type="userclick" :data-id="item.authorid" class="c-event">
+                <img :src="item.avatar"><font>{{item.author}}</font>
               </span>
-              <span>{{item.time}}</span>
+              <span v-html="item.dateline"></span>
             </div>
           </post-item>
          
@@ -131,12 +131,12 @@ export default {
     },
     onLoadMore() {
       let that = this;
-      this.param.page = this.pager.cur_page + 1;
+      this.param.page = Number(this.pager.cur_page) + 1;
       this.getPostList(this.param);
     },
 
-    goPostDetail(e) {
-      let obj = Util.getElemetByTarget(e.target, 'post-item', 'scroll-wrapper');
+   /* goPostDetail(e) {
+      let obj = Util.getElemetByTarget(e.target, 'post-row', 'scroll-wrapper');
        
       if (!obj) return;
 
@@ -145,6 +145,28 @@ export default {
       if(!id) return;
 
       let url = '/postdetail/' + id
+      this.$router.push(url)
+    }*/
+    listClickFunc(e) {
+     
+      let obj = Util.getElemetByTarget(e.target, 'c-event', 'post-list')
+       
+      if (!obj) return
+      let type = obj.dataset.type
+      let id = obj.dataset.id
+      if (!type) return;
+      if (type === 'userclick') {
+        this.goUserCenter(id)
+      } else if (type === 'itemclick') {
+        this.goDetail(id)
+      }
+    },
+    goUserCenter(id) {
+      var url = '/centerother/' + id
+      this.$router.push(url)
+    },
+    goDetail(id) {
+      var url = '/postdetail/' + id
       this.$router.push(url)
     }
   },
