@@ -32,7 +32,6 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 
 export default {
-  name: 'mission',
   components: {
     Zheader,
     Toast

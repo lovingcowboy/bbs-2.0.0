@@ -32,7 +32,6 @@ import Util from '../../../js/Util.js';
 import spinner from '../../Spinner.vue'
   export default {
     name: 'listview',
-    
     data () {
       return {
         refreshicon: false, //是否显示刷新图标
@@ -43,7 +42,8 @@ import spinner from '../../Spinner.vue'
         hasdata: true, //是否有数据
         ricon: false, //是否在可刷新状态
         micon: false,
-        isRefresh: false,  //是否加载中
+        isRefresh: false,  //是否刷新中,
+        isLoadMore: false   //是否加载更多中,
       }
     },
     props: ['config'],
@@ -88,7 +88,7 @@ import spinner from '../../Spinner.vue'
 
             that.pulldown = true;
             that.refreshicon = false;
-          } else if(Math.abs(this.y) >= (Math.abs(this.maxScrollY) - distance) && that.showmore) { //加载更多
+          } else if(Math.abs(this.y) >= (Math.abs(this.maxScrollY) - distance) && that.loadmore) { //加载更多
             that.micon = true;
           }
 
@@ -111,6 +111,9 @@ import spinner from '../../Spinner.vue'
           that.refreshicon = true;
           // 刷新中事件
           that.$emit('refresh');
+          setTimeout(function() {
+             that.myScroll.refresh();
+          }, 200)
 
         }
       },
@@ -125,6 +128,10 @@ import spinner from '../../Spinner.vue'
             }
             that.isLoadMore = true;
             that.$emit('loadmore');
+
+            setTimeout(function() {
+               that.myScroll.refresh();
+            }, 200)
           } /*else {
             setTimeout(function() {
               that.myScroll.refresh();
@@ -155,7 +162,7 @@ import spinner from '../../Spinner.vue'
         that.showmore = that.loadmore = hasmore;  //是否还有加载更多
          setTimeout(function() {
             that.myScroll && that.myScroll.refresh();
-          }, 10)
+          }, 200)
       },
 
       onNoData() {
@@ -176,10 +183,13 @@ import spinner from '../../Spinner.vue'
         } else {
           that.showmore = true;
         }
+
+        that.isRefresh = false;
+        that.isLoadMore = false;
           
         setTimeout(function() { // 刷新iscroll
           that.myScroll.refresh();
-        }, 10);
+        }, 200);
 
       }
     },

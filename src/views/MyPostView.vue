@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-       <list :config.once="scrollConfig" @init="onIniList"  @loadmore="onLoadMore" ref="list" >
+       <list :config.once="scrollConfig" @init="onInitList"  @loadmore="onLoadMore" ref="list" >
           <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail">
             <div class="post-item" v-for="(item, index) in myPostList" :data-id="item.tid">
              <div class="line01 post-title">
@@ -37,7 +37,6 @@ import Services from '../services'
 import List from 'components/listview'
 import Util from '../js/Util.js'
 export default {
-  name: 'mission',
   components: {
     Zheader,
     Toast,
@@ -94,11 +93,11 @@ export default {
               setTimeout(function() { 
                 that.$refs.list.refresh();
                  // 判断是否有加载更多
-                if(that.pager.cur_page < that.pager.total_page) {
+                if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
                   that.$refs.list.loadmore = true; //有加载更多
                 } else {
                   that.$refs.list.loadmore = false; //有加载更多
-                  if(that.pager.cur_page > 1) {
+                  if(Number(that.pager.cur_page) > 1) {
                     Toast({
                       "message": "已全部加载完毕"
                     })
@@ -119,7 +118,7 @@ export default {
       })
     },
 
-    onIniList(scroller) {
+    onInitList(scroller) {
       this.outerScroller = scroller;
     },
 

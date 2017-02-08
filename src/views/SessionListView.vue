@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">
       <div class="content">
-        <list :config.once="scrollConfig" @init="onIniList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="list">
+        <list :config.once="scrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="list">
           <div class="scroll-wrapper" slot="scrollContent">
             <div class="content-header">
               <div class="session-name">{{session}}</div>
@@ -85,7 +85,6 @@ import PostItem from '../components/PostItem.vue'
 import Util from '../js/Util.js'
 import List from "components/listview"
 export default {
-  name: 'mission',
   components: {
     Zheader,
     Toast,
@@ -128,7 +127,7 @@ export default {
       
    },
    onSwitchList(e) {  //切换最新发表跟最新回复
-      let target = e.target;
+      let target = e.currentTarget;
       let prevClass = target._prevClass;
       let that = this;
       if(!that.showFloat) { //当没置顶时
@@ -171,7 +170,10 @@ export default {
           setTimeout(function() {
             if(that.outerIScroll) { //刷新iscroll，并滑动到记录位置
               that.outerIScroll.refresh();
-              that.outerIScroll.scrollTo(0, that.newReplyY, time);
+              if(!that.isScrolling) {
+                that.outerIScroll.scrollTo(0, that.newReplyY, time);
+              }
+              // that.outerIScroll.scrollTo(0, that.newReplyY, time);
             }
           }, 200)
         }
@@ -179,7 +181,7 @@ export default {
       }, 10)
       
    },
-   onIniList(scroller) {
+   onInitList(scroller) {
     let  that = this;
     that.outerIScroll = scroller;
     let listTopEl = document.querySelector(".list-top");
