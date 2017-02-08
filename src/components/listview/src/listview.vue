@@ -127,6 +127,7 @@ import spinner from '../../Spinner.vue'
               return;
             }
             that.isLoadMore = true;
+            that.micon = false;
             that.$emit('loadmore');
 
             setTimeout(function() {
@@ -177,18 +178,17 @@ import spinner from '../../Spinner.vue'
         }
 
         let scroller =  that.myScroll;
-        
-        if(scroller.scroller.clientHeight < scroller.wrapper.clientHeight) {
-          that.showmore = false;
-        } else {
-          that.showmore = true;
-        }
 
         that.isRefresh = false;
         that.isLoadMore = false;
           
         setTimeout(function() { // 刷新iscroll
           that.myScroll.refresh();
+          if(scroller.scroller.clientHeight < scroller.wrapper.clientHeight) {
+            that.showmore = false;
+          } else {
+            that.showmore = true;
+          }
         }, 200);
 
       }
