@@ -9,6 +9,8 @@
         height: pxToRem(88px);
         line-height: pxToRem(88px);
         margin-bottom: pxToRem(20px);
+        position: relative;
+        z-index: 999;
         .tab-item {
             display: inline-block;
             width: 50%;
@@ -44,16 +46,16 @@
     .message-list-wrapper {
         position: relative;
         width: 100%;
-        /* top: pxToRem(108px);
-        bottom: 0; */
+        overflow: hidden;
         background-color: #fff;
-        padding-left: pxToRem(30px);
+        // padding-left: pxToRem(30px);
         font-size: 0;
         .message-person-list,
         .message-system-list {
             height: 100%;
             overflow: auto;
             color: #ccc;
+            margin-left: pxToRem(30px);
         }
         @at-root .message-person-item {
             font-size: 0;
@@ -63,6 +65,7 @@
                 position: relative;
                 display: inline-block;
                 padding: pxToRem(22px) 0;
+                // margin-left: pxToRem(30px);
                 .avatar {
                     width: 100%;
                 }
@@ -103,6 +106,7 @@
                     overflow: hidden;
                     white-space: nowrap;
                     line-height: 120%;
+                    word-break: break-all;
                 }
             }
         }
@@ -144,6 +148,7 @@
                     color: $txt-color-black;
                     margin-bottom: pxToRem(22px);
                     line-height: pxToRem(48px);
+                    word-break: break-all;
                 }
                 .time-wrapper {
                     font-size: 0;

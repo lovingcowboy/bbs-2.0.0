@@ -1,5 +1,5 @@
 <template>
-<li class="post-row c-event" data-type="itemclick" :data-id="data.fid">
+<li class="post-row c-event" data-type="itemclick" :data-id="data.tid">
   <!-- <div class="item-title">
     <span @click="onUserClick">
       <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}

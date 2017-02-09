@@ -7,9 +7,10 @@
       :prevent-back="false"
       :show="true">
     </zheader>
-    <div class="scroll" :class="{'scroll-active': isScrollActive}">   
-      <div class="content wrapper" id="outerWrapper">
-          <ul class="scroller">
+    <div class="scroll" :class="{'scroll-active': isScrollActive}">
+      <div class="content">
+        <list :config.once="scrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="list">
+          <div class="scroll-wrapper" slot="scrollContent">
             <div class="content-header">
               <div class="session-name">{{session}}</div>
               <div class="btn-wrapper" @click="onSwitchAllList">
@@ -19,7 +20,7 @@
             </div>
             <div class="list-all" v-show="isListAllActive">
               <div class="list-top">
-                <div class="top-item post-row">
+               <!--  <div class="top-item post-row">
                   <font class="top-label">置顶</font><font class="post-title">4100万的善捐款到底值不值？？</font>
                 </div>
                  <div class="top-item post-row">
@@ -27,7 +28,7 @@
                 </div>
                 <div class="top-item post-row">
                   <font class="top-label">置顶</font><font class="post-title">4100万的善捐款到底值不值？？</font>
-                </div>
+                </div> -->
               </div>
               <div class="btn-wrapper sticky-header" @tap="onSwitchList" :style="{visibility: showFloat == true ? 'hidden' : 'visible'}">
                 <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
@@ -65,12 +66,14 @@
               </div>
             </post-item>
             </ul>
-          </ul>
-          <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @tap="onSwitchList">
+          </div>
+        </list>    
+        
+        <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList">
             <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
             <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
-          </div>
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -79,14 +82,14 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
-import IScroll from '../js/lib/iscroll-probe_my.js'
 import Util from '../js/Util.js'
+import List from "components/listview"
 export default {
-  name: 'mission',
   components: {
     Zheader,
     Toast,
-    PostItem
+    PostItem,
+    List
   },
   data () {
     return {
@@ -97,7 +100,14 @@ export default {
       isListNewpostActive: true,
       newPostList: [],
       newReplyList: [],
-      essenceList: []
+      essenceList: [],
+      // isLoading: false,
+      scrollConfig: {
+        wrapper: 'sessionWrapper',
+        mutationObserver: true,
+        refresh: true,
+        loadmore: true
+      }
     }
   },
   methods: {
@@ -117,10 +127,9 @@ export default {
       
    },
    onSwitchList(e) {  //切换最新发表跟最新回复
-      let target = e.target;
+      let target = e.currentTarget;
       let prevClass = target._prevClass;
       let that = this;
-
       if(!that.showFloat) { //当没置顶时
         that.newPostY = that.newReplyY = that.outerIScroll.y;
       } else {  //置顶时
@@ -144,7 +153,6 @@ export default {
           setTimeout(function() {
             if(that.outerIScroll) { //刷新iscroll，并滑动到记录位置
               that.outerIScroll.refresh();
-              // console.log(that.isScrolling)
               if(!that.isScrolling) {
                 that.outerIScroll.scrollTo(0, that.newPostY, time);
               }
@@ -162,7 +170,10 @@ export default {
           setTimeout(function() {
             if(that.outerIScroll) { //刷新iscroll，并滑动到记录位置
               that.outerIScroll.refresh();
-              that.outerIScroll.scrollTo(0, that.newReplyY, time);
+              if(!that.isScrolling) {
+                that.outerIScroll.scrollTo(0, that.newReplyY, time);
+              }
+              // that.outerIScroll.scrollTo(0, that.newReplyY, time);
             }
           }, 200)
         }
@@ -170,17 +181,9 @@ export default {
       }, 10)
       
    },
-   initOuterScroller() {
-    let that = this;
-    that.outerIScroll = new IScroll("#outerWrapper", {
-      probeType: 2,
-      click: false,
-      tap: true,
-      disableMouse: true,
-      disablePointer: true,
-      mutationObserver: true
-    });
-
+   onInitList(scroller) {
+    let  that = this;
+    that.outerIScroll = scroller;
     let listTopEl = document.querySelector(".list-top");
     let listTopH = Util.pxToRemAdapt(listTopEl ? listTopEl.clientHeight : 0);
     // 计算最新发表、最新回复的位置 换算成rem 92为内容header高度 20为间距 
@@ -193,32 +196,59 @@ export default {
 
     that.outerIScroll.on('scroll', function() {
       that.isScrolling = true;
-      // console.log("that.isScrolling: ",that.isScrolling)
       if(!that.isListAllActive) {  //如果不是在全部列表页面，则不做操作
         return;
       }
-   
-      if(Math.abs(this.y - 1) > that.switchListSt) {
+
+      if(this.y - 1 < -that.switchListSt) { //置顶条件
         that.showFloat = true
         
       } else {
         that.showFloat = false
       }
-      that.isListNewpostActive ? that.newPostY = this.y : that.newReplyY = this.y;
+      that.isListNewpostActive ? that.newPostY = this.y : that.newReplyY = this.y;  //记录位置
+
+
     }); 
 
     that.outerIScroll.on('scrollEnd', function() {
       setTimeout(function() { //延迟刷新isScrolling状态，因为scroll还会触发多一次
         that.isScrolling = false;
-        // console.log("that.isScrolling: ",that.isScrolling)
       }, 100)
-      
+
     })
-   
+   },
+
+   onRefreshList() {   // TODO: 刷新数据
+    let that = this;
+    setTimeout(function() {
+      that.$refs.list.refreshDone();
+    }, 2000)
+   },
+
+   onLoadMore() { // TODO: 加载更多数据
+      let that = this;
+      setTimeout(function() {
+        let hasmore = false;
+        for (let i = 0; i < 6; i++) {
+          let item = {
+            name: '神采飞扬',
+            level: 'LV2 大咖',
+            time: i * 10 + '分钟前',
+            subject: '团贷网大踏步走在紧拥监管，跨越发展之路上',
+            message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
+            views: 12 * i,
+            replies: 25 * i,
+            id: i * 10
+          }
+          that.newPostList.push(item)
+          that.essenceList.push(item)
+        }
+        that.$refs.list.loadMoreDone(hasmore); //参数表示是否还有更多数据
+      }, 2000)
    }
   },
   mounted() {
-    this.initOuterScroller();
    
   },
   beforeMount () {

@@ -19,7 +19,7 @@
             </div>
             <img class="avatar" src='../images/icon-avatar.png' />
           </div>
-          <div class="name-wrapper" :class = 'isEditing' >
+          <div class="name-wrapper" :class='isEditing' >
             <input class="name-txt" maxlength="30" :readonly ='editing == true ? readonly : ""' :value='userInfo.username' />
           </div>
           <div class="level-wrapper">
@@ -28,7 +28,7 @@
             </div>
             <div class="level-name">
               <font>LV{{userInfo.level}}</font>
-              <span class="point">LV{{userInfo.level}}</span>
+              <span class="point"></span>
               <font>{{userInfo.level_name}}</font>
             </div>
           </div>
@@ -41,8 +41,8 @@
         </div>
         <div class="sign-wrapper">
           <div class="sign-text">已连续签到<font>{{userInfo.series_sign_num}}</font>天</div>
-          <div class="sign-btn btn-blue" v-show="!userInfo.yes_sign" @click="onSign();">马上签到</div>
-          <div class="sign-done btn-grey" v-show="!!userInfo.yes_sign">
+          <div class="sign-btn btn-blue" v-show="userInfo.yes_sign == '1' ? false : true" @click="onSign();">马上签到</div>
+          <div class="sign-done btn-grey" v-show="userInfo.yes_sign == '1' ? true : false">
             <span class="icon icon-signed"></span>
             <font>已签到</font>
           </div>
@@ -84,7 +84,9 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
-import Validate from '../js/lib/validate.js';
+import Validate from '../js/lib/validate.js'
+import Services from '../services'
+import { isApp } from '../filters'
 export default {
   components: {
     Zheader,
@@ -93,82 +95,136 @@ export default {
   data () {
     return {
       isScrollActive: true,
-      userInfo: {
-        avatar: "../images/icon-avatar.png",
-        username: "团小贷",
-        level:2,
-        level_name:"社区大虾",
-        credit :165,
-        prestige: 120,
-        disparity: 20,
-        next_level_name: "社区能手",
-        series_sign_num : 0,
-        yes_sign: 0
-      },
+      userInfo: {},
       editing: false,
       isEditing: ""
     }
   },
+  computed: {
+    isApp:function() {
+      return isApp();
+    }
+  },
   methods: {
+    getUserInfo() { //获得用户信息
+      let that = this;
+      let param = {
+        version: 4,
+        module: 'member'
+      }
+
+      Services.postData('/app/index.php', param).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          let data = _body.data
+          // console.log(data);
+          that.userInfo = data.member;
+        } else {
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
+          });
+        }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+          // console.log("fail")
+      })
+    },
     onEdit() {
       this.editing = true;
       this.isEditing = "editing"
     },
-
     onEditDone() {
        this.editing = false;
        this.isEditing = ""
     },
     onSign() {
-      this.userInfo.yes_sign = 1;
-      console.log("签到");
-    },
-   goUItemDetail: function(url) {
-        let uid = "";
-        if(window.mySessionStorage) {
-          uid = window.mySessionStorage['uid'];
-        }else{
-          uid = window.sessionStorage['uid'];
-        }
-        let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
-        
-        this.$router.push(url);
-       
+      let that = this;
+      let param = {
+        version: 4,
+        module: 'member',
+        action: 'sign'
+      }
 
-        return;
-        if (isLogined_cookie || uid) {
-          if (type == 2) {
-            this.$router.push({
-              name: 'changetb'
-            });
-          } else {
-            this.$router.push({
-              name: 'mypost',
-              params: {
-                'type': type
-              }
-            });
-          }
+      Services.postData('/app/index.php', param).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          let data = _body.data
+
+          let userInfo = that.userInfo;
+          let member = data.member;
+          
+          userInfo.series_sign_num = member.series_sign_num;
+          userInfo.yes_sign = 1;
+          userInfo.credit = member.credit;
+          userInfo.prestige = member.extcredits1;
+          userInfo.next_level_name = member.next_group_name;
+          userInfo.level_name = member.group_name;
+          userInfo.level_name = member.group_level;
         } else {
-          var returnUrl = window.location.href;
-          Validate.openLogin(returnUrl, function() {
-            if (type == 2) {
-              this.$router.push(url);
-            } else {
-              this.$router.push({
-                name: 'mypost',
-                params: {
-                  'type': type
-                }
-              });
-            }
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
           });
         }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+      })
+    },
+    goUItemDetail(url) {
+      let uid = "";
+      if(window.mySessionStorage) {
+        uid = window.mySessionStorage['uid'];
+      }else{
+        uid = window.sessionStorage['uid'];
       }
+      let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+      
+      this.$router.push(url);
+     
+      return;
+      if (isLogined_cookie || uid) {  //已登录
+         this.$router.push(url);
+      } else {  //未登录
+        var returnUrl = window.location.href;
+        Validate.openLogin(returnUrl, function() {
+          this.$router.push(url);
+        });
+      }
+    },
+
+    goLogout() {  //登出
+      let that = this;
+      let param = {
+        version: 4,
+        module: 'member',
+        action: 'logout'
+      }
+
+      Services.postData('/app/index.php', param).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          that.$router.push("main")
+
+        
+        } else {
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
+          });
+        }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+      })
+    }
    
   },
   beforeMount () {
-
+    
+    this.getUserInfo();  //获取用户信息
   }
 }
 </script>
