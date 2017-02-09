@@ -17,26 +17,26 @@
         <p class="p-msg"><span v-html="thread.create_time"></span><span class="post-view">{{thread.views}}</span><span class="post-reply">{{thread.replies}}</span></p>
         <p class="p-content" v-html="thread.message">
         </p>
-        <div :class="['vote-cont', {'vote-disable': hasVoted}]" v-show="voteData.options && voteData.options.length > 0">
-          <span class="v-question">{{voteData.question}}</span>
-          <template v-if="voteData.limit > 1">
-            <template v-for="(option, index) in voteData.options">
-              <label class="v-answer"  :for="option.id">
-                <input type="checkbox" name="answer" :id="option.id" :value="option.id" v-model="selectedOptions" v-if="!hasVoted">
-                <input type="checkbox" name="answer" :id="option.id" :value="option.id" v-model="selectedOptions" disabled v-else>
-                <label class="icon-checkbox icon-input" :for="option.id"></label>{{option.content}}
+        <div :class="['vote-cont', {'vote-disable': voteData.allowvote}]" v-show="voteData && voteData.polloptions && voteData.polloptions.length > 0">
+          <!-- <span class="v-question">{{voteData.question}}</span> -->
+          <template v-if="+voteData.maxchoices > 1">
+            <template v-for="(option, index) in voteData.polloptions">
+              <label class="v-answer"  :for="option.polloptionid">
+                <input type="checkbox" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="selectedOptions" v-if="!voteData.allowvote">
+                <input type="checkbox" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="selectedOptions" disabled v-else>
+                <label class="icon-checkbox icon-input" :for="option.polloptionid"></label>{{option.polloption}}
               </label>
-               <div v-show="showVotes" class="vn-cont"><i class="vote-nums" ><i class="vote-progress" :style="{width: option.percentage}"></i></i>10%</div>
+               <div v-show="showVotes" class="vn-cont"><i class="vote-nums" ><i class="vote-progress" :style="{width: option.percent + '%'}"></i></i>{{option.percent}}%</div>
             </template>
           </template>
           <template v-else>
-            <template v-for="(option, index) in voteData.options">
-              <label class="v-answer" :for="option.id">
-                <input type="radio" name="answer" :id="option.id" :value="option.id" v-model="picked" v-if="!hasVoted">
-                <input type="radio" name="answer" :id="option.id" :value="option.id" v-model="picked" disabled v-else>
-                <label class="icon-radio icon-input" :for="option.id"></label>{{option.content}}
+            <template v-for="(option, index) in voteData.polloptions">
+              <label class="v-answer" :for="option.polloptionid">
+                <input type="radio" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="picked" v-if="!hasVoted">
+                <input type="radio" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="picked" disabled v-else>
+                <label class="icon-radio icon-input" :for="option.polloptionid"></label>{{option.polloption}}
               </label>
-              <div v-show="showVotes" class="vn-cont"><i class="vote-nums" ><i class="vote-progress" :style="{width: option.percentage}"></i></i>10%</div>
+              <div v-show="showVotes" class="vn-cont"><i class="vote-nums" ><i class="vote-progress" :style="{width: option.percent + '%'}"></i></i>{{option.percent}}%</div>
             </template>
           </template>
         
@@ -61,7 +61,7 @@
                 </div>
                 <i class="icon-msg-big r-event" :data-index="index"></i>
               </div>
-             <!--  <p class="rm-txt2 rm-txt"><span><font class="txt-blue">贪吃小和尚</font>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p> -->
+              <p class="rm-txt2 rm-txt" v-if="item.reply_info"><span><font class="txt-blue">{{item.reply_info.nickname}}</font><font v-html="item.reply_info.content"></font></p>
               <p class="rm-txt1 rm-txt" v-html="item.message"></p>
             </li>
             <!-- <li class="reply-row">
@@ -268,12 +268,19 @@ export default {
       this.$router.push(url)
     },
     goMark () {
-      let url = '/postdetail/mark/aa'
+      let param = {
+        tid: this.thread.tid,
+        pid: this.thread.pid,
+        // formhash: this.formhash
+      }
+      // Util.setSessionStorage('formhash', this.formhash)
+      let url = '/postdetail/mark/' + JSON.stringify(param)
       this.$router.push(url)
     },
     getPostData (page) {
       let that = this
       let tid = this.$route.params.id
+      tid = '147677'
         // console.info('id---', this.$route.params.id)
       service.postData('/app/index.php', {
         version: 4,
@@ -291,7 +298,13 @@ export default {
             totalPage: data.pager.total_page,
             list: data.postlist
           }
+          that.voteData = data.special_poll
+          // console.info("vote-----", that.voteData.polloptions)
+          if (!that.voteData.allowvote) {
+            that.btnTxt = '显示投票结果'
+          }
           that.formhash = data.formhash
+          Util.setSessionStorage('formhash', this.formhash)
         } else {
           let msg = '请求失败，请稍后重试'
           if(_body.message) {
@@ -355,33 +368,6 @@ export default {
   },
   beforeMount () {
     let that = this;
-    /*that.voteData = {
-      question: '1218当天的交易额有多少？',
-      total: 100,
-      limit: 1,
-      options: [{
-        'content': '5亿',
-        'count': 10,
-        'id': 'aa'
-      },{
-        'content': '10亿',
-        'count': 30,
-        'id': 'bb'
-      },{
-        'content': '15亿',
-        'count': 50,
-        'id': 'cc'
-      },{
-        'content': '2亿',
-        'count': 10,
-        'id': 'dd'
-      }]
-    }
-    let total = that.voteData.total
-    that.voteData.options.forEach(function(item) {
-      item.percentage = (item.count / total * 100) + '%'
-    })*/
-    
     that.getPostData(1)
   },
   mounted () {

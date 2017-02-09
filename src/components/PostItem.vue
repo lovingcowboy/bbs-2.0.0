@@ -61,14 +61,18 @@ export default {
   line-height: pxToRem(42px);
   white-space: nowrap;
   &>span{
-    font-size: pxToRem(24px);
+    // font-size: pxToRem(24px);
+    font-size: pxToRem($font-size-small);
     color: $txt-color-grey;
   }
   &>span:first-child {
     width: 60%;
     font {
-      color: $txt-color-grey-dark;
+      color: $txt-color-black;
       margin-right: pxToRem(10px);
+    }
+    &>font:last-child {
+      color: $txt-color-grey
     }
   }
   &>span:last-child {
@@ -95,7 +99,7 @@ export default {
   .post {
     display: inline-block;
     width: pxToRem(450px);
-    font-size: pxToRem($font-size-large);
+    // font-size: pxToRem($font-size-large);
     vertical-align: middle;
     p {
       width: 100%;

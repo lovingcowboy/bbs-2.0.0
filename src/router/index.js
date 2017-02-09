@@ -25,7 +25,7 @@ const router = new Router({
     {path: '/recomment', name: 'recomment', component: RecommentView},
     {path: '/postdetail/:id', name: 'postdetail', component: PostDetailView},
     {path: '/postdetail/reply/:id', name: 'reply', component: ReplyView},
-    {path: '/postdetail/mark/:id', name: 'mark', component: MarkView},
+    {path: '/postdetail/mark/:reqParam', name: 'mark', component: MarkView},
     {path: '/post', name: 'post', component: PostView},
     {path: '/centermy', name: 'centermy', component: CenterMyView},
     {path: '/centerother/:id', name: 'centerother', component: CenterOtherView},

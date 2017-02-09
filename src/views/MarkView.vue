@@ -52,6 +52,7 @@
 
 <script>
 import Zheader from '../components/Header.vue'
+import service from '../services'
 import Toast from '../components/toast'
 export default {
   name: 'mark',
@@ -62,7 +63,7 @@ export default {
   data () {
     return {
       isScrollActive: true,
-      scoreList: [1,2,3,4,5,6,7],
+      // scoreList: [1,2,3,4,5,6,7],
       msgList: ['谢谢楼主分享', '加分支持'],
       // selectedMark: 0,
       scoreActive: null,
@@ -74,7 +75,8 @@ export default {
         score: '',
         prestige: '',
         msg: ''
-      }
+      },
+      formhash: ''
     }
   },
   computed: {
@@ -114,10 +116,44 @@ export default {
       this.markDetail.msg = this.msgAdd
       this.msgAdd = ''
       this.msgActive = this.msgList.length - 1
+    },
+    init () {
+      let reqParam = this.$route.params.reqParam
+      if (!reqParam) {
+        return
+      }
+      reqParam = JSON.parse(reqParam)
+      service.postData('/app/index.php', {
+        version: 4,
+        module: 'threadrate',
+        action: 'rate',
+        tid: reqParam.tid,
+        pid: reqParam.pid,
+        formhash: this.formhash
+      }).then((response) => {
+        console.info('init---', response.body)
+        let _body = response.body
+        if (_body.code === '200') {
+
+        } else {
+          let msg = '请求失败，请稍后重试'
+          if (_body.message) {
+            msg = _body.message
+          }
+          Toast({
+            message: msg
+          })
+        }
+      }, (response) => {
+        console.info('init fail-----', response)
+      })
     }
   },
   beforeMount () {
     let that = this;
+    that.formhash = Util.getSessionStorage('formhash')
+    this.init()
+
   },
   mounted () {
   }
