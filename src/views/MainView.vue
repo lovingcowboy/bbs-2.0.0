@@ -322,7 +322,7 @@ export default {
         'action': 'index_top',
         'v_token': loginToken
       }).then((response) => {
-        console.info('11111', response)
+        console.info('getHeadData----', response)
         let _body = response.body
         if (_body.code === '200') {
           that.userInfo = _body.data.list
@@ -403,9 +403,22 @@ export default {
       })
     }
   },
-  beforeMount() {
+  activated() {
     let that = this
     that.getHeadData()
+    /*let param = {
+      version: 4,
+      module: 'forum',
+      action: 'hot_threads',
+      page: 1
+    }
+    console.info('test----', that.hotList)
+    that.getListData(param)*/
+    // console.info('juan----', Validate.getCookie('tuandaiw'))
+  },
+  mounted() {
+    let that = this
+    this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
     let param = {
       version: 4,
       module: 'forum',
@@ -413,11 +426,6 @@ export default {
       page: 1
     }
     that.getListData(param)
-    // console.info('juan----', Validate.getCookie('tuandaiw'))
-  },
-  mounted() {
-    let that = this
-    this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop);
   }
 
 

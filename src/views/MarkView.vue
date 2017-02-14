@@ -17,10 +17,10 @@
           <i v-for="(score, index) in scoreList" @click="mark(score, index)" :class="{'active': scoreActive == index}">{{score}}</i>
         </p> -->
         <p class="prestige-container">
-          <input type="number"  pattern="[0-9]*" name="prestige" placeholder="请输入人气数量" v-model="markDetail.score">
+          <input type="number"  pattern="[0-9]*" name="prestige" placeholder="请输入人气数量" v-model="markDetail.score" >
         </p>
-        <p class="item-type item-ww">威望</p>
-        <p class="prestige-container">
+        <p class="item-type item-ww" v-show="markData.surplus_rate.extcredits1 && +markData.surplus_rate.extcredits1 > 0">威望</p>
+        <p class="prestige-container" v-show="markData.surplus_rate.extcredits1 && +markData.surplus_rate.extcredits1 > 0">
           <input type="number"  pattern="[0-9]*" name="prestige" placeholder="请输入威望数量" v-model="markDetail.prestige">
         </p>
         <p class="item-type">留言</p>
@@ -28,7 +28,7 @@
           <span class="msg-row">
             <!-- <i class="msg-default">谢谢楼主分享</i>
             <i class="msg-default">加分支持</i> -->
-            <i class="msg-default msg-item" v-for="(msg, index) in msgList" @click="pickMsg(msg, index)" :class="{'active': msgActive == index}">{{msg}}</i>
+            <i class="msg-default msg-item" v-for="(msg, index) in markData.reasons" @click="pickMsg(msg, index)" :class="{'active': msgActive == index}">{{msg}}</i>
             </span>
             <i class="msg-add msg-item" @click="goAdd">+自定义留言</i>
         </p>
@@ -64,7 +64,7 @@ export default {
     return {
       isScrollActive: true,
       // scoreList: [1,2,3,4,5,6,7],
-      msgList: ['谢谢楼主分享', '加分支持'],
+      // msgList: ['谢谢楼主分享', '加分支持'],
       // selectedMark: 0,
       scoreActive: null,
       // selectedMsg: '',
@@ -76,7 +76,10 @@ export default {
         prestige: '',
         msg: ''
       },
-      formhash: ''
+      formhash: '',
+      markData: {
+        surplus_rate: {}
+      }
     }
   },
   computed: {
@@ -98,7 +101,65 @@ export default {
     },
     markPost () {
       console.info('data------', this.markDetail)
-      window.history.back()
+      let that = this
+      let isCorrect_score = true
+      let isCorrect_prestige = true
+      if (this.markDetail.score > +this.markData.surplus_rate.extcredits3 || this.markDetail.score < +this.markData.rate_rule.extcredits3.min || this.markDetail.score > +this.markData.rate_rule.extcredits3.max || this.markDetail > +this.markData.rate_rule.extcredits3.mrpd) {
+        isCorrect_score = false
+      }
+      if (!isCorrect_score) {
+        Toast({
+          message: '当前您的剩余可评分人气数量为' + this.markData.surplus_rate.extcredits3 + '，评分范围为' + this.markData.rate_rule.extcredits3.min + '~' + this.markData.rate_rule.extcredits3.max + '，每日评分上限为' + this.markData.rate_rule.extcredits3.mrpd
+        })
+        return
+      }
+      if (this.markData.surplus_rate.extcredits1 && +this.markData.surplus_rate.extcredits1 > 0) {
+        if (this.markDetail.prestige > +this.markData.surplus_rate.extcredits1 || this.markDetail.prestige < +this.markData.rate_rule.extcredits1.min || this.markDetail.prestige > +this.markData.rate_rule.extcredits1.max || this.markDetail > +this.markData.rate_rule.extcredits1.mrpd) {
+          isCorrect_prestige = false
+        }
+        if (!isCorrect_score) {
+          Toast({
+            message: '当前您的剩余可评分威望数量为' + this.markData.surplus_rate.extcredits1 + '，评分范围为' + this.markData.rate_rule.extcredits1.min + '~' + this.markData.rate_rule.extcredits1.max + '，每日评分上限为' + this.markData.rate_rule.extcredits1.mrpd
+          })
+          return
+        }
+      }
+      /*if(!this.markDetail.msg) {
+        Toast({
+          message: '请选择留言'
+        })
+        return
+      }*/
+      service.postData('/app/index.php', {
+        module: 'threadrate',
+        action: 'rate',
+        tid: that.$route.params.tid,
+        pid: that.$route.params.pid,
+        formhash: Util.getSessionStorage('formhash'),
+        score1: that.markDetail.prestige,
+        score2: 0,
+        score3: that.markDetail.score,
+        reason: that.markDetail.msg,
+        ratesubmit: 'yes'
+      }).then((response) => {
+        console.info('markPost--------', response)
+        let _body = response.body
+        if (_body.code === '200') {
+          window.history.back()
+        } else {
+          let msg = '请求失败，请稍后重试'
+          if (_body.message) {
+            msg = _body.message
+          }
+          Toast({
+            message: msg
+          })
+        }
+      }, (response) => {
+        console.info('markPost fail-----', response)
+      })
+
+      // window.history.back()
     },
     goAdd () {
       this.isShowDialog = true
@@ -118,7 +179,7 @@ export default {
       this.msgActive = this.msgList.length - 1
     },
     init () {
-      let reqParam = this.$route.params.reqParam
+      /*let reqParam = this.$route.params.reqParam
       if (!reqParam) {
         return
       }
@@ -146,16 +207,21 @@ export default {
         }
       }, (response) => {
         console.info('init fail-----', response)
-      })
+      })*/
     }
   },
-  beforeMount () {
-    let that = this;
-    that.formhash = Util.getSessionStorage('formhash')
-    this.init()
-
-  },
-  mounted () {
+  activated () {
+    let _data = Util.getSessionStorage('markData')
+    if (_data) {
+      this.markData = JSON.parse(_data)
+        // this.msgList = markData.reasons
+      console.info(this.markData.surplus_rate)
+    }
+    // this.markDetail = {
+    //   score: '',
+    //   prestige: '',
+    //   msg: ''
+    // }
   }
 
 

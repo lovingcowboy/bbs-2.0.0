@@ -17,12 +17,12 @@
         <p class="p-msg"><span v-html="thread.create_time"></span><span class="post-view">{{thread.views}}</span><span class="post-reply">{{thread.replies}}</span></p>
         <p class="p-content" v-html="thread.message">
         </p>
-        <div :class="['vote-cont', {'vote-disable': voteData.allowvote}]" v-show="voteData && voteData.polloptions && voteData.polloptions.length > 0">
+        <div :class="['vote-cont', {'vote-disable': !voteData.allowvote}]" v-show="voteData && voteData.polloptions && voteData.polloptions.length > 0">
           <!-- <span class="v-question">{{voteData.question}}</span> -->
           <template v-if="+voteData.maxchoices > 1">
             <template v-for="(option, index) in voteData.polloptions">
               <label class="v-answer"  :for="option.polloptionid">
-                <input type="checkbox" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="selectedOptions" v-if="!voteData.allowvote">
+                <input type="checkbox" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="selectedOptions" v-if="voteData.allowvote">
                 <input type="checkbox" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="selectedOptions" disabled v-else>
                 <label class="icon-checkbox icon-input" :for="option.polloptionid"></label>{{option.polloption}}
               </label>
@@ -32,7 +32,7 @@
           <template v-else>
             <template v-for="(option, index) in voteData.polloptions">
               <label class="v-answer" :for="option.polloptionid">
-                <input type="radio" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="picked" v-if="!hasVoted">
+                <input type="radio" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="picked" v-if="voteData.allowvote">
                 <input type="radio" name="answer" :id="option.polloptionid" :value="option.polloptionid" v-model="picked" disabled v-else>
                 <label class="icon-radio icon-input" :for="option.polloptionid"></label>{{option.polloption}}
               </label>
@@ -139,11 +139,11 @@
     </div>
     </div>
       <div class="post-foot">
-        <div class="f-container">
-          <span class="f-reply" @click="goReply()">发表回复…</span>
-          <i class="icon-zan"></i>
-          <i class="icon-mark" @click="goMark()"></i>
-          <i class="icon-share"></i>
+        <div class="f-container" @click="pfClickFunc($event)">
+          <span class="f-reply pf-evt" data-type="reply">发表回复…</span>
+          <i class="icon-zan pf-evt" data-type="fav"></i>
+          <i class="icon-mark pf-evt"  data-type="mark"></i>
+          <i class="icon-share pf-evt" data-type="share"></i>
         </div>
       </div>
       <nav class="rm-tabs float-tabs" v-show="showFloat">
@@ -172,7 +172,7 @@ export default {
       voteData: {},
       selectedOptions: [], //复选框选中内容
       picked: "", //单选框选中内容
-      hasVoted: false,
+      // hasVoted: false,
       btnTxt: '投票',
       postHeight: 0,
       tabsOffsetTop: 0,
@@ -196,8 +196,15 @@ export default {
     }
   },
   computed: {
-   
   },
+  // watch: {
+  //   '$route' (to, from) {
+  //     console.info('watch-----', from, to)
+  //     if(from.name === 'main') {
+  //       this.getPostData(1)
+  //     }
+  //   }
+  // },
   methods: {
     headerRightBtnFun () {
       console.info('11111')
@@ -206,36 +213,74 @@ export default {
       this.tabType = type
       // let num = +type * (-100)
       // this.scrollX = 'translateX(' + num + '%)'
-      if(type === 0 && this.replyData.list.length === 0) {
+      if(type === 0 && (!this.replyData.list || this.replyData.list.length === 0)) {
         this.getPostData(1)
       }else if(type === 1 && this.MarkData.list.length === 0) {
-        this.getMarkData(1)
+        this.getMarkList(1)
       }
     },
      percentage (count, total) {
       return (count / total * 100) + "%"
     },
     goVote () {
-      console.info(this.selectedOptions, this.picked)
-      if (this.hasVoted) {
-        if (this.showVotes) {
-          this.showVotes = false
-          this.btnTxt = '显示投票结果'
-        } else {
-          this.showVotes = true
-          this.btnTxt = '隐藏投票结果'
-        }
-      } else {
-        if (this.selectedOptions.length > this.voteData.limit) {
+      let that = this
+      console.info(that.selectedOptions, that.picked)
+      if (that.voteData.allowvote) {
+        if (that.selectedOptions.length > +that.voteData.maxchoices) {
           Toast({
-            message: '最多可选' + this.voteData.limit + '项'
+            message: '最多可选' + that.voteData.maxchoices + '项'
           })
-          return;
+          return
         }
-        this.hasVoted = true
-        this.showVotes = true
-        this.btnTxt = '隐藏投票结果'
+        let pollanswers = []
+        if (+that.voteData.maxchoices > 1) {
+          pollanswers = that.selectedOptions
+        } else {
+          if (that.picked) {
+            pollanswers.push(that.picked)
+          }
+        }
+        if (pollanswers.length === 0) {
+          Toast({
+            message: '请选择选项'
+          })
+          return
+        }
+        service.postData('/app/index.php', {
+          version: 4,
+          module: 'pollvote',
+          fid: that.thread.fid,
+          tid: that.thread.tid,
+          pollsubmit: 'yes',
+          pollanswers: pollanswers
+        }).then((response) => {
+          console.info('goVote----', response)
+          let _body = response.body
+          if (_body.code === '200') {
+
+          } else {
+            let msg = '请求失败，请稍后重试'
+            if (_body.message) {
+              msg = _body.message
+            }
+            Toast({
+              message: msg
+            })
+          }
+        }, (response) => {
+          console.info('goVote----fail---', response)
+        })
+
+      } else {
+        if (that.showVotes) {
+          that.showVotes = false
+          that.btnTxt = '显示投票结果'
+        } else {
+          that.showVotes = true
+          that.btnTxt = '隐藏投票结果'
+        }
       }
+     
     },
     
     scrollMove () {
@@ -251,6 +296,32 @@ export default {
         // this.rmHeight = '100%'
       }
     },
+    pfClickFunc (e) {
+       let obj = Util.getElemetByTarget(e.target, 'pf-evt', 'f-container')
+       if (obj) {
+        let type = obj.dataset.type
+        if (type === 'reply') {
+          //回复
+          this.goReply()
+        } else if (type === 'fav') {
+          //收藏
+          if (+this.thread.yes_fav) {
+            Toast({
+              message: '取消收藏'
+            })
+          } else {
+            Toast({
+              message: '收藏成功'
+            })
+          }
+        } else if (type === 'mark') {
+          //评分
+          this.goMark()
+        } else {
+          //分享
+        }
+       }
+    },
     goReply () {
       let param = Util.getSessionStorage('reply')
       if (!param) {
@@ -264,23 +335,54 @@ export default {
         }
         Util.setSessionStorage('reply', JSON.stringify(param))
       }
-      let url = '/postdetail/reply/aa'
+      let url = '/postdetail/reply/' + this.thread.tid
       this.$router.push(url)
     },
     goMark () {
-      let param = {
-        tid: this.thread.tid,
-        pid: this.thread.pid,
-        // formhash: this.formhash
-      }
-      // Util.setSessionStorage('formhash', this.formhash)
-      let url = '/postdetail/mark/' + JSON.stringify(param)
-      this.$router.push(url)
+      let that = this
+      service.postData('/app/index.php', {
+        version: 4,
+        module: 'threadrate',
+        action: 'rate',
+        tid: that.thread.tid,
+        pid: that.thread.pid,
+        formhash: that.formhash
+      }).then((response) => {
+        console.info('goMark---', response.body)
+        let _body = response.body
+        if (_body.code === '200' && _body.data) {
+          Util.setSessionStorage('markData', JSON.stringify(_body.data))
+          Util.setSessionStorage('formhash', _body.data.formhash)
+          let url = '/postdetail/mark/' + that.thread.tid + '/' +  that.thread.pid
+          this.$router.push(url)
+        } else {
+          let msg = '请求失败，请稍后重试'
+          if (_body.message) {
+            msg = _body.message
+          }
+          Toast({
+            message: msg
+          })
+        }
+      }, (response) => {
+        console.info('init fail-----', response)
+      })
+
+
+
+      /* let param = {
+         tid: this.thread.tid,
+         pid: this.thread.pid,
+         // formhash: this.formhash
+       }
+       // Util.setSessionStorage('formhash', this.formhash)
+       let url = '/postdetail/mark/' + JSON.stringify(param)
+       this.$router.push(url)*/
     },
     getPostData (page) {
       let that = this
       let tid = this.$route.params.id
-      tid = '147677'
+      tid = '147679'
         // console.info('id---', this.$route.params.id)
       service.postData('/app/index.php', {
         version: 4,
@@ -294,20 +396,39 @@ export default {
           let data = _body.data
           that.thread = data.thread
           that.replyData = {
-            curPage: data.pager.cur_page,
-            totalPage: data.pager.total_page,
-            list: data.postlist
-          }
-          that.voteData = data.special_poll
-          // console.info("vote-----", that.voteData.polloptions)
-          if (!that.voteData.allowvote) {
-            that.btnTxt = '显示投票结果'
+              curPage: data.pager.cur_page,
+              totalPage: data.pager.total_page,
+              list: data.postlist
+            }
+            // console.info("vote-----", that.voteData.polloptions)
+          if (data.special_poll) {
+            that.voteData = data.special_poll
+            that.voteData.allowvote = +that.voteData.allowvote
+            if (!that.voteData.allowvote) {
+              that.btnTxt = '显示投票结果'
+                // that.showVotes = true
+              if (+that.voteData.maxchoices === 1) {
+                for (let opt of data.special_poll.polloptions) {
+                  console.info('opt---',opt)
+                  if (opt.selected === '1') {
+                    that.picked = opt.polloptionid
+                    break
+                  }
+                }
+              } else {
+                for (let opt of data.special_poll.polloptions) {
+                  if (opt.selected === '1') {
+                    that.selectedOptions.push(opt.polloptionid)
+                  }
+                }
+              }
+            }
           }
           that.formhash = data.formhash
           Util.setSessionStorage('formhash', this.formhash)
         } else {
           let msg = '请求失败，请稍后重试'
-          if(_body.message) {
+          if (_body.message) {
             msg = _body.message
           }
           Toast({
@@ -318,7 +439,7 @@ export default {
         console.info('get post data fail------', response)
       })
     },
-    getMarkData (page) {
+    getMarkList (page) {
       let that = this
       service.postData('/app/index.php', {
         version: 4,
@@ -377,6 +498,9 @@ export default {
     // this.rmHeight = document.documentElement.offsetHeight - 110 + 'px'
     this.rmHeight = document.documentElement.offsetHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight + 20 + 'px'
   },
+  activated () {
+    // this.getPostData(1)
+  }
 
 
 }

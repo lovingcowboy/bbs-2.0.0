@@ -14,7 +14,7 @@
       <div class="reply-cont">
         <div class="r-head">
           <img :src="replyData.avatar">
-          <span><font>{{replyData.author}}：</font>{{replyData.message}}</span>
+          <span><font>{{replyData.author}}：</font><font v-html="replyData.message"></font></span>
         </div>
         <div class="r-input">
           <textarea class="input-area" placeholder="请输入…" v-model.trim="replyData.content" id="inputMsg" @blur="blurFun"></textarea>

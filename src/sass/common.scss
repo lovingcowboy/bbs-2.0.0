@@ -477,6 +477,11 @@ input::-webkit-inner-spin-button {
     -webkit-animation-fill-mode: both;
     // transform:rotate(0);
 }
+.post-cont, .rm-list {
+    img {
+        max-width: 100%;
+    }
+}
 
 @-webkit-keyframes flipUp {
     0% {

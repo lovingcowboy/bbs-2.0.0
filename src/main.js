@@ -14,6 +14,8 @@ import './sass/common.scss'
 // 全局化工具库Util
 import './js/Util.js'
 
+import Loader from './components/loader'
+
 /* eslint-disable no-new */
 
 // sync(store, router)
@@ -25,16 +27,32 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
-// 保存deviceId
-// window.sessionStorage['deviceId'] = '4caaCM/5LuOQX37lMfS7TFh9Z7V7BCxJXZ+C9oxgS4pUwulQBzDQ+skMRao'
+let loader = Loader()
+Vue.http.options.emulateJSON = true
+Vue.http.interceptors.push((request, next) => {
+    // continue to next interceptor
+    if (!request.body.notLoader) {
+      loader.show()
+    }
+    next((response) => {
+      loader.hide()
+    })
+  })
+router.beforeEach((to, from, next) => {
+	loader.show()
+	next()
+})
 
+router.afterEach(function ({to, next}) {
+	loader.hide()
+})
 const app = new Vue({
   router,
   ...App
 })
 
 app.$mount('#app')
-window.mySessionStorage = {}
+// window.mySessionStorage = {}
 
 // new Vue({
 //   el: '#app',
