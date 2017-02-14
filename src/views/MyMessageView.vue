@@ -107,7 +107,7 @@ export default {
       if(that.fisrtShowSysMsg && that.isShowProsonMsg) {  //首次加载系统消息
         that.isShowProsonMsg = false;
         that.fisrtShowSysMsg = false;
-        that.getSystemList(that.systemParam);
+        that.getSystemList(that.systemParams);
         return;
       }
 
@@ -140,10 +140,10 @@ export default {
           }
         }
     },
-    getPersonList(param) { //获取个人消息
+    getPersonList(params) { //获取个人消息
       let that = this;
 
-      Services.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data;
@@ -152,10 +152,10 @@ export default {
           // 记录系统消息未读数
           that.newsystem = data.newsystem; 
 
-          if(param.page == 1) { //刷新或者第一次加载数据
+          if(params.page == 1) { //刷新或者第一次加载数据
             that.personList = data.list;
             // that.$refs.list.refreshDone();
-          } else if(param.page > 1) { //加载更多数据
+          } else if(params.page > 1) { //加载更多数据
             that.personList = that.personList.concat(data.list);
           }
           /*for (let i = 0; i < 10; i++) {
@@ -204,17 +204,17 @@ export default {
       })
     },
       
-    getSystemList(param) {  //获取系统消息
+    getSystemList(params) {  //获取系统消息
       let that = this;
 
-      Services.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
 
-          if(param.page == 1) { //刷新或者第一次加载数据
+          if(params.page == 1) { //刷新或者第一次加载数据
             that.systemList = data.list;
-          } else if(param.page > 1) { //加载更多数据
+          } else if(params.page > 1) { //加载更多数据
             that.systemList = that.systemList.concat(data.list);
           }
 
@@ -257,21 +257,21 @@ export default {
 
     onRefreshList() {   // 刷新数据
       if(this.isShowProsonMsg) { //个人消息
-        this.personParam.page  = 1;
-        this.getPersonList(this.personParam);  
+        this.personParams.page  = 1;
+        this.getPersonList(this.personParams);  
       } else {
-        this.systemParam.page = 1;
-        this.getSystemList(this.systemParam);
+        this.systemParams.page = 1;
+        this.getSystemList(this.systemParams);
       }
     },
 
     onLoadMore() {
       if(this.isShowProsonMsg) { //个人消息
-        this.personParam.page  =  Number(this.personPager.cur_page) + 1;;
-        this.getPersonList(this.personParam);  
+        this.personParams.page  =  Number(this.personPager.cur_page) + 1;;
+        this.getPersonList(this.personParams);  
       } else {
-        this.systemParam.page  =  Number(this.systemPager.cur_page) + 1;;
-        this.getSystemList(this.systemParam);
+        this.systemParams.page  =  Number(this.systemPager.cur_page) + 1;;
+        this.getSystemList(this.systemParams);
       }
     },
     goMessageDetail(e) {
@@ -297,20 +297,20 @@ export default {
     window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
   },
   beforeMount () {
-    this.personParam = {
+    this.personParams = {
       version: 4,
       module: 'mypm',
       page:  1,
 
     }
 
-    this.systemParam = {
+    this.systemParams = {
       version: 4,
       module: 'system_notice',
       page:  1,
 
     }
-    this.getPersonList(this.personParam)  
+    this.getPersonList(this.personParams)  
   }
   
 }

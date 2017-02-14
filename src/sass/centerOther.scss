@@ -1,5 +1,13 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
+.content {
+    height: 100%;
+    overflow: hidden;
+    .wrapper {
+        background-color: transparent
+    }
+}
+
 .contetn-header {
     background-color: $color-white;
     padding-top: pxToRem(36px);
@@ -12,6 +20,8 @@
         font-size: 0;
         .avatar {
             width: pxToRem(160px);
+            height: pxToRem(160px);
+            border-radius: 50%;
             display: inline-block;
         }
         .userInfo-right {
@@ -19,10 +29,15 @@
             float: right;
             .username {
                 font-size: pxToRem($font-size-normal);
+                height: pxToRem($font-size-normal);
                 color: $txt-color-black;
                 position: relative;
                 padding-bottom: pxToRem(20px);
                 margin-top: pxToRem(8px);
+                box-sizing: content-box;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
                 &:after {
                     @include border(bottom, $border-color);
                 }
@@ -137,6 +152,11 @@
             content: "";
             height: pxToRem(30px);
             margin-right: pxToRem(14px);
+        }
+    }
+    .post-list {
+        .author {
+            color: $txt-color-grey-dark;
         }
     }
 }

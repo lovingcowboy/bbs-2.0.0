@@ -67,18 +67,18 @@ export default {
     }
   },
   methods: {
-   getPostList(param) { //获取帖子列表
+   getPostList(params) { //获取帖子列表
       let that = this;
 
-      Services.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
 
-          if(param.page == 1) { //刷新或者第一次加载数据
+          if(params.page == 1) { //刷新或者第一次加载数据
             that.myReplyList = data.list;
             // that.myReplyList[0].reply = "<img src='https://bbs.tuandai.com/static/image/smiley/default/loveliness.gif'>";
-          } else if(param.page > 1) { //加载更多数据
+          } else if(params.page > 1) { //加载更多数据
             that.myReplyList = that.myReplyList.concat(data.list);
           }
 
@@ -102,32 +102,32 @@ export default {
             if(that.myReplyList.length == 0) { //无数据
               that.$refs.list.onNoData();
             } else {  //刷新list
-              setTimeout(function() { 
-                that.$refs.list.refresh();
-                 // 判断是否有加载更多
-                if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
-                  that.$refs.list.loadmore = true; //有加载更多
-                } else {
-                  that.$refs.list.loadmore = false; //有加载更多
-                  if(Number(that.pager.cur_page) > 1) {
-                    Toast({
-                      "message": "已全部加载完毕"
-                    })
-                  }
-                  
+               // 判断是否有加载更多
+              if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
+                that.$refs.list.loadmore = true; //有加载更多
+              } else {
+                that.$refs.list.loadmore = false; //有加载更多
+                if(Number(that.pager.cur_page) > 1) {
+                  Toast({
+                    "message": "已全部加载完毕"
+                  })
                 }
-              }, 200)
+                
+              }
             }
+            that.$refs.list.refresh();
           }
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
+          that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
+          that.$refs.list.refresh();
       })
     },
 
@@ -142,8 +142,8 @@ export default {
 
     onLoadMore() {
       let that = this;
-      this.param.page = Number(this.pager.cur_page) + 1;
-      this.getPostList(this.param);
+      this.params.page = Number(this.pager.cur_page) + 1;
+      this.getPostList(this.params);
     },
     goPostDetail(e) {
       let obj = Util.getElemetByTarget(e.target, 'reply-item', 'scroll-wrapper');
@@ -159,14 +159,14 @@ export default {
     }
   },
   beforeMount () {
-    this.param = {
+    this.params = {
       version: 4,
       module: 'mythread',
       type:'reply',
       page:  1,
 
     }
-    this.getPostList(this.param)
+    this.getPostList(this.params)
   }
   
   

@@ -108,12 +108,12 @@ export default {
   methods: {
     getUserInfo() { //获得用户信息
       let that = this;
-      let param = {
+      let params = {
         version: 4,
         module: 'member'
       }
 
-      Services.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
@@ -141,13 +141,13 @@ export default {
     },
     onSign() {
       let that = this;
-      let param = {
+      let params = {
         version: 4,
         module: 'member',
         action: 'sign'
       }
 
-      Services.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
@@ -197,13 +197,13 @@ export default {
 
     goLogout() {  //登出
       let that = this;
-      let param = {
+      let params = {
         version: 4,
         module: 'member',
         action: 'logout'
       }
 
-      Services.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           that.$router.push("main")
