@@ -20,7 +20,8 @@
 <section id="imgs" class="imgs" v-show="showImgList">
   <ul class="img-container" id="">
     <li v-for="(img, index) in imgList">
-      <img :src="img.photoUrl">
+      <!-- <img :src="img.photoUrl"> -->
+      <img :src="img.photoContent">
       <i class="icon-del" @click="imgDelFunc(index)"></i>
     </li>
     <li class="img-add" v-show="isApp && addImg" @click="addImgFunc($event, 'app')"></li>
