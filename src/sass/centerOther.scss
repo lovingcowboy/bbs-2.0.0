@@ -53,12 +53,13 @@
                 vertical-align: middle;
                 font-size: pxToRem($font-size-normal-small);
                 color: $txt-color-black;
-                text-align: center;
+               
                 margin-right: pxToRem(110px);
                 .label {
                     font-size: pxToRem(22px);
                     color: $txt-color-grey;
                     margin-top: pxToRem(20px);
+                     text-align: center;
                 }
             }
         }

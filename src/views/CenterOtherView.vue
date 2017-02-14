@@ -157,7 +157,7 @@ export default {
         
           if(that.$refs.list) {
             if(that.dynamicList.length == 0) { //无数据
-              that.$refs.list.onNoData();
+              // that.$refs.list.onNoData();
             } else {  //刷新list
               // 判断是否有加载更多
               if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
@@ -238,6 +238,10 @@ export default {
   },
   mounted () {
     this.uiSetListMinHeight();
+    
+    //当横屏时 重新计算最小高度 
+    let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+    window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
   }
 }
 </script>
