@@ -330,7 +330,7 @@ export default {
           avatar: this.thread.avatar,
           author: this.thread.author,
           message: this.thread.title,
-          pid: this.thread.pid,
+          // pid: this.thread.pid,
           tid: this.thread.tid,
           fid: this.thread.fid
         }
@@ -389,7 +389,8 @@ export default {
         version: 4,
         module: 'viewthread',
         tid: tid,
-        page: page
+        page: page,
+        ordertype: 1
       }).then((response) => {
         console.info('get post detail ----', response.body)
         let _body = response.body
@@ -482,7 +483,8 @@ export default {
         author: item.author,
         message: item.message,
         tid: item.tid,
-        pid: item.pid
+        pid: item.pid,
+        fid: this.thread.fid
       }
       Util.setSessionStorage('reply', JSON.stringify(param))
       this.goReply()

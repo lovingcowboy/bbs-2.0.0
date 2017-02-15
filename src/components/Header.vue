@@ -1,6 +1,6 @@
 <template>
   <header id="header" class="header-bar" v-show="show">
-    <i class="icon-back" v-show="hasBack" @click="goBack">{{backTxt}}</i>
+    <i class="icon-back" v-show="hasBack" @click="leftBtnFunc">{{backTxt}}</i>
       {{headerTitle}}
     <i v-show="hasRightbtn" class="refresh-btn" @click="rightBtnFunc"></i>
   </header><!-- /header -->
@@ -15,8 +15,15 @@
     computed: {},
     props: ['headerTitle', 'hasBack', 'backTxt', 'hasRightbtn', 'preventBack', 'show'],
     methods: {
+      leftBtnFunc () {
+        if (this.hasLeftBtnFunc) {
+          this.$emit('left-btn-func')
+        } else {
+          this.goBack()
+        }
+      },
       goBack () {
-        this.$emit('back-btn-func')
+        // this.$emit('back-btn-func')
         if (!this.preventBack) {
           // router.go(window.history.back())
           window.history.back()

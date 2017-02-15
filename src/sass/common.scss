@@ -208,6 +208,10 @@ input::-webkit-inner-spin-button {
     color: $txt-color-grey-light;
 }
 
+.warn::-webkit-input-placeholder {
+    color: rgba(255, 0, 0, 0.75) !important;
+}
+
 .masker {
     position: absolute;
     top: 0;
@@ -477,7 +481,9 @@ input::-webkit-inner-spin-button {
     -webkit-animation-fill-mode: both;
     // transform:rotate(0);
 }
-.post-cont, .rm-list {
+
+.post-cont,
+.rm-list {
     img {
         max-width: 100%;
     }

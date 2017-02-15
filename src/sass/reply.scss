@@ -40,6 +40,9 @@
 			color: $txt-color-black;
 		}
 	}
+	div {
+		display: inline-block !important;
+	}
 }
 .r-input {
 	width: 100%;

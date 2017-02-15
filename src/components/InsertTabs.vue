@@ -4,7 +4,7 @@
   <i :class="['icon-emoji', {'active': showEmotion}]" @click="triggerEmotion"></i>
   <i :class="['icon-image', {'active': showImgList}]" @click="triggerImg"></i>
   <i :class="['icon-vote', {'active': showVote}]" v-show="hasVote" @click="triggerVote">（投票）</i>
-  <div class="btn-send btn-blue" @click="btnClickFunc">发表</div>
+  <div :class="['btn-send', 'btn-blue', {'btn-disable': !btnActive}]" @click="btnClickFunc">发表</div>
 </div>
 <section class="emotions" v-show="showEmotion">
   <swipe :auto="0" :speed="100">
@@ -213,7 +213,7 @@ export default {
       return isApp()
     }
   },
-	props: ['hasVote', 'imgList', 'addImg', 'canAddImg', 'postVote'],
+	props: ['hasVote', 'imgList', 'addImg', 'canAddImg', 'postVote', 'btnActive'],
 	methods: {
     triggerEmotion() {
         this.showEmotion = !this.showEmotion
@@ -234,7 +234,9 @@ export default {
         this.$emit('imgDelFunc', index)
       },
       btnClickFunc() {
-        this.$emit('btnClickFunc')
+        if (btnActive) {
+          this.$emit('btnClickFunc')
+        }
 
       },
       prevenDefault(e) {
@@ -903,6 +905,9 @@ export default {
   background-position: pxToRem(-76px) pxToRem(-304px);
   width: pxToRem(56px);
   height: pxToRem(56px);
+}
+.btn-disable {
+  opacity: .3;
 }
 
 </style>
