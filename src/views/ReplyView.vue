@@ -49,6 +49,7 @@ import openapi from '../services/openapi.js'
 import service from '../services'
 import Bbsbridge from '../js/lib/bbsbridge.js'
 import { isApp, isAndroid } from '../filters'
+import MessageBox from '../components/message-box'
 import Loader from '../components/loader'
 
 export default {
@@ -87,7 +88,17 @@ export default {
   },
   methods: {
     leftBtnFunc() {
-      window.history.back()
+      MessageBox({
+        message: '返回后回复内容不会保存，确定要返回吗？',
+        showCancelButton: true,
+        closeOnClickModal: false
+      }).then(action => {
+        console.log(action)
+        if(action === 'confirm') {
+          window.history.back()
+        }
+      })
+      // window.history.back()
     },
     headerRightBtnFun() {
       console.info('11111')

@@ -131,6 +131,110 @@ span {
 
 /* ----------taost--------end-- */
 
+
+/* message-box */
+
+//message-box
+.mint-msgbox-wrapper {
+    .mint-msgbox {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        background-color: #fff;
+        width: 85%;
+        border-radius: pxToRem(20px);
+        font-size: pxToRem(36px);
+        -webkit-user-select: none;
+        // overflow: hidden;
+        backface-visibility: hidden;
+        transition: .2s;
+    }
+    .mint-icon {
+        display: block;
+        margin: 0 auto;
+        margin-top: pxToRem(-61px);
+        margin-bottom: pxToRem(-30px);
+        width: pxToRem(152px);
+        height: pxToRem(152px);
+    }
+    .mint-msgbox-header {
+        padding: pxToRem(30px) 0 0;
+    }
+    .mint-msgbox-title {
+        text-align: center;
+        padding-left: 0;
+        margin-bottom: 0;
+        font-size: pxToRem(20px * 2);
+        font-weight: 700;
+        color: $txt-color-black;
+    }
+    .mint-msgbox-content {
+        padding: pxToRem(60px) pxToRem(100px);
+        border-bottom: 1px solid #ddd;
+        // min-height: pxToRem(36px * 2);
+        position: relative;
+        text-align: center;
+        font-size: pxToRem(34px);
+        color: $txt-color-black;
+        line-height: pxToRem(50px);
+    }
+    .mint-msgbox-btns {
+        display: flex;
+        height: pxToRem(87px);
+        line-height: pxToRem(87px);
+    }
+    .mint-msgbox-btn {
+        line-height: pxToRem(80px);
+        display: block;
+        background-color: #fff;
+        flex: 1;
+        margin: 0;
+        border: 0;
+        font-size: pxToRem(32px);
+    }
+    .mint-msgbox-cancel {
+        width: 50%;
+        border-right: 1px solid #ddd;
+        color: $txt-color-grey;
+        border-bottom-left-radius: pxToRem(20px);
+    }
+    .mint-msgbox-confirm {
+        color: $txt-color-blue;
+        width: 50%;
+        border-bottom-right-radius: pxToRem(20px);
+    }
+}
+
+.m-bent {
+    width: pxToRem(180px);
+    height: pxToRem(78px);
+    line-height: pxToRem(78px);
+    position: absolute;
+    // left: pxToRem(527px);
+    // right: pxToRem(24px);
+    right: 0;
+    top: pxToRem(36px);
+    font-size: pxToRem(48px);
+    color: $txt-color-blue;
+    .b-txt1 {
+        font-size: pxToRem(36px);
+    }
+    .b-txt2 {
+        font-size: pxToRem(28px);
+        vertical-align: middle;
+    }
+    .f-txt {
+        font-size: pxToRem(28px);
+        color: #666;
+        text-align: center;
+        width: 80%;
+    }
+}
+
+
+/* message-box----------end---- */
+
 .sign-done {
     position: relative;
     font-size: 0;
@@ -442,7 +546,7 @@ input::-webkit-inner-spin-button {
         height: pxToRem(50px);
         position: absolute;
         z-index: 1;
-        border: 2px solid #d1d1d1;
+        border: 1px solid #d1d1d1;
         border-radius: 50%;
         top: 50%;
         transform: translateY(-50%);

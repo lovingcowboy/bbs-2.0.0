@@ -61,7 +61,7 @@
         </ul>
       </div>
       <div class="scroll-list">
-        <ul class="post-list">
+        <ul class="post-list" @click="listClickFunc($event)">
           <post-item v-for="item in newList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.tid" class="c-event">
@@ -74,7 +74,7 @@
         </ul>
       </div>
       <div class="scroll-list">
-        <ul class="post-list">
+        <ul class="post-list" @click="listClickFunc($event)">
           <post-item v-for="item in essenceList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.tid" class="c-event">
