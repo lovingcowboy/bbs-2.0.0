@@ -93,39 +93,39 @@
         <div class="masker" @click="triggerModules(0)"></div>
         <transition name="slide" v-on:before-enter="beforeEnter" v-on:after-leave="afterLeave">
           <ul class="module-list" @click="goModuleList($event)" v-show="showModules">
-            <li class="p-module" data-id="0">
+            <li class="p-module" data-id="29">
               <i class="icon-module icon-module-invest"></i>
               <span class="module-txt">投资交流</span>
             </li>
-            <li class="p-module" data-id="1">
+            <li class="p-module" data-id="2">
               <i class="icon-module icon-module-hot"></i>
               <span class="module-txt">热门活动</span>
             </li>
-            <li class="p-module" data-id="2">
+            <li class="p-module" data-id="25">
               <i class="icon-module icon-module-question"></i>
               <span class="module-txt">有问必答</span>
             </li>
-            <li class="p-module" data-id="3">
+            <li class="p-module" data-id="65">
               <i class="icon-module icon-module-suggest"></i>
               <span class="module-txt">团粉建言</span>
             </li>
-            <li class="p-module" data-id="4">
+            <li class="p-module" data-id="27">
               <i class="icon-module icon-module-speak"></i>
               <span class="module-txt">畅所欲言</span>
             </li>
-            <li class="p-module" data-id="5">
+            <li class="p-module" data-id="68">
               <i class="icon-module icon-module-news"></i>
               <span class="module-txt">财经新闻</span>
             </li>
-            <li class="p-module" data-id="6">
+            <li class="p-module" data-id="43">
               <i class="icon-module icon-module-td-news"></i>
               <span class="module-txt">团贷动态</span>
             </li>
-            <li class="p-module" data-id="7">
+            <li class="p-module" data-id="44">
               <i class="icon-module icon-module-video"></i>
               <span class="module-txt">团贷视频</span>
             </li>
-            <li class="p-module" data-id="8">
+            <li class="p-module" data-id="67">
               <i class="icon-module icon-module-ceo"></i>
               <span class="module-txt">CEO专栏</span>
             </li>

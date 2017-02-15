@@ -14,8 +14,11 @@
       <div class="pc">
         <p class="p-txt1"><span>选择版块</span><span @click="showRule">发帖规则</span></p>
         <div class="ml-container">
-          <p class="msg-cont">
-              <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="selectModule(item.name, index)" :class="{'active': moduleActive == index}">{{item.name}}</i>
+          <p class="msg-cont" v-if="hasModules">
+              <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="selectModule(item.fid)" :class="{'active': moduleActive == item.fid}">{{item.name}}</i>
+          </p>
+          <p class="msg-cont" v-else>
+            <i class="module-reload msg-default msg-item" @click="reloadModules">点击重新获取</i>
           </p>
         </div>
         <div class="p-form">
@@ -23,7 +26,7 @@
             <input type="text" name="pTitle" placeholder="帖子标题" class="i-title" v-model.trim="post.title" @input="titleChangeFun" @compositionstart="compositionstartFun" @compositionend="compositionendFun">
           </div>
           <div class="p-content">
-            <textarea placeholder="帖子内容" class="i-content" id="postContent" v-model.trim="post.content" @blur="blurFun" ></textarea>
+            <textarea placeholder="帖子内容" class="i-content" id="postContent" v-model.trim="post.content" @blur="blurFun" @input="contentChangeFunc"></textarea>
           </div>
         </div>
       </div>
@@ -36,6 +39,7 @@
         :addImg="addImg"
         :canAddImg="canAddImg"
         :postVote="postVote"
+        :btnActive="canPost"
         @emotionClickFunc="insertEmo"
         @imgDelFunc="delImg"
         @btnClickFunc="goPost"
@@ -51,7 +55,10 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import InsertTabs from '../components/InsertTabs.vue'
 import { isApp, isAndroid } from '../filters'
-import lrz from '../js/lib/lrz.js'
+import service from '../services'
+import openapi from '../services/openapi.js'
+import Bbsbridge from '../js/lib/bbsbridge.js'
+import Loader from '../components/loader'
 import Vue from 'vue'
 export default {
   name: 'post',
@@ -67,38 +74,37 @@ export default {
         selectionStart: 0,
         selectionEnd: 0
       },
-      moduleList: [{
-        name: '投资交流',
-        id: 0
-      }, {
-        name: '有问必答',
-        id: 1
-      }, {
-        name: '团粉建言',
-        id: 2
-      }, {
-        name: '畅所欲言',
-        id: 3
-      }, {
-        name: '财经新闻',
-        id: 4
-      }],
+      moduleList: [],
       moduleActive: 0,
       imgList: [],
       post: {
-        module: null,
+        fid: '',
         title: '',
         content: ''
       },
       addImg: true, //是否显示添加图片图标
       canAddImg: true, //web端是否可上传图片
-      canPost: true, //是否可发表帖子
+      canPost: false, //是否可发表帖子
       comstart: false,
-      postVote: null //发起投票信息
+      postVote: null, //发起投票信息
+      loader: null,
+      hasModules: true
     }
   },
   computed: {
-   
+    isApp() {
+        return isApp()
+      },
+      isNewVersion() {
+        return Bbsbridge.isCorrectVersion("4.8.0", "1");
+      },
+      isEmpty() {
+        if (this.post.title.trim().length > 0 && this.post.content.trim().length > 0 && this.post.fid) {
+          return false
+        } else {
+          return true
+        }
+      }
   },
   methods: {
     headerRightBtnFun() {
@@ -129,7 +135,11 @@ export default {
           endPos = that.selectPostion.selectionEnd,
           content = that.post.content
         that.post.content = content.substring(0, startPos) + code + content.substring(endPos, $t.value.length)
-        // this.focus()
+        if (this.isEmpty) {
+          this.canPost = false
+        } else {
+          this.canPost = true
+        }
 
         Vue.nextTick(function() {
           that.selectPostion = {
@@ -167,8 +177,28 @@ export default {
         let that = this
         let _count = 9 - that.imgList.length
         console.info('chooseImgFun----', _count)
-        return
-        that.execOriginFun(function() {
+
+        Bbsbridge.exec('getThumbnail', _count, function(data) {
+          // alert("获取缩略图成功！")
+          data = JSON.parse(data)
+          if (data.code == 200) {
+            let _data = data.data
+            _data.forEach((item, i) => {
+              item.photoContent = "data:img/jpgbase64," + item.photoContent
+            })
+            that.imgList = that.imgList.concat(_data)
+            if (that.imgList.length >= 9) {
+              that.addImg = false
+            } else {
+              that.addImg = true
+            }
+          } else {
+            Toast('图片选择失败，请重新尝试！')
+          }
+
+        })
+
+       /* that.execOriginFun(function() {
           Bbsbridge.exec('getThumbnail', _count, function(data) {
             // alert("获取缩略图成功！")
             data = JSON.parse(data)
@@ -188,7 +218,7 @@ export default {
             }
 
           })
-        })
+        })*/
       },
       chooseImgFunWeb(e) {
         //web端插入图片
@@ -198,41 +228,41 @@ export default {
         }
         // console.log(e.target.files[0],e.target.value)
         let _file_url = e.target.value
-        // let _name = e.target.files[0].name
+          // let _name = e.target.files[0].name
 
         that.canPost = false
         that.canAddImg = false
-        // that.$refs.loading.$emit("show")
+          // that.$refs.loading.$emit("show")
+        that.loader.show()
 
         lrz(e.target.files[0], {
             "fieldName": "Filedata"
           })
           .then(function(rst) {
             let _img = {
-              "photoID": new Date().getTime(),
-              "photoUrl": _file_url,
-              "photoContent": rst.base64,
-            }
-            //如果有这张图片，则不实现
+                "photoID": new Date().getTime(),
+                "photoUrl": _file_url,
+                "photoContent": rst.base64,
+              }
+              //如果有这张图片，则不实现
             let _file = that.imgList.filter((item) => {
               return item.photoContent === rst.base64
             })
             if (_file.length > 0) {
               Toast('此图片已存在！')
-              that.canPost = true
+              if(!that.isEmpty) {
+                that.canPost = true
+              }
               that.canAddImg = true
-              // that.$refs.loading.$emit("hide")
+              that.loader.hide()
               return
             }
-            that.imgList.push(_img)
+            // that.imgList.push(_img)
+            console.info('rst---', rst)
             that.canAddImg = true
-            return
 
             var xhr = new XMLHttpRequest()
-            // console.log(Config.baseUrl)
-            // xhr.withCredentials = true
-            xhr.open('POST', "bbs5.tuandai.com/app/index.php")
-
+            xhr.open('POST', openapi.domain + '/app/index.php')
             xhr.onload = function() {
               if (xhr.status === 200) {
                 // 上传成功
@@ -245,18 +275,24 @@ export default {
                     that.addImg = false
                   }
                 } else {
-                  Toast(data.message)
+                  Toast({
+                    message: data.message
+                  })
                 }
 
               } else {
                 // 处理其他情况
-                Toast("上传失败！")
+                Toast({
+                  message: '上传失败！'
+                })
               }
             }
 
             xhr.onerror = function() {
               // 处理错误
-              Toast("上传失败！")
+              Toast({
+                message: '上传失败！'
+              })
             }
 
             xhr.onreadystatechange = function() {
@@ -264,9 +300,11 @@ export default {
               // if(xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) console.log(xmlhttp.responseText)
               if (xhr.readyState === xhr.DONE) {
                 // console.log("done==========",xhr.status)
-                that.canPost = true
+                if (!that.isEmpty) {
+                  that.canPost = true
+                }
                 that.canAddImg = true
-                that.$refs.loading.$emit("hide")
+                that.loader.hide()
 
               }
             }
@@ -274,24 +312,18 @@ export default {
             xhr.upload.onprogress = function(e) {
               // 上传进度
               var percentComplete = ((e.loaded / e.total) || 0) * 100
-              // console.log(percentComplete)
+                // console.log(percentComplete)
             }
 
             // 添加参数
             rst.formData.append("version", 4)
             rst.formData.append("module", "forumupload")
-            // rst.formData.append("Filedata",rst.file)
+              // rst.formData.append("Filedata",rst.file)
 
             // 触发上传
             xhr.send(rst.formData)
-            /* ==================================================== */
 
             return rst
-            // that.imgList.push(_img)
-            // if(that.imgList.length > 10) {
-            //  that.addImg = false
-            // }
-
 
           })
           .catch(function(error) {
@@ -301,14 +333,14 @@ export default {
             // e.target.value = ''
           })
       },
-      execOriginFun: function(callback) {
+     /* execOriginFun: function(callback) {
         if (isAndroid()) { //如果是android,先缓存
           this.saveDataFun(callback)
         } else {
           callback()
         }
-      },
-      //保存 数据
+      },*/
+      /*//保存 数据
       saveDataFun: function(callback) {
         let postdata = {
           'module': this.post.module,
@@ -329,11 +361,16 @@ export default {
             Toast('自动保存数据失败！')
           }
         })
-      },
+      },*/
       titleChangeFun(event) {
         // console.log(this.comstart)
         if (this.comstart) {
           return
+        }
+        if (this.isEmpty) {
+          this.canPost = false
+        } else {
+          this.canPost = true
         }
         let _title = this.post.title
         _title = _title.replace(/\ud83c[\udf00-\udfff]|\ud83d[\udc00-\ude4f]|\ud83d[\ude80-\udeff]/g, "") //不允许输入emoji
@@ -348,15 +385,60 @@ export default {
       compositionendFun() {
         this.comstart = false
       },
+      contentChangeFunc () {
+        if (this.isEmpty) {
+          this.canPost = false
+        } else {
+          this.canPost = true
+        }
+      },
       goPost() {
         //发表帖子
-        // console.info('goPost-------', this.post)
-        window.history.back()
+        console.info('goPost-------', this.post)
+        let that = this
+        let reqParam = {
+          module: 'newthread',
+          fid: that.post.fid,
+          subject: that.post.title,
+          message: that.post.content
+        }
+        for (let i = 0; i < that.imgList.length; i++) {
+          reqParam["attachnew[" + that.imgList[i].attachID + "][description]"] = "";
+          reqParam.message = reqParam.message + "[attach]" + that.imgList[i].attachID + "[/attach]";
+        }
+        service.postData('/app/index.php', reqParam).then((response) => {
+          let _body = response.body
+          if (_body.code === '200') {
+            let url = '/sessionlist/' + reqParam.fid
+            that.$router.push(url)
+          } else {
+            let msg = '发布失败，请稍候尝试！'
+            if (_body.message) {
+              msg = _body.message
+            }
+            Toast(msg)
+          }
+        }, (response) => {
+          console.info('goPost------fail----', response)
+          Toast("发布失败，请稍候尝试！");
+          if (that.isEmpty) {
+            that.canPost = false
+          } else {
+            that.canPost = true
+          }
+        })
+        // window.history.back()
       },
-      selectModule(module, index) {
+      selectModule(fid) {
         //选择模块
-        this.post.module = module
-        this.moduleActive = index
+        // console.info('fid-----', fid)
+        this.post.fid = fid
+        this.moduleActive = fid
+        if (this.isEmpty) {
+          this.canPost = false
+        } else {
+          this.canPost = true
+        }
       },
       showRule () {
         //显示发帖规则
@@ -365,7 +447,36 @@ export default {
         //添加投票
         this.postVote = data
       },
-      preventScroll (status) {
+      getModuleList () {
+        let that = this
+        service.postData('/app/index.php',{
+          module: 'forum',
+          action: 'forum_list'
+        }).then((response) => {
+          let _body = response.body
+          if(_body.code === '200' && _body.data) {
+            let data = _body.data
+            that.moduleList = data.list
+            that.hasModules = true
+          }else{
+            let msg = '获取版块数据失败'
+            if(_body.message) {
+              msg = _body.message
+            }
+            Toast(msg)
+            that.hasModules = false
+          }
+        }, (response) => {
+          console.info('getModuleList----fail--', response)
+          let msg = '获取版块数据失败'
+          Toast(msg)
+          that.hasModules = false
+        })
+      },
+      reloadModules () {
+        this.getModuleList()
+      }
+      /*preventScroll (status) {
         //阻止页面滑动
         console.info('preventScroll----', typeof status)
         if (status === 0) {
@@ -373,12 +484,12 @@ export default {
         } else {
           this.isScrollActive = true
         }
-      }
-  },
-  beforeMount () {
-    let that = this
+      }*/
   },
   mounted () {
+    this.loader = Loader()
+    this.getModuleList()
+    // this.hasModules = false
   }
 
 

@@ -13,7 +13,7 @@
       }
     },
     computed: {},
-    props: ['headerTitle', 'hasBack', 'backTxt', 'hasRightbtn', 'preventBack', 'show'],
+    props: ['headerTitle', 'hasBack', 'backTxt', 'hasRightbtn', 'preventBack', 'show', 'hasLeftBtnFunc'],
     methods: {
       leftBtnFunc () {
         if (this.hasLeftBtnFunc) {

@@ -32,7 +32,7 @@
 </section>
 <section class="show-vote-container" v-show="showVote">
   <ul class="sv-bg" v-if="postVote">
-    <li class="sv-title">{{postVote.title}}</li>
+    <!-- <li class="sv-title">{{postVote.title}}</li> -->
     <li class="sv-option" v-for="opt in postVote.options"><i class="sv-radio"></i>{{opt.text}}</li>
     <li class="sv-btns">
       <div class="sv-btn-edit" @click="editVote"><i class="sv-icon-edit"></i>编辑</div>
@@ -43,9 +43,9 @@
 <div class="add-vote-container" v-show="showAddVote">
 <header id="header" class="header-bar"><i class="icon-back" @click="completeAddVote('cancle')"></i>发帖</header>
   <section class="add-vote">
-    <div class="v-title">
+    <!-- <div class="v-title">
       <input type="text" name="vtitle" placeholder="请输入投票标题" v-model.trim="addVoteData.title"/>
-    </div>
+    </div> -->
     <div class="v-option v-row" v-for="(opt, index) in addVoteData.options">
       <div @click="delVoteOption(index)"><i class="icon-del"></i></div>
       <div>
@@ -234,13 +234,13 @@ export default {
         this.$emit('imgDelFunc', index)
       },
       btnClickFunc() {
-        if (btnActive) {
+        if (this.btnActive) {
           this.$emit('btnClickFunc')
         }
 
       },
       prevenDefault(e) {
-        console.info(this.canAddImg)
+        console.info('prevenDefault---',this.canAddImg)
         if (!this.canAddImg) {
           e.preventDefault();
         }
@@ -311,12 +311,12 @@ export default {
           //   return item.text != ''
           // })
 
-          if(!data.title || data.title === '') {
+         /* if(!data.title || data.title === '') {
             Toast({
               message: '请填写投票题目'
             })
             return
-          }
+          }*/
           if(data.options.length < 2) {
             Toast({
               message: '至少要有两个投票选项'

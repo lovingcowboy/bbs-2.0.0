@@ -78,16 +78,16 @@ export default {
     }
   },
   computed: {
-    isApp: function() {
+    isApp() {
       return isApp()
     },
-    isNewVersion: function() {
+    isNewVersion() {
       return Bbsbridge.isCorrectVersion("4.8.0", "1");
     }
   },
   methods: {
     leftBtnFunc() {
-
+      window.history.back()
     },
     headerRightBtnFun() {
       console.info('11111')

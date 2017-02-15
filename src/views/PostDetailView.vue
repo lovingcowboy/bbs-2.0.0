@@ -256,9 +256,11 @@ export default {
         }).then((response) => {
           console.info('goVote----', response)
           let _body = response.body
-          if (_body.code === '200') {
+          if (_body.code === '200' && _body.data) {
             that.showVotes = true
             that.btnTxt = '隐藏投票结果'
+            that.voteData.allowvote = 0
+            that.voteData.polloptions = _body.data.special_poll
           } else {
             let msg = '请求失败，请稍后重试'
             if (_body.message) {
@@ -383,7 +385,7 @@ export default {
     getPostData (page) {
       let that = this
       let tid = this.$route.params.id
-      // tid = '147679'
+      // tid = '147680'
         // console.info('id---', this.$route.params.id)
       service.postData('/app/index.php', {
         version: 4,

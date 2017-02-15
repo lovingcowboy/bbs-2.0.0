@@ -50,8 +50,15 @@
 	overflow: auto;
 	height: pxToRem(96px);
 	margin-top: 0 !important;
+	position: relative;
 	&>i:first-child {
 		margin-left: pxToRem(30px);
+	}
+	.module-reload {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 	}
 
 	// overflow: hidden;

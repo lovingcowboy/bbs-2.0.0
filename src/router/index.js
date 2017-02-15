@@ -74,8 +74,7 @@ const router = new Router({
         path: '/postdetail/mark/:tid/:pid',
         name: 'mark',
         component: function(resolve) {
-            require.ensure(['../js/lib/lrz.js', '../views/MarkView.vue'], function(require) {
-                require('../js/lib/lrz.js');
+            require.ensure(['../views/MarkView.vue'], function(require) {
                 var MarkView = require('../views/MarkView.vue');
                 resolve(MarkView);
             })
@@ -87,7 +86,8 @@ const router = new Router({
         path: '/post',
         name: 'post',
         component: function(resolve) {
-            require.ensure(['../views/PostView.vue'], function(require) {
+            require.ensure(['../js/lib/lrz.js', '../views/PostView.vue'], function(require) {
+                require('../js/lib/lrz.js');
                 var PostView = require('../views/PostView.vue');
                 resolve(PostView);
             })
@@ -192,7 +192,7 @@ const router = new Router({
             keepAlive: false
         }
     }, {
-        path: '/sessionlist/:id',
+        path: '/sessionlist/:fid',
         name: 'sessionlist',
         component: function(resolve) {
             require.ensure(['../views/SessionListView.vue'], function(require) {
