@@ -78,7 +78,8 @@ import spinner from '../../Spinner.vue'
           tap: true,
           disableMouse: true,
           disablePointer: true,
-          mutationObserver: this.config.mutationObserver 
+          mutationObserver: this.config.mutationObserver ,
+          eventPassthrough: 'horizontal' //设置这个属性为true时iScroll区域只将影响横向滚动，纵向滚动将滚动整个页面。为horizontal则相反
         });
        
       },
