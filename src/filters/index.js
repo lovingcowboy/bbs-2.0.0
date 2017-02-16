@@ -1,11 +1,11 @@
-export function host (url) {
+export function host(url) {
   const host = url.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
   const parts = host.split('.').slice(-3)
   if (parts[0] === 'www') parts.shift()
   return parts.join('.')
 }
 
-export function timeAgo (time) {
+export function timeAgo(time) {
   const between = Date.now() / 1000 - Number(time)
   if (between < 3600) {
     return pluralize(~~(between / 60), ' minute')
@@ -16,15 +16,15 @@ export function timeAgo (time) {
   }
 }
 
-export function getMainData (num) {
+export function getMainData(num) {
   return (num + '').split('.')[0]
 }
 
-export function getDecimals (num) {
+export function getDecimals(num) {
   return (num + '').split('.')[1]
 }
 
-export function dateFilter (date) {
+export function dateFilter(date) {
   let _arr = date.split('-')
   return _arr[0] + '年' + _arr[1] + '月' + _arr[2] + '日'
 }
@@ -38,16 +38,16 @@ export function isApp() {
 }
 export function isAndroid() {
   if (navigator.userAgent.match(/(Android)/)) {
-        return true;
-    } else {
-        return false;
-    }
+    return true;
+  } else {
+    return false;
+  }
 }
 export function isIos() {
   if (navigator.userAgent.match(/(iPad|iPhone)/)) {
-      return true;
+    return true;
   } else {
-      return false;
+    return false;
   }
 }
 
@@ -59,7 +59,16 @@ export function isWeiXin() {
     return false;
   }
 }
-function pluralize (time, label) {
+export function ellipsisText(str, length) {
+  length = length && +length > 0 ? +length : 6
+  if (str && str.length > length) {
+    return str.substr(0, length) + '...'
+  } else {
+    return str
+  }
+}
+
+function pluralize(time, label) {
   if (time === 1) {
     return time + label
   }

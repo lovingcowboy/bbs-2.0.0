@@ -23,6 +23,7 @@
 </li>
 </template>
 <script>
+
 export default {
 	name: 'postItem',
 	props: ['data', 'index'],
@@ -64,6 +65,7 @@ export default {
     // font-size: pxToRem(24px);
     font-size: pxToRem($font-size-small);
     color: $txt-color-grey;
+    vertical-align: middle;
   }
   &>span:first-child {
     width: 60%;

@@ -3,9 +3,9 @@
 
     <!-- <transition :name="transitionName"> -->
     <keep-alive>
-      <router-view :class="{view: true, 'no-footer': !footer}" v-if="$route.meta.keepAlive" ></router-view>
+      <router-view :class="{view: true, 'no-footer': !footer, 'no-header': isApp}" v-if="$route.meta.keepAlive" ></router-view>
     </keep-alive>
-     <router-view :class="{view: true, 'no-footer': !footer}" v-if="!$route.meta.keepAlive"></router-view>
+     <router-view :class="{view: true, 'no-footer': !footer, 'no-header': isApp}" v-if="!$route.meta.keepAlive"></router-view>
     <!-- </transition> -->
     <!-- <div class="footer" v-show="footer">
       <div class="inner">
@@ -25,7 +25,7 @@
 //     return false
 //   }
 // }
-
+import { isApp } from './filters'
 export default {
   name: 'app',
   data () {
@@ -83,6 +83,11 @@ a {
 }
 .no-footer {
   padding-bottom: 0 !important;
+}
+.no-header {
+  .scroll {
+    padding-top: 0 !important;
+  }
 }
   
 // .fade-enter-active, .fade-leave-active {

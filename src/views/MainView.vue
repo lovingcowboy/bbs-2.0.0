@@ -55,7 +55,35 @@
           <post-item v-for="(item, index) in hotList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.tid" class="c-event">
-                <img :src="item.avatar"><font>{{item.nickname}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
+                <img :src="item.avatar"><font >{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
+              </span>
+              <span v-html="item.dateline"></span>
+            </div>
+          </post-item>
+        </ul>
+        </div>
+        </list>
+        <!-- <section class="error-container">
+          <div class="ec-cont">
+            <i :class="{'icon-pai-null': dataStatus.hot === 0, 'icon-pai-error': dataStatus.hot === -1}"></i>
+            <span class="ec-txt" v-show="dataStatus.hot === 0">这里空空如也！</span>
+            <span class="ec-txt" v-show="dataStatus.hot === -1">小π遇到了一点小问题！</span>
+            <div class="ec-btns">
+              <i class="ec-reload">刷新</i>
+              <i class="ec-main">返回首页</i>
+            </div>
+          </div>
+        </section> -->
+      </div>
+      <div class="scroll-list">
+      <list :config.once="newScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="newList">
+        <div class="scroll-wrapper" slot="scrollContent" id="newScroll">
+        <ul class="post-list" @click="listClickFunc($event)">
+          <post-item v-for="item in newList" :data="item">
+            <div class="item-title" slot="itemhead">
+              <span data-type="userclick" :data-id="item.tid" class="c-event">
+                <!-- <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}} -->
+                <img :src="item.avatar"><font>{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
             </div>
@@ -65,29 +93,20 @@
         </list>
       </div>
       <div class="scroll-list">
-        <ul class="post-list" @click="listClickFunc($event)">
-          <post-item v-for="item in newList" :data="item">
-            <div class="item-title" slot="itemhead">
-              <span data-type="userclick" :data-id="item.tid" class="c-event">
-                <!-- <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}} -->
-                <img :src="item.avatar"><font>{{item.nickname}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
-              </span>
-              <span v-html="item.dateline"></span>
-            </div>
-          </post-item>
-        </ul>
-      </div>
-      <div class="scroll-list">
+      <list :config.once="essenceScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="essenceList">
+        <div class="scroll-wrapper" slot="scrollContent" id="essenceScroll">
         <ul class="post-list" @click="listClickFunc($event)">
           <post-item v-for="item in essenceList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.tid" class="c-event">
-                <img :src="item.avatar"><font>{{item.nickname}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
+                <img :src="item.avatar"><font>{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
             </div>
           </post-item>
         </ul>
+        </div>
+        </list>
       </div>
       </div>
     </div>
@@ -147,6 +166,7 @@ import service from '../services'
 import Util from '../js/Util.js'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
+import {ellipsisText} from '../filters'
 export default {
   name: 'mainView',
   components: {
@@ -190,8 +210,24 @@ export default {
         wrapper: 'hotScroll',
         mutationObserver: true,
         refresh: true,
-        loadmore: true
+        loadmore: true,
+        status: 1 //列表数据状态-0：空数据；1-正常；-1：错误
+      },
+      newScrollConfig: {
+        wrapper: 'newScroll',
+        mutationObserver: true,
+        refresh: true,
+        loadmore: true,
+        status: 1
+      },
+      essenceScrollConfig: {
+        wrapper: 'essenceScroll',
+        mutationObserver: true,
+        refresh: true,
+        loadmore: true,
+        status: 1
       }
+      
     }
   },
   computed: {},
@@ -200,6 +236,7 @@ export default {
       console.info('11111')
     },
     triggerTab(type) {
+      //tab切换
       this.tabType = type
       let num = +type * (-100)
       this.scrollX = 'translateX(' + num + '%)'
@@ -223,6 +260,7 @@ export default {
       }
     },
     sign () {
+      //签到
       // Toast({
       //   message: '签到成功，积分+3，威望+5'
       // })
@@ -259,19 +297,23 @@ export default {
       })
     },
     goDetail(id) {
+      //跳转到帖子详情
       // console.info('id------', id)
       var url = '/postdetail/' + id
       this.$router.push(url)
     },
     goMyCenter() {
+      //跳转到我的个人中心
       var url = '/centermy'
       this.$router.push(url)
     },
     goUserCenter(id) {
+      //跳转到其他人的个人中心
       var url = '/centerother/' + id
       this.$router.push(url)
     },
     goPost() {
+      //跳转到发表帖子
       if (this.isLogin) {
         this.$router.push('/post')
       } else {
@@ -279,7 +321,7 @@ export default {
       }
     },
     listClickFunc(e) {
-      // console.info(e.target.parentElement
+      // 列表点击事件
       // console.info(e.target,e.target.getAttribute('dataid'))
       let obj = Util.getElemetByTarget(e.target, 'c-event', 'post-list')
         // let parentObj = e.target.parentElement
@@ -328,6 +370,7 @@ export default {
       this.$router.push('/recomment')
     },
     getHeadData() {
+      //获取用户登录数据
       let that = this
       let loginToken = Util.getParam('t')
       service.postData('/app/index.php', {
@@ -371,11 +414,10 @@ export default {
         Validate.openLogin()
       }
     },
-    getListData(param, reqType) {
+    getListData(param) {
+      //获取列表数据
       let that = this
-      if(reqType === 'refresh') {
-        param.notLoader = true
-      }
+     
       service.postData('/app/index.php', param).then((response) => {
         console.info('getListData----', response.body)
         let _body = response.body
@@ -383,45 +425,71 @@ export default {
           let data = _body.data
           if (param.action === 'hot_threads') {
             //热门
-            if(that.pageData.hot.curPage === 1) {
+            if (that.pageData.hot.curPage === 1) {
+              //第一页数据加载
               that.recommentPosts = data.list.recommend_threads
               that.hotList = data.list.hot_threads
-              that.$refs.hotList.refreshDone()
+                // that.$refs.hotList.refreshDone()
+                //空数据情感图显示
+              /*if (that.hotList.length > 0) {
+                that.hotScrollConfig.status = -1
+              } else {
+                that.hotScrollConfig.status = 0
+              }*/
             } else {
+              //页数大于1时添加数据
               that.hotList = that.hotList.concat(data.list.hot_threads)
+              that.hotScrollConfig.status = 1
             }
+            that.$refs.hotList.refresh() //刷新list
             if (that.pageData.hot.curPage <= that.pageData.hot.totalPage) {
               that.pageData.hot = {
                 curPage: +data.pager.cur_page + 1,
-                totalPage: data.total_page
+                totalPage: +data.pager.total_page
               }
             }
-            
+
 
           } else if (param.action === 'new_posts') {
             //最新
             if (that.pageData.new.curPage === 1) {
               that.newList = data.list
+              //空数据情感图显示
+              /*if (that.newList.length > 0) {
+                that.newScrollConfig.status = 1
+              } else {
+                that.newScrollConfig.status = 0
+              }*/
             } else {
               that.newList = that.newList.concat(data.list)
+              that.newScrollConfig.status = 1
             }
+            that.$refs.newList.refresh()
             if (that.pageData.new.curPage <= that.pageData.new.totalPage) {
               that.pageData.new = {
                 curPage: +data.pager.cur_page + 1,
-                totalPage: data.total_page
+                totalPage: +data.pager.total_page
               }
             }
           } else {
             //精华
             if (that.pageData.essence.curPage === 1) {
               that.essenceList = data.list
+              //空数据情感图显示
+              /*if (that.essenceList.length > 0) {
+                that.essenceScrollConfig.status = 1
+              } else {
+                that.essenceScrollConfig.status = 0
+              }*/
             } else {
               that.essenceList = that.essenceList.concat(data.list)
+              that.essenceScrollConfig.status = 0
             }
+            that.$refs.essenceList.refresh()
             if (that.pageData.essence.curPage <= that.pageData.essence.totalPage) {
               that.pageData.essence = {
                 curPage: +data.pager.cur_page + 1,
-                totalPage: data.total_page
+                totalPage: +data.pager.total_page
               }
             }
             /*that.pageData.essence = {
@@ -431,13 +499,24 @@ export default {
 
           }
         } else {
-          let msg = '请求失败，请稍后重试'
-          if(_body.message) {
-            msg = _body.message
+          if (_body.message) {
+            Toast(_body.message)
           }
-          Toast({
-            message: msg
-          })
+          //异常数据情感图显示
+          /*if(param.action === 'hot_threads') {
+            if(that.pageData.hot.curPage === 1) {
+              that.hotScrollConfig.status = -1
+            }
+          }else if(param.action === 'new_posts') {
+            if(that.pageData.new.curPage === 1) {
+              that.newScrollConfig.status = -1
+            }
+          }else{
+            if(that.pageData.essence.curPage === 1) {
+              that.newScrollConfig.status = -1
+            }
+          }*/
+          
         }
       }, (response) => {
         console.info('getListData fail------', response)
@@ -447,40 +526,52 @@ export default {
 
     },
     onRefreshList () {
+      //list舒心
       let param = {
         version: 4,
         module: 'forum',
-        page: 1
+        page: 1,
+        notLoader: true
       }
 
       if (this.tabType === 0) {
         this.pageData.hot.curPage = 1
          param.action = 'hot_threads'
       } else if (this.tabType === 1) {
-        this.pageData.hot.curPage = 1
+        this.pageData.new.curPage = 1
         param.action = 'new_posts'
       } else {
-        this.pageData.hot.curPage = 1
+        this.pageData.essence.curPage = 1
          param.action = 'digest_threads'
       }
-      this.getListData(param, 'refresh')
+      this.getListData(param)
       // this.triggerTab(this.tabType)
     },
     onLoadMore () {
+      // list加载下一页
       console.info('loadmore-----')
-      return
       let param = {
         version: 4,
         module: 'forum',
+        notLoader: true
       }
 
       if (this.tabType === 0) {
+        if(this.pageData.hot.curPage > this.pageData.hot.total_page) {
+          return
+        }
         param.page = this.pageData.hot.curPage
         param.action = 'hot_threads'
       } else if (this.tabType === 1) {
+        if(this.pageData.new.curPage > this.pageData.new.total_page) {
+          return
+        }
         param.page = this.pageData.new.curPage
         param.action = 'new_posts'
       } else {
+        if(this.pageData.essence.curPage > this.pageData.essence.total_page) {
+          return
+        }
         param.page = this.pageData.essence.curPage
         param.action = 'digest_threads'
       }
@@ -501,14 +592,15 @@ export default {
   },
   mounted() {
     let that = this
-    this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
+    //动态计算列表容器高度
+    // this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
+    this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop);
     let param = {
       version: 4,
       module: 'forum',
       action: 'hot_threads',
       page: 1
     }
-    console.info("load data-----", this.$router)
     // that.getHeadData()
     that.getListData(param)
   }

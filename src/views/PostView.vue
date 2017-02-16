@@ -96,18 +96,18 @@ export default {
   },
   computed: {
     isApp() {
-        return isApp()
-      },
-      isNewVersion() {
-        return Bbsbridge.isCorrectVersion("4.8.0", "1");
-      },
-      isEmpty() {
-        if (this.post.title.trim().length > 0 && this.post.content.trim().length > 0 && this.post.fid) {
-          return false
-        } else {
-          return true
-        }
+      return isApp()
+    },
+    isNewVersion() {
+      return Bbsbridge.isCorrectVersion("4.8.0", "1");
+    },
+    isEmpty() {
+      if (this.post.title.trim().length > 0 && this.post.content.trim().length > 0 && this.post.fid) {
+        return false
+      } else {
+        return true
       }
+    }
   },
   methods: {
     headerRightBtnFun() {

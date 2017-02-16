@@ -1,5 +1,5 @@
 <template>
-  <header id="header" class="header-bar" v-show="show">
+  <header id="header" class="header-bar" v-show="show && !isApp">
     <i class="icon-back" v-show="hasBack" @click="leftBtnFunc">{{backTxt}}</i>
       {{headerTitle}}
     <i v-show="hasRightbtn" class="refresh-btn" @click="rightBtnFunc"></i>
@@ -7,12 +7,17 @@
 </template>
 
 <script>
+import { isApp } from '../filters'
   export default {
     data () {
       return {
       }
     },
-    computed: {},
+    computed: {
+      isApp() {
+        return isApp()
+      }
+    },
     props: ['headerTitle', 'hasBack', 'backTxt', 'hasRightbtn', 'preventBack', 'show', 'hasLeftBtnFunc'],
     methods: {
       leftBtnFunc () {
@@ -32,6 +37,9 @@
       rightBtnFunc () {
         this.$emit('right-btn-func')
       }
+    },
+    beforeMount () {
+      console.info('header-----', this.isApp)
     }
   }
 </script>
