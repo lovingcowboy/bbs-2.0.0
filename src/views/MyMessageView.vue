@@ -38,9 +38,9 @@
               <div class="message-system-item" :class='{"isNew": item.new == "1" ? true : false}' v-for='(item, index) in systemList'>
                   <div class="point-new"></div>
                   <div class="message-content">
-                    <div class="msg-body">{{item.note}}</div>
+                    <div class="msg-body" >{{item.note}}</div>
                     <div class="time-wrapper">
-                      <div class="msg-date">{{item.dateline}}</div>
+                      <div class="msg-date" v-html='item.dateline'></div>
                       <!-- <div class="msg-time">10:20</div> -->
                     </div>
                   </div>

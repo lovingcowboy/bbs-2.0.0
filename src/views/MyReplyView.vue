@@ -14,7 +14,7 @@
             <div class="reply-item" v-for="(item, index) in myReplyList" :data-id="item.tid">
               <div class="line01 reply-body">{{item.reply | imgFilter}}</div>
               <div class="line02 reply-origin">原贴：{{item.subject}}</div>
-              <div class="line03 reply-time">{{item.dateline}}</div>
+              <div class="line03 reply-time" v-html='item.dateline'></div>
             </div>
 
             <!-- <div class="post-item" v-for="(item, index) in myPostList" :data-id="item.id">
@@ -63,7 +63,7 @@ export default {
   filters: {
     imgFilter: function (value) { //替换img标签为"[图片]"
       if (!value) return ''
-      return value.replace(/<img[^>]+src=['"]([^'"]+)['"]+>/g, "[图片]");
+      return value.replace(/<img .*?>/g, "[图片]");
     }
   },
   methods: {
@@ -75,12 +75,12 @@ export default {
         if (_body.code === '200') {
           let data = _body.data
 
-          if(params.page == 1) { //刷新或者第一次加载数据
+          /*if(params.page == 1) { //刷新或者第一次加载数据
             that.myReplyList = data.list;
-            // that.myReplyList[0].reply = "<img src='https://bbs.tuandai.com/static/image/smiley/default/loveliness.gif'>";
-          } else if(params.page > 1) { //加载更多数据
+         
+          } else if(params.page > 1) { //加载更多数据*/
             that.myReplyList = that.myReplyList.concat(data.list);
-          }
+          // }
 
           /*for (let i = 0; i < 10; i++) {
             let item = {

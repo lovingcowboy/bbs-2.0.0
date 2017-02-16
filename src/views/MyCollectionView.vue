@@ -19,7 +19,6 @@
               <span v-html="item.dateline"></span>
             </div>
           </post-item>
-         
         </div>
       </list> 
       <!-- <ul class="collection-list post-list"  @click="goPostDetail">
@@ -72,12 +71,12 @@ export default {
         if (_body.code === '200') {
           let data = _body.data
 
-          if(params.page == 1) { //刷新或者第一次加载数据
+          /*if(params.page == 1) { //刷新或者第一次加载数据
             that.collectionList = data.list;
 
-          } else if(params.page > 1) { //加载更多数据
+          } else if(params.page > 1) { //加载更多数据*/
             that.collectionList = that.collectionList.concat(data.list);
-          }
+          // }
           /*for (let i = 0; i < 10; i++) {
             let item = {
               name: '神采飞扬',

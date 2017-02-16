@@ -64,11 +64,11 @@ export default {
         if (_body.code === '200') {
           let data = _body.data
 
-          if(params.page == 1) { //刷新或者第一次加载数据
+         /* if(params.page == 1) { //刷新或者第一次加载数据
             that.myPostList = data.list;
-          } else if(params.page > 1) { //加载更多数据
+          } else if(params.page > 1) { //加载更多数据*/
             that.myPostList = that.myPostList.concat(data.list);
-          }
+          // }
 
           /*for (let i = 0; i < 10; i++) {
             let item = {
