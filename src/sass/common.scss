@@ -390,6 +390,9 @@ input::-webkit-inner-spin-button {
             .btn-send {
                 color: $txt-color-blue;
             }
+            .disable {
+                opacity: 0.5;
+            }
         }
     }
 }
