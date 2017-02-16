@@ -19,7 +19,20 @@
       </section>
     </ul>
     <div class="default-ctn" v-show="!hasdata">暂无数据</div>
+
+    <!-- <section class="error-container" v-show="config.status === 0 || config.status === -1">
+    <div class="ec-cont">
+        <i :class="{'icon-pai-null': config.status === 0, 'icon-pai-error': config.status === -1}"></i>
+        <span class="ec-txt" v-show="config.status === 0">这里空空如也！</span>
+        <span class="ec-txt" v-show="config.status === -1">小π遇到了一点小问题！</span>
+        <div class="ec-btns">
+            <i class="ec-reload">刷新</i>
+            <i class="ec-main">返回首页</i>
+        </div>
+    </div>
+      </section> -->
   </div>
+  
 </template>
 
 <style>
@@ -196,6 +209,9 @@ import spinner from '../../Spinner.vue'
       
     mounted () {
       this.init();
+      /*if(this.config.status !== 0 && this.config.status !== -1) {
+        this.config.status = 1
+      }*/
     }
   }
 </script>
