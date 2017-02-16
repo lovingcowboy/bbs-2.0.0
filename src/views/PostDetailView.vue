@@ -504,6 +504,7 @@ export default {
     this.rmHeight = document.documentElement.offsetHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight + 20 + 'px'
   },
   activated () {
+    // console.info('activated--------')
     // this.getPostData(1)
   }
 

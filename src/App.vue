@@ -2,10 +2,10 @@
   <div id="app">
 
     <!-- <transition :name="transitionName"> -->
-    <keep-alive v-if="$route.meta.keepAlive">
-      <router-view :class="{view: true, 'no-footer': !footer}" ></router-view>
+    <keep-alive>
+      <router-view :class="{view: true, 'no-footer': !footer}" v-if="$route.meta.keepAlive" ></router-view>
     </keep-alive>
-     <router-view :class="{view: true, 'no-footer': !footer}" v-else></router-view>
+     <router-view :class="{view: true, 'no-footer': !footer}" v-if="!$route.meta.keepAlive"></router-view>
     <!-- </transition> -->
     <!-- <div class="footer" v-show="footer">
       <div class="inner">

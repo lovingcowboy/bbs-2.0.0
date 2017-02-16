@@ -38,6 +38,8 @@
       </div>
       <div class="s-container" :style="{height: sHeight + 'rem', transform: scrollX}">
       <div class="scroll-list">
+      <list :config.once="hotScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="hotList">
+        <div class="scroll-wrapper" slot="scrollContent" id="hotScroll">
         <div class="recommend-cont">
           <div class="r-title">
             <span>小编推荐</span>
@@ -59,6 +61,8 @@
             </div>
           </post-item>
         </ul>
+        </div>
+        </list>
       </div>
       <div class="scroll-list">
         <ul class="post-list" @click="listClickFunc($event)">
@@ -141,13 +145,15 @@ import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import service from '../services'
 import Util from '../js/Util.js'
+import List from "components/listview"
 import Validate from '../js/lib/validate.js'
 export default {
   name: 'mainView',
   components: {
     Zheader,
     Toast,
-    PostItem
+    PostItem,
+    List
   },
   data() {
     return {
@@ -179,6 +185,12 @@ export default {
           curPage: 1,
           totalPage: 1
         }
+      },
+      hotScrollConfig: {
+        wrapper: 'hotScroll',
+        mutationObserver: true,
+        refresh: true,
+        loadmore: true
       }
     }
   },
@@ -200,9 +212,11 @@ export default {
       if (type === 0 && this.hotList.length < 1) {
         param.action = 'hot_threads'
         this.getListData(param)
+
       } else if (type === 1 && this.newList.length < 1) {
         param.action = 'new_posts'
         this.getListData(param)
+
       } else if (type === 2 && this.essenceList.length < 1) {
         param.action = 'digest_threads'
         this.getListData(param)
@@ -357,8 +371,11 @@ export default {
         Validate.openLogin()
       }
     },
-    getListData(param) {
+    getListData(param, reqType) {
       let that = this
+      if(reqType === 'refresh') {
+        param.notLoader = true
+      }
       service.postData('/app/index.php', param).then((response) => {
         console.info('getListData----', response.body)
         let _body = response.body
@@ -366,27 +383,51 @@ export default {
           let data = _body.data
           if (param.action === 'hot_threads') {
             //热门
-            that.hotList = data.list.hot_threads
-            that.recommentPosts = data.list.recommend_threads
-            that.pageData.hot = {
-              curPage: data.pager.cur_page,
-              totalPage: data.total_page
+            if(that.pageData.hot.curPage === 1) {
+              that.recommentPosts = data.list.recommend_threads
+              that.hotList = data.list.hot_threads
+              that.$refs.hotList.refreshDone()
+            } else {
+              that.hotList = that.hotList.concat(data.list.hot_threads)
             }
+            if (that.pageData.hot.curPage <= that.pageData.hot.totalPage) {
+              that.pageData.hot = {
+                curPage: +data.pager.cur_page + 1,
+                totalPage: data.total_page
+              }
+            }
+            
 
           } else if (param.action === 'new_posts') {
             //最新
-            that.newList = data.list
-            that.pageData.new = {
-              curPage: data.pager.cur_page,
-              totalPage: data.pager.total_page
+            if (that.pageData.new.curPage === 1) {
+              that.newList = data.list
+            } else {
+              that.newList = that.newList.concat(data.list)
+            }
+            if (that.pageData.new.curPage <= that.pageData.new.totalPage) {
+              that.pageData.new = {
+                curPage: +data.pager.cur_page + 1,
+                totalPage: data.total_page
+              }
             }
           } else {
             //精华
-            that.essenceList = data.list
-            that.pageData.essence = {
+            if (that.pageData.essence.curPage === 1) {
+              that.essenceList = data.list
+            } else {
+              that.essenceList = that.essenceList.concat(data.list)
+            }
+            if (that.pageData.essence.curPage <= that.pageData.essence.totalPage) {
+              that.pageData.essence = {
+                curPage: +data.pager.cur_page + 1,
+                totalPage: data.total_page
+              }
+            }
+            /*that.pageData.essence = {
               curPage: data.pager.cur_page,
               totalPage: data.pager.total_page
-            }
+            }*/
 
           }
         } else {
@@ -401,19 +442,61 @@ export default {
       }, (response) => {
         console.info('getListData fail------', response)
       })
+    },
+    onInitList () {
+
+    },
+    onRefreshList () {
+      let param = {
+        version: 4,
+        module: 'forum',
+        page: 1
+      }
+
+      if (this.tabType === 0) {
+        this.pageData.hot.curPage = 1
+         param.action = 'hot_threads'
+      } else if (this.tabType === 1) {
+        this.pageData.hot.curPage = 1
+        param.action = 'new_posts'
+      } else {
+        this.pageData.hot.curPage = 1
+         param.action = 'digest_threads'
+      }
+      this.getListData(param, 'refresh')
+      // this.triggerTab(this.tabType)
+    },
+    onLoadMore () {
+      console.info('loadmore-----')
+      return
+      let param = {
+        version: 4,
+        module: 'forum',
+      }
+
+      if (this.tabType === 0) {
+        param.page = this.pageData.hot.curPage
+        param.action = 'hot_threads'
+      } else if (this.tabType === 1) {
+        param.page = this.pageData.new.curPage
+        param.action = 'new_posts'
+      } else {
+        param.page = this.pageData.essence.curPage
+        param.action = 'digest_threads'
+      }
+      this.getListData(param)
     }
   },
   activated() {
-    let that = this
-    that.getHeadData()
+    this.getHeadData()
     /*let param = {
       version: 4,
       module: 'forum',
       action: 'hot_threads',
       page: 1
     }
-    console.info('test----', that.hotList)
-    that.getListData(param)*/
+    console.info('test----', this.hotList)
+    this.getListData(param)*/
     // console.info('juan----', Validate.getCookie('tuandaiw'))
   },
   mounted() {
@@ -425,6 +508,8 @@ export default {
       action: 'hot_threads',
       page: 1
     }
+    console.info("load data-----", this.$router)
+    // that.getHeadData()
     that.getListData(param)
   }
 
