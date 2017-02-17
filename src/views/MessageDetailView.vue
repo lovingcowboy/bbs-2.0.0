@@ -53,6 +53,7 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import Services from '../services'
 import Msglist from 'components/msglistview'
+import {uniq} from '../filters';
 export default {
   components: {
     Zheader,
@@ -71,7 +72,8 @@ export default {
         loadmore: true
       },
       firstPageMsg: [],  //第一页的消息数据,
-      messageData: ""
+      messageData: "",
+      selfInfo: {}
     }
   },
   computed: {
@@ -113,7 +115,16 @@ export default {
              that.messageList =  data.list.concat(that.messageList);
              isRefresh = true;
           }
-
+          /*for(let j = 0; j< 10; j++) {
+            var info = {};
+            info.message = "测试去重";
+            info.pmid = "2720";
+            info.avatar = "123";
+            info.isself = "1";
+            that.messageList.push(info)
+          }*/
+          
+          that.messageList = uniq.call(that, that.messageList, 'pmid');  //去重
           if(that.$refs.msglist) {
             if(that.messageList.length > 0) { //刷新list
               setTimeout(function() { 
@@ -130,6 +141,7 @@ export default {
                 that.$refs.msglist.refresh(isScrollToEnd);
             }
           }
+
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
@@ -151,7 +163,7 @@ export default {
       this.isScrollActive = false;
     },
     onCancel() {
-      that.messageData = "";  //清空输入框内容
+      this.messageData = "";  //清空输入框内容
       this.isShowDialog = false;
       this.isScrollActive = true;
     },
@@ -173,13 +185,20 @@ export default {
       Services.postData('/app/index.php', params).then((response) => {
 
         let _body = response.body
-        debugger
+
         if (_body.code === '200') {
           let data = _body.data
            
           that.isShowDialog = false;
           that.isScrollActive = true;
 
+          that.selfInfo.message = that.messageData;
+          that.selfInfo.pmid = data.pmid;
+          that.selfInfo.avatar = data.member_avatar;
+          that.selfInfo.isself = "1";
+
+          that.firstPageMsg.unshift(that.selfInfo)
+          that.messageList.unshift(that.selfInfo)
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
