@@ -17,20 +17,6 @@
             </div>
           </div>
         </msglist> 
-       <!--  <div class="dialog-list">
-          <div class="dialog-item" v-for='(item, index) in messageList' :data-id='item.tid' :class='item.isself == "1" ? "right" : "left"'>
-            <img class="avatar" :src="item.avatar" />
-            <div class="message-body">{{item.message}}</div>
-          </div>
-          <div class="left dialog-item">
-            <img class="avatar" src="../images/icon-avatar.png" />
-            <div class="message-body">今天打算投多少？</div>
-          </div>
-          <div class="right dialog-item">
-            <img class="avatar" src="../images/icon-avatar.png" />
-            <div class="message-body">今天打算投多少？今天打算投多少？今天打算投多少？今天打算投多少？</div>
-          </div>
-        </div> -->
       </div>
     </div>
     <div class="btn-message" @click="onMessage">发消息</div>
@@ -53,7 +39,7 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import Services from '../services'
 import Msglist from 'components/msglistview'
-import {uniq} from '../filters';
+import {uniq} from '../filters'
 export default {
   components: {
     Zheader,
@@ -85,13 +71,11 @@ export default {
     getMessageDetail(params) {
       let that = this;
       let isRefresh = false;  //是否刷新list
-      // debugger
       Services.postData('/app/index.php', params).then((response) => {
         that.onSetInterval(); //每隔30s拉取一次数据
         
         let _body = response.body;
         that.formhash = _body.data.formhash; //发送消息验证使用
-        // debugger
         if (_body.code === '200') {
           let data = _body.data;
 
@@ -115,47 +99,30 @@ export default {
              that.messageList =  data.list.concat(that.messageList);
              isRefresh = true;
           }
-          /*for(let j = 0; j< 10; j++) {
-            var info = {};
-            info.message = "测试去重";
-            info.pmid = "2720";
-            info.avatar = "123";
-            info.isself = "1";
-            that.messageList.push(info)
-          }*/
-          
-          that.messageList = uniq.call(that, that.messageList, 'pmid');  //去重
-          if(that.$refs.msglist) {
-            if(that.messageList.length > 0) { //刷新list
-              setTimeout(function() { 
-                 // 判断是否有加载更多
-                if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
-                  that.$refs.msglist.loadmore = true; //有加载更多
-                } else {
-                  that.$refs.msglist.loadmore = false; //没有加载更多
-                }
-              }, 200)
+          that.messageList = uniq.call(that, that.messageList, "pmid");  //去重
+
+          if(!that.$refs.msglist) return;
+
+          // 判断是否有加载更多
+          that.$refs.msglist.loadmore = Number(that.pager.cur_page) < Number(that.pager.total_page);
              
-              let isScrollToEnd = params.page == 1 ? true : false; //在首次加载则滑动到底部
-              if(isRefresh)  //没拉取数据时，不刷新数据
-                that.$refs.msglist.refresh(isScrollToEnd);
-            }
-          }
+          let isScrollToEnd = params.page == 1 ? true : false; //在首次加载则滑动到底部
+          if(isRefresh)  //没拉取数据时，不刷新数据
+            that.$refs.msglist.refresh(isScrollToEnd);
 
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
-          // clearInterval(that.interval);
-          // that.interval = null;
+          
+          that.$refs.msglist && that.$refs.msglist.refresh();
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
 
-          // clearInterval(that.interval);
-          // that.interval = null;
+          that.$refs.msglist && that.$refs.msglist.refresh();
       })
     },
     onMessage() { //填写消息

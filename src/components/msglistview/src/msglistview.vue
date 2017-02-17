@@ -1,5 +1,5 @@
 <template>
-  <div class="listwrap wrapper" :id="config.wrapper" @touchend="listentToTouchEnd" @touchstart="listentToTouchStart">
+  <div class="listwrap wrapper msg-wrapper" :id="config.wrapper" @touchend="listentToTouchEnd" @touchstart="listentToTouchStart">
     <ul class="scroller">
      <section  class="pull-el pull-down" v-show="loadmore">
         <div class="loading-wrapper">
@@ -12,7 +12,7 @@
 </template>
 
 <style>
- .wrapper {
+ .msg-wrapper {
   top: 0;
  }
 </style>

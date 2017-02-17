@@ -86,35 +86,30 @@ export default {
 
           //记录页数信息
           that.pager = data.pager;
-          if(that.$refs.list) {
-            if(that.myPostList.length == 0) { //无数据
-              that.$refs.list.onNoData();
-            } else {  //刷新list
-              // 判断是否有加载更多
-              if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
-                that.$refs.list.loadmore = true; //有加载更多
-              } else {
-                that.$refs.list.loadmore = false; //有加载更多
-                if(Number(that.pager.cur_page) > 1) {
-                  Toast({
-                    "message": "已全部加载完毕"
-                  })
-                }
-              }
-            }
-            that.$refs.list.refresh();
-          }
+
+          if(!that.$refs.list) return;
+
+          if(that.myPostList.length == 0) { //无数据
+            that.$refs.list.onNoData();
+          } 
+
+          // 判断是否有加载更多
+          that.$refs.list.loadmore = Number(that.pager.cur_page) < Number(that.pager.total_page);
+
+          that.$refs.list.refresh();
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
-          that.$refs.list.refresh();
+
+          that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
-          that.$refs.list.refresh();
+        
+          that.$refs.list && that.$refs.list.refresh();
       })
     },
 
