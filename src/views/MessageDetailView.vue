@@ -39,6 +39,7 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import Services from '../services'
 import Msglist from 'components/msglistview'
+import Util from '../js/Util.js'
 import {uniq} from '../filters'
 export default {
   components: {
@@ -191,11 +192,13 @@ export default {
     onSetInterval() {
       let that = this;
 
-      if(that.interval) return;      
+      if(that.interval) return; 
+
+      let params = Util.myExtend(that.params);     
       that.interval = setInterval(function() {  //每隔30s去取消息
-        that.params.notLoader = true;
-        that.params.page = 1;
-        that.getMessageDetail(that.params)
+        params.notLoader = true;
+        params.page = 1;
+        that.getMessageDetail(params)
       }, 30000)
     }
   },

@@ -50,33 +50,12 @@ import Util from '../../../js/Util.js';
           mutationObserver: this.config.mutationObserver 
         });
 
-        window.scroller=  that.myScroll;
+        // window.scroller=  that.myScroll;
         // that.myScroll.scrollTo(0, that.myScroll.maxScrollY, 0);
       },
 
       listentToScroll() { //监听滑动
-        /*var that = this;
-         that.myScroll && that.myScroll.on('scroll', function() {
-          if(that.isLoadMore || that.isRefresh) {  //数据加载中状态，不修改任何状态
-            return;
-          }
-          //下拉显示刷新
-          let distance = Util.pxToPx(90);
-
-          if(this.y >= -Util.pxToPx(99)) {  //提前显示下拉刷新
-            if(this.y > distance) {
-              that.ricon = true;
-            } else {
-              that.ricon = false;
-            }
-
-            that.pulldown = true;
-            that.refreshicon = false;
-          } else if(Math.abs(this.y) >= (Math.abs(this.maxScrollY) - distance) && that.loadmore) { //加载更多
-            that.micon = true;
-          }
-
-        }); */
+        
         let that = this;
         
         that.myScroll && that.myScroll.on('scroll', function() {
@@ -115,10 +94,11 @@ import Util from '../../../js/Util.js';
         that.myScroll && that.myScroll.on('scrollEnd', function() {
          
           if (that.micon && that.loadmore) {  //在可以加载更多数据状态
-            // console.log("isLoadMore: " + that.isLoadMore)
+
             if(that.isLoadMore) {  //数据加载中状态，不继续加载数据
               return;
             }
+
             that.isLoadMore = true;
             that.micon = false;
             that.$emit('loadmore');
@@ -133,11 +113,14 @@ import Util from '../../../js/Util.js';
 
       loadMoreDone(hasmore) { //加载更多数据结束
         let that = this;
-        that.isLoadMore = false;
+        
         that.micon = false;
         that.loadmore = hasmore;  //是否还有加载更多
          setTimeout(function() {
             that.myScroll && that.myScroll.refresh();
+            setTimeout(function() { //延迟修改状态
+              that.isLoadMore = false;
+            }, 100)
           }, 200)
       },
 
@@ -150,12 +133,13 @@ import Util from '../../../js/Util.js';
 
         let scroller =  that.myScroll;
 
-        that.isLoadMore = false;
-
         let lastMaxScrollY = that.myScroll.maxScrollY;
         setTimeout(function() { // 刷新iscroll
           that.myScroll.refresh();
-
+          setTimeout(function() { //延迟修改状态
+            that.isLoadMore = false;
+          }, 100)
+          
           if(isScrollToEnd) {
             that.myScroll.scrollTo(0, that.myScroll.maxScrollY, 200);
           } else {
