@@ -79,7 +79,6 @@ export default {
         that.formhash = _body.data.formhash; //发送消息验证使用
         if (_body.code === '200') {
           let data = _body.data;
-
           if(Number(data.pager.cur_page) > Number(data.pager.total_page)) { //超过页叔
             return false; 
           }
@@ -89,7 +88,7 @@ export default {
 
           that.tonickname = data.tonickname[0];
 
-          if(params.page == 1) { //刷新或者第一次加载数据
+          if(data.pager.total_page == data.pager.cur_page) { //刷新或者第一次加载数据
             // 记录第一页数据
              if(that.firstPageMsg.length == 0 || that.firstPageMsg.length !== data.list.length) {  
               that.firstPageMsg = data.list;
@@ -105,9 +104,9 @@ export default {
           if(!that.$refs.msglist) return;
 
           // 判断是否有加载更多
-          that.$refs.msglist.loadmore = Number(that.pager.cur_page) < Number(that.pager.total_page);
+          that.$refs.msglist.loadmore = Number(that.pager.cur_page) - 1 >= Number(that.pager.next);
              
-          let isScrollToEnd = params.page == 1 ? true : false; //在首次加载则滑动到底部
+          let isScrollToEnd = Number(that.pager.cur_page) == Number(that.pager.total_page) ? true : false; //在首次加载则滑动到底部
           if(isRefresh)  //没拉取数据时，不刷新数据
             that.$refs.msglist.refresh(isScrollToEnd);
 
@@ -161,12 +160,17 @@ export default {
           that.isScrollActive = true;
 
           that.selfInfo.message = that.messageData;
-          that.selfInfo.pmid = data.pmid;
-          that.selfInfo.avatar = data.member_avatar;
+          that.selfInfo.pmid = data.list.pmid;
+          that.selfInfo.avatar = data.list.member_avatar;
           that.selfInfo.isself = "1";
+          
+          that.firstPageMsg.push(that.selfInfo);
 
-          that.firstPageMsg.unshift(that.selfInfo)
-          that.messageList.unshift(that.selfInfo)
+          if(that.firstPageMsg.length > 20) { //超过pageSize，则去除数组首个元素
+            that.firstPageMsg.shift();
+          }
+          that.messageList.push(that.selfInfo);
+          that.$refs.msglist.refresh(true);
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
@@ -185,7 +189,7 @@ export default {
 
     onLoadMore() {
       let that = this;
-      this.params.page = Number(this.pager.cur_page) + 1;
+      this.params.page = Number(this.pager.cur_page) - 1;
       this.getMessageDetail(this.params);
     },
 
@@ -197,7 +201,7 @@ export default {
       let params = Util.myExtend(that.params);     
       that.interval = setInterval(function() {  //每隔30s去取消息
         params.notLoader = true;
-        params.page = 1;
+        params.page = "";
         that.getMessageDetail(params)
       }, 30000)
     }
@@ -208,7 +212,7 @@ export default {
       "version": 4,
       "module": "viewpm",
       "touid": that.$route.params.id,
-      "page": 1
+      "page":"" //默认取最后一句数据
     }
 
     that.getMessageDetail(that.params);
