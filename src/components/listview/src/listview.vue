@@ -201,8 +201,17 @@ import spinner from '../../Spinner.vue'
           }
 
           setTimeout(function() { //延迟刷新状态
+            // 重置状态
+            that.refreshicon  = false;
+            that.showrefresh  = false;
+            that.pulldown  = false;
+            
+            that.ricon = false;
+            that.micon = false;
+
             that.isRefresh = false;
             that.isLoadMore = false;
+
           }, 100)
         }, 200);
       }
