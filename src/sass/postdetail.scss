@@ -1,5 +1,9 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
+.content {
+    height: 100%;
+    overflow: hidden !important;
+}
 .post-cont {
     width: 100%;
     background-color: $color-white;

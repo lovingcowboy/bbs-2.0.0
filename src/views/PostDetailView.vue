@@ -9,8 +9,10 @@
     @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
-    <div class="scroll" :class="{'scroll-active': isScrollActive}" @scroll="scrollMove()">
+    <div class="scroll" :class="{'scroll-active': isScrollActive}">
     <div class="content" >
+    <list :config.once="ScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="detailList">
+      <div class="scroll-wrapper" slot="scrollContent" id="hotScroll">
       <div class="post-cont">
         <p class="p-title">{{thread.title}}</p>
         <p class="p-poster"><img :src="thread.avatar"><span>{{thread.author}}</span></p>
@@ -48,7 +50,7 @@
           <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复{{thread.replies}}</a>
           <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分{{thread.total_rate}}</a>
         </nav>
-        <div class="rm" :style="{'transform': scrollX, 'height': rmHeight, 'overflow-y': overflowY}">
+        <div class="rm">
           <ul class="reply-list rm-list" v-show="tabType === 0" @click="replyClick($event)">
             <li class="reply-row" v-for="(item, index) in replyData.list">
               <div class="rm-u">
@@ -119,7 +121,7 @@
               <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p></p>
             </li> -->
           </ul>
-          <ul class="reply-list rm-list" v-show="tabType === 1">
+          <ul class="mark-list rm-list" v-show="tabType === 1" :style="{'min-height': rmHeight + 'rem'}">
             <li class="reply-row" v-for="(item, index) in MarkData.list">
               <div class="rm-u">
                 <div class="u-avator">
@@ -136,6 +138,9 @@
           </ul>
         </div>
       </div>
+      </div>
+      </list>
+
     </div>
     </div>
       <div class="post-foot">
@@ -157,16 +162,18 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import service from '../services'
+import List from "components/listview"
 import Util from '../js/Util.js'
 export default {
   name: 'postDetail',
   components: {
     Zheader,
-    Toast
+    Toast,
+    List
   },
   data () {
     return {
-      scrollX: 'translateX(0)',
+      // scrollX: 'translateX(0)',
       tabType: 0,
       showVotes: false,
       voteData: {},
@@ -174,12 +181,13 @@ export default {
       picked: "", //单选框选中内容
       // hasVoted: false,
       btnTxt: '投票',
-      postHeight: 0,
-      tabsOffsetTop: 0,
-      contentObj: null,
+      // postHeight: 0, //帖子内容高度
+      // tabsOffsetTop: 0,
+      // contentObj: null,
       showFloat: false,
-      rmHeight: '100%',
-      overflowY: 'scroll',
+      rmHeight: '0',
+      replyListHeight: 0,
+      // overflowY: 'scroll',
       isScrollActive: true,
       thread: {}, //帖子内容
       replyData: { //回复内容
@@ -192,6 +200,16 @@ export default {
         totalPage: 1,
         list: []
       },
+      ScrollConfig: {
+        wrapper: 'detailScroll',
+        mutationObserver: true,
+        refresh: true,
+        loadmore: true
+      },
+      myScroller: null,
+      isScrolling: false, //滚动条是否正在滚动
+      scrollReply: 0, //回复列表滚动位置
+      scrollMark: 0,//评分列表滚动位置
       formhash: '' //用于验证数据合法性
     }
   },
@@ -211,17 +229,36 @@ export default {
     },
     triggerTab (type) {
       this.tabType = type
-      // let num = +type * (-100)
-      // this.scrollX = 'translateX(' + num + '%)'
-      if(type === 0 && (!this.replyData.list || this.replyData.list.length === 0)) {
-        this.getPostData(1)
-      }else if(type === 1 && this.MarkData.list.length === 0) {
-        this.getMarkList(1)
+        // let num = +type * (-100)
+        // this.scrollX = 'translateX(' + num + '%)'
+      if (type === 0) {
+        if (!this.replyData.list || this.replyData.list.length === 0) {
+          this.getPostData(1)
+        } else {
+          this.$refs.detailList.refresh()
+          console.info('scrollReply---', this.scrollReply, this.myScroller)
+          this.myScroller.scrollTo(0, this.scrollReply, 500)
+        }
+        this.ScrollConfig.loadmore = true
+      } else if (type === 1) {
+        if(this.replyListHeight === 0) {
+          this.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
+        }
+        if(this.replyListHeight < this.rmHeight) {
+          this.rmHeight = this.replyListHeight
+        }
+        if (!this.MarkData.list || this.MarkData.list.length === 0) {
+          this.getMarkList(1)
+        } else {
+          this.$refs.detailList.refresh()
+          this.myScroller.scrollTo(0, this.scrollMark, 500)
+        }
+        this.ScrollConfig.loadmore = false
       }
     },
-     percentage (count, total) {
+     /*percentage (count, total) {
       return (count / total * 100) + "%"
-    },
+    },*/
     goVote () {
       let that = this
       console.info(that.selectedOptions, that.picked)
@@ -284,20 +321,6 @@ export default {
         }
       }
      
-    },
-    
-    scrollMove () {
-      // console.info(this.contentObj.scrollTop, this.postHeight)
-      return
-      if (this.contentObj.scrollTop >= this.postHeight + 22) {
-        this.showFloat = true
-        // this.overflowY = 'scroll'
-        // this.rmHeight = document.documentElement.offsetHeight + 'px'
-      } else {
-        this.showFloat = false
-        // this.overflowY = 'hidden'
-        // this.rmHeight = '100%'
-      }
     },
     pfClickFunc (e) {
        let obj = Util.getElemetByTarget(e.target, 'pf-evt', 'f-container')
@@ -370,66 +393,68 @@ export default {
       }, (response) => {
         console.info('init fail-----', response)
       })
-
-
-
-      /* let param = {
-         tid: this.thread.tid,
-         pid: this.thread.pid,
-         // formhash: this.formhash
-       }
-       // Util.setSessionStorage('formhash', this.formhash)
-       let url = '/postdetail/mark/' + JSON.stringify(param)
-       this.$router.push(url)*/
+     
     },
-    getPostData (page) {
+    getPostData (page, notLoader) {
       let that = this
       let tid = this.$route.params.id
-      // tid = '147680'
+        // tid = '147680'
         // console.info('id---', this.$route.params.id)
+      if (page > that.replyData.totalPage) {
+        return
+      }
       service.postData('/app/index.php', {
         version: 4,
         module: 'viewthread',
         tid: tid,
         page: page,
-        ordertype: 1
+        ordertype: 1,
+        notLoader: notLoader
       }).then((response) => {
         console.info('get post detail ----', response.body)
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
-          that.thread = data.thread
-          that.replyData = {
-              curPage: data.pager.cur_page,
-              totalPage: data.pager.total_page,
-              list: data.postlist
-            }
-            // console.info("vote-----", that.voteData.polloptions)
-          if (data.special_poll) {
-            that.voteData = data.special_poll
-            that.voteData.allowvote = +that.voteData.allowvote
-            if (!that.voteData.allowvote) {
-              that.btnTxt = '显示投票结果'
-                // that.showVotes = true
-              if (+that.voteData.maxchoices === 1) {
-                for (let opt of data.special_poll.polloptions) {
-                  // console.info('opt---',opt)
-                  if (opt.selected === '1') {
-                    that.picked = opt.polloptionid
-                    break
+          that.replyData.curPage = +data.pager.cur_page + 1
+          that.replyData.totalPage = +data.pager.total_page
+          if (page === 1) {
+            that.thread = data.thread
+            that.replyData.list = data.postlist
+            //显示投票数据
+            if (data.special_poll) {
+              that.voteData = data.special_poll
+              that.voteData.allowvote = +that.voteData.allowvote
+              if (!that.voteData.allowvote) {
+                that.btnTxt = '显示投票结果'
+                  // that.showVotes = true
+                if (+that.voteData.maxchoices === 1) {
+                  for (let opt of data.special_poll.polloptions) {
+                    // console.info('opt---',opt)
+                    if (opt.selected === '1') {
+                      that.picked = opt.polloptionid
+                      break
+                    }
                   }
-                }
-              } else {
-                for (let opt of data.special_poll.polloptions) {
-                  if (opt.selected === '1') {
-                    that.selectedOptions.push(opt.polloptionid)
+                } else {
+                  //多选选中
+                  for (let opt of data.special_poll.polloptions) {
+                    if (opt.selected === '1') {
+                      that.selectedOptions.push(opt.polloptionid)
+                    }
                   }
                 }
               }
             }
+
+          } else {
+            that.replyData.list = that.replyData.list.concat(data.postlist)
           }
+            // console.info("vote-----", that.voteData.polloptions)
+         
           that.formhash = data.formhash
           Util.setSessionStorage('formhash', this.formhash)
+          that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
+          that.$refs.detailList.refresh() //刷新list
         } else {
           let msg = '请求失败，请稍后重试'
           if (_body.message) {
@@ -460,6 +485,7 @@ export default {
         if(_body.code === '200') {
           let data = _body.data
           that.MarkData.list = data.logs
+          that.$refs.detailList.refresh()
         }else{
           let msg = '请求失败，请稍后重试'
           if(_body.message) {
@@ -490,6 +516,45 @@ export default {
       }
       Util.setSessionStorage('reply', JSON.stringify(param))
       this.goReply()
+    },
+    onInitList (scroller) {
+      // console.info('scroller--------', scroller)
+      let that = this
+      let postHeight = 0
+      setTimeout(function() {
+        postHeight = document.querySelector('.post-cont').offsetHeight
+        console.info(scroller.y, -postHeight)
+      }, 500)
+      that.myScroller = scroller
+      scroller.on('scroll', function() {
+        that.isScrolling = true
+        // console.info(scroller.y, -postHeight)
+        if (scroller.y < -postHeight && postHeight > 0) {
+          that.showFloat = true
+        } else {
+          that.showFloat = false
+        }
+        if(that.tabType === 0) {
+          that.scrollReply = scroller.y
+        }else{
+          that.scrollMark = scroller.y
+        }
+      })
+      scroller.on('scrollEnd', function() {
+        setTimeout(function() { //延迟刷新isScrolling状态，因为scroll还会触发多一次
+          that.isScrolling = false;
+        }, 100)
+      })
+
+    },
+    onRefreshList () {
+      console.info('onRefreshList-------')
+      this.getPostData(1, true)
+    },
+    onLoadMore () {
+      console.info('onLoadMore-------')
+      this.getPostData(this.replyData.curPage, true)
+
     }
   },
   beforeMount () {
@@ -497,11 +562,7 @@ export default {
     that.getPostData(1)
   },
   mounted () {
-    this.postHeight = document.querySelector('.post-cont').offsetHeight
-    this.contentObj = document.querySelector('.scroll')
-    this.tabsOffsetTop = document.querySelector('.rm-tabs').offsetTop
-    // this.rmHeight = document.documentElement.offsetHeight - 110 + 'px'
-    this.rmHeight = document.documentElement.offsetHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight + 20 + 'px'
+    this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - 100)
   },
   activated () {
     // console.info('activated--------')
