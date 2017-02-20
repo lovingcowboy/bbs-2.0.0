@@ -75,7 +75,17 @@
             <span class="icon-arrow-right"></span>
           </li>
         </ul>
-        <div class="logoutbtn" @click="goLogout();" v-show="!isApp">退出登录</div>
+        <div class="logoutbtn" @click="uiShowLogout();" v-show="!isApp">退出登录</div>
+      </div>
+    </div>
+    <div class="logout-dialog" v-show="isShowDialog"> 
+      <div class="masker" v-show="isShowDialog"></div>
+      <div class="dialog-content">
+        <div class="dialog-title">确定要退出登录吗</div>
+        <div class="btn-wrapper">
+          <div class="btn-cancel" @click="onCancel">取消</div>
+          <div class="btn-go"  @click="goLogout();">退出</div> 
+        </div>
       </div>
     </div>
   </div>
@@ -193,6 +203,16 @@ export default {
           this.$router.push(url);
         });
       }
+    },
+
+    onCancel() {  //取消
+      this.isShowDialog = false;
+      this.isScrollActive = true;
+    },
+
+    uiShowLogout() {  //确认是否退出
+      this.isShowDialog = true;
+      this.isScrollActive = false;
     },
 
     goLogout() {  //登出

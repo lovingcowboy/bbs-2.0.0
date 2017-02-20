@@ -102,7 +102,7 @@
                 vertical-align: middle;
                 font-size: pxToRem(22px);
                 margin-left: pxToRem(8px);
-                width: pxToRem(106px);
+                min-width: pxToRem(106px);
             }
         }
         .prestige {
@@ -118,7 +118,7 @@
                 vertical-align: middle;
                 font-size: pxToRem(22px);
                 margin-left: pxToRem(8px);
-                width: pxToRem(106px);
+                min-width: pxToRem(106px);
             }
         }
         .btn-message {

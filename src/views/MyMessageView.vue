@@ -38,9 +38,9 @@
               <div class="message-system-item" :class='{"isNew": item.new == "1" ? true : false}' v-for='(item, index) in systemList'>
                   <div class="point-new"></div>
                   <div class="message-content">
-                    <div class="msg-body">{{item.note}}</div>
+                    <div class="msg-body" >{{item.note}}</div>
                     <div class="time-wrapper">
-                      <div class="msg-date">{{item.dateline}}</div>
+                      <div class="msg-date" v-html='item.dateline'></div>
                       <!-- <div class="msg-time">10:20</div> -->
                     </div>
                   </div>
@@ -154,53 +154,31 @@ export default {
 
           if(params.page == 1) { //刷新或者第一次加载数据
             that.personList = data.list;
-            // that.$refs.list.refreshDone();
           } else if(params.page > 1) { //加载更多数据
             that.personList = that.personList.concat(data.list);
           }
-          /*for (let i = 0; i < 10; i++) {
-            let item = {
-              avatar: '12312sda.png',
-              isnew: '0',
-              tonickname:'萱萱宝贝',
-              vdateline: '05-30',
-              message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
-              plid: i
-            }
-            that.personList.push(item)
-          }*/
+          
           //记录页数信息
           that.personPager = data.pager;
-          if(that.$refs.personlist) {
-            if(that.personList.length == 0) { //无数据
-              // that.$refs.list.onNoData();
-            } else {  //刷新list
-              // 判断是否有加载更多
-              if(Number(that.personPager.cur_page) < Number(that.personPager.total_page)) {
-                that.$refs.personlist.loadmore = true; //有加载更多
-              } else {
-                that.$refs.personlist.loadmore = false; //有加载更多
-                if(Number(that.personPager.cur_page) > 1) {
-                  Toast({
-                    "message": "已全部加载完毕"
-                  })
-                }
-              }
-            }
-
-            that.$refs.personlist.refresh();
-          }
+          if(!that.$refs.personlist) return;
+          
+          // 判断是否有加载更多
+          that.$refs.personlist.loadmore = Number(that.personPager.cur_page) < Number(that.personPager.total_page);
+              
+          that.$refs.personlist.refresh();
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
-          that.$refs.personlist.refresh();
+          
+          that.$refs.personlist && that.$refs.personlist.refresh();
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
-          that.$refs.personlist.refresh();
+
+          that.$refs.personlist && that.$refs.personlist.refresh();
       })
     },
       
@@ -220,38 +198,26 @@ export default {
 
           //记录页数信息
           that.systemPager = data.pager;
-          if(that.$refs.systemlist) {
-            if(that.systemList.length == 0) { //无数据
-              // that.$refs.list.onNoData();
-            } else {  //刷新list
-               // 判断是否有加载更多
-              if(Number(that.systemPager.cur_page) < Number(that.systemPager.total_page)) {
-                that.$refs.systemlist.loadmore = true; //有加载更多
-              } else {
-                that.$refs.systemlist.loadmore = false; //有加载更多
-                if(Number(that.systemPager.cur_page) > 1) {
-                  Toast({
-                    "message": "已全部加载完毕"
-                  })
-                }
-              }
-            }
 
-            that.$refs.systemlist.refresh();
-          }
+          if(!that.$refs.systemlist) return;
+          
+          // 判断是否有加载更多
+          that.$refs.systemlist.loadmore = Number(that.systemPager.cur_page) < Number(that.systemPager.total_page);
+              
+          that.$refs.systemlist.refresh();
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
 
-          that.$refs.systemlist.refresh();
+          that.$refs.systemlist && that.$refs.systemlist.refresh();
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
 
-          that.$refs.systemlist.refresh();
+          that.$refs.systemlist && that.$refs.systemlist.refresh();
       })
     },
 

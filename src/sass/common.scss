@@ -330,7 +330,7 @@ input::-webkit-inner-spin-button {
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -60%);
+        transform: translate(-50%, -55%);
         width: pxToRem(630px);
         height: pxToRem(400px);
         border-radius: pxToRem(16px);
@@ -380,6 +380,9 @@ input::-webkit-inner-spin-button {
             }
             .btn-send {
                 color: $txt-color-blue;
+            }
+            .disable {
+                opacity: 0.5;
             }
         }
     }

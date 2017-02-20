@@ -23,7 +23,7 @@
                     </div>
                     <div class="row02 baseinfo-row">
                       <div class="reply">{{userInfo.posts}}</div>
-                      <div class="label">TA的回帖</div>
+                      <div class="label">TA的回帖</div> 
                     </div>
                     <div class="row03 baseinfo-row">
                       <div class="friends">{{userInfo.friends}}</div>
@@ -154,37 +154,26 @@ export default {
           }
 
           that.pager = data.pager;
-        
-          if(that.$refs.list) {
-            if(that.dynamicList.length == 0) { //无数据
-              // that.$refs.list.onNoData();
-            } else {  //刷新list
-              // 判断是否有加载更多
-              if(Number(that.pager.cur_page) < Number(that.pager.total_page)) {
-                that.$refs.list.loadmore = true; //有加载更多
-              } else {
-                that.$refs.list.loadmore = false; //有加载更多
-                if(Number(that.pager.cur_page) > 1) {
-                  Toast({
-                    "message": "已全部加载完毕"
-                  })
-                }
-              }
-
-              that.$refs.list.refresh();
-            }
-          }
+          
+          if(!that.$refs.list) return;
+          
+          // 判断是否有加载更多
+          that.$refs.list.loadmore = Number(that.pager.cur_page) < Number(that.pager.total_page);
+            
+          that.$refs.list.refresh();
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
-          that.$refs.list.refresh();
+          
+          that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
-          that.$refs.list.refresh();
+          
+          that.$refs.list && that.$refs.list.refresh();
       })
     },
     uiSetListMinHeight() {

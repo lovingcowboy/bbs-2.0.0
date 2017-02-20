@@ -13,22 +13,16 @@
           <div class="scroll-wrapper" slot="scrollContent">
             <div class="content-header">
               <div class="session-name">{{session}}</div>
-              <div class="btn-wrapper" @click="onSwitchAllList">
+              <div class="btn-wrapper" @tap="onSwitchAllList">
                 <div class="btn btn-all" :class="{'active': isListAllActive}">全部</div>
                 <div class="btn btn-essence" :class="{'active': !isListAllActive}">精华</div>
               </div>
             </div>
-            <div class="list-all" v-show="isListAllActive">
-              <div class="list-top">
-               <!--  <div class="top-item post-row">
-                  <font class="top-label">置顶</font><font class="post-title">4100万的善捐款到底值不值？？</font>
+            <div class="list-all" v-show='isListAllActive'>
+              <div class="list-top" v-show='uiShowTop'>
+                <div class="top-item post-row" v-for="(item, index) in topList" :data-id="item.tid">
+                  <font class="top-label">置顶</font><font class="post-title">{{item.subject}}</font>
                 </div>
-                 <div class="top-item post-row">
-                  <font class="top-label">置顶</font><font class="post-title">红包不在多，能匹配合适资金用上最好。红包不在多，能匹配合适资金用上最好。</font>
-                </div>
-                <div class="top-item post-row">
-                  <font class="top-label">置顶</font><font class="post-title">4100万的善捐款到底值不值？？</font>
-                </div> -->
               </div>
               <div class="btn-wrapper sticky-header" @tap="onSwitchList" :style="{visibility: showFloat == true ? 'hidden' : 'visible'}">
                 <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
@@ -37,10 +31,10 @@
               <ul class=" post-list list-newpost" v-show="isListNewpostActive">
                 <post-item v-for="(item, index) in newPostList" :data="item">
                   <div class="item-title" slot="itemhead">
-                    <span data-type="userclick" :data-id="item.id">
-                      <img src="../images/pai.png"><font>{{item.name}}</font><label class="level">{{item.level}}</label>
+                    <span data-type="userclick" :data-id="item.tid">
+                      <img :src='item.avatar'><font>{{item.author}}</font><label class="level">{{item.level}}</label>
                     </span>
-                    <span>{{item.time}}</span>
+                    <span>{{item.dateline}}</span>
                   </div>
                 </post-item>
               </ul>
@@ -48,10 +42,10 @@
               <ul class="list-newreply post-list" v-show="!isListNewpostActive">
                 <post-item v-for="(item, index) in newReplyList" :data="item">
                   <div class="item-title" slot="itemhead">
-                    <span data-type="userclick" :data-id="item.id">
-                      <img src="../images/pai.png"><font>{{item.name}}</font><label class="level">{{item.level}}</label>
+                    <span data-type="userclick" :data-id="item.tid">
+                      <img :src='item.avatar'><font>{{item.author}}</font><label class="level">{{item.level}}</label>
                     </span>
-                    <span>{{item.time}}</span>
+                    <span>{{item.dateline}}</span>
                   </div>
                 </post-item>
               </ul>
@@ -59,10 +53,10 @@
             <ul class="list-essence post-list" v-show="!isListAllActive">
               <post-item v-for="(item, index) in essenceList" :data="item">
               <div class="item-title" slot="itemhead">
-                <span data-type="userclick" :data-id="item.id" >
-                  <img src="../images/pai.png"><font>{{item.name}}</font><label class="level">{{item.level}}</label>
+                <span data-type="userclick" :data-id="item.tid" >
+                  <img :src='item.avatar'><font>{{item.author}}</font><label class="level">{{item.level}}</label>
                 </span>
-                <span>{{item.time}}</span>
+                <span>{{item.dateline}}</span>
               </div>
             </post-item>
             </ul>
@@ -84,6 +78,8 @@ import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import Util from '../js/Util.js'
 import List from "components/listview"
+import Services from '../services'
+import {uniq} from '../filters';
 export default {
   components: {
     Zheader,
@@ -94,14 +90,17 @@ export default {
   data () {
     return {
       isScrollActive: true,
-      session: '投资交流',
+      session: '',
       showFloat: false,
       isListAllActive: true,
       isListNewpostActive: true,
+      topList: [],
       newPostList: [],
       newReplyList: [],
       essenceList: [],
-      // isLoading: false,
+      newPostPager: null, //记录页数信息
+      newReplyPager: null,  //记录页数信息
+      essencePager: null, //记录页数信息
       scrollConfig: {
         wrapper: 'sessionWrapper',
         mutationObserver: true,
@@ -110,26 +109,123 @@ export default {
       }
     }
   },
-  methods: {
-   onSwitchAllList(e) { //切换全部、精华列表
-    let that = this;
-    let target = e.target;
-    let prevClass = target._prevClass;
-    if(prevClass.indexOf("btn-essence") !== -1) {
-      this.isListAllActive = false;
-    } else if(prevClass.indexOf("btn-all") !== -1) {
-      this.isListAllActive = true;
+  computed: {
+    uiShowTop: function() {
+      return this.topList.length !== 0
     }
- 
-    setTimeout(function() { //延迟刷新iscroll
-      that.outerIScroll && that.outerIScroll.refresh();
-    }, 200)
+  },
+  methods: {
+    getPostList(params, type) { //获取帖子列表 type为帖子类型
+      let that = this;
+  
+      let pager = null; //记录页面对象
+      let postList = null;  //帖子列表
+      Services.postData('/app/index.php', params).then((response) => {
+        
+        let _body = response.body;
+        if (_body.code === '200') {
+          let data = _body.data;
+          that.session = data.forum.name;
+
+          //记录页数信息
+          pager = data.pager;
+          if(Number(pager.cur_page) > Number(pager.total_page)) { //超过页叔
+            return false; 
+          }
+
+          // 获取置顶
+          let i = 0; let length = data.list.length;
+          let topList = []; 
+          for(; i < length; i++) {
+            if(data.list[i].is_top == 1) {
+              topList.push(data.list[i]);
+            }
+          }
+          that.topList = uniq.call(that, that.topList.concat(topList), "tid");  //去重
+
+          switch(type) {
+            case 'newPost':
+              postList = that.newPostList;
+              break;
+            case 'newReply':
+              postList = that.newReplyList;
+              break;
+            case 'essence':
+              postList = that.essenceList;
+              break;
+          }
+
+          if(params.page == 1) { //刷新或者第一次加载数据
+              postList = data.list;
+          } else {
+             postList =  data.list.concat(postList);
+          }
+          
+          switch(type) {
+            case 'newPost':
+              that.newPostList = postList;
+              that.newReplyPager = pager;
+              break;
+            case 'newReply':
+              that.newReplyList = postList;
+              that.newReplyPager = pager;
+              break;
+            case 'essence':
+              that.essenceList = postList;
+              that.newReplyPager = pager;
+              break;
+          }
+          
+          if(!that.$refs.list) return;
+
+          // 判断是否有加载更多
+          that.$refs.list.loadmore = Number(pager.cur_page) < Number(pager.total_page); 
+
+          that.$refs.list.refresh();
+        } else {
+          Toast({
+            "message": _body && _body.message || "请求失败，请稍后重试"
+          });
+
+          that.$refs.list && that.$refs.list.refresh();
+        }
+      }, (response) => {
+          Toast({
+            "message": response.body && response.body.message || "请求失败，请稍后重试"
+          });
+
+          that.$refs.list && that.$refs.list.refresh();
+      })
+    },
+
+    onSwitchAllList(e) { //切换全部、精华列表
+      let that = this;
+      let target = e.target;
+      let prevClass = target._prevClass;
+      let pager = null;
+      if(prevClass.indexOf("btn-essence") !== -1) { //精华列表
+        this.isListAllActive = false;
+        pager = that.essencePager;
+        if(that.essenceList.length == 0) {
+          that.getPostList(that.essenceParams, "essence");  //获取最新列表
+        }
+      } else if(prevClass.indexOf("btn-all") !== -1) {  //全部
+        this.isListAllActive = true;
+        pager = that.isListNewpostActive ? that.newPostPager : that.newReplyPager;
+      }
       
-   },
-   onSwitchList(e) {  //切换最新发表跟最新回复
+       if(!that.$refs.list || !pager) return;
+         // 判断是否有加载更多
+        that.$refs.list.loadmore = Number(pager.cur_page) < Number(pager.total_page); 
+
+        that.$refs.list.refresh();
+    },
+
+    onSwitchList(e) {  //切换最新发表跟最新回复
       let target = e.currentTarget;
       let prevClass = target._prevClass;
       let that = this;
+
       if(!that.showFloat) { //当没置顶时
         that.newPostY = that.newReplyY = that.outerIScroll.y;
       } else {  //置顶时
@@ -177,113 +273,91 @@ export default {
             }
           }, 200)
         }
-
       }, 10)
+    },
+
+    onInitList(scroller) {
+      let  that = this;
+      that.outerIScroll = scroller;
+      let listTopEl = document.querySelector(".list-top");
+      let listTopH = Util.pxToRemAdapt(listTopEl ? listTopEl.clientHeight : 0);
+      // 计算最新发表、最新回复的位置 换算成rem 92为内容header高度 20为间距 
+      that.switchListSt =  Util.remToPx(listTopH + Util.pxToRem(92 + 20 + 20));
       
-   },
-   onInitList(scroller) {
-    let  that = this;
-    that.outerIScroll = scroller;
-    let listTopEl = document.querySelector(".list-top");
-    let listTopH = Util.pxToRemAdapt(listTopEl ? listTopEl.clientHeight : 0);
-    // 计算最新发表、最新回复的位置 换算成rem 92为内容header高度 20为间距 
-    that.switchListSt =  Util.remToPx(listTopH + Util.pxToRem(92 + 20 + 20));
-    
-    // 置顶的y轴位置   
-    this.topY = that.switchListSt + Util.pxToRemAdapt(document.querySelector(".sticky-header").clientHeight);
-    // 保存最新发表跟最新回复的位置
-    this.newPostY = this.newReplyY = -that.switchListSt;
+      // 置顶的y轴位置   
+      this.topY = that.switchListSt + Util.pxToRemAdapt(document.querySelector(".sticky-header").clientHeight);
+      // 保存最新发表跟最新回复的位置
+      this.newPostY = this.newReplyY = -that.switchListSt;
 
-    that.outerIScroll.on('scroll', function() {
-      that.isScrolling = true;
-      if(!that.isListAllActive) {  //如果不是在全部列表页面，则不做操作
-        return;
-      }
+      that.outerIScroll.on('scroll', function() {
+        that.isScrolling = true;
+        if(!that.isListAllActive) {  //如果不是在全部列表页面，则不做操作
+          return;
+        }
 
-      if(this.y - 1 < -that.switchListSt) { //置顶条件
-        that.showFloat = true
-        
-      } else {
-        that.showFloat = false
-      }
-      that.isListNewpostActive ? that.newPostY = this.y : that.newReplyY = this.y;  //记录位置
+        if(this.y - 1 < -that.switchListSt) { //置顶条件
+          that.showFloat = true
+          
+        } else {
+          that.showFloat = false
+        }
+        that.isListNewpostActive ? that.newPostY = this.y : that.newReplyY = this.y;  //记录位置
+      }); 
 
+      that.outerIScroll.on('scrollEnd', function() {
+        setTimeout(function() { //延迟刷新isScrolling状态，因为scroll还会触发多一次
+          that.isScrolling = false;
+        }, 100)
 
-    }); 
+      })
+    },
 
-    that.outerIScroll.on('scrollEnd', function() {
-      setTimeout(function() { //延迟刷新isScrolling状态，因为scroll还会触发多一次
-        that.isScrolling = false;
-      }, 100)
-
-    })
-   },
-
-   onRefreshList() {   // TODO: 刷新数据
-    let that = this;
-    setTimeout(function() {
-      that.$refs.list.refreshDone();
-    }, 2000)
-   },
-
-   onLoadMore() { // TODO: 加载更多数据
+    onRefreshList() {   // TODO: 刷新数据
       let that = this;
       setTimeout(function() {
-        let hasmore = false;
-        for (let i = 0; i < 6; i++) {
-          let item = {
-            name: '神采飞扬',
-            level: 'LV2 大咖',
-            time: i * 10 + '分钟前',
-            subject: '团贷网大踏步走在紧拥监管，跨越发展之路上',
-            message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
-            views: 12 * i,
-            replies: 25 * i,
-            id: i * 10
-          }
-          that.newPostList.push(item)
-          that.essenceList.push(item)
-        }
-        that.$refs.list.loadMoreDone(hasmore); //参数表示是否还有更多数据
+        that.$refs.list.refreshDone();
       }, 2000)
-   }
+    },
+
+    onLoadMore() { // TODO: 加载更多数据
+      let that = this;
+      
+    }
   },
   mounted() {
    
   },
   beforeMount () {
     let that = this
-    for (let i = 0; i < 6; i++) {
-      let item = {
-        name: '神采飞扬',
-        level: 'LV2 大咖',
-        time: i * 10 + '分钟前',
-        subject: '团贷网大踏步走在紧拥监管，跨越发展之路上',
-        message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
-        views: 12 * i,
-        replies: 25 * i,
-        id: i * 10
-      }
-      that.newPostList.push(item)
-      that.essenceList.push(item)
-    }
 
-    for (let i = 0; i < 5; i++) {
-      let item = {
-        name: '神采飞扬',
-        level: 'LV2 大咖',
-        time: i * 10 + '分钟前',
-        subject: 'replie' + i,
-        message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
-        views: 12 * i,
-        replies: 25 * i,
-        id: i * 10
-      }
+    that.newPostParams = { //最新发表列表参数
+      "version": 4,
+      "module": "forumdisplay",
+      "fid": that.$route.params.fid,
+      "filter": "author",
+      "orderby": "dateline",
+      "page": 1
+    };
 
-      that.newReplyList.push(item)
+    that.newReplyParams = { //最新回复列表参数
+      "version": 4,
+      "module": "forumdisplay",
+      "fid": that.$route.params.fid,
+      "filter": "lastpost",
+      "orderby": "lastpost",
+      "page": 1
+    };
 
-    }
-
+    that.essenceParams = { //精华列表参数
+      "version": 4,
+      "module": "forumdisplay",
+      "fid": that.$route.params.fid,
+      "filter": "digest",
+      "digest": "1",
+      "page": 1
+    };
+    // 获取版块最新发表
+    that.getPostList(that.newPostParams, "newPost");
     
   }
   

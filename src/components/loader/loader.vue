@@ -21,7 +21,7 @@
       color: #fff;
       box-sizing: border-box;
       text-align: center;
-      z-index: 1000;
+      z-index: 99999;
       padding: pxToRem(20px);
   }
 </style>
