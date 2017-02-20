@@ -17,7 +17,7 @@
             <div class="avatar-mask" v-show="editing">
               <img class="avatar-edit" src="../images/avatar-edit.png" />
             </div>
-            <img class="avatar" src='../images/icon-avatar.png' />
+            <img class="avatar" :src='userInfo.avatar' />
           </div>
           <div class="name-wrapper" :class='isEditing' >
             <input class="name-txt" maxlength="30" :readonly ='editing == true ? readonly : ""' :value='userInfo.username' />
