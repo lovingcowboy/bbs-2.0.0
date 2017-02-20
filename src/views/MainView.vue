@@ -279,7 +279,8 @@ export default {
           that.userInfo.extcredits1 = data.extcredits1
           that.isSigned = true
           Toast({
-            message: '签到成功，积分+' + data.credit + '，威望+' + data.extcredits1
+            message: '签到成功，积分+' + data.credit + '，威望+' + data.extcredits1,
+            position: 'top'
           })
         } else {
           let msg = ''
@@ -289,7 +290,8 @@ export default {
             msg = '请求失败，请稍后重试'
           }
           Toast({
-            message: msg
+            message: msg,
+            position: 'top'
           })
         }
       }, (response) => {

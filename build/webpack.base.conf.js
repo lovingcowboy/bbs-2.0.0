@@ -9,6 +9,7 @@ var env = process.env.NODE_ENV
 var cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap)
 var cssSourceMapProd = (env === 'production' && config.build.productionSourceMap)
 var useCssSourceMap = cssSourceMapDev || cssSourceMapProd
+var webpack = require('webpack')
 
 module.exports = {
   entry: {
@@ -87,8 +88,17 @@ module.exports = {
     loaders: utils.cssLoaders({ sourceMap: useCssSourceMap }),
     postcss: [
       require('autoprefixer')({
-        browsers: ['last 2 versions']
+        browsers: ['last 2 versions','android 4','opera 12','safari 8']
       })
     ]
+  },
+  postcss: function () {
+    return [
+    require('postcss-import')({
+      addDependencyTo: webpack
+    }),
+    require('autoprefixer')({
+      browsers: ['last 2 versions','android 4','opera 12','safari 8']
+    })]
   }
 }

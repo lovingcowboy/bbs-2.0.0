@@ -148,7 +148,7 @@
           <span class="f-reply pf-evt" data-type="reply">发表回复…</span>
           <i class="icon-zan pf-evt" data-type="fav"></i>
           <i class="icon-mark pf-evt"  data-type="mark"></i>
-          <i class="icon-share pf-evt" data-type="share"></i>
+          <!-- <i class="icon-share pf-evt" data-type="share"></i> -->
         </div>
       </div>
       <nav class="rm-tabs float-tabs" v-show="showFloat">
@@ -324,29 +324,63 @@ export default {
     },
     pfClickFunc (e) {
        let obj = Util.getElemetByTarget(e.target, 'pf-evt', 'f-container')
+       let that = this
        if (obj) {
         let type = obj.dataset.type
         if (type === 'reply') {
           //回复
-          this.goReply()
+          that.goReply()
         } else if (type === 'fav') {
           //收藏
-          if (+this.thread.yes_fav) {
-            Toast({
-              message: '取消收藏'
-            })
-          } else {
-            Toast({
-              message: '收藏成功'
-            })
-          }
+          that.goTriggerFav()
         } else if (type === 'mark') {
           //评分
-          this.goMark()
+          that.goMark()
         } else {
           //分享
         }
        }
+    },
+    goTriggerFav() {
+      let that =  this
+      let reqParam = {}
+      if (+that.thread.yes_fav) {
+        reqParam = {
+          module: 'member',
+          action: 'delete_favorite_thread',
+          tid: that.thread.tid
+        }
+      } else {
+        reqParam = {
+          module: 'favthread',
+          id: that.thread.tid
+        }
+      }
+      service.postData('/app/index.php', reqParam).then((response) => {
+        let _body = response.body
+        if (_body.code === '200') {
+          if (+that.thread.yes_fav) {
+            that.thread.yes_fav = 0
+            Toast({
+              message: '取消收藏'
+            })
+          } else {
+            that.thread.yes_fav = 1
+            Toast({
+              message: '收藏成功'
+            })
+          }
+        }
+      }, (response) => {
+        console.info('goTriggerFav-------fail--', response)
+        let msg = '请求失败，请稍后重试'
+        if (_body.message) {
+          msg = _body.message
+        }
+        Toast({
+          message: msg
+        })
+      })
     },
     goReply () {
       let param = Util.getSessionStorage('reply')

@@ -90,13 +90,14 @@ span {
 
 .mint-toast.is-placemiddle {
     left: 50%;
-    // top: 50%;
+    top: 50%;
     transform: translate(-50%, 0);
-    top: pxToRem(120px);
+    // top: pxToRem(120px);
 }
 
 .mint-toast.is-placetop {
-    top: pxToRem(50px * 2);
+    // top: pxToRem(50px * 2);
+    top: pxToRem(120px);
     left: 50%;
     transform: translate(-50%, 0)
 }

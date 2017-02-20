@@ -323,7 +323,8 @@
         white-space: nowrap;
     }
     .f-reply {
-        width: pxToRem(380px);
+        // width: pxToRem(380px);
+        width: pxToRem(480px);
         height: pxToRem(66px);
         line-height: pxToRem(66px);
         border-radius: pxToRem(10px);
