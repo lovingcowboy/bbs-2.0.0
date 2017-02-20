@@ -187,14 +187,10 @@ import spinner from '../../Spinner.vue'
 
       refresh() { //刷新iscroll
         let that = this;
-        if(!that.myScroll) {
+         let scroller = that.myScroll;
+        if(!scroller) {
           return;
         }
-
-        let scroller =  that.myScroll;
-
-        that.isRefresh = false;
-        that.isLoadMore = false;
           
         setTimeout(function() { // 刷新iscroll
           that.myScroll.refresh();
@@ -203,8 +199,12 @@ import spinner from '../../Spinner.vue'
           } else {
             that.showmore = true;
           }
-        }, 200);
 
+          setTimeout(function() { //延迟刷新状态
+            that.isRefresh = false;
+            that.isLoadMore = false;
+          }, 100)
+        }, 200);
       }
     },
       

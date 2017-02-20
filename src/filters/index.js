@@ -128,7 +128,7 @@ export function uniq(arr, target) {
   }
 
   if (this.lastList && isArrayEqual(this.compareList, this.lastList)) {
-    return arr;
+    return list;
   }
 
   this.lastList = this.compareList;
