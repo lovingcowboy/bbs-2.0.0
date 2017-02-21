@@ -120,8 +120,11 @@ export default {
     }
   },
   computed: {
-    isApp:function() {
+    isApp() {
       return isApp();
+    },
+    isNewVersion() {
+      return Bbsbridge.isCorrectVersion("4.8.0", "1");
     }
   },
   methods: {
@@ -351,33 +354,36 @@ export default {
       let that = this
         // let _count = 9 - that.imgList.length
         // console.info('chooseImgFun----', _count)
-
-      Bbsbridge.exec('getThumbnail', 1, function(data) {
-        // alert("获取缩略图成功！")
-        data = JSON.parse(data)
-        if (data.code == 200) {
-          let thumbnailData = data.data
-          // _data.forEach((item, i) => {
-          //   item.photoContent = "data:img/jpgbase64," + item.photoContent
-          // })
-          if (thumbnailData.length > 0) {
-            Bbsbridge.exec('uploadPhoto', thumbnailData, function(data) {
-              data = JSON.parse(data);
-              if (data.code == 200) {
-                let _data = data.data;
-                that.userInfo.avatar = _data[0].photoUrl
-              } else {
-                Toast("上传失败！请稍后再试！");
-              }
-            });
+      if (isNewVersion) {
+        Bbsbridge.exec('getThumbnail', 1, function(data) {
+          // alert("获取缩略图成功！")
+          data = JSON.parse(data)
+          if (data.code == 200) {
+            let thumbnailData = data.data
+              // _data.forEach((item, i) => {
+              //   item.photoContent = "data:img/jpgbase64," + item.photoContent
+              // })
+            if (thumbnailData.length > 0) {
+              Bbsbridge.exec('uploadPhoto', thumbnailData, function(data) {
+                data = JSON.parse(data);
+                if (data.code == 200) {
+                  let _data = data.data;
+                  that.userInfo.avatar = _data[0].photoUrl
+                } else {
+                  Toast("上传失败！请稍后再试！");
+                }
+              });
+            } else {
+              Toast("图片选择失败，请重新尝试！");
+            }
           } else {
-            Toast("图片选择失败，请重新尝试！");
+            Toast('图片选择失败，请重新尝试！')
           }
-        } else {
-          Toast('图片选择失败，请重新尝试！')
-        }
 
-      })
+        })
+      }else{
+        Toast('app版本过低，请更新版本！')
+      }
     }
    
   },
