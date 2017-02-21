@@ -313,8 +313,8 @@ export default {
       that.outerIScroll.on('scroll', function() {
         let listTopH = Util.pxToRemAdapt(listTopEl ? listTopEl.clientHeight : 0);
         // 计算最新发表、最新回复的位置 换算成rem 92为内容header高度 20为间距 
-        that.switchListSt =  Util.remToPx(listTopH + Util.pxToRem(92 + 20 + 20));
-
+        that.switchListSt =  Util.remToPx(listTopH + Util.pxToRem(92 + 20));
+        // debugger
         that.isScrolling = true;
         if(!that.isListAllActive) {  //如果不是在全部列表页面，则不做操作
           return;

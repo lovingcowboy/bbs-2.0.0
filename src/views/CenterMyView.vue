@@ -19,7 +19,7 @@
               <!-- <img class="avatar-edit" src="../images/avatar-edit.png" /> -->
                <input id="file" type="file" accept="image/*" class="avatar-input" @change="chooseImgFunWeb($event)" @click="prevenDefault($event)"/>
             </div>
-            <img class="avatar" src='../images/icon-avatar.png' />
+            <img class="avatar" :src='userInfo.avatar' />
           </div>
           <div class="name-wrapper" :class='isEditing' >
             <input class="name-txt" maxlength="30" :readonly ='editing == true ? readonly : ""' :value='userInfo.username' />
