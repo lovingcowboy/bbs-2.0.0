@@ -189,7 +189,10 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
-
+          // 系统消息清空
+          that.newsystem = 0;
+          // 记录个人消息未读数
+          that.newpm = data.newpm; 
           if(params.page == 1) { //刷新或者第一次加载数据
             that.systemList = data.list;
           } else if(params.page > 1) { //加载更多数据
