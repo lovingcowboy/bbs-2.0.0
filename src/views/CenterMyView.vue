@@ -14,8 +14,10 @@
           <div class="btn-edit-done edit-btn" v-show="editing" @click="onEditDone();">完成</div>
 
           <div class="avatar-wrapper">
-            <div class="avatar-mask" v-show="editing">
-              <img class="avatar-edit" src="../images/avatar-edit.png" />
+            <div class="avatar-mask" v-show="editing && isApp" @click="chooseImgFun($event)"></div>
+            <div class="avatar-mask" v-show="editing && !isApp">
+              <!-- <img class="avatar-edit" src="../images/avatar-edit.png" /> -->
+               <input id="file" type="file" accept="image/*" class="avatar-input" @change="chooseImgFunWeb($event)" @click="prevenDefault($event)"/>
             </div>
             <img class="avatar" src='../images/icon-avatar.png' />
           </div>
@@ -97,6 +99,9 @@ import Toast from '../components/toast'
 import Validate from '../js/lib/validate.js'
 import Services from '../services'
 import { isApp } from '../filters'
+import Bbsbridge from '../js/lib/bbsbridge.js'
+import Loader from '../components/loader'
+
 export default {
   components: {
     Zheader,
@@ -107,7 +112,8 @@ export default {
       isScrollActive: true,
       userInfo: {},
       editing: false,
-      isEditing: ""
+      isEditing: "",
+      canAddImg: true
     }
   },
   computed: {
@@ -238,6 +244,150 @@ export default {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
+      })
+    },
+    prevenDefault(e) {
+      if (!this.canAddImg) {
+        e.preventDefault();
+      }
+    },
+    chooseImgFunWeb(e) {
+      //web端插入图片
+      let that = this
+      if (e.target.files.length <= 0) {
+        return
+      }
+      // console.log(e.target.files[0],e.target.value)
+      let _file_url = e.target.value
+        // let _name = e.target.files[0].name
+
+      // that.canPost = false
+      that.canAddImg = false
+        // that.$refs.loading.$emit("show")
+      that.loader.show()
+
+      lrz(e.target.files[0], {
+          "fieldName": "Filedata"
+        })
+        .then(function(rst) {
+          let _img = {
+              "photoID": new Date().getTime(),
+              "photoUrl": _file_url,
+              "photoContent": rst.base64,
+            }
+            //如果有这张图片，则不实现
+          let _file = that.imgList.filter((item) => {
+            return item.photoContent === rst.base64
+          })
+          if (_file.length > 0) {
+            Toast('此图片已存在！')
+            if (!that.isEmpty) {
+              that.canPost = true
+            }
+            that.canAddImg = true
+            that.loader.hide()
+            return
+          }
+          // that.imgList.push(_img)
+          // console.info('rst---', rst)
+          // that.canAddImg = true
+
+          var xhr = new XMLHttpRequest()
+          xhr.open('POST', openapi.domain + '/app/index.php')
+          xhr.onload = function() {
+            if (xhr.status === 200) {
+              // 上传成功
+              // console.log(xhr.response)
+              var data = xhr.response ? JSON.parse(xhr.response) : {}
+              if (data.code == 200) {
+                _img.attachID = data.data.aid
+                that.imgList.push(_img)
+                if (that.imgList.length >= 9) {
+                  that.addImg = false
+                }
+              } else {
+                Toast({
+                  message: data.message
+                })
+              }
+
+            } else {
+              // 处理其他情况
+              Toast({
+                message: '上传失败！'
+              })
+            }
+          }
+
+          xhr.onerror = function() {
+            // 处理错误
+            Toast({
+              message: '上传失败！'
+            })
+          }
+
+          xhr.onreadystatechange = function() {
+            // console.log(xhr.readyState)
+            // if(xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) console.log(xmlhttp.responseText)
+            if (xhr.readyState === xhr.DONE) {
+              // console.log("done==========",xhr.status)
+              if (!that.isEmpty) {
+                that.canPost = true
+              }
+              that.canAddImg = true
+              that.loader.hide()
+
+            }
+          }
+
+          xhr.upload.onprogress = function(e) {
+            // 上传进度
+            var percentComplete = ((e.loaded / e.total) || 0) * 100
+              // console.log(percentComplete)
+          }
+
+          // 添加参数
+          rst.formData.append("version", 4)
+          rst.formData.append("module", "forumupload")
+            // rst.formData.append("Filedata",rst.file)
+
+          // 触发上传
+          xhr.send(rst.formData)
+
+          return rst
+
+        })
+        .catch(function(error) {
+          console.log(error)
+        })
+        .always(function() {
+          // e.target.value = ''
+        })
+    },
+    chooseImgFun(e) {
+      //app端插入图片
+      let that = this
+      let _count = 9 - that.imgList.length
+      console.info('chooseImgFun----', _count)
+
+      Bbsbridge.exec('getThumbnail', _count, function(data) {
+        // alert("获取缩略图成功！")
+        data = JSON.parse(data)
+        if (data.code == 200) {
+          let _data = data.data
+          _data.forEach((item, i) => {
+            item.photoContent = "data:img/jpgbase64," + item.photoContent
+          })
+          that.imgList = that.imgList.concat(_data)
+          if (that.imgList.length >= 9) {
+            that.addImg = false
+          } else {
+            that.addImg = true
+          }
+        } else {
+          Toast('图片选择失败，请重新尝试！')
+        }
+
       })
     }
    

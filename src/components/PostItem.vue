@@ -8,11 +8,11 @@
   </div> -->
   <slot name="itemhead"></slot>
   <div class="item-desc" >
-    <div :class="['post', {'no-img': !data.cover || data.cover == ''}]" >
+    <div :class="['post', {'no-img': !+data.cover || data.cover == ''}]" >
       <p data-type="itemclick" >{{data.subject}}</p>
       <p data-type="itemclick" >{{data.message}}</p>
     </div>
-    <div class="p-img" v-show="data.cover && data.cover != ''">
+    <div class="p-img" v-show="+data.cover && data.cover != ''">
       <img :src="data.cover">
     </div>
   </div>

@@ -237,7 +237,7 @@ export default {
         } else {
           this.$refs.detailList.refresh()
           console.info('scrollReply---', this.scrollReply, this.myScroller)
-          this.myScroller.scrollTo(0, this.scrollReply, 500)
+          this.myScroller.scrollTo(0, this.scrollReply, 0)
         }
         this.ScrollConfig.loadmore = true
       } else if (type === 1) {
@@ -251,7 +251,7 @@ export default {
           this.getMarkList(1)
         } else {
           this.$refs.detailList.refresh()
-          this.myScroller.scrollTo(0, this.scrollMark, 500)
+          this.myScroller.scrollTo(0, this.scrollMark, 0)
         }
         this.ScrollConfig.loadmore = false
       }
@@ -556,7 +556,7 @@ export default {
       let that = this
       let postHeight = 0
       setTimeout(function() {
-        postHeight = document.querySelector('.post-cont').offsetHeight
+        postHeight = document.querySelector('.post-cont').offsetHeight + 20
         console.info(scroller.y, -postHeight)
       }, 500)
       that.myScroller = scroller
