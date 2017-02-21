@@ -408,6 +408,47 @@ export default {
         this.canPost = true
       }
     },
+    postBtnClickFunc() {
+      let that = this
+      if (this.isApp && this.isNewVersion) {
+        let _photos = [];
+        for (let i = 0; i < that.imgList.length; i++) {
+          let _photo = {
+            "photoID": that.imgList[i].photoID,
+            "photoOrder": that.imgList[i].photoOrder
+          };
+          _photos.push(_photo);
+        }
+
+        if (_photos.length <= 0) {
+          that.goPost();
+          return;
+        }
+
+        Bbsbridge.exec('uploadPhoto', _photos, function(data) {
+          data = JSON.parse(data);
+          if (data.code == 200) {
+            let _data = data.data;
+            // that.imgList.forEach((img,index)=> {
+            //  let _atid = _data.filter((d,index) => {return d.photoID == img.photoID});
+            //  img.attachID = _atid[0].attachID});
+            // console.log(that.imgList);
+
+            for (let i = 0; i < that.imgList.length; i++) {
+              let _atid = _data.filter((img, index) => {
+                return img.photoID == that.imgList[i].photoID
+              });
+              that.imgList[i].attachID = _atid[0].attachID;
+            }
+            that.goPost();
+          } else {
+            Toast("上传失败！请稍后再试！");
+          }
+        });
+      } else {
+        this.postReply()
+      }
+    },
     goPost() {
       //发表帖子
       console.info('goPost-------', this.post)

@@ -54,7 +54,7 @@
         <ul class="post-list" @click="listClickFunc($event)">
           <post-item v-for="(item, index) in hotList" :data="item">
             <div class="item-title" slot="itemhead">
-              <span data-type="userclick" :data-id="item.tid" class="c-event">
+              <span data-type="userclick" :data-id="item.authorid" class="c-event">
                 <img :src="item.avatar"><font >{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
@@ -81,7 +81,7 @@
         <ul class="post-list" @click="listClickFunc($event)">
           <post-item v-for="item in newList" :data="item">
             <div class="item-title" slot="itemhead">
-              <span data-type="userclick" :data-id="item.tid" class="c-event">
+              <span data-type="userclick" :data-id="item.authorid" class="c-event">
                 <!-- <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}} -->
                 <img :src="item.avatar"><font>{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
@@ -98,7 +98,7 @@
         <ul class="post-list" @click="listClickFunc($event)">
           <post-item v-for="item in essenceList" :data="item">
             <div class="item-title" slot="itemhead">
-              <span data-type="userclick" :data-id="item.tid" class="c-event">
+              <span data-type="userclick" :data-id="item.authorid" class="c-event">
                 <img :src="item.avatar"><font>{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
@@ -596,7 +596,7 @@ export default {
     let that = this
     //动态计算列表容器高度
     // this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
-    this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop);
+    this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop -document.querySelector('.header-bar').clientHeight);
     let param = {
       version: 4,
       module: 'forum',
