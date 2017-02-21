@@ -12,6 +12,7 @@
         <div class="contetn-header">
           <div class="btn-edit edit-btn" v-show="!editing" @click="onEdit();"></div>
           <div class="btn-edit-done edit-btn" v-show="editing" @click="onEditDone();">完成</div>
+          <div class="btn-edit-cancel edit-btn" v-show="editing" @click="onCancelEdit();">取消</div>
 
           <div class="avatar-wrapper">
             <div class="avatar-mask" v-show="editing && isApp" @click="chooseImgFun($event)"></div>
@@ -190,6 +191,12 @@ export default {
           // that.userInfo.username = that.lastNickName;
       })
     },
+    onCancelEdit() {
+      this.editing = false;
+      this.isEditing = ""
+      this.userInfo.username = this.lastNickName;
+    },
+    
     onSign() {
       let that = this;
       let params = {

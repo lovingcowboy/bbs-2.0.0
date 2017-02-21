@@ -26,6 +26,9 @@
             background-repeat: no-repeat;
             background-position: 50% 50%;
         }
+        &.btn-edit-cancel {
+            left: pxToRem(20px);
+        }
     }
     @at-root .avatar-wrapper {
         width: pxToRem(180px);
