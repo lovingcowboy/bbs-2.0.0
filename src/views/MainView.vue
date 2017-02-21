@@ -319,7 +319,7 @@ export default {
       if (this.isLogin) {
         this.$router.push('/post')
       } else {
-        validate.openLogin()
+        Validate.openLogin()
       }
     },
     listClickFunc(e) {
