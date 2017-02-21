@@ -316,9 +316,6 @@ export default {
             // if(xmlhttp.readyState === XMLHttpRequest.DONE && xmlhttp.status === 200) console.log(xmlhttp.responseText)
             if (xhr.readyState === xhr.DONE) {
               // console.log("done==========",xhr.status)
-              if (!that.isEmpty) {
-                that.canPost = true
-              }
               that.canAddImg = true
               that.loader.hide()
 
