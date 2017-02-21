@@ -159,8 +159,8 @@ export default {
     },
     onEditDone() {
       let that = this;
-      this.editing = false;
-      this.isEditing = ""
+      // this.editing = false;
+      // this.isEditing = ""
       let nickname = this.userInfo.username;
       if(nickname == this.lastNickName) return; //没有修改昵称
 
@@ -174,19 +174,20 @@ export default {
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
-
+          that.editing = false;
+          that.isEditing = ""
           that.userInfo.username = nickname;
         } else {
           Toast({
             "message": _body && _body.message || "请求失败，请稍后重试"
           });
-          that.userInfo.username = that.lastNickName;
+          // that.userInfo.username = that.lastNickName;
         }
       }, (response) => {
           Toast({
             "message": response.body && response.body.message || "请求失败，请稍后重试"
           });
-          that.userInfo.username = that.lastNickName;
+          // that.userInfo.username = that.lastNickName;
       })
     },
     onSign() {
