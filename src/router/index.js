@@ -99,7 +99,8 @@ const router = new Router({
         path: '/centermy',
         name: 'centermy',
         component: function(resolve) {
-            require.ensure(['../views/CenterMyView.vue'], function(require) {
+            require.ensure(['../js/lib/lrz.js', '../views/CenterMyView.vue'], function(require) {
+                require('../js/lib/lrz.js');
                 var CenterMyView = require('../views/CenterMyView.vue');
                 resolve(CenterMyView);
             })

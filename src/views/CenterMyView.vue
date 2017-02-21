@@ -99,6 +99,7 @@ import Toast from '../components/toast'
 import Validate from '../js/lib/validate.js'
 import Services from '../services'
 import { isApp } from '../filters'
+import openapi from '../services/openapi.js'
 import Bbsbridge from '../js/lib/bbsbridge.js'
 import Loader from '../components/loader'
 
@@ -113,7 +114,9 @@ export default {
       userInfo: {},
       editing: false,
       isEditing: "",
-      canAddImg: true
+      canAddImg: true,
+      avatarContent: '',
+      loader: null
     }
   },
   computed: {
@@ -270,28 +273,13 @@ export default {
           "fieldName": "Filedata"
         })
         .then(function(rst) {
-          let _img = {
-              "photoID": new Date().getTime(),
-              "photoUrl": _file_url,
-              "photoContent": rst.base64,
-            }
-            //如果有这张图片，则不实现
-          let _file = that.imgList.filter((item) => {
-            return item.photoContent === rst.base64
-          })
-          if (_file.length > 0) {
-            Toast('此图片已存在！')
-            if (!that.isEmpty) {
-              that.canPost = true
-            }
+         
+          if (that.avatarContent === rst.base64) {
+            Toast('此头像已存在！')
             that.canAddImg = true
             that.loader.hide()
             return
           }
-          // that.imgList.push(_img)
-          // console.info('rst---', rst)
-          // that.canAddImg = true
-
           var xhr = new XMLHttpRequest()
           xhr.open('POST', openapi.domain + '/app/index.php')
           xhr.onload = function() {
@@ -300,11 +288,8 @@ export default {
               // console.log(xhr.response)
               var data = xhr.response ? JSON.parse(xhr.response) : {}
               if (data.code == 200) {
-                _img.attachID = data.data.aid
-                that.imgList.push(_img)
-                if (that.imgList.length >= 9) {
-                  that.addImg = false
-                }
+                that.userInfo.avatar = data.data.file_name
+              
               } else {
                 Toast({
                   message: data.message
@@ -367,22 +352,29 @@ export default {
     chooseImgFun(e) {
       //app端插入图片
       let that = this
-      let _count = 9 - that.imgList.length
-      console.info('chooseImgFun----', _count)
+        // let _count = 9 - that.imgList.length
+        // console.info('chooseImgFun----', _count)
 
-      Bbsbridge.exec('getThumbnail', _count, function(data) {
+      Bbsbridge.exec('getThumbnail', 1, function(data) {
         // alert("获取缩略图成功！")
         data = JSON.parse(data)
         if (data.code == 200) {
-          let _data = data.data
-          _data.forEach((item, i) => {
-            item.photoContent = "data:img/jpgbase64," + item.photoContent
-          })
-          that.imgList = that.imgList.concat(_data)
-          if (that.imgList.length >= 9) {
-            that.addImg = false
+          let thumbnailData = data.data
+          // _data.forEach((item, i) => {
+          //   item.photoContent = "data:img/jpgbase64," + item.photoContent
+          // })
+          if (thumbnailData.length > 0) {
+            Bbsbridge.exec('uploadPhoto', thumbnailData, function(data) {
+              data = JSON.parse(data);
+              if (data.code == 200) {
+                let _data = data.data;
+                that.userInfo.avatar = _data[0].photoUrl
+              } else {
+                Toast("上传失败！请稍后再试！");
+              }
+            });
           } else {
-            that.addImg = true
+            Toast("图片选择失败，请重新尝试！");
           }
         } else {
           Toast('图片选择失败，请重新尝试！')
@@ -395,6 +387,7 @@ export default {
   beforeMount () {
     
     this.getUserInfo();  //获取用户信息
+    this.loader = Loader()
   }
 }
 </script>
