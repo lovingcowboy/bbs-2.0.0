@@ -14,12 +14,14 @@ import './sass/common.scss'
 // 全局化工具库Util
 import './js/Util.js'
 
+import Bbsbridge from './js/lib/bbsbridge.js';
 import Loader from './components/loader'
 
 /* eslint-disable no-new */
 
 // sync(store, router)
 Fastclick.attach(document.body)
+window.Bbsbridge = Bbsbridge
 
 Vue.use(Resource)
 
@@ -30,21 +32,50 @@ Object.keys(filters).forEach(key => {
 let loader = Loader()
 Vue.http.options.emulateJSON = true
 Vue.http.interceptors.push((request, next) => {
-    // continue to next interceptor
-    if (!request.body.notLoader) {
-      loader.show()
-    }
-    next((response) => {
-      loader.hide()
-    })
+  // continue to next interceptor
+  if (!request.body.notLoader) {
+    loader.show()
+  }
+  let beforeSend = request.body.beforeSend;
+  if (beforeSend && typeof beforeSend == "function") {
+
+    request.body.beforeSend.call(this, request)
+
+  }
+  next((response) => {
+    loader.hide()
   })
+})
 router.beforeEach((to, from, next) => {
-	loader.show()
-	next()
+  // console.info('to---', to)
+  var titleParams = {
+    titleContent: '团粉圈',
+    rightbuttonVisible: false,
+    rightbuttonContent: '',
+    rightbuttonTyppe: 1
+  };
+  if (to.name === 'postdetail' || to.name === 'reply') {
+    titleParams.titleContent = '详情'
+  } else if (to.name === 'mark') {
+    titleParams.titleContent = '评分'
+  } else if (to.name === 'post') {
+    titleParams.titleContent = '发帖'
+  }
+  Bbsbridge.appBbsLifeHook(null, function() {
+    // console.info("appbbs---------");
+    Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
+      console.info('setTitleComponent--------', data)
+    });
+  });
+  loader.show()
+  next()
 })
 
-router.afterEach(function ({to, next}) {
-	loader.hide()
+router.afterEach(function({
+  to,
+  next
+}) {
+  loader.hide()
 })
 const app = new Vue({
   router,
@@ -52,7 +83,7 @@ const app = new Vue({
 })
 
 app.$mount('#app')
-// window.mySessionStorage = {}
+  // window.mySessionStorage = {}
 
 // new Vue({
 //   el: '#app',

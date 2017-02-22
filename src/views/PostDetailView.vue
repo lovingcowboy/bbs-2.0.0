@@ -163,7 +163,8 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import service from '../services'
 import List from "components/listview"
-import Util from '../js/Util.js'
+import Validate from '../js/lib/validate.js'
+// import Util from '../js/Util.js'
 export default {
   name: 'postDetail',
   components: {
@@ -323,23 +324,30 @@ export default {
      
     },
     pfClickFunc (e) {
-       let obj = Util.getElemetByTarget(e.target, 'pf-evt', 'f-container')
-       let that = this
-       if (obj) {
+      let obj = Util.getElemetByTarget(e.target, 'pf-evt', 'f-container')
+      let that = this
+      if (obj) {
         let type = obj.dataset.type
-        if (type === 'reply') {
-          //回复
-          that.goReply()
-        } else if (type === 'fav') {
-          //收藏
-          that.goTriggerFav()
-        } else if (type === 'mark') {
-          //评分
-          that.goMark()
+        let uid = Util.getSessionStorage('uid')
+        let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+        if (uid || isLogined_cookie) {
+          if (type === 'reply') {
+            //回复
+            that.goReply()
+          } else if (type === 'fav') {
+            //收藏
+            that.goTriggerFav()
+          } else if (type === 'mark') {
+            //评分
+            that.goMark()
+          } else {
+            //分享
+          }
         } else {
-          //分享
+          Validate.openLogin()
         }
-       }
+
+      }
     },
     goTriggerFav() {
       let that =  this
@@ -356,6 +364,7 @@ export default {
           id: that.thread.tid
         }
       }
+
       service.postData('/app/index.php', reqParam).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
@@ -370,9 +379,17 @@ export default {
               message: '收藏成功'
             })
           }
+        } else {
+          let msg = '请求失败，请稍后重试'
+          if (_body.message) {
+            msg = _body.message
+          }
+          Toast({
+            message: msg
+          })
         }
       }, (response) => {
-        console.info('goTriggerFav-------fail--', response)
+        // console.info('goTriggerFav-------fail--', response)
         let msg = '请求失败，请稍后重试'
         if (_body.message) {
           msg = _body.message
@@ -425,7 +442,14 @@ export default {
           })
         }
       }, (response) => {
-        console.info('init fail-----', response)
+        // console.info('init fail-----', response)
+        let msg = '请求失败，请稍后重试'
+        if (_body.message) {
+          msg = _body.message
+        }
+        Toast({
+          message: msg
+        })
       })
      
     },
@@ -499,7 +523,14 @@ export default {
           })
         }
       }, (response) => {
-        console.info('get post data fail------', response)
+        // console.info('get post data fail------', response)
+        let msg = '请求失败，请稍后重试'
+        if (_body.message) {
+          msg = _body.message
+        }
+        Toast({
+          message: msg
+        })
       })
     },
     getMarkList (page) {
@@ -529,7 +560,14 @@ export default {
           }
         }
       }, (response) => {
-        console.info('get mark data faild---', response)
+        // console.info('get mark data faild---', response)
+        let msg = '请求失败，请稍后重试'
+        if (_body.message) {
+          msg = _body.message
+        }
+        Toast({
+          message: msg
+        })
       })
     },
     replyClick (e) {
@@ -597,6 +635,11 @@ export default {
   },
   mounted () {
     this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - 100)
+    let uid = Util.getSessionStorage('uid')
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+    if(!uid && !isLogined_cookie) {
+      Validate.getLoginInfo()
+    }
   },
   activated () {
     // console.info('activated--------')

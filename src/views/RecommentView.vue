@@ -35,7 +35,7 @@
 import Zheader from '../components/Header.vue'
 import PostItem from '../components/PostItem.vue'
 import Toast from '../components/toast'
-import { ellipsisText } from '../filters'
+// import { ellipsisText } from '../filters'
 import List from "components/listview"
 import service from '../services'
 

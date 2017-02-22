@@ -79,10 +79,10 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
-import Util from '../js/Util.js'
+// import Util from '../js/Util.js'
 import List from "components/listview"
 import Services from '../services'
-import {uniq} from '../filters';
+// import {uniq} from '../filters';
 export default {
   components: {
     Zheader,

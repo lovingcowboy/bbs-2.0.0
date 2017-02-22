@@ -163,10 +163,10 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import service from '../services'
-import Util from '../js/Util.js'
+// import Util from '../js/Util.js'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
-import {ellipsisText} from '../filters'
+// import {ellipsisText} from '../filters'
 export default {
   name: 'mainView',
   components: {

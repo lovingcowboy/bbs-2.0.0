@@ -42,13 +42,13 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
-import Util from '../js/Util.js'
+// import Util from '../js/Util.js'
 import InsertTabs from '../components/InsertTabs.vue'
 import Vue from 'vue'
 import openapi from '../services/openapi.js'
 import service from '../services'
-import Bbsbridge from '../js/lib/bbsbridge.js'
-import { isApp, isAndroid } from '../filters'
+// import Bbsbridge from '../js/lib/bbsbridge.js'
+// import { isApp, isAndroid } from '../filters'
 import MessageBox from '../components/message-box'
 import Loader from '../components/loader'
 

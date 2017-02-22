@@ -100,7 +100,7 @@ import Validate from '../js/lib/validate.js'
 import Services from '../services'
 import { isApp } from '../filters'
 import openapi from '../services/openapi.js'
-import Bbsbridge from '../js/lib/bbsbridge.js'
+// import Bbsbridge from '../js/lib/bbsbridge.js'
 import Loader from '../components/loader'
 
 export default {

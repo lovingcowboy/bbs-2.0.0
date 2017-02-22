@@ -74,7 +74,7 @@ import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import Services from '../services'
 import List from 'components/listview'
-import Util from '../js/Util.js'
+// import Util from '../js/Util.js'
 export default {
   components: {
     Zheader,
