@@ -46,6 +46,41 @@
 	var Bbsbridge = function() {
 		var me = this;
 	};
+	
+	/*版本对比 
+	@params: equal 是否包含等于 true 包含 false 不包含
+	例：v1 > v2 return true 
+		v1 >= v2 return true 
+	*/
+	var compareVersion = function(v1, v2, equal) {	
+ 		var arr = v1 && v1.split(".");
+		var list = v2 && v2.split(".");
+		if(!arr || !list) return;
+
+		var i = 0; 
+		var arrlength = arr.length;
+		var listlength = list.length;
+		var length = arrlength > listlength ? arrlength : listlength;	//取最长的数组长度
+		var isEqual = false;
+		var item1 = "";
+		var item2 = "";
+		for(; i < length; i++) {
+			item1 = Number(arr[i]);
+			item2 = Number(list[i]);
+
+			item1 = isNaN(item1) ? 0 : item1;
+			item2 = isNaN(item2) ? 0 : item2;
+			if(i == length -1) 
+				isEqual = item1 === item2 && equal;	//是否包含等于
+			
+			if(item1 > item2 || isEqual) {
+				return true;
+			} else if(item1 < item2) {
+				return false
+			}
+		}
+		return false;
+	};
 
 	Bbsbridge.prototype = {
 		constructor: Bbsbridge,
