@@ -93,6 +93,7 @@ export default {
     getRecommentList(notLoader) {
       let that = this
       if(that.pageData.curPage > that.pageData.totalPage) {
+         that.$refs.recList.refresh()
         return
       }
       let reqParam = {
@@ -125,7 +126,7 @@ export default {
           Toast(msg)
         }
       }, (response) => {
-        console.info('getRecommentList------fail----', response)
+        // console.info('getRecommentList------fail----', response)
       })
     },
     onInitList() {

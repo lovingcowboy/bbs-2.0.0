@@ -56,7 +56,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import InsertTabs from '../components/InsertTabs.vue'
-// import { isApp, isAndroid } from '../filters'
+import { isApp, isAndroid } from '../filters'
 import service from '../services'
 import openapi from '../services/openapi.js'
 // import Bbsbridge from '../js/lib/bbsbridge.js'
@@ -451,13 +451,23 @@ export default {
     },
     goPost() {
       //发表帖子
-      console.info('goPost-------', this.post)
+      // console.info('goPost-------', this.post, this.postVote)
       let that = this
       let reqParam = {
         module: 'newthread',
         fid: that.post.fid,
         subject: that.post.title,
         message: that.post.content
+      }
+      if(this.postVote && this.postVote.options.length >1) {
+        reqParam.special = 1
+        reqParam.maxchoices = 1
+        // reqParam.polloption = this.postVote
+        let polloption = []
+        this.postVote.options.forEach((item) => {
+          polloption.push(item.text)
+        })
+        reqParam.polloption = polloption
       }
       for (let i = 0; i < that.imgList.length; i++) {
         reqParam["attachnew[" + that.imgList[i].attachID + "][description]"] = "";
@@ -503,6 +513,7 @@ export default {
     addVoteFunc(data) {
       //添加投票
       this.postVote = data
+
     },
     getModuleList() {
       let that = this

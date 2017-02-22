@@ -2,7 +2,7 @@
 import OpenAPI from '../../services/openapi.js';
 import service from '../../services'
 import Toast from '../../components/toast/index.js';
-
+import Vue from 'vue'
 
 var Validate = {
 	getCookie: function(name) {
@@ -44,15 +44,19 @@ var Validate = {
 			version: 4,
 			module: "memebr",
 			action: 'app_login',
-			v_token: loginToken,
+			v_token: loginToken
 		}
-		reqParam.beforeSend = function(request) {
-			if (request) {
-				me.requesting = true;
-				// console.info('beforeSend----', request);
-				Toast('用户信息同步中，请稍候...');
-			}
+
+		Vue.http.options.before = function(request) {
+			Toast('用户信息同步中，请稍候...');
 		}
+			/*reqParam.beforeSend = function(request) {
+				if (request) {
+					me.requesting = true;
+					// console.info('beforeSend----', request);
+					Toast('用户信息同步中，请稍候...');
+				}
+			}*/
 		services.postData('/app/index.php', reqParam).then((response) => {
 			let v_data = response.body
 			console.info("login---bbsAppLogin--", v_data);
@@ -101,11 +105,14 @@ var Validate = {
 			action: 'login',
 			tuandaiwang_cookie: tuandaiCookie
 		}
-		reqParam.beforeSend = function(request) {
-			if (request) {
-				console.info('beforeSend----', request)
-				Toast('用户信息同步中，请稍候...');
-			}
+			/*reqParam.beforeSend = function(request) {
+				if (request) {
+					console.info('beforeSend----', request)
+					Toast('用户信息同步中，请稍候...');
+				}
+			}*/
+		Vue.http.options.before = function(request) {
+			Toast('用户信息同步中，请稍候...');
 		}
 		service.postData('/app/index.php', reqParam).then((response) => {
 			let v_data = response.body

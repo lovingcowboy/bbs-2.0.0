@@ -30,7 +30,7 @@ import { isApp } from '../filters'
       goBack () {
         // this.$emit('back-btn-func')
         if (!this.preventBack) {
-          // router.go(window.history.back())
+          // this.$router.back()
           window.history.back()
         }
       },

@@ -1,51 +1,44 @@
 (function() {
 	var isIOS = function() {
-		var flag = false;
-		if (navigator.userAgent.match(/(iPad|iPhone)/)) {
-			flag = true;
-		} else if (navigator.userAgent.match(/(Android)/)) {
-			flag = false;
-		}
-		return flag;
+		return navigator.userAgent.match(/(iPad|iPhone)/);
 	};
-
+	//android注册事件
 	var connectWebViewJavascriptBridge = function(callback) {
 		if (window.WebViewJavascriptBridge) {
-			callback(WebViewJavascriptBridge)
+			// callback(WebViewJavascriptBridge)
+			WebViewJavascriptBridge.apply(this, arguments);
 		} else {
 			document.addEventListener(
 				'WebViewJavascriptBridgeReady',
 				function() {
-					callback(WebViewJavascriptBridge);
+					// callback(WebViewJavascriptBridge);
+					WebViewJavascriptBridge.apply(this, arguments);
 				},
 				false
 			);
 		}
 
 	};
-
+	//ios调用app方法
 	function iosHandler(method, param, callback) {
 		window[method](param, function(respones) {
-			console.info("respones------", respones);
+			// console.info("respones------", respones);
 			// var _data = JSON.parse(respones[0]);
-			// alert(respones);
-			if (callback) {
+			typeof callback === 'function' && callback.apply(this, arguments);
+			/*if (callback) {
 				callback(respones);
-			}
+			}*/
 		});
 	}
-
+	//android调用app方法
 	var androidHandler = function(method, param, callback) {
-		/*if (param) {
-			param = JSON.parse(param);
-		}*/
 		window.WebViewJavascriptBridge.callHandler(
 			method, param,
 			function(responseData) {
-				// document.getElementById("show").innerHTML = "send get responseData from java, data = " + responseData
-				if (callback && typeof callback == "function") {
-					callback(responseData);
-				}
+				typeof callback === 'function' && callback.apply(this, arguments);
+				// if (callback && typeof callback == "function") {
+				// 	callback(responseData);
+				// }
 			}
 		);
 	};
@@ -105,12 +98,14 @@
 		toAppLogin: function() {
 			try {
 				if (isIOS()) {
-					if (typeof ToAppIosLogin == "function") {
+					typeof ToAppIosLogin === 'function' && ToAppIosLogin();
+					typeof ToAppLogin === 'function' && ToAppLogin();
+					/*if (typeof ToAppIosLogin == "function") {
 						ToAppIosLogin();
 					}
 					if (typeof ToAppLogin == "function") {
 						ToAppLogin();
-					}
+					}*/
 				} else {
 					androidHandler('ToAppLogin', null);
 				}
@@ -122,12 +117,14 @@
 		toActivityAppInviteFriend: function() {
 			try {
 				if (isIOS()) {
-					if (typeof ToAppIosActivityShare == "function") {
+					/*if (typeof ToAppIosActivityShare == "function") {
 						ToAppIosActivityShare();
 					}
 					if (typeof ToAppActivitiesShare == "function") {
 						ToAppActivitiesShare();
-					}
+					}*/
+					typeof ToAppIosActivityShare === 'function' && ToAppIosActivityShare();
+					typeof ToAppActivitiesShare === 'function' && ToAppActivitiesShare();
 				} else {
 					androidHandler('ToActivityAppInviteFriend', null);
 					androidHandler('ToAppActivitiesShare', null);
@@ -150,9 +147,10 @@
 			try {
 				if (isIOS()) {
 
-					if (typeof ToAppActivity == "function") {
-						ToAppActivity(shareType);
-					}
+					// if (typeof ToAppActivity == "function") {
+					// 	ToAppActivity(shareType);
+					// }
+					typeof ToAppActivity === 'function' && ToAppActivity();
 				} else {
 					var param = {
 						FunctionType: shareType
@@ -175,57 +173,66 @@
 		*/
 		exec: function(methodName, params, callback) {
 			try {
-				if (isIOS()) {
+				var handler = isIOS() ? iosHandler : androidHandler;
+				handler(methodName, params, callback);
+				/*if (isIOS()) {
 					console.log("ios-func", methodName);
 					iosHandler(methodName, params, callback);
 
 				} else {
 					console.log("android-func");
 					androidHandler(methodName, params, callback);
-				}
+				}*/
 			} catch (e) {
 				console.info("不支持jsbridge", e);
 			}
 		},
 		// 生命周期
-		appBbsLifeHook: function(bbsLoginCallback, webonResumeCallback) {
+		/*
+            initCallback：初始化回调
+            bbsLoginCallback：获取loginToken用于登录
+            webonResumeCallback：打开webview回调
+         **/
+		appBbsLifeHook: function(initCallback, bbsLoginCallback, webonResumeCallback) {
 			if (isIOS()) {
 				window.LoginTokenBBS = function(data) {
-					if (bbsLoginCallback && typeof bbsLoginCallback == "function") {
-						// bbsLoginCallback(data);
-						arguments[0] = data;
+					typeof bbsLoginCallback === 'function' && bbsLoginCallback.apply(this, arguments);
+					/*if (bbsLoginCallback && typeof bbsLoginCallback == "function") {
+						// arguments[0] = data;
 						bbsLoginCallback.apply(this, arguments);
-					}
+					}*/
 				}
 				window.ToAppLifeCycle = function(step) {
 					if (step == 1) {
-						if (webonResumeCallback && typeof webonResumeCallback == "function") {
-							// document.getElementById("show2").innerHTML = ("data from ios: = ");
+						typeof webonResumeCallback === 'function' && webonResumeCallback.apply(this, arguments);
+						/*if (webonResumeCallback && typeof webonResumeCallback == "function") {
 							webonResumeCallback.apply(this, arguments);
-						}
-					} else if (step == 2) {
+						}*/
+					}
+					/*else if (step == 2) {
 						if (webonPauseCallback && typeof webonPauseCallback == "function") {
 
 							webonPauseCallback.apply(this, arguments);
 						}
-					}
+					}*/
 				}
 
 			} else {
 				connectWebViewJavascriptBridge(function(bridge) {
-					console.info("bbsbridge-------", window.WebViewJavascriptBridge._messageHandler);
+					// console.info("bbsbridge-------", window.WebViewJavascriptBridge._messageHandler);
 					if (!window.WebViewJavascriptBridge._messageHandler) {
 						try {
 							bridge.init(function(message, responseCallback) {
-								console.log('JS got a message', message);
+								// console.log('JS got a message', message);
 								var data = {
-									'Javascript Responds': '测试中文!'
+									'Javascript Responds': 'bbs connectWebViewJavascriptBridge init---'
 								};
-								console.log('JS responding with', data);
-								if (initCallback && typeof initCallback == "function") {
+								// console.log('JS responding with', data);
+								/*if (initCallback && typeof initCallback == "function") {
 									arguments[0] = message;
 									initCallback.apply(this, arguments);
-								}
+								}*/
+								typeof initCallback === 'function' && initCallback.apply(this, arguments);
 								responseCallback(data);
 							});
 						} catch (e) {
@@ -235,20 +242,22 @@
 
 					bridge.registerHandler("LoginTokenBBS", function(data, responseCallback) {
 						var responseData = "Javascript Says Right back aka!";
-						if (bbsLoginCallback && typeof bbsLoginCallback == "function") {
+						typeof bbsLoginCallback == "function" && bbsLoginCallback.apply(this, arguments);
+						/*if (bbsLoginCallback && typeof bbsLoginCallback == "function") {
 							// bbsLoginCallback(data);
 							arguments[0] = data;
 							bbsLoginCallback.apply(this, arguments);
-						}
+						}*/
 						responseCallback(responseData);
 					});
 					bridge.registerHandler("WebonResume", function(data, responseCallback) {
 						// document.getElementById("show").innerHTML = ("data from Java: = " + data);
 						var responseData = "Javascript Says Right back aka!";
-						if (webonResumeCallback && typeof webonResumeCallback == "function") {
+						typeof webonResumeCallback == "function" && webonResumeCallback.apply(this, arguments);
+						/*if (webonResumeCallback && typeof webonResumeCallback == "function") {
 							arguments[0] = data;
 							webonResumeCallback.apply(this, arguments);
-						}
+						}*/
 						responseCallback(responseData);
 					});
 

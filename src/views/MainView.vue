@@ -387,6 +387,9 @@ export default {
           that.userInfo = _body.data.list
           if (that.userInfo.is_login === '1') {
             that.isLogin = true
+            if(that.userInfo.uid) {
+              Util.setSessionStorage('uid', that.userInfo.uid)
+            }
             if (that.userInfo.notice && (+that.userInfo.notice) > 0) {
               that.hasUnRead = true
               that.unReadNum = that.userInfo.notice
@@ -419,9 +422,25 @@ export default {
     getListData(param) {
       //获取列表数据
       let that = this
+      if (param.action === 'hot_threads') {
+        if (that.pageData.hot.curPage > that.pageData.hot.totalPage) {
+          that.$refs.hotList.refresh()
+          return;
+        }
+      } else if (param.action === 'new_posts') {
+        if (that.pageData.new.curPage > that.pageData.new.totalPage) {
+          that.$refs.newList.refresh()
+          return;
+        }
+      } else {
+        if (that.pageData.essence.curPage > that.pageData.essence.totalPage) {
+          that.$refs.essenceList.refresh()
+          return;
+        }
+      }
      
       service.postData('/app/index.php', param).then((response) => {
-        console.info('getListData----', response.body)
+        // console.info('getListData----', response.body)
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
@@ -521,7 +540,7 @@ export default {
           
         }
       }, (response) => {
-        console.info('getListData fail------', response)
+        // console.info('getListData fail------', response)
       })
     },
     onInitList () {

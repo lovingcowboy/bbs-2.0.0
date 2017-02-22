@@ -48,7 +48,7 @@ import Vue from 'vue'
 import openapi from '../services/openapi.js'
 import service from '../services'
 // import Bbsbridge from '../js/lib/bbsbridge.js'
-// import { isApp, isAndroid } from '../filters'
+import { isApp, isAndroid } from '../filters'
 import MessageBox from '../components/message-box'
 import Loader from '../components/loader'
 

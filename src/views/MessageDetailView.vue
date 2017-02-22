@@ -40,7 +40,7 @@ import Toast from '../components/toast'
 import Services from '../services'
 import Msglist from 'components/msglistview'
 // import Util from '../js/Util.js'
-// import {uniq} from '../filters'
+import {uniq} from '../filters'
 export default {
   components: {
     Zheader,

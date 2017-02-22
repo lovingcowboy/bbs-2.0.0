@@ -61,7 +61,7 @@ router.beforeEach((to, from, next) => {
   } else if (to.name === 'post') {
     titleParams.titleContent = '发帖'
   }
-  Bbsbridge.appBbsLifeHook(null, function() {
+  Bbsbridge.appBbsLifeHook(null, null, function() {
     // console.info("appbbs---------");
     Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
       console.info('setTitleComponent--------', data)

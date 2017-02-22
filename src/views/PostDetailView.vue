@@ -458,7 +458,9 @@ export default {
       let tid = this.$route.params.id
         // tid = '147680'
         // console.info('id---', this.$route.params.id)
+        // debugger
       if (page > that.replyData.totalPage) {
+        that.$refs.detailList.refresh() //刷新list
         return
       }
       service.postData('/app/index.php', {
@@ -478,26 +480,27 @@ export default {
           if (page === 1) {
             that.thread = data.thread
             that.replyData.list = data.postlist
-            //显示投票数据
+              //显示投票数据
             if (data.special_poll) {
               that.voteData = data.special_poll
               that.voteData.allowvote = +that.voteData.allowvote
               if (!that.voteData.allowvote) {
                 that.btnTxt = '显示投票结果'
                   // that.showVotes = true
-                if (+that.voteData.maxchoices === 1) {
+                if (+that.voteData.maxchoices > 1) {
+                  //多选选中
+                  for (let opt of data.special_poll.polloptions) {
+                    if (opt.selected === '1') {
+                      that.selectedOptions.push(opt.polloptionid)
+                    }
+                  }
+                } else {
+                  //单选选中
                   for (let opt of data.special_poll.polloptions) {
                     // console.info('opt---',opt)
                     if (opt.selected === '1') {
                       that.picked = opt.polloptionid
                       break
-                    }
-                  }
-                } else {
-                  //多选选中
-                  for (let opt of data.special_poll.polloptions) {
-                    if (opt.selected === '1') {
-                      that.selectedOptions.push(opt.polloptionid)
                     }
                   }
                 }
@@ -507,8 +510,8 @@ export default {
           } else {
             that.replyData.list = that.replyData.list.concat(data.postlist)
           }
-            // console.info("vote-----", that.voteData.polloptions)
-         
+          // console.info("vote-----", that.voteData.polloptions)
+
           that.formhash = data.formhash
           Util.setSessionStorage('formhash', this.formhash)
           that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)

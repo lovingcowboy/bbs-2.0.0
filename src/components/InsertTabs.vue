@@ -306,6 +306,7 @@ export default {
         } else {
           console.info('vote save edit')
           let data = this.addVoteData
+         
           //去除空白项
           // data.options = data.options.filter((item, index) => {
           //   return item.text != ''
