@@ -53,6 +53,7 @@
 <script>
 import Zheader from '../components/Header.vue'
 import service from '../services'
+import Validate from '../js/lib/validate.js'
 import Toast from '../components/toast'
 export default {
   name: 'mark',
@@ -210,18 +211,25 @@ export default {
       })*/
     }
   },
-  activated () {
+  mounted () {
+    let that = this
     let _data = Util.getSessionStorage('markData')
     if (_data) {
       this.markData = JSON.parse(_data)
         // this.msgList = markData.reasons
       console.info(this.markData.surplus_rate)
     }
-    // this.markDetail = {
-    //   score: '',
-    //   prestige: '',
-    //   msg: ''
-    // }
+    let uid = Util.getSessionStorage('uid')
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+        // console.info('result---', result)
+        if (result.isLogined != 1) {
+          that.$router.push('/main')
+        }
+
+      })
+    }
   }
 
 

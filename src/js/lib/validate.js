@@ -57,20 +57,18 @@ var Validate = {
 					Toast('用户信息同步中，请稍候...');
 				}
 			}*/
-		var loginInfo = {
-			isLogined: false
-		}
+		var loginInfo;
 		services.postData('/app/index.php', reqParam).then((response) => {
 			let v_data = response.body
 			console.info("login---bbsAppLogin--", v_data);
 			if (v_data.code == "200") {
 
 				Util.setSessionStorage('uid', v_data.data.member.uid);
-				// if (callback && typeof callback == "function") {
+				// if (callback && typeof callback === "function") {
 				// 	callback.apply(this, arguments);
 				// }
-				loginInfo.isLogined = true
-				typeof callback == "function" && callback.apply(this, loginInfo);
+				loginInfo.isLogined = 1
+				typeof callback === "function" && callback.call(this, loginInfo);
 				Toast('同步数据成功');
 
 			} else {
@@ -78,18 +76,20 @@ var Validate = {
 				Util.setSessionStorage('uid', '');
 				console.info("login fail------", v_data.message);
 				Toast(v_data.message);
-				// if (callback && typeof callback == "function") {
+				// if (callback && typeof callback === "function") {
 				// 	callback.apply(this, arguments);
 				// }
-				typeof callback == "function" && callback.apply(this, loginInfo);
+				loginInfo.isLogined = -1
+				typeof callback === "function" && callback.call(this, loginInfo);
 			}
 			me.requesting = false;
 		}, (response) => {
 			Toast("同步数据失败！");
 
 			Util.setSessionStorage('uid', '');
-			typeof callback == "function" && callback.apply(this, loginInfo);
-			// if (callback && typeof callback == "function") {
+			loginInfo.isLogined = -1
+			typeof callback === "function" && callback.call(this, loginInfo);
+			// if (callback && typeof callback === "function") {
 			// 	callback.apply(this, arguments);
 			// }
 			me.requesting = false;
@@ -99,11 +99,11 @@ var Validate = {
 	},
 	bbsWebLogin: function(callback) {
 		var loginInfo = {
-			isLogined: false
+			isLogined: 0
 		}
 		var tuandaiCookie = this.getCookie('tuandaiw');
 		if (!tuandaiCookie) {
-			typeof callback == "function" && callback.apply(this, loginInfo);
+			typeof callback === "function" && callback.call(this, loginInfo);
 			return;
 		}
 		let reqParam = {
@@ -127,22 +127,24 @@ var Validate = {
 			if (v_data.code == "200") {
 				Util.setSessionStorage('uid', v_data.data.member.uid);
 				Toast('同步数据成功');
-				loginInfo.isLogined = true
-				typeof callback == "function" && callback.apply(this, loginInfo);
+				loginInfo.isLogined = 1
+				typeof callback === "function" && callback.call(this, loginInfo);
 			} else {
 				Util.setSessionStorage('uid', '');
 				console.info("login fail------", v_data.message);
 				Toast(v_data.message);
-				typeof callback == "function" && callback.apply(this, loginInfo);
+				loginInfo.isLogined = -1
+				typeof callback === "function" && callback.call(this, loginInfo);
 			}
-			// if (callback && typeof callback == "function") {
+			// if (callback && typeof callback === "function") {
 			// 	callback.apply(this, arguments);
 			// }
 		}, (response) => {
 			Toast('同步数据失败！');
 			Util.setSessionStorage('uid', '');
-			typeof callback == "function" && callback.apply(this, loginInfo);
-			// if (callback && typeof callback == "function") {
+			loginInfo.isLogined = -1
+			typeof callback === "function" && callback.call(this, loginInfo);
+			// if (callback && typeof callback === "function") {
 			// 	callback.apply(this, arguments);
 			// }
 		})
@@ -163,6 +165,8 @@ var Validate = {
 		其中，如果url地址中有状态参数s为2表示app已登录，但无法获取到loginToken，此情况同3；
 	2，app跳转到bbs时， url地址中没有带有loginToken参数，通过原生的BBSLoginToken回调返回的loginToken登录；
 	3，通过原生BBSToken回调获取到的data为空时，bbs登录采用触屏版登录方式；
+
+	callback传参：loginInfo {isLogin: [0|1|-1]} 0:未登录 1：已登录；-1登录失败
 	*/
 	getLoginInfo: function(callback) {
 		var me = this;
@@ -193,9 +197,9 @@ var Validate = {
 					Util.setSessionStorage('dataReturn', 0)
 					console.info('app is logined, but can not get loginToken')
 					var loginInfo = {
-						isLogined: false
+						isLogined: -1
 					}
-					callback.apply(this, loginInfo);
+					callback.call(this, loginInfo);
 				}
 
 			}

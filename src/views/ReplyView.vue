@@ -50,6 +50,7 @@ import service from '../services'
 // import Bbsbridge from '../js/lib/bbsbridge.js'
 import { isApp, isAndroid } from '../filters'
 import MessageBox from '../components/message-box'
+import Validate from '../js/lib/validate.js'
 import Loader from '../components/loader'
 
 export default {
@@ -480,6 +481,17 @@ export default {
       // Util.setSessionStorage('reply', '')
     }
     that.loader = Loader()
+    let uid = Util.getSessionStorage('uid')
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+        // console.info('result---', result)
+        if (result.isLogined != 1) {
+          that.$router.push('/main')
+        }
+
+      })
+    }
   },
   mounted () {
   }

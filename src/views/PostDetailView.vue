@@ -309,7 +309,11 @@ export default {
             })
           }
         }, (response) => {
-          console.info('goVote----fail---', response)
+          // console.info('goVote----fail---', response)
+          let msg = '请求失败，请稍后重试'
+          Toast({
+            message: msg
+          })
         })
 
       } else {
@@ -391,9 +395,6 @@ export default {
       }, (response) => {
         // console.info('goTriggerFav-------fail--', response)
         let msg = '请求失败，请稍后重试'
-        if (_body.message) {
-          msg = _body.message
-        }
         Toast({
           message: msg
         })
@@ -444,9 +445,6 @@ export default {
       }, (response) => {
         // console.info('init fail-----', response)
         let msg = '请求失败，请稍后重试'
-        if (_body.message) {
-          msg = _body.message
-        }
         Toast({
           message: msg
         })
@@ -528,9 +526,6 @@ export default {
       }, (response) => {
         // console.info('get post data fail------', response)
         let msg = '请求失败，请稍后重试'
-        if (_body.message) {
-          msg = _body.message
-        }
         Toast({
           message: msg
         })
@@ -565,9 +560,6 @@ export default {
       }, (response) => {
         // console.info('get mark data faild---', response)
         let msg = '请求失败，请稍后重试'
-        if (_body.message) {
-          msg = _body.message
-        }
         Toast({
           message: msg
         })

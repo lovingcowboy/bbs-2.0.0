@@ -61,6 +61,7 @@ import service from '../services'
 import openapi from '../services/openapi.js'
 // import Bbsbridge from '../js/lib/bbsbridge.js'
 import Loader from '../components/loader'
+import Validate from '../js/lib/validate.js'
 import MessageBox from '../components/message-box'
 import Vue from 'vue'
 export default {
@@ -555,9 +556,24 @@ export default {
       }*/
   },
   mounted () {
+    let that = this
     this.loader = Loader()
-    this.getModuleList()
-    // this.hasModules = false
+      // this.getModuleList()
+    let uid = Util.getSessionStorage('uid')
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+        // console.info('result---', result)
+        if (result.isLogined === 1) {
+          that.getModuleList()
+        } else {
+          that.$router.push('/main')
+        }
+
+      })
+    } else {
+      that.getModuleList()
+    }
 
   }
 
