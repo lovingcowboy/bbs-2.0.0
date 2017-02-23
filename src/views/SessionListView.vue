@@ -82,7 +82,7 @@ import PostItem from '../components/PostItem.vue'
 // import Util from '../js/Util.js'
 import List from "components/listview"
 import Services from '../services'
-// import {uniq} from '../filters';
+import {uniq} from '../filters';
 export default {
   components: {
     Zheader,
@@ -208,13 +208,13 @@ export default {
       let prevClass = target._prevClass;
       let pager = null;
       if(prevClass.indexOf("btn-essence") !== -1) { //精华列表
-        this.isListAllActive = false;
+        that.isListAllActive = false;
         pager = that.essencePager;
         if(that.essenceList.length == 0) {
           that.getPostList(that.essenceParams, "essence");  //获取最新列表
         }
       } else if(prevClass.indexOf("btn-all") !== -1) {  //全部
-        this.isListAllActive = true;
+        that.isListAllActive = true;
         pager = that.isListNewpostActive ? that.newPostPager : that.newReplyPager;
       }
       
