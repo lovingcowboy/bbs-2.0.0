@@ -46,7 +46,7 @@
             <span @click="goRecomment">更多<i class="icon-arrow-grey"></i></span>
           </div>
           <ul class="swiper-container">
-            <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid">
+            <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid" :style="{'background-color': item.bgcolor}">
               <span>{{item.subject}}</span>
             </li>
           </ul>
