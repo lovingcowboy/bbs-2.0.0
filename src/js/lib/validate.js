@@ -48,8 +48,8 @@ var Validate = {
 		}
 
 		Vue.http.options.before = function(request) {
-			Toast('用户信息同步中，请稍候...');
-		}
+				Toast('用户信息同步中，请稍候...');
+			}
 			/*reqParam.beforeSend = function(request) {
 				if (request) {
 					me.requesting = true;
@@ -57,15 +57,20 @@ var Validate = {
 					Toast('用户信息同步中，请稍候...');
 				}
 			}*/
+		var loginInfo = {
+			isLogined: false
+		}
 		services.postData('/app/index.php', reqParam).then((response) => {
 			let v_data = response.body
 			console.info("login---bbsAppLogin--", v_data);
 			if (v_data.code == "200") {
 
 				Util.setSessionStorage('uid', v_data.data.member.uid);
-				if (callback && typeof callback == "function") {
-					callback.apply(this, arguments);
-				}
+				// if (callback && typeof callback == "function") {
+				// 	callback.apply(this, arguments);
+				// }
+				loginInfo.isLogined = true
+				typeof callback == "function" && callback.apply(this, loginInfo);
 				Toast('同步数据成功');
 
 			} else {
@@ -73,38 +78,40 @@ var Validate = {
 				Util.setSessionStorage('uid', '');
 				console.info("login fail------", v_data.message);
 				Toast(v_data.message);
-				if (callback && typeof callback == "function") {
-					callback.apply(this, arguments);
-				}
+				// if (callback && typeof callback == "function") {
+				// 	callback.apply(this, arguments);
+				// }
+				typeof callback == "function" && callback.apply(this, loginInfo);
 			}
 			me.requesting = false;
 		}, (response) => {
 			Toast("同步数据失败！");
 
 			Util.setSessionStorage('uid', '');
-			if (callback && typeof callback == "function") {
-				callback.apply(this, arguments);
-			}
+			typeof callback == "function" && callback.apply(this, loginInfo);
+			// if (callback && typeof callback == "function") {
+			// 	callback.apply(this, arguments);
+			// }
 			me.requesting = false;
 		})
 
 
 	},
 	bbsWebLogin: function(callback) {
-		// debugger;
+		var loginInfo = {
+			isLogined: false
+		}
 		var tuandaiCookie = this.getCookie('tuandaiw');
 		if (!tuandaiCookie) {
-			if (callback && typeof callback == "function") {
-				callback.apply(this, arguments);
-			}
+			typeof callback == "function" && callback.apply(this, loginInfo);
 			return;
 		}
 		let reqParam = {
-			version: 4,
-			module: "member",
-			action: 'login',
-			tuandaiwang_cookie: tuandaiCookie
-		}
+				version: 4,
+				module: "member",
+				action: 'login',
+				tuandaiwang_cookie: tuandaiCookie
+			}
 			/*reqParam.beforeSend = function(request) {
 				if (request) {
 					console.info('beforeSend----', request)
@@ -120,20 +127,24 @@ var Validate = {
 			if (v_data.code == "200") {
 				Util.setSessionStorage('uid', v_data.data.member.uid);
 				Toast('同步数据成功');
+				loginInfo.isLogined = true
+				typeof callback == "function" && callback.apply(this, loginInfo);
 			} else {
 				Util.setSessionStorage('uid', '');
 				console.info("login fail------", v_data.message);
 				Toast(v_data.message);
+				typeof callback == "function" && callback.apply(this, loginInfo);
 			}
-			if (callback && typeof callback == "function") {
-				callback.apply(this, arguments);
-			}
+			// if (callback && typeof callback == "function") {
+			// 	callback.apply(this, arguments);
+			// }
 		}, (response) => {
 			Toast('同步数据失败！');
 			Util.setSessionStorage('uid', '');
-			if (callback && typeof callback == "function") {
-				callback.apply(this, arguments);
-			}
+			typeof callback == "function" && callback.apply(this, loginInfo);
+			// if (callback && typeof callback == "function") {
+			// 	callback.apply(this, arguments);
+			// }
 		})
 
 	},
@@ -181,7 +192,10 @@ var Validate = {
 					Util.setSessionStorage('v_token', '');
 					Util.setSessionStorage('dataReturn', 0)
 					console.info('app is logined, but can not get loginToken')
-					callback();
+					var loginInfo = {
+						isLogined: false
+					}
+					callback.apply(this, loginInfo);
 				}
 
 			}
