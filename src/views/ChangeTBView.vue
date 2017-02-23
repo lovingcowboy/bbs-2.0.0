@@ -29,6 +29,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 // import Util from '../js/Util.js'
+import Validate from '../js/lib/validate.js'
 import Services from '../services'
 export default {
   components: {
@@ -133,6 +134,22 @@ export default {
     }
 
     this.onChangeTB(this.params);
+    let that = this;
+    let uid = Util.getSessionStorage('uid');
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+        // console.info('result---', result)
+        if (result.isLogined === 1) {
+          that.onChangeTB(this.params);
+        } else {
+          that.$router.push('/main');
+        }
+
+      })
+    } else {
+      that.onChangeTB(this.params);
+    }
   }
   
 }

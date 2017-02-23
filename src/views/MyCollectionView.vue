@@ -32,6 +32,7 @@ import Toast from '../components/toast'
 import Services from '../services'
 import List from 'components/listview'
 // import Util from '../js/Util.js'
+import Validate from '../js/lib/validate.js'
 import PostItem from '../components/PostItem.vue'
 export default {
   components: {
@@ -143,7 +144,23 @@ export default {
       page:  1,
 
     }
-    this.getPostList(this.params)
+    // this.getPostList(this.params)
+    let that = this;
+    let uid = Util.getSessionStorage('uid');
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+        // console.info('result---', result)
+        if (result.isLogined === 1) {
+          that.getPostList(that.params);
+        } else {
+          that.$router.push('/main');
+        }
+
+      })
+    } else {
+      that.getPostList(that.params);
+    }
   }
   
 }

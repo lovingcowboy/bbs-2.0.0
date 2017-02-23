@@ -40,6 +40,7 @@ import Toast from '../components/toast'
 import Services from '../services'
 import Msglist from 'components/msglistview'
 // import Util from '../js/Util.js'
+import Validate from '../js/lib/validate.js'
 import {uniq} from '../filters'
 export default {
   components: {
@@ -215,7 +216,22 @@ export default {
       "page":"" //默认取最后一句数据
     }
 
-    that.getMessageDetail(that.params);
+    // that.getMessageDetail(that.params);
+    let uid = Util.getSessionStorage('uid');
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+        // console.info('result---', result)
+        if (result.isLogined === 1) {
+          that.getMessageDetail(that.params);
+        } else {
+          that.$router.push('/main');
+        }
+
+      })
+    } else {
+      that.getMessageDetail(that.params);
+    }
   }
   
 }
