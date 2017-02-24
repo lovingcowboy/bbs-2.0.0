@@ -205,7 +205,7 @@ export default {
       this.$router.push(url)
     },
 
-    mounted() {
+    init() {  //初始化调用
       this.params = {
         version: 4,
         module: 'memberother',
@@ -228,13 +228,13 @@ export default {
   },
 
   mounted () {
-    this.mounted();
+    this.init();
   },
 
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      if(from && from.name !== 'postdetail') {  //不是从帖子详跳转回来
-        vm.mounted();
+      if(from && from.name !== 'postdetail') {  //不是从帖子详情跳转回来
+        vm.init();
       }
     })
   }
