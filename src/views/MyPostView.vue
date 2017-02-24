@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-       <list :config.once="scrollConfig" @init="onInitList();"  @loadmore="onLoadMore();" ref="list" >
+       <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
           <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail($event)">
             <div class="post-item" v-for="(item, index) in myPostList" :data-id="item.tid">
              <div class="line01 post-title">
@@ -100,11 +100,6 @@ export default {
           that.$refs.list && that.$refs.list.refresh();
       })
     },
-
-    onInitList(scroller) {
-      this.outerScroller = scroller;
-    },
-
 
     onLoadMore() {
       let that = this;

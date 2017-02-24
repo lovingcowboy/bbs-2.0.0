@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
       <div class="content">
-        <list :config.once="scrollConfig" @init="onInitList();"  @loadmore="onLoadMore();" ref="list" >
+        <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
           <div class="scroll-wrapper" slot="scrollContent">
             <div class="contetn-header">
               <div class="md01">
@@ -184,9 +184,6 @@ export default {
         (Util.pxToRemAdapt(headerHeight) + Util.pxToRem(20));
     },
 
-    onInitList(scroller) {
-      this.outerScroller = scroller;
-    },
 
     onLoadMore() {  //加载更多
       let that = this;

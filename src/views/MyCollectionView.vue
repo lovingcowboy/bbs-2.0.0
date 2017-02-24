@@ -9,7 +9,7 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-      <list :config.once="scrollConfig" @init="onInitList();"  @loadmore="onLoadMore();" ref="list" >
+      <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
         <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc($evnet);">
           <post-item v-for="(item, index) in collectionList" :data="item">
             <div class="item-title" slot="itemhead">
@@ -93,9 +93,6 @@ export default {
       })
     },
 
-    onInitList(scroller) {
-      this.outerScroller = scroller;
-    },
     onLoadMore() {
       let that = this;
       this.params.page = Number(this.pager.cur_page) + 1;
