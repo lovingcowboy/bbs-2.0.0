@@ -20,10 +20,10 @@
               <!-- <img class="avatar-edit" src="../images/avatar-edit.png" /> -->
                <input id="file" type="file" accept="image/*" class="avatar-input" @change="chooseImgFunWeb($event)" @click="prevenDefault($event)"/>
             </div>
-            <img class="avatar" :src='userInfo.avatar' />
+            <img class="avatar" :src="userInfo.avatar" />
           </div>
-          <div class="name-wrapper" :class='isEditing' >
-            <input class="name-txt" maxlength="30" :readonly ='editing == true ? readonly : ""' v-model='userInfo.username' />
+          <div class="name-wrapper" :class="isEditing" >
+            <input class="name-txt" maxlength="30" :readonly ="editing == true ? readonly : ''" v-model="userInfo.username" />
           </div>
           <div class="level-wrapper">
             <div class="icon-level-wrapper">
@@ -50,29 +50,29 @@
             <font>已签到</font>
           </div>
         </div>
-        <ul class="ubody">
-          <li class="urow" @click="goUItemDetail('/user/mypost');">
+        <ul class="ubody"  @click="goUItemDetail($event);">
+          <li class="urow" data-url="/user/mypost">
             <span class="icon icon-post"></span>
             <font>我的帖子</font>
             <span class="icon-arrow-right"></span>
           </li>
-          <li class="urow" @click="goUItemDetail('/user/myreply');">
+          <li class="urow" data-url="/user/myreply">
             <span class="icon icon-reply"></span>
             <font>我的回复</font>
             <span class="icon-arrow-right"></span>
           </li>
-          <li class="urow" @click="goUItemDetail('/user/mymessage');">
+          <li class="urow" data-url="/user/mymessage">
             <span class="icon icon-message"></span>
             <font>我的消息</font>
             <span class="icon-arrow-right"></span>
           </li>
-          <li class="urow" @click="goUItemDetail('/user/mycollection');">
+          <li class="urow" data-url="/user/mycollection">
             <span class="icon icon-heart"></span>
             <font>我的收藏</font>
             <span class="icon-arrow-right"></span>
           </li>
 
-          <li class="urow" @click="goUItemDetail('/user/changetb');">
+          <li class="urow" data-url="/user/changetb">
             <span class="icon icon-coin"></span>
             <font>威望兑团币</font>
             <span class="icon-arrow-right"></span>
@@ -86,7 +86,7 @@
       <div class="dialog-content">
         <div class="dialog-title">确定要退出登录吗</div>
         <div class="btn-wrapper">
-          <div class="btn-cancel" @click="onCancel">取消</div>
+          <div class="btn-cancel" @click="onCancel();">取消</div>
           <div class="btn-go"  @click="goLogout();">退出</div> 
         </div>
       </div>
@@ -231,26 +231,17 @@ export default {
           });
       })
     },
-    goUItemDetail(url) {  //TODO: 验证是否已经登录
-      let uid = "";
-      if(window.mySessionStorage) {
-        uid = window.mySessionStorage['uid'];
-      }else{
-        uid = window.sessionStorage['uid'];
-      }
-      let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+    goUItemDetail(e) {  
       
+      let obj = Util.getElemetByTarget(e.target, 'urow', 'ubody');  //获取点击对象
+
+      if (!obj) return;
+
+      let url = obj.dataset && obj.dataset.url 
+      
+      if(!url) return;
+
       this.$router.push(url);
-     
-      return;
-      if (isLogined_cookie || uid) {  //已登录
-         this.$router.push(url);
-      } else {  //未登录
-        var returnUrl = window.location.href;
-        Validate.openLogin(returnUrl, function() {
-          this.$router.push(url);
-        });
-      }
     },
 
     onCancel() {  //取消
