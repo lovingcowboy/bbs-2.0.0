@@ -47,11 +47,11 @@
       </div>
       <div class="rm-cont" >
         <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
-          <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复{{thread.replies}}</a>
-          <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分{{thread.total_rate}}</a>
+          <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复({{thread.replies}})</a>
+          <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分({{thread.total_rate}})</a>
         </nav>
         <div class="rm">
-          <ul class="reply-list rm-list" v-show="tabType === 0" @click="replyClick($event)">
+          <ul class="reply-list rm-list" v-show="tabType === 0" @click="replyClick($event)" :style="{'min-height': replyListHeight + 'rem'}">
             <li class="reply-row" v-for="(item, index) in replyData.list">
               <div class="rm-u">
                 <div class="u-avator">
@@ -121,7 +121,7 @@
               <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p></p>
             </li> -->
           </ul>
-          <ul class="mark-list rm-list" v-show="tabType === 1" :style="{'min-height': rmHeight + 'rem'}">
+          <ul class="mark-list rm-list" v-show="tabType === 1" :style="{'min-height': markListHeight + 'rem'}">
             <li class="reply-row" v-for="(item, index) in MarkData.list">
               <div class="rm-u">
                 <div class="u-avator">
@@ -146,14 +146,14 @@
       <div class="post-foot">
         <div class="f-container" @click="pfClickFunc($event)">
           <span class="f-reply pf-evt" data-type="reply">发表回复…</span>
-          <i class="icon-zan pf-evt" data-type="fav"></i>
+          <i :class="['pf-evt', +thread.yes_fav ? 'icon-zan-active': 'icon-zan']" data-type="fav"></i>
           <i class="icon-mark pf-evt"  data-type="mark"></i>
           <!-- <i class="icon-share pf-evt" data-type="share"></i> -->
         </div>
       </div>
       <nav class="rm-tabs float-tabs" v-show="showFloat">
-        <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复{{thread.replies}}</a>
-        <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分{{thread.total_rate}}</a>
+        <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复({{thread.replies}})</a>
+        <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分({{thread.total_rate}})</a>
       </nav>
   </div>
 </template>
@@ -182,12 +182,10 @@ export default {
       picked: "", //单选框选中内容
       // hasVoted: false,
       btnTxt: '投票',
-      // postHeight: 0, //帖子内容高度
-      // tabsOffsetTop: 0,
-      // contentObj: null,
       showFloat: false,
       rmHeight: '0',
-      replyListHeight: 0,
+      replyListHeight: 0, //回复列表高度
+      markListHeight: 0, //评分列表高度
       // overflowY: 'scroll',
       isScrollActive: true,
       thread: {}, //帖子内容
@@ -208,7 +206,7 @@ export default {
         loadmore: true
       },
       myScroller: null,
-      isScrolling: false, //滚动条是否正在滚动
+      // isScrolling: false, //滚动条是否正在滚动
       scrollReply: 0, //回复列表滚动位置
       scrollMark: 0,//评分列表滚动位置
       formhash: '' //用于验证数据合法性
@@ -229,30 +227,41 @@ export default {
       console.info('11111')
     },
     triggerTab (type) {
+      //切换显示评论列表/评分列表 type为0表示为评论列表，1表示为评分列表
       this.tabType = type
-        // let num = +type * (-100)
-        // this.scrollX = 'translateX(' + num + '%)'
       if (type === 0) {
+        //计算回复列表高度，防止tab切换时跳动
+        if (this.markListHeight === 0) {
+          this.markListHeight = Util.pxToRemAdapt(document.querySelector('.mark-list').clientHeight)
+        }
+        if (this.markListHeight < this.rmHeight) {
+          this.replyListHeight = this.markListHeight
+        } else {
+          this.replyListHeight = this.rmHeight
+        }
         if (!this.replyData.list || this.replyData.list.length === 0) {
           this.getPostData(1)
         } else {
           this.$refs.detailList.refresh()
-          console.info('scrollReply---', this.scrollReply, this.myScroller)
-          this.myScroller.scrollTo(0, this.scrollReply, 0)
+            // console.info('scrollReply---', this.scrollReply, this.myScroller)
+          this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0) //tab置顶时滚动条滚动到上次位置
         }
         this.ScrollConfig.loadmore = true
       } else if (type === 1) {
-        if(this.replyListHeight === 0) {
+        if (this.replyListHeight === 0) {
           this.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
         }
-        if(this.replyListHeight < this.rmHeight) {
-          this.rmHeight = this.replyListHeight
+        if (this.replyListHeight < this.rmHeight) {
+          this.markListHeight = this.replyListHeight
+        } else {
+          this.markListHeight = this.rmHeight
         }
+
         if (!this.MarkData.list || this.MarkData.list.length === 0) {
           this.getMarkList(1)
         } else {
           this.$refs.detailList.refresh()
-          this.myScroller.scrollTo(0, this.scrollMark, 0)
+          this.showFloat && this.myScroller.scrollTo(0, this.scrollMark, 0)
         }
         this.ScrollConfig.loadmore = false
       }
@@ -588,15 +597,14 @@ export default {
       // console.info('scroller--------', scroller)
       let that = this
       let postHeight = 0
-      setTimeout(function() {
-        postHeight = document.querySelector('.post-cont').offsetHeight + 20
-        console.info(scroller.y, -postHeight)
-      }, 500)
+      let postCont = document.querySelector('.post-cont') //帖子内容部分高度
+      let modifyNum = Util.pxToPx(30) //修正数值
       that.myScroller = scroller
       scroller.on('scroll', function() {
-        that.isScrolling = true
+        // that.isScrolling = true
         // console.info(scroller.y, -postHeight)
-        if (scroller.y < -postHeight && postHeight > 0) {
+        postHeight = postCont.offsetHeight + modifyNum
+        if (scroller.y <= -postHeight && postHeight > 0) {
           that.showFloat = true
         } else {
           that.showFloat = false
@@ -607,11 +615,11 @@ export default {
           that.scrollMark = scroller.y
         }
       })
-      scroller.on('scrollEnd', function() {
-        setTimeout(function() { //延迟刷新isScrolling状态，因为scroll还会触发多一次
-          that.isScrolling = false;
-        }, 100)
-      })
+      // scroller.on('scrollEnd', function() {
+      //   setTimeout(function() { //延迟刷新isScrolling状态，因为scroll还会触发多一次
+      //     that.isScrolling = false;
+      //   }, 100)
+      // })
 
     },
     onRefreshList () {
@@ -629,16 +637,12 @@ export default {
     that.getPostData(1)
   },
   mounted () {
-    this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - 100)
+    this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - Util.pxToPx(116))
     let uid = Util.getSessionStorage('uid')
     let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
     if(!uid && !isLogined_cookie) {
       Validate.getLoginInfo()
     }
-  },
-  activated () {
-    // console.info('activated--------')
-    // this.getPostData(1)
   }
 
 

@@ -166,7 +166,7 @@ import service from '../services'
 // import Util from '../js/Util.js'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
-// import {ellipsisText} from '../filters'
+import {ellipsisText, uniq} from '../filters'
 export default {
   name: 'mainView',
   components: {
@@ -306,8 +306,10 @@ export default {
     },
     goMyCenter() {
       //跳转到我的个人中心
-      var url = '/centermy'
-      this.$router.push(url)
+      if (this.isLogin) {
+        var url = '/centermy'
+        this.$router.push(url)
+      }
     },
     goUserCenter(id) {
       //跳转到其他人的个人中心
@@ -459,7 +461,8 @@ export default {
               }*/
             } else {
               //页数大于1时添加数据
-              that.hotList = that.hotList.concat(data.list.hot_threads)
+              // that.hotList = that.hotList.concat(data.list.hot_threads)
+              that.hotList = uniq(that.hotList.concat(data.list.hot_threads), "tid");  //去重
               that.hotScrollConfig.status = 1
             }
             that.$refs.hotList.refresh() //刷新list
@@ -482,7 +485,8 @@ export default {
                 that.newScrollConfig.status = 0
               }*/
             } else {
-              that.newList = that.newList.concat(data.list)
+              // that.newList = that.newList.concat(data.list)
+              that.newList = uniq(that.newList.concat(data.list), "tid");  //去重
               that.newScrollConfig.status = 1
             }
             that.$refs.newList.refresh()
@@ -503,7 +507,8 @@ export default {
                 that.essenceScrollConfig.status = 0
               }*/
             } else {
-              that.essenceList = that.essenceList.concat(data.list)
+              // that.essenceList = that.essenceList.concat(data.list)
+              that.essenceList = uniq(that.essenceList.concat(data.list), "tid");  //去重
               that.essenceScrollConfig.status = 0
             }
             that.$refs.essenceList.refresh()

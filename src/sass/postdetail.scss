@@ -183,7 +183,7 @@
 
 .float-tabs {
     position: absolute;
-    top: pxToRem(80px);
+    top: pxToRem(90px);
     left: 0;
     background-color: $color-white;
 }
@@ -192,7 +192,7 @@
     // width: 100%;
     white-space: nowrap;
     font-size: 0;
-    padding-bottom: pxToRem(116px);
+    // padding-bottom: pxToRem(116px);
     .rm-list {
         width: 100%;
         padding-left: pxToRem(30px);
@@ -211,6 +211,9 @@
     img {
         max-width: 100%;
     }
+}
+#detailScroll {
+    bottom: pxToRem(116px);
 }
 
 .rm-u {
@@ -345,8 +348,16 @@
         background-image: url('../images/icon-zan.png');
         background-size: pxToRem(44px) pxToRem(40px);
     }
+    .icon-zan-active {
+        background-image: url('../images/icon-zan-active.png');
+        background-size: pxToRem(44px) pxToRem(40px);
+    }
     .icon-mark {
         background-image: url('../images/icon-mark.png');
+        background-size: pxToRem(42px) pxToRem(40px);
+    }
+    .icon-mark-active {
+        background-image: url('../images/icon-mark-active.png');
         background-size: pxToRem(42px) pxToRem(40px);
     }
     .icon-share {
