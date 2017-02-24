@@ -554,7 +554,8 @@ export default {
 
           that.formhash = data.formhash
           Util.setSessionStorage('formhash', this.formhash)
-          that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
+          // that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
+          that.replyListHeight = that.calculateHeight
           that.$refs.detailList.refresh() //刷新list
         } else {
           let msg = '请求失败，请稍后重试'
