@@ -122,7 +122,7 @@ export function uniq(arr, target) {
   });
   
   // 防止过滤器不断触发
-  this.compareList = [];
+  /*this.compareList = [];
   for (let i = 0; i < list.length; i++) {
     this.compareList.push(convertObject(list[i]));
   }
@@ -131,7 +131,7 @@ export function uniq(arr, target) {
     return list;
   }
 
-  this.lastList = this.compareList;
+  this.lastList = this.compareList;*/
 
   arr = list;
 

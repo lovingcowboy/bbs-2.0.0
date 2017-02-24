@@ -160,6 +160,9 @@ export default {
           that.getPostList(that.params) 
         } else {
           that.$router.push('/main');
+          setTimeout(function() {
+            Toast('请登录！');
+          }, 1000);
         }
 
       })

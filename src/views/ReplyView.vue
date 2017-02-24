@@ -488,12 +488,13 @@ export default {
         // console.info('result---', result)
         if (result.isLogined != 1) {
           that.$router.push('/main')
+          setTimeout(function() {
+            Toast('请登录！')
+          }, 1000)
         }
 
       })
     }
-  },
-  mounted () {
   }
 
 
