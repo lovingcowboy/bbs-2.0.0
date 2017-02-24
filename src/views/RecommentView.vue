@@ -129,7 +129,7 @@ export default {
         // console.info('getRecommentList------fail----', response)
       })
     },
-    onInitList() {
+    onInitList(scroller) {
 
     },
     onRefreshList() {
@@ -142,6 +142,14 @@ export default {
   },
   beforeMount() {
     this.getRecommentList(false)
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (from && from.name !== 'postdetail') { //不是从帖子详跳转回来
+        vm.getRecommentList(false);
+        vm.$refs.recList && vm.$refs.recList.myScroll.scrollTo(0, 0, 0);
+      }
+    })
   }
 
 

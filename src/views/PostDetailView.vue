@@ -676,15 +676,20 @@ export default {
   },
   beforeMount () {
     let that = this;
-    that.getPostData(1)
+    let uid = Util.getSessionStorage('uid')
+    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+    if (!uid && !isLogined_cookie) {
+      Validate.getLoginInfo(function(result) {
+       that.getPostData(1)
+      })
+    }else{
+      that.getPostData(1)
+    }
   },
   mounted () {
     this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - Util.pxToPx(116))
-    let uid = Util.getSessionStorage('uid')
-    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
-    if(!uid && !isLogined_cookie) {
-      Validate.getLoginInfo()
-    }
+
+    // this.getPostData(1)
   }
 
 
