@@ -120,6 +120,13 @@
              <p class="rm-txt2 rm-txt"><span><font class="txt-blue">贪吃小和尚</font>我觉的今年肯定超过10亿，立个flat，要v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</p>
               <p class="rm-txt1 rm-txt">太保守了，20亿没问题的！</p></p>
             </li> -->
+            <!-- <section class="error-container" >
+                <div class="ec-cont">
+                    <i class="icon-pai-null"></i>
+                    <span class="ec-txt" >这里空空如也！</span>
+                </div>
+            </section> -->
+            <tips :config="replyTipsConfig"></tips>
           </ul>
           <ul class="mark-list rm-list" v-show="tabType === 1" :style="{'min-height': markListHeight + 'rem'}">
             <li class="reply-row" v-for="(item, index) in MarkData.list">
@@ -135,7 +142,9 @@
               <p class="rm-txt1 rm-txt"><span v-show="item.extcredits3 && +item.extcredits3 > 0">人气 <font class="txt-blue">{{item.extcredits3}}</font></span><span v-show="item.extcredits1 && +item.extcredits1 > 0">，威望 <font class="txt-blue">{{item.extcredits1}}</font></span><span v-show="item.extcredits2 && +item.extcredits2 > 0">，经验 <font class="txt-blue">{{item.extcredits2}}</font></span></p>
               <p class="rm-txt3 rm-txt">{{item.reason}}</p>
             </li>
+            <tips :config="markTipsConfig"></tips>
           </ul>
+          
         </div>
       </div>
       </div>
@@ -161,6 +170,7 @@
 <script>
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
+import Tips from '../components/Tips.vue'
 import service from '../services'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
@@ -170,7 +180,8 @@ export default {
   components: {
     Zheader,
     Toast,
-    List
+    List,
+    Tips
   },
   data () {
     return {
@@ -209,19 +220,28 @@ export default {
       // isScrolling: false, //滚动条是否正在滚动
       scrollReply: 0, //回复列表滚动位置
       scrollMark: 0,//评分列表滚动位置
+      markTipsConfig: { //情感图信息
+        noData: false,
+        text: ''
+      },
+      replyTipsConfig: { //情感图信息
+        noData: false,
+        text: ''
+      },
       formhash: '' //用于验证数据合法性
     }
   },
   computed: {
+    calculateHeight () {
+      //动态计算列表高度，防止切换tab时跳动
+      let obj = this.tabType === 0 ? document.querySelector('.mark-list') : document.querySelector('.reply-list')
+      let h = Util.pxToRemAdapt(obj.clientHeight)
+      h = h < this.rmHeight ? h : this.rmHeight
+      //600为情感图最小高度
+      return h > Util.pxToRem(600) ? h : Util.pxToRem(600)
+    }
   },
-  // watch: {
-  //   '$route' (to, from) {
-  //     console.info('watch-----', from, to)
-  //     if(from.name === 'main') {
-  //       this.getPostData(1)
-  //     }
-  //   }
-  // },
+
   methods: {
     headerRightBtnFun () {
       console.info('11111')
@@ -231,31 +251,33 @@ export default {
       this.tabType = type
       if (type === 0) {
         //计算回复列表高度，防止tab切换时跳动
-        if (this.markListHeight === 0) {
+        /*if (this.markListHeight === 0) {
           this.markListHeight = Util.pxToRemAdapt(document.querySelector('.mark-list').clientHeight)
         }
         if (this.markListHeight < this.rmHeight) {
           this.replyListHeight = this.markListHeight
         } else {
           this.replyListHeight = this.rmHeight
-        }
+        }*/
+        this.replyListHeight = this.calculateHeight
         if (!this.replyData.list || this.replyData.list.length === 0) {
           this.getPostData(1)
         } else {
           this.$refs.detailList.refresh()
-            // console.info('scrollReply---', this.scrollReply, this.myScroller)
-          this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0) //tab置顶时滚动条滚动到上次位置
+          //tab置顶时滚动条滚动到上次位置
+          this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0) 
         }
-        this.ScrollConfig.loadmore = true
+        this.$refs.detailList.loadmore = this.replyData.curPage <= this.replyData.totalPage
       } else if (type === 1) {
-        if (this.replyListHeight === 0) {
+        /*if (this.replyListHeight === 0) {
           this.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
         }
         if (this.replyListHeight < this.rmHeight) {
           this.markListHeight = this.replyListHeight
         } else {
           this.markListHeight = this.rmHeight
-        }
+        }*/
+        this.markListHeight = this.calculateHeight
 
         if (!this.MarkData.list || this.MarkData.list.length === 0) {
           this.getMarkList(1)
@@ -263,7 +285,7 @@ export default {
           this.$refs.detailList.refresh()
           this.showFloat && this.myScroller.scrollTo(0, this.scrollMark, 0)
         }
-        this.ScrollConfig.loadmore = false
+        this.$refs.detailList.loadmore = false
       }
     },
      /*percentage (count, total) {
@@ -465,8 +487,8 @@ export default {
       let tid = this.$route.params.id
         // tid = '147680'
         // console.info('id---', this.$route.params.id)
-        // debugger
       if (page > that.replyData.totalPage) {
+        // that.ScrollConfig.loadmore = false
         that.$refs.detailList.refresh() //刷新list
         return
       }
@@ -482,11 +504,22 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
+          //最后一页不不再出发loadmore事件
+          that.$refs.detailList.loadmore = +data.pager.cur_page < +data.pager.total_page
           that.replyData.curPage = +data.pager.cur_page + 1
           that.replyData.totalPage = +data.pager.total_page
           if (page === 1) {
             that.thread = data.thread
             that.replyData.list = data.postlist
+            if (!data.postlist || data.postlist.length < 1) {
+              that.replyTipsConfig = {
+                noData: true,
+                text: '沙发空缺中~'
+              }
+            } else {
+              that.replyTipsConfig.noData = false
+            }
+
               //显示投票数据
             if (data.special_poll) {
               that.voteData = data.special_poll
@@ -557,6 +590,14 @@ export default {
         if(_body.code === '200') {
           let data = _body.data
           that.MarkData.list = data.logs
+          if (!data.logs || data.logs.length < 1) {
+            that.markTipsConfig = {
+              noData: true,
+              text: '还没有人进行评分哦！'
+            }
+          } else {
+            that.markTipsConfig.noData = false
+          }
           that.$refs.detailList.refresh()
         }else{
           let msg = '请求失败，请稍后重试'

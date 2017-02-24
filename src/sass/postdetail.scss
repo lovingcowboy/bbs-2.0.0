@@ -200,6 +200,7 @@
         vertical-align: text-top;
         // max-height: pxToRem(500px);
         overflow-y: auto;
+        position: relative;
         &>li {
             padding: pxToRem(40px) 0;
             font-size: 0;
@@ -364,4 +365,12 @@
         background-image: url('../images/icon-share.png');
         background-size: pxToRem(36px) pxToRem(43px);
     }
+}
+.icon-pai-null {
+    width: pxToRem(224px);
+    height: pxToRem(205px);
+}
+.ec-txt {
+    font-size: pxToRem(30px);
+    color: $txt-color-grey;
 }
