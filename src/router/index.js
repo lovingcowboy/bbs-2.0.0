@@ -118,7 +118,7 @@ const router = new Router({
             })
         },
         meta: {
-            keepAlive: false
+            keepAlive: true
         }
     }, {
         path: '/user/changetb',

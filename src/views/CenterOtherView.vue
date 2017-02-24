@@ -74,7 +74,7 @@ import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import Services from '../services'
 import List from 'components/listview'
-// import Util from '../js/Util.js'
+import {uniq} from '../filters';
 export default {
   components: {
     Zheader,
@@ -123,7 +123,7 @@ export default {
             that.userInfo.level_text = 'Lv.' + data.info.grouplevel + ' ' + data.info.grouptitle;
           }
 
-           that.getDynamicList(params);  //获取TA的动态
+          that.getDynamicList(params);  //获取TA的动态
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
@@ -146,12 +146,9 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
-          // debugger
-          if(params.page == 1) { //刷新或者第一次加载数据
-            that.dynamicList = data.list;
-          } else if(params.page > 1) { //加载更多数据
-            that.dynamicList = that.dynamicList.concat(data.list);
-          }
+          
+          that.dynamicList = that.dynamicList.concat(data.list);
+          // that.dynamicList = uniq.call(that, that.dynamicList.concat(data.list), 'pid');  //去重
 
           that.pager = data.pager;
           
@@ -184,7 +181,6 @@ export default {
         (Util.pxToRemAdapt(headerHeight) + Util.pxToRem(20));
     },
 
-
     onLoadMore() {  //加载更多
       let that = this;
       this.params.page = Number(this.pager.cur_page) + 1;
@@ -202,33 +198,47 @@ export default {
 
       var url = '/postdetail/' + id
       this.$router.push(url)
-
-    
     },
    
     onSendMsg() { //发送消息 
       let url = '/user/messagedetail/' + this.$route.params.id
       this.$router.push(url)
     },
-    
-  },
-  beforeMount () {
-    this.params = {
-      version: 4,
-      module: 'memberother',
-      uid: this.$route.params.id,
-      page: 1
+
+    mounted() {
+      this.params = {
+        version: 4,
+        module: 'memberother',
+        uid: this.$route.params.id,
+        page: 1
+      }
+      
+      this.dynamicList = [];
+      this.getUserInfo(this.params);  //获取用户信息
+
+      this.uiSetListMinHeight();
+
+      //当横屏时 重新计算最小高度 
+      let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+      window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
+      
+      this.$refs.list && this.$refs.list.myScroll.scrollTo(0, 0, 0);
     }
-    this.getUserInfo(this.params);  //获取用户信息
-   
-  },
-  mounted () {
-    this.uiSetListMinHeight();
     
-    //当横屏时 重新计算最小高度 
-    let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-    window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
+  },
+
+  beforeMount () {
+    this.mounted();
+  },
+
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if(from && from.name !== 'postdetail') {  //不是从帖子详跳转回来
+        vm.mounted();
+      }
+    })
   }
+  
 }
 </script>
 
