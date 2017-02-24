@@ -9,22 +9,22 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">
       <div class="content">
-        <list :config.once="scrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="list">
-          <div class="scroll-wrapper" slot="scrollContent" @tap="goPostDetail">
+        <list :config.once="scrollConfig" @init="onInitList" @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="list">
+          <div class="scroll-wrapper" slot="scrollContent" @tap="goPostDetail($event);">
             <div class="content-header">
               <div class="session-name">{{session}}</div>
-              <div class="btn-wrapper" @tap="onSwitchAllList">
+              <div class="btn-wrapper" @tap="onSwitchAllList($event);">
                 <div class="btn btn-all" :class="{'active': isListAllActive}">全部</div>
                 <div class="btn btn-essence" :class="{'active': !isListAllActive}">精华</div>
               </div>
             </div>
-            <div class="list-all" v-show='isListAllActive'>
-              <div class="list-top" v-show='uiShowTop'>
+            <div class="list-all" v-show="isListAllActive">
+              <div class="list-top" v-show="uiShowTop">
                 <div class="top-item post-row" v-for="(item, index) in topList" :data-id="item.tid">
                   <font class="top-label">置顶</font><font class="post-title">{{item.subject}}</font>
                 </div>
               </div>
-              <div class="btn-wrapper sticky-header" @tap="onSwitchList" :style="{visibility: showFloat == true ? 'hidden' : 'visible'}">
+              <div class="btn-wrapper sticky-header" @tap="onSwitchList($event);" :style="{visibility: showFloat == true ? 'hidden' : 'visible'}">
                 <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
                 <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
               </div>
@@ -32,10 +32,10 @@
                 <post-item v-for="(item, index) in newPostList" :data="item">
                   <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid">
-                      <img :src='item.avatar'><font>{{item.author}}</font>
+                      <img :src="item.avatar"><font>{{item.author}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
-                    <span v-html='item.dateline'></span>
+                    <span v-html="item.dateline"></span>
                   </div>
                 </post-item>
               </ul>
@@ -44,10 +44,10 @@
                 <post-item v-for="(item, index) in newReplyList" :data="item">
                   <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid">
-                      <img :src='item.avatar'><font>{{item.author}}</font>
+                      <img :src="item.avatar"><font>{{item.author}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
-                    <span v-html='item.dateline'></span>
+                    <span v-html="item.dateline"></span>
                   </div>
                 </post-item>
               </ul>
@@ -56,17 +56,17 @@
               <post-item v-for="(item, index) in essenceList" :data="item">
               <div class="item-title" slot="itemhead">
                 <span data-type="userclick" :data-id="item.tid" >
-                  <img :src='item.avatar'><font>{{item.author}}</font>
+                  <img :src="item.avatar"><font>{{item.author}}</font>
                   <label class="level">LV{{item.group_level}}  {{item.group_title}}</label>
                 </span>
-                <span v-html='item.dateline'></span>
+                <span v-html="item.dateline"></span>
               </div>
             </post-item>
             </ul>
           </div>
         </list>    
         
-        <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList">
+        <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList($event);">
             <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
             <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
         </div>
@@ -144,7 +144,7 @@ export default {
                 topList.push(data.list[i]);
               }
             }
-            that.topList = uniq.call(that, that.topList.concat(topList), "tid");  //去重
+            that.topList = uniq.call(that, that.topList.concat(topList), 'tid');  //去重
           }
 
           switch(type) {
@@ -188,14 +188,14 @@ export default {
           that.$refs.list.refresh();
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.list && that.$refs.list.refresh();
@@ -207,13 +207,13 @@ export default {
       let target = e.target;
       let prevClass = target._prevClass;
       let pager = null;
-      if(prevClass.indexOf("btn-essence") !== -1) { //精华列表
+      if(prevClass.indexOf('btn-essence') !== -1) { //精华列表
         that.isListAllActive = false;
         pager = that.essencePager;
         if(that.essenceList.length == 0) {
-          that.getPostList(that.essenceParams, "essence");  //获取最新列表
+          that.getPostList(that.essenceParams, 'essence');  //获取最新列表
         }
-      } else if(prevClass.indexOf("btn-all") !== -1) {  //全部
+      } else if(prevClass.indexOf('btn-all') !== -1) {  //全部
         that.isListAllActive = true;
         pager = that.isListNewpostActive ? that.newPostPager : that.newReplyPager;
       }
@@ -231,7 +231,7 @@ export default {
       let that = this;
       
       //没点到按钮
-      if(!(prevClass.indexOf("btn-newpost") !== -1 || prevClass.indexOf("btn-newreply") !== -1 )) { 
+      if(!(prevClass.indexOf('btn-newpost') !== -1 || prevClass.indexOf('btn-newreply') !== -1 )) { 
         return;
       }
       
@@ -249,7 +249,7 @@ export default {
       let time = 0;
       let pager = null;
       setTimeout(function() { //延迟切换isListNewpostActive
-        if(prevClass.indexOf("btn-newpost") !== -1) { //最新发表
+        if(prevClass.indexOf('btn-newpost') !== -1) { //最新发表
           if(that.isListNewpostActive && that.showFloat) {  //如果已经在最新发表则回到最新发表头部
             that.newPostY = -that.switchListSt;
             time = 800;
@@ -266,7 +266,7 @@ export default {
             }
           }, 200)
 
-        } else if(prevClass.indexOf("btn-newreply") !== -1) { //最新回复
+        } else if(prevClass.indexOf('btn-newreply') !== -1) { //最新回复
           if(!that.isListNewpostActive && that.showFloat) {  //如果已经在最新发表则回到最新发表头部
             that.newReplyY = -that.switchListSt;
             time = 800;
@@ -276,7 +276,7 @@ export default {
           pager = that.newReplyPager;
 
           if(that.newReplyList.length == 0) {
-            that.getPostList(that.newReplyParams, "newReply");  //获取最新回复列表
+            that.getPostList(that.newReplyParams, 'newReply');  //获取最新回复列表
           }
 
           setTimeout(function() {
@@ -300,13 +300,13 @@ export default {
     onInitList(scroller) {
       let  that = this;
       that.outerIScroll = scroller;
-      let listTopEl = document.querySelector(".list-top");
+      let listTopEl = document.querySelector('.list-top');
       // let listTopH = Util.pxToRemAdapt(that.listTopEl ? that.listTopEl.clientHeight : 0);
       // 计算最新发表、最新回复的位置 换算成rem 92为内容header高度 20为间距 
       // that.switchListSt =  Util.remToPx(listTopH + Util.pxToRem(92 + 20 + 20));
       that.switchListSt = [];
       // 置顶的y轴位置   
-      this.topY = that.switchListSt + Util.pxToRemAdapt(document.querySelector(".sticky-header").clientHeight);
+      this.topY = that.switchListSt + Util.pxToRemAdapt(document.querySelector('.sticky-header').clientHeight);
       // 保存最新发表跟最新回复的位置
       this.newPostY = this.newReplyY = -that.switchListSt;
 
@@ -340,7 +340,7 @@ export default {
     onRefreshList() { //刷新数据
       let that = this;
      
-      let type =  that.isListAllActive ? that.isListNewpostActive ? "newPost" :  "newReply" : "essence";
+      let type =  that.isListAllActive ? that.isListNewpostActive ? 'newPost' : 'newReply' : 'essence';
 
       let params = that.isListAllActive ? that.isListNewpostActive ? that.newPostParams :  that.newReplyParams : that.essenceParams;
       
@@ -350,25 +350,25 @@ export default {
       that.getPostList(params, type);
     },
 
-    onLoadMore() { // TODO: 加载更多数据
+    onLoadMore() { //加载更多数据
       let that = this;
       
       
-      let type = "";
+      let type = '';
       let params = null;
       let pager = null;
       if(that.isListAllActive) {
         if(that.isListNewpostActive) {
-          type = "newPost";
+          type = 'newPost';
           params = that.newPostParams;
           pager = that.newPostPager;
         } else {
-          type = "newReply";
+          type = 'newReply';
           params = that.newReplyParams;
           pager = that.newReplyPager;
         }
       } else {
-        type = "essence";
+        type = 'essence';
         params = that.essenceParams;
         pager = that.essencePager;
       }
@@ -383,7 +383,7 @@ export default {
 
       if (!obj) return;
 
-      let id = obj.dataset && obj.dataset.id 
+      let id = obj.dataset && obj.dataset.id; 
       
       if(!id) return;
 
@@ -398,30 +398,30 @@ export default {
     let that = this
 
     that.newPostParams = { //最新发表列表参数
-      "version": 4,
-      "module": "forumdisplay",
-      "fid": that.$route.params.fid,
-      "filter": "author",
-      "orderby": "dateline",
-      "page": 1
+      version: 4,
+      module: 'forumdisplay',
+      fid: that.$route.params.fid,
+      filter: 'author',
+      orderby: "dateline",
+      page: 1
     };
 
     that.newReplyParams = { //最新回复列表参数
-      "version": 4,
-      "module": "forumdisplay",
-      "fid": that.$route.params.fid,
-      "filter": "lastpost",
-      "orderby": "lastpost",
-      "page": 1
+      version: 4,
+      module: 'forumdisplay',
+      fid: that.$route.params.fid,
+      filter: 'lastpost',
+      orderby: 'lastpost',
+      page: 1
     };
 
     that.essenceParams = { //精华列表参数
-      "version": 4,
-      "module": "forumdisplay",
-      "fid": that.$route.params.fid,
-      "filter": "digest",
-      "digest": "1",
-      "page": 1
+      version: 4,
+      module: 'forumdisplay',
+      fid: that.$route.params.fid,
+      filter: 'digest',
+      digest: 1,
+      page: 1
     };
     // 获取版块最新发表
     that.getPostList(that.newPostParams, "newPost");

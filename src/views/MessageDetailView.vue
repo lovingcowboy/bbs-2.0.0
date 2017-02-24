@@ -9,9 +9,9 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}"> 
       <div class="content">
-        <msglist :config.once="scrollConfig" @loadmore="onLoadMore" ref="msglist" >
+        <msglist :config.once="scrollConfig" @loadmore="onLoadMore();" ref="msglist" >
           <div class="scroll-wrapper dialog-list" slot="scrollContent">
-            <div class="dialog-item" v-for='(item, index) in messageList' :data-id='item.tid' :class='item.isself == "1" ? "right" : "left"'>
+            <div class="dialog-item" v-for="(item, index) in messageList" :data-id="item.tid" :class="item.isself == '1' ? 'right' : 'left'">
               <img class="avatar" :src="item.avatar" />
               <div class="message-body">{{item.message}}</div>
             </div>
@@ -19,15 +19,15 @@
         </msglist> 
       </div>
     </div>
-    <div class="btn-message" @click="onMessage">发消息</div>
+    <div class="btn-message" @click="onMessage();">发消息</div>
     <div class="message-dialog" v-show="isShowDialog">
       <div class="masker" v-show="isShowDialog"></div>
       <div class="dialog-content">
         <div class="dialog-title">回复</div>
         <textarea class="reply-content" placeholder="请输入…" v-model="messageData"></textarea>
         <div class="btn-wrapper">
-          <div class="btn-cancel" @click="onCancel">取消</div>
-          <div class="btn-send" :class='{"disable": isBtnDisable}' @click="onSend">发送</div> 
+          <div class="btn-cancel" @click="onCancel();">取消</div>
+          <div class="btn-send" :class="{'disable': isBtnDisable}" @click="onSend();">发送</div> 
         </div>
       </div>
     </div>
@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     isBtnDisable: function() {
-      return this.messageData == "";
+      return this.messageData == '';
     }
   },
   methods: {
@@ -100,7 +100,7 @@ export default {
              that.messageList =  data.list.concat(that.messageList);
              isRefresh = true;
           }
-          that.messageList = uniq.call(that, that.messageList, "pmid");  //去重
+          that.messageList = uniq.call(that, that.messageList, 'pmid');  //去重
 
           if(!that.$refs.msglist) return;
 
@@ -113,14 +113,14 @@ export default {
 
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.msglist && that.$refs.msglist.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.msglist && that.$refs.msglist.refresh();
@@ -131,7 +131,7 @@ export default {
       this.isScrollActive = false;
     },
     onCancel() {
-      this.messageData = "";  //清空输入框内容
+      this.messageData = '';  //清空输入框内容
       this.isShowDialog = false;
       this.isScrollActive = true;
     },
@@ -142,12 +142,12 @@ export default {
       }
 
       let params = {
-        "version": 4,
-        "module": "sendpm",
-        "message": that.messageData,
-        "uid": that.$route.params.id,
-        "pmsubmit": "yes",
-        "formhash": that.formhash
+        version: 4,
+        module: 'sendpm',
+        message: that.messageData,
+        uid: that.$route.params.id,
+        pmsubmit: 'yes',
+        formhash: that.formhash
       }
 
       Services.postData('/app/index.php', params).then((response) => {
@@ -159,11 +159,12 @@ export default {
            
           that.isShowDialog = false;
           that.isScrollActive = true;
-
+          
+          // 将消息存入消息列表
           that.selfInfo.message = that.messageData;
           that.selfInfo.pmid = data.list.pmid;
           that.selfInfo.avatar = data.list.member_avatar;
-          that.selfInfo.isself = "1";
+          that.selfInfo.isself = '1'; 
           
           that.firstPageMsg.push(that.selfInfo);
 
@@ -174,13 +175,13 @@ export default {
           that.$refs.msglist.refresh(true);
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
          
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
 
           
@@ -202,7 +203,7 @@ export default {
       let params = Util.myExtend(that.params);     
       that.interval = setInterval(function() {  //每隔30s去取消息
         params.notLoader = true;
-        params.page = "";
+        params.page = '';
         that.getMessageDetail(params)
       }, 30000)
     }
@@ -210,10 +211,10 @@ export default {
   beforeMount () {
     let that = this
     that.params = {
-      "version": 4,
-      "module": "viewpm",
-      "touid": that.$route.params.id,
-      "page":"" //默认取最后一句数据
+      version: 4,
+      module: 'viewpm',
+      touid: that.$route.params.id,
+      page:'' //传空字符串，默认取最后一句数据
     }
 
     // that.getMessageDetail(that.params);

@@ -9,11 +9,11 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
       <div class="content">
-        <list :config.once="scrollConfig" @init="onInitList"  @loadmore="onLoadMore" ref="list" >
+        <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
           <div class="scroll-wrapper" slot="scrollContent">
             <div class="contetn-header">
               <div class="md01">
-                <img class="avatar" :src='userInfo.avatar'>
+                <img class="avatar" :src="userInfo.avatar">
                 <div class="userInfo-right">
                   <div class="username">{{userInfo.username}}</div>
                   <div class="other-baseinfo">
@@ -45,16 +45,16 @@
                   <span class="icon-prize"></span>
                   <font>{{userInfo.extcredits}}威望</font>
                 </div>
-                <div class="btn-message" @tap='onSendMsg'>发消息</div>
+                <div class="btn-message" @tap="onSendMsg();">发消息</div>
               </div>
             </div>
             <div class="dynamic" :style="{'min-height': dyListMinHeight + 'rem'}">
               <div class="label">TA的动态</div>
-               <ul class="post-list" @tap="goPostDetail">
+               <ul class="post-list" @tap="goPostDetail($event);">
                 <post-item v-for="(item, index) in dynamicList" :data="item" >
                   <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid" class="c-event">
-                      <img src="../images/pai.png"><font class="author">{{item.author}}</font>{{item.type == '0' ? "回复了帖子" : "发布了帖子"}}
+                      <img src="../images/pai.png"><font class="author">{{item.author}}</font>{{item.type == "0" ? '回复了帖子' : '发布了帖子'}}
                     </span>
                     <span>{{item.dateline}}</span>
                   </div>
@@ -100,7 +100,7 @@ export default {
     getUserInfo(params) { //获得用户基本信息
       let that = this;
 
-      params.dotype = "profile";
+      params.dotype = 'profile';
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
@@ -109,29 +109,29 @@ export default {
           that.userInfo = data.info;
           let manageforum = data.info.manageforum;
 
-          if(manageforum.status == "1") {  //有版块
+          if(manageforum.status == '1') {  //是版块版本
             let forumList = Object.values(manageforum.forumlist);
             let text = "";
            
             if(forumList.length == 1) {
-              text = forumList[0] + "版块的版主";
+              text = forumList[0] + '版块的版主';
             } else if(forumList.length > 1) {
-              text = forumList[0] + "、" + forumList[1] + "等" +forumList.length + "个版块的版主";
+              text = forumList[0] + '、' + forumList[1] + '等' +forumList.length + '个版块的版主';
             }
             that.userInfo.level_text = text;
           } else {  //没有版块
-            that.userInfo.level_text = "Lv." + data.info.grouplevel + " " + data.info.grouptitle;
+            that.userInfo.level_text = 'Lv.' + data.info.grouplevel + ' ' + data.info.grouptitle;
           }
 
            that.getDynamicList(params);  //获取TA的动态
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
           // console.log("fail")
       })
@@ -163,30 +163,27 @@ export default {
           that.$refs.list.refresh();
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.list && that.$refs.list.refresh();
       })
     },
     uiSetListMinHeight() {
-      let bodyHeight = Util.getElHeight("body");  //获取最大可视高度
-      let headerHeight = Util.getElHeight(".contetn-header");  //获取头部高度
+      let bodyHeight = Util.getElHeight('body');  //获取最大可视高度
+      let headerHeight = Util.getElHeight('.contetn-header');  //获取头部高度
       // debugger
       this.dyListMinHeight = Util.pxToRemAdapt(bodyHeight) -
         (Util.pxToRemAdapt(headerHeight) + Util.pxToRem(20));
     },
 
-    onInitList(scroller) {
-      this.outerScroller = scroller;
-    },
 
     onLoadMore() {  //加载更多
       let that = this;

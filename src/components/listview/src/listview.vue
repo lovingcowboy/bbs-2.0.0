@@ -102,7 +102,7 @@ import spinner from '../../Spinner.vue'
 
             that.pulldown = true;
             that.refreshicon = false;
-          } else if(Math.abs(this.y) >= (Math.abs(this.maxScrollY) - distance) && that.loadmore) { //加载更多
+          } else if(Math.abs(this.y) >= (Math.abs(this.maxScrollY) - distance) && that.loadmore && that.config.loadmore) { //加载更多
             that.micon = true;
           }
 

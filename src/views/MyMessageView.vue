@@ -7,20 +7,26 @@
       :prevent-back="false"
       :show="true">
     </zheader>
-    <div class="scroll" :class='{"scroll-active": isScrollActive}'>   
+    <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
         <div class="tab">
-          <div class="tab-item btn-personmsg" :class='{"active": isShowProsonMsg}'  @click='onSwitchMsgList'><font>个人消息</font><span class="message-num" v-show='newpm == "0" ? false : true'>{{newpm}}</span></div>
-          <div class="tab-item btn-systemmsg" :class='{"active": !isShowProsonMsg}' @click='onSwitchMsgList'><font>系统消息</font><span class="message-num" v-show='newsystem == "0" ? false : true'>{{newsystem}}</span></div>
+          <div class="tab-item btn-personmsg" :class="{'active': isShowProsonMsg}"  @click="onSwitchMsgList($event);">
+            <font>个人消息</font>
+            <span class="message-num" v-show="newpm == '0' ? false : true">{{newpm}}</span>
+          </div>
+          <div class="tab-item btn-systemmsg" :class="{'active': !isShowProsonMsg}" @click="onSwitchMsgList($event);">
+            <font>系统消息</font>
+            <span class="message-num" v-show="newsystem == '0' ? false : true">{{newsystem}}</span>
+          </div>
         </div>
         <div class="message-list-wrapper" :style="{'height': msgListMinHeight + 'rem'}">
-          <list :config.once='personScrollConfig'  @refresh='onRefreshList' @loadmore='onLoadMore' ref='personlist' v-show='isShowProsonMsg'>
-            <div class="scroll-wrapper" slot="scrollContent"  @tap='goMessageDetail'>
+          <list :config.once="personScrollConfig"  @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="personlist" v-show="isShowProsonMsg">
+            <div class="scroll-wrapper" slot="scrollContent"  @tap="goMessageDetail($event)">
               <div class="message-person-list" >
-                <div class="message-person-item" v-for='(item, index) in personList' :data-id='item.touid'>
+                <div class="message-person-item" v-for="(item, index) in personList" :data-id="item.touid">
                   <div class="left">
-                    <img class="avatar" :src='item.avatar' />
-                    <span class="point-new" v-show='item.isnew == "1" ? true : false'></span>
+                    <img class="avatar" :src="item.avatar" />
+                    <span class="point-new" v-show="item.isnew == '1' ? true : false"></span>
                   </div>
                   <div class="right">
                     <div class="username">{{item.tonickname}}</div>
@@ -32,15 +38,15 @@
             </div>
           </list> 
 
-          <list :config.once='systemScrollConfig'  @refresh='onRefreshList' @loadmore='onLoadMore' ref='systemlist'  v-show='!isShowProsonMsg'>
+          <list :config.once="systemScrollConfig"  @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="systemlist"  v-show="!isShowProsonMsg">
             <div class="scroll-wrapper" slot="scrollContent">
             <div class="message-system-list">
-              <div class="message-system-item" :class='{"isNew": item.new == "1" ? true : false}' v-for='(item, index) in systemList'>
+              <div class="message-system-item" :class="{'isNew': item.new == '1' ? true : false}" v-for="(item, index) in systemList">
                   <div class="point-new"></div>
                   <div class="message-content">
                     <div class="msg-body" >{{item.note}}</div>
                     <div class="time-wrapper">
-                      <div class="msg-date" v-html='item.dateline'></div>
+                      <div class="msg-date" v-html="item.dateline"></div>
                       <!-- <div class="msg-time">10:20</div> -->
                     </div>
                   </div>
@@ -93,9 +99,9 @@ export default {
   },
   methods: {
     uiSetListMinHeight() {
-      let bodyHeight = Util.getElHeight("body");  //获取最大可视高度
-      let headerHeight = Util.getElHeight("#header");  //获取头部高度
-      let tabHeight = Util.getElHeight(".tab");  //获取tab高度
+      let bodyHeight = Util.getElHeight('body');  //获取最大可视高度
+      let headerHeight = Util.getElHeight('#header');  //获取头部高度
+      let tabHeight = Util.getElHeight('.tab');  //获取tab高度
 
       this.msgListMinHeight = Util.pxToRemAdapt(bodyHeight) -
         (Util.pxToRemAdapt(headerHeight + tabHeight) + Util.pxToRem(20));
@@ -112,7 +118,7 @@ export default {
         return;
       }
 
-      if(prevClass.indexOf("btn-personmsg") !== -1) { //个人消息
+      if(prevClass.indexOf('btn-personmsg') !== -1) { //个人消息
           if(that.isShowProsonMsg) {  //如果已经在个人消息 则回到个人消息头部
             setTimeout(function() {
               if(that.outerIScroll) { //刷新iscroll，并滑动到记录位置
@@ -125,7 +131,7 @@ export default {
           } else {
             that.isShowProsonMsg = true;
           }
-        } else if(prevClass.indexOf("btn-systemmsg") !== -1) { //系统消息
+        } else if(prevClass.indexOf('btn-systemmsg') !== -1) { //系统消息
           if(!that.isShowProsonMsg) {  //如果已经在系统消息 则回到系统消息头部
             that.systemListY = 0;
             setTimeout(function() {
@@ -169,14 +175,14 @@ export default {
           that.$refs.personlist.refresh();
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.personlist && that.$refs.personlist.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.personlist && that.$refs.personlist.refresh();
@@ -211,14 +217,14 @@ export default {
           that.$refs.systemlist.refresh();
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.systemlist && that.$refs.systemlist.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.systemlist && that.$refs.systemlist.refresh();

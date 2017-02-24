@@ -9,8 +9,8 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-        <list :config.once="scrollConfig" @init="onInitList"  @loadmore="onLoadMore" ref="list" >
-          <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail">
+        <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
+          <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail($event);">
             <div class="reply-item" v-for="(item, index) in myReplyList" :data-id="item.tid">
               <div class="line01 reply-body">{{item.reply | imgFilter}}</div>
               <div class="line02 reply-origin">原贴：{{item.subject}}</div>
@@ -49,9 +49,9 @@ export default {
     }
   },
   filters: {
-    imgFilter: function (value) { //替换img标签为"[图片]"
+    imgFilter: function (value) { //替换img标签为 [图片]
       if (!value) return ''
-      return value.replace(/<img .*?>/g, "[图片]");
+      return value.replace(/<img .*?>/g, '[图片]');
     }
   },
   methods: {
@@ -78,28 +78,19 @@ export default {
           
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.list &&  that.$refs.list.refresh();
       })
     },
-
-    onInitList(scroller) {
-      this.outerScroller = scroller;
-    },
-
-    /*onRefreshList() {   // TODO: 刷新数据
-      let that = this;
-      that.$refs.list.refreshDone();
-    },*/
 
     onLoadMore() {
       let that = this;
