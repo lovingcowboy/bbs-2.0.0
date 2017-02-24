@@ -125,7 +125,7 @@ export default {
       return isApp();
     },
     isNewVersion() {
-      return Bbsbridge.isCorrectVersion("4.8.0", "1");
+      return Bbsbridge.isCorrectVersion('4.8.0', '1');
     }
   },
   methods: {
@@ -144,27 +144,29 @@ export default {
           that.userInfo = data.member;
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
       })
     },
     onEdit() {
       this.editing = true;
-      this.isEditing = "editing"
+      this.isEditing = 'editing'
       this.lastNickName = this.userInfo.username; 
     },
     onEditDone() {
       let that = this;
-      // this.editing = false;
-      // this.isEditing = ""
+     
       let nickname = this.userInfo.username;
-      if(nickname == this.lastNickName) return; //没有修改昵称
-
+      if(nickname == this.lastNickName) {//没有修改昵称
+        that.editing = false;
+        that.isEditing = '';
+        return; 
+      }
       let params = {
         version: 4,
         module: 'member',
@@ -176,24 +178,22 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           that.editing = false;
-          that.isEditing = ""
+          that.isEditing = '';
           that.userInfo.username = nickname;
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
-          // that.userInfo.username = that.lastNickName;
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
-          // that.userInfo.username = that.lastNickName;
       })
     },
     onCancelEdit() {
       this.editing = false;
-      this.isEditing = ""
+      this.isEditing = '';
       this.userInfo.username = this.lastNickName;
     },
     
@@ -220,14 +220,19 @@ export default {
           userInfo.next_level_name = member.next_group_name;
           userInfo.level_name = member.group_name;
           userInfo.level_name = member.group_level;
+
+          Toast({
+            'message': _body && _body.message || '签到成功'
+          });
+          
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
       })
     },
@@ -270,12 +275,12 @@ export default {
         
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
       })
     },
@@ -299,7 +304,7 @@ export default {
       that.loader.show()
 
       lrz(e.target.files[0], {
-          "fieldName": "Filedata"
+          'fieldName': 'Filedata'
         })
         .then(function(rst) {
          
@@ -354,8 +359,8 @@ export default {
           }
 
           // 添加参数
-          rst.formData.append("version", 4)
-          rst.formData.append("module", "uploadavatar")
+          rst.formData.append('version', 4)
+          rst.formData.append('module', 'uploadavatar')
             // rst.formData.append("Filedata",rst.file)
 
           // 触发上传
@@ -397,7 +402,7 @@ export default {
                 }
               });*/
             } else {
-              Toast("图片选择失败，请重新尝试！");
+              Toast('图片选择失败，请重新尝试！');
             }
           } else {
             Toast('图片选择失败，请重新尝试！')
@@ -423,12 +428,12 @@ export default {
           that.userInfo.avatar = data.data.avatar
         } else {
           Toast({
-            "message": _body && _body.message || "上传失败！请稍后再试！"
+            'message': _body && _body.message || '上传失败！请稍后再试！'
           });
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "上传失败！请稍后再试！"
+            'message': response.body && response.body.message || '上传失败！请稍后再试！'
           });
       })
     }

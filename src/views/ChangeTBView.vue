@@ -7,19 +7,19 @@
       :prevent-back="false"
       :show="true">
     </zheader> 
-    <div class="scroll" :class='{"scroll-active": isScrollActive}'> 
+    <div class="scroll" :class="{'scroll-active': isScrollActive}"> 
       <div class="content">
         <div class="tips">3社区威望可兑换1个团币</div>
         <div class="prestige"><font>您的社区威望：{{exchangeInfo.prestige}}</font></div>
         <div class="change-content">
           <div class="change-text">兑换数量<font class="change-maxnum">（最大兑换数量：{{exchangeInfo.max_num}}）</font></div>
           <div class="change-wrapper">
-            <input type="number" pattern="[0-9]*"  class="change-input" v-model='exchangeNum' maxlength=20  placeholder="请输入兑换数量"  @input='onInput' />
-            <div class="btn-change-all" @click='onChangeAll'>全部兑换</div>
+            <input type="number" pattern="[0-9]*"  class="change-input" v-model="exchangeNum" maxlength=20  placeholder="请输入兑换数量"  @input="onInput();" />
+            <div class="btn-change-all" @click="onChangeAll();">全部兑换</div>
           </div>
-          <div class="change-result-num">可获<font :class='canChange ? "orange" : ""'>{{canChangeNum}}</font>个团币</div>
+          <div class="change-result-num">可获<font :class="canChange ? 'orange' : ''">{{canChangeNum}}</font>个团币</div>
         </div>
-        <div class="btn-exchange" @click='onExchange'>马上兑换</div>
+        <div class="btn-exchange" @click="onExchange();">马上兑换</div>
       </div>
     </div>
   </div>
@@ -50,29 +50,29 @@ export default {
     onChangeTB(params) { //获取威望信息、兑换团币
       let that = this;
       
-      Services.postData("/app/index.php", params).then((response) => {
+      Services.postData('/app/index.php', params).then((response) => {
         
         let _body = response.body;
 
-        if (_body.code === "200") {
+        if (_body.code === '200') {
           let data = _body.data;
           that.exchangeInfo = data.exchange_info;
 
-          that.exchangeNum = "";
+          that.exchangeNum = '';
           // 主动调输入方法
           that.onInput();
 
-          if(params.submit == "yes") {  //兑换
-            Toast("兑换成功");
+          if(params.submit == 'yes') {  //兑换
+            Toast('兑换成功');
           }
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
       })
     },
@@ -87,7 +87,7 @@ export default {
       let value = Number(this.exchangeNum, 10);
      
       if(isNaN(value) || value === 0) {
-        Toast("请输入正确的兑换数量");
+        Toast('请输入正确的兑换数量');
         this.canChangeNum = 0;
         return;
       }
@@ -97,7 +97,7 @@ export default {
       this.exchangeNum = value > this.exchangeInfo.max_num ? this.exchangeInfo.max_num : value;
 
       if(this.exchangeNum % 3 !== 0) {
-        Toast("请输入3的整数倍");
+        Toast('请输入3的整数倍');
         this.canChangeNum = 0;
         return;
       }
@@ -120,7 +120,7 @@ export default {
         return;
       }
       let params = Util.myExtend(this.params);
-      params.submit = "yes";
+      params.submit = 'yes';
       params.prestige = exchangeNum;
 
       this.onChangeTB(params);

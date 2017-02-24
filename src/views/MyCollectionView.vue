@@ -9,8 +9,8 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-      <list :config.once="scrollConfig" @init="onInitList"  @loadmore="onLoadMore" ref="list" >
-        <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc">
+      <list :config.once="scrollConfig" @init="onInitList();"  @loadmore="onLoadMore();" ref="list" >
+        <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc($evnet);">
           <post-item v-for="(item, index) in collectionList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
@@ -79,14 +79,14 @@ export default {
           that.$refs.list.refresh();
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.list && that.$refs.list.refresh();
@@ -102,18 +102,6 @@ export default {
       this.getPostList(this.params);
     },
 
-   /* goPostDetail(e) {
-      let obj = Util.getElemetByTarget(e.target, 'post-row', 'scroll-wrapper');
-       
-      if (!obj) return;
-
-      let id = obj.dataset && obj.dataset.id 
-      
-      if(!id) return;
-
-      let url = '/postdetail/' + id
-      this.$router.push(url)
-    }*/
     listClickFunc(e) {
      
       let obj = Util.getElemetByTarget(e.target, 'c-event', 'post-list')

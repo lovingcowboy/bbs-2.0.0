@@ -9,8 +9,8 @@
     </zheader>
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
-       <list :config.once="scrollConfig" @init="onInitList"  @loadmore="onLoadMore" ref="list" >
-          <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail">
+       <list :config.once="scrollConfig" @init="onInitList();"  @loadmore="onLoadMore();" ref="list" >
+          <div class="scroll-wrapper" slot="scrollContent"  @tap="goPostDetail($event)">
             <div class="post-item" v-for="(item, index) in myPostList" :data-id="item.tid">
              <div class="line01 post-title">
                {{item.subject}}
@@ -71,19 +71,6 @@ export default {
             that.myPostList = that.myPostList.concat(data.list);
           // }
 
-          /*for (let i = 0; i < 10; i++) {
-            let item = {
-              name: '神采飞扬',
-              level: 'LV2 大咖',
-              time: i * 10 + '分钟前',
-              subject: '团贷网大踏步走在紧拥监管，跨越发展之路上',
-              message: '如果发的红包能匹配合适资金用上，不在乎多少，能用就最好！',
-              views: 12 * i,
-              replies: 25 * i,
-              id: i * 10
-            }
-            that.myPostList.push(item)
-          }*/
 
           //记录页数信息
           that.pager = data.pager;
@@ -100,14 +87,14 @@ export default {
           that.$refs.list.refresh();
         } else {
           Toast({
-            "message": _body && _body.message || "请求失败，请稍后重试"
+            'message': _body && _body.message || '请求失败，请稍后重试'
           });
 
           that.$refs.list && that.$refs.list.refresh();
         }
       }, (response) => {
           Toast({
-            "message": response.body && response.body.message || "请求失败，请稍后重试"
+            'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
         
           that.$refs.list && that.$refs.list.refresh();
@@ -118,10 +105,6 @@ export default {
       this.outerScroller = scroller;
     },
 
-    /*onRefreshList() {   // TODO: 刷新数据
-      let that = this;
-      that.$refs.list.refreshDone();
-    },*/
 
     onLoadMore() {
       let that = this;
