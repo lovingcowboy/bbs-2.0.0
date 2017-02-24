@@ -227,7 +227,7 @@ export default {
     
   },
 
-  beforeMount () {
+  mounted () {
     this.mounted();
   },
 
