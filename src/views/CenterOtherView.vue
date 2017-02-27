@@ -78,6 +78,8 @@ import Services from '../services'
 import List from 'components/listview'
 import {uniq} from '../filters'
 import Tips from '../components/Tips.vue'
+import Loader from '../components/loader'
+
 export default {
   components: {
     Zheader,
@@ -109,6 +111,12 @@ export default {
       let that = this;
 
       params.dotype = 'profile';
+      params.notLoader = true;
+
+      Vue.http.options.before = function(request) {
+        that.loader && that.loader.show();
+      }
+
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
@@ -136,12 +144,15 @@ export default {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
           });
+
+          that.loader && that.loader.hide();
         }
       }, (response) => {
           Toast({
             'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
-          // console.log("fail")
+
+          that.loader && that.loader.hide();
       })
     },
 
@@ -150,6 +161,7 @@ export default {
 
       params.dotype = "thread";
       params.notLoader = true;  //不显示loading
+
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
@@ -167,12 +179,14 @@ export default {
           that.$refs.list.loadmore = +that.pager.cur_page < +that.pager.total_page;
             
           that.$refs.list.refresh();
+          that.loader && that.loader.hide();
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.list && that.$refs.list.refresh();
+          that.loader && that.loader.hide();
         }
       }, (response) => {
           Toast({
@@ -180,6 +194,7 @@ export default {
           });
           
           that.$refs.list && that.$refs.list.refresh();
+          that.loader && that.loader.hide();
       })
     },
     uiSetListMinHeight() {
@@ -216,6 +231,7 @@ export default {
     },
 
     init() {  //初始化调用
+      let that = this;
       this.params = {
         version: 4,
         module: 'memberother',
@@ -223,18 +239,20 @@ export default {
         page: 1
       }
 
-      this.getUserInfo(this.params);  //获取用户信息
+      that.getUserInfo(that.params);  //获取用户信息
 
-      this.uiSetListMinHeight();
+      that.uiSetListMinHeight();
 
       //当横屏时 重新计算最小高度 
       let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-      window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
+      window.addEventListener(resizeEvt, that.uiSetListMinHeight, false);
        // 重置状态
       that.dynamicList = [];
       that.userInfo = {};
       that.tipsConfig.noData = false;
-      this.$refs.list && this.$refs.list.myScroll.scrollTo(0, 0, 0);
+      that.$refs.list && that.$refs.list.myScroll.scrollTo(0, 0, 0);
+
+      that.loader = Loader(); //初始化loader
     }
     
   },
