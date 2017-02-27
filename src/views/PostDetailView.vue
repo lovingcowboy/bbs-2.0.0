@@ -12,7 +12,7 @@
     <div class="scroll" :class="{'scroll-active': isScrollActive}">
     <div class="content" >
     <list :config.once="ScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="detailList">
-      <div class="scroll-wrapper" slot="scrollContent" id="hotScroll">
+      <div class="scroll-wrapper" slot="scrollContent" id="hotScroll" @tap="onTapTagA">
       <div class="post-cont">
         <p class="p-title">{{thread.title}}</p>
         <p class="p-poster"><img :src="thread.avatar"><span>{{thread.author}}</span></p>
@@ -47,8 +47,8 @@
       </div>
       <div class="rm-cont" >
         <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
-          <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复({{thread.replies}})</a>
-          <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分({{thread.total_rate}})</a>
+          <div :class="[{'active': tabType === 0}, 'ft-btn']" @click="triggerTab(0)">回复({{thread.replies}})</div>
+          <div :class="[{'active': tabType === 1}, 'ft-btn']" @click="triggerTab(1)">评分({{thread.total_rate}})</div>
         </nav>
         <div class="rm">
           <ul class="reply-list rm-list" v-show="tabType === 0" @click="replyClick($event)" :style="{'min-height': replyListHeight + 'rem'}">
@@ -161,8 +161,8 @@
         </div>
       </div>
       <nav class="rm-tabs float-tabs" v-show="showFloat">
-        <a :class="[{'active': tabType === 0}]" @click="triggerTab(0)">回复({{thread.replies}})</a>
-        <a :class="[{'active': tabType === 1}]" @click="triggerTab(1)">评分({{thread.total_rate}})</a>
+        <div :class="[{'active': tabType === 0}, 'ft-btn']" @click="triggerTab(0)">回复({{thread.replies}})</div>
+        <div :class="[{'active': tabType === 1}, 'ft-btn']" @click="triggerTab(1)">评分({{thread.total_rate}})</div>
       </nav>
   </div>
 </template>
@@ -438,7 +438,7 @@ export default {
           avatar: this.thread.avatar,
           author: this.thread.author,
           message: this.thread.title,
-          // pid: this.thread.pid,
+          pid: this.thread.pid,
           tid: this.thread.tid,
           fid: this.thread.fid
         }
@@ -672,6 +672,97 @@ export default {
       console.info('onLoadMore-------')
       this.getPostData(this.replyData.curPage, true)
 
+    },
+    onTapTagA(e) {
+      //拦截a标签
+      let that = this
+      let target = e.target;
+      if (target.tagName.toLocaleLowerCase() !== 'a') return;
+      e.preventDefault();
+      // console.log("preventDefault2");
+      // let _url = $(e.currentTarget).attr("href"),
+      let _url = target.getAttribute('href'),
+        reg = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/,
+        regresult = reg.exec(_url),
+        result = {
+          "url": regresult[0],
+          "scheme": regresult[1],
+          "slash": regresult[2],
+          "host": regresult[3],
+          "port": regresult[4],
+          "path": regresult[5],
+          "query": regresult[6],
+          "hash": regresult[7]
+        };
+      // console.log(result);
+      //只有域名为tuandai.com的才能跳转
+      if (/[0-9.\-A-Za-z]+.tuandai.com$/.test(result.host)) {
+        if (result.host === "bbs.tuandai.com") { //若是bbs的就进行站内跳转，否则就跳出去
+          if (result.query) {
+            if (result.query.indexOf("mod=viewthread") != -1) { //帖子详情 http://bbs.tuandai.com/forum.php?mod=viewthread&tid=17222 tid=17222
+              let tid = that.getParam(result.query, "tid")
+              that.$router.push('/postdetail/' + tid)
+                // router.go({
+                //   name: 'postdetail',
+                //   params: {
+                //     'tid': tid
+                //   }
+                // });
+              return
+
+            } else if (result.query.indexOf("mod=redirect&goto=findpost") != -1) { //帖子详情  http://bbs.tuandai.com/forum. php?mod=redirect&goto=findpost&ptid=29385&pid=296863 tid=29385
+              let tid = that.getParam(result.query, "ptid");
+              that.$router.push('/postdetail/' + tid)
+              return;
+            } else if (result.query.indexOf("mod=forumdisplay") != -1) { //版块列表 http://bbs.tuandai.com/forum.php?mod=forumdisplay&fid=2  2代表版块id
+              let fid = that.getParam(result.query, "fid");
+              that.$router.push('/sessionlist/' + fid)
+              return;
+            }
+
+          } else {
+            // if(result.path.indexOf("space-uid") != -1  ) { //用户空间(touch没有对应的页面) 所以不跳转
+            //  return;
+            // }
+            let params = result.path.split("-");
+            if (params[0] == "forum") { //版块列表 http://bbs.tuandai.com/forum-2-1.html  2代表版块id
+              let fid = params[1];
+              that.$router.push('/sessionlist/' + fid)
+              return;
+            } else if (params[0] == "thread") { //帖子详情  http://bbs.tuandai.com/thread-25619-1-1.html tid = 25619
+              let tid = result.path.split("-")[1];
+              that.$router.push('/postdetail/' + tid)
+
+            }
+            //其他情况例如：用户空间，社区会员 touch没有 所以不跳转
+          }
+          // console.log(tid);
+          // return;
+          // router.go({
+          //    name: 'postdetail',
+          //    params: {
+          //      'tid': tid
+          //    }
+          //  });
+
+        } else {
+          window.location.href = _url;
+        }
+      }
+
+    },
+    getParam(str, key) {
+      let params = str.split("&");
+      let value = "";
+      for (let i = 0; i < params.length; i++) {
+        let arr = params[i].split("=");
+        console.log(arr);
+        if (arr[0] == key) {
+          value = arr[1];
+          break;
+        }
+      }
+      return value;
     }
   },
   beforeMount () {
@@ -688,7 +779,7 @@ export default {
   },
   mounted () {
     this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - Util.pxToPx(116))
-
+      
     // this.getPostData(1)
   }
 
