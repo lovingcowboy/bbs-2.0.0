@@ -510,6 +510,7 @@ export default {
     },
     showRule() {
       //显示发帖规则
+      window.location.href = 'https://bbs.tuandai.com/thread-103601-1-1.html'
     },
     addVoteFunc(data) {
       //添加投票
