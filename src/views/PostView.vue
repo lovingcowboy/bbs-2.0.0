@@ -521,7 +521,8 @@ export default {
       let that = this
       service.postData('/app/index.php', {
         module: 'forum',
-        action: 'forum_list'
+        action: 'forum_list',
+        type: 'post'
       }).then((response) => {
         let _body = response.body
         if (_body.code === '200' && _body.data) {
