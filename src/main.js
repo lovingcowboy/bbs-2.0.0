@@ -25,6 +25,7 @@ window.Bbsbridge = Bbsbridge
 
 Vue.use(Resource)
 
+
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
@@ -83,6 +84,8 @@ const app = new Vue({
 })
 
 app.$mount('#app')
+
+window.Vue = Vue
   // window.mySessionStorage = {}
 
 // new Vue({

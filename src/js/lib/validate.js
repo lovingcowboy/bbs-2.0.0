@@ -2,7 +2,7 @@
 import OpenAPI from '../../services/openapi.js';
 import service from '../../services'
 import Toast from '../../components/toast/index.js';
-import Vue from 'vue'
+// import Vue from 'vue'
 
 var Validate = {
 	getCookie: function(name) {
