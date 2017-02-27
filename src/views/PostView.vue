@@ -510,7 +510,9 @@ export default {
     },
     showRule() {
       //显示发帖规则
-      window.location.href = 'https://bbs.tuandai.com/thread-103601-1-1.html'
+      // window.location.href = 'https://bbs.tuandai.com/thread-103601-1-1.html'
+      var url = '/postdetail/103601'
+      this.$router.push(url)
     },
     addVoteFunc(data) {
       //添加投票
