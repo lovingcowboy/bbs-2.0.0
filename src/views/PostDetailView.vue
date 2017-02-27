@@ -640,7 +640,7 @@ export default {
       let that = this
       let postHeight = 0
       let postCont = document.querySelector('.post-cont') //帖子内容部分高度
-      let modifyNum = Util.pxToPx(30) //修正数值
+      let modifyNum = Util.pxToPx(20) //修正数值
       that.myScroller = scroller
       scroller.on('scroll', function() {
         // that.isScrolling = true
