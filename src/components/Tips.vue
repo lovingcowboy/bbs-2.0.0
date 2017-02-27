@@ -1,10 +1,10 @@
 <template>
-<section class="error-container" v-show="config.noData">
-    <div class="ec-cont">
+<!-- <section class="error-container" v-show="config.noData"> -->
+    <div class="ec-cont" v-show="config.noData">
         <i class="icon-pai-null"></i>
         <span class="ec-txt">{{config.text}}</span>
     </div>
-</section>
+<!-- </section> -->
 
 </template>
 <script>
@@ -34,12 +34,15 @@ export default {
     text-align: center;
     left: 0;
     top: 0;
+}
     .ec-cont {
         width: 100%;
+        // min-height: pxToRem(600px);
         position: absolute;
         left: 0;
         top: 50%;
         transform: translate(0, -55%);
+        text-align: center;
     }
     .icon-pai-null {
         @include background('../images/pai-null.png',
@@ -85,6 +88,5 @@ export default {
             box-shadow: 0px pxToRem(4px) pxToRem(10px) 0px rgba( 25, 166, 255, .2);
         }
     } */
-}
 
 </style>
