@@ -154,7 +154,7 @@ const router = new Router({
             })
         },
         meta: {
-            keepAlive: false
+            keepAlive: true
         }
     }, {
         path: '/user/myreply',
@@ -166,7 +166,7 @@ const router = new Router({
             })
         },
         meta: {
-            keepAlive: false
+            keepAlive: true
         }
     }, {
         path: '/user/mycollection',
@@ -178,7 +178,7 @@ const router = new Router({
             })
         },
         meta: {
-            keepAlive: false
+            keepAlive: true
         }
     }, {
         path: '/user/messagedetail/:id',
@@ -202,7 +202,7 @@ const router = new Router({
             })
         },
         meta: {
-            keepAlive: false
+            keepAlive: true
         }
     }, {
         path: '*',

@@ -18,7 +18,7 @@
         </div>
       </section>
     </ul>
-    <div class="default-ctn" v-show="!hasdata">暂无数据</div>
+    <!-- <div class="default-ctn" v-show="!hasdata">暂无数据</div> -->
 
     <!-- <section class="error-container" v-show="config.status === 0 || config.status === -1">
     <div class="ec-cont">

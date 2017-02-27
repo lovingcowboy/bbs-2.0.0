@@ -34,6 +34,7 @@
                     <div class="msg-body">{{item.message}}</div>
                   </div>
                 </div>
+                <tips :config="personTipsConfig"></tips>
               </div>
             </div>
           </list> 
@@ -51,6 +52,7 @@
                     </div>
                   </div>
               </div>
+              <tips :config="systemTipsConfig"></tips>
             </div>
             </div>
           </list>
@@ -66,12 +68,14 @@ import Toast from '../components/toast'
 import Services from '../services'
 import Validate from '../js/lib/validate.js'
 import List from 'components/listview'
-// import Util from '../js/Util.js'
+import {uniq} from '../filters'
+import Tips from '../components/Tips.vue'
 export default {
   components: {
     Zheader,
     Toast,
-    List
+    List,
+    Tips
   },
   data () {
     return {
@@ -94,7 +98,15 @@ export default {
       systemList: [],
       newpm: 0,
       newsystem: 0,
-      fisrtShowSysMsg: true
+      fisrtShowSysMsg: true,
+      personTipsConfig: {
+        noData: false,
+        text: '您还没有收到过个人消息哦！'
+      },
+      systemTipsConfig: {
+        noData: false,
+        text: '您还没有收到过系统消息哦！'
+      }
     }
   },
   methods: {
@@ -106,6 +118,7 @@ export default {
       this.msgListMinHeight = Util.pxToRemAdapt(bodyHeight) -
         (Util.pxToRemAdapt(headerHeight + tabHeight) + Util.pxToRem(20));
     },
+    
     onSwitchMsgList(e) { //切换消息类型 
       let target = e.currentTarget;
       let prevClass = target._prevClass;
@@ -147,7 +160,8 @@ export default {
           }
         }
     },
-    getPersonList(params) { //获取个人消息
+
+    getPersonList(params, isRefresh) { //获取个人消息列表
       let that = this;
 
       Services.postData('/app/index.php', params).then((response) => {
@@ -158,19 +172,19 @@ export default {
           that.newpm = data.newpm;
           // 记录系统消息未读数
           that.newsystem = data.newsystem; 
-
-          if(params.page == 1) { //刷新或者第一次加载数据
-            that.personList = data.list;
-          } else if(params.page > 1) { //加载更多数据
-            that.personList = that.personList.concat(data.list);
-          }
           
+          // 刷新数据
+          if(isRefresh == true)  that.personList = [];
+          that.personList = uniq.call(that, that.personList.concat(data.list), 'pmid');  //去重
+
+          that.personTipsConfig.noData = that.personList.length == 0;  //是否显示空数据状态
           //记录页数信息
           that.personPager = data.pager;
+
           if(!that.$refs.personlist) return;
           
           // 判断是否有加载更多
-          that.$refs.personlist.loadmore = Number(that.personPager.cur_page) < Number(that.personPager.total_page);
+          that.$refs.personlist.loadmore = +that.personPager.cur_page < +that.personPager.total_page;
               
           that.$refs.personlist.refresh();
         } else {
@@ -189,7 +203,7 @@ export default {
       })
     },
       
-    getSystemList(params) {  //获取系统消息
+    getSystemList(params, isRefresh) {  //获取系统消息列表
       let that = this;
 
       Services.postData('/app/index.php', params).then((response) => {
@@ -200,11 +214,12 @@ export default {
           that.newsystem = 0;
           // 记录个人消息未读数
           that.newpm = data.newpm; 
-          if(params.page == 1) { //刷新或者第一次加载数据
-            that.systemList = data.list;
-          } else if(params.page > 1) { //加载更多数据
-            that.systemList = that.systemList.concat(data.list);
-          }
+          
+          // 刷新数据
+          if(isRefresh == true)  that.systemList = [];
+          that.systemList = uniq.call(that, that.systemList.concat(data.list), 'id');  //去重
+
+          that.systemTipsConfig.noData = that.systemList.length == 0;  //是否显示空数据状态
 
           //记录页数信息
           that.systemPager = data.pager;
@@ -212,7 +227,7 @@ export default {
           if(!that.$refs.systemlist) return;
           
           // 判断是否有加载更多
-          that.$refs.systemlist.loadmore = Number(that.systemPager.cur_page) < Number(that.systemPager.total_page);
+          that.$refs.systemlist.loadmore = +that.systemPager.cur_page < +that.systemPager.total_page;
               
           that.$refs.systemlist.refresh();
         } else {
@@ -234,22 +249,23 @@ export default {
     onRefreshList() {   // 刷新数据
       if(this.isShowProsonMsg) { //个人消息
         this.personParams.page  = 1;
-        this.getPersonList(this.personParams);  
+        this.getPersonList(this.personParams, true);  
       } else {
         this.systemParams.page = 1;
-        this.getSystemList(this.systemParams);
+        this.getSystemList(this.systemParams, true);
       }
     },
 
     onLoadMore() {
       if(this.isShowProsonMsg) { //个人消息
-        this.personParams.page  =  Number(this.personPager.cur_page) + 1;;
+        this.personParams.page  =  +this.personPager.cur_page + 1;;
         this.getPersonList(this.personParams);  
       } else {
-        this.systemParams.page  =  Number(this.systemPager.cur_page) + 1;;
+        this.systemParams.page  =  +this.systemPager.cur_page + 1;;
         this.getSystemList(this.systemParams);
       }
     },
+
     goMessageDetail(e) {
       let obj = Util.getElemetByTarget(e.target, 'message-person-item', 'scroll-wrapper');
        
@@ -264,6 +280,7 @@ export default {
       this.$router.push(url)
     }
   },
+
   mounted() {
     let that = this;
     this.uiSetListMinHeight();
@@ -272,27 +289,28 @@ export default {
     let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
     window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
   },
+
   beforeMount () {
-    this.personParams = {
+    let that = this;
+
+    that.personParams = {
       version: 4,
       module: 'mypm',
       page:  1,
 
     }
 
-    this.systemParams = {
+    that.systemParams = {
       version: 4,
       module: 'system_notice',
       page:  1,
 
     }
-    // this.getPersonList(this.personParams) 
-    let that = this;
+   
     let uid = Util.getSessionStorage('uid');
     let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
     if (!uid && !isLogined_cookie) {
       Validate.getLoginInfo(function(result) {
-        // console.info('result---', result)
         if (result.isLogined === 1) {
           that.getPersonList(that.personParams) 
         } else {

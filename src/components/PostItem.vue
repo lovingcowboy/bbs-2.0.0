@@ -46,6 +46,7 @@ export default {
   background-color: $color-white;
   padding-left: pxToRem(30px);
   font-size: 0;
+  position: relative;
   // margin-top: pxToRem(20px);
   &>li:not(:last-child) {
     border-bottom: 1px solid $border-color;

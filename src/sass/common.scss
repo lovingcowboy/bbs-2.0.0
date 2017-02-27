@@ -488,6 +488,13 @@ input::-webkit-inner-spin-button {
     &.refreshing {
         top: 0;
     }
+    .scroller {
+        min-height: 100%;
+    }
+    .scroll-wrapper {
+        position: inherit;
+        min-height: 100%;
+    }
 }
 
 .pull-el {

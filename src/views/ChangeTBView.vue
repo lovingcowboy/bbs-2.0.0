@@ -115,7 +115,7 @@ export default {
     },
 
     onExchange() {
-      let exchangeNum = Number(this.exchangeNum);
+      let exchangeNum = +this.exchangeNum;
       if(isNaN(exchangeNum) || exchangeNum === 0 || exchangeNum % 3 !== 0) {
         return;
       }

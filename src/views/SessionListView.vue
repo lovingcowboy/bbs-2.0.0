@@ -79,16 +79,17 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
-// import Util from '../js/Util.js'
 import List from "components/listview"
 import Services from '../services'
 import {uniq} from '../filters';
+import Tips from '../components/Tips.vue'
 export default {
   components: {
     Zheader,
     Toast,
     PostItem,
-    List
+    List,
+    Tips
   },
   data () {
     return {
@@ -109,6 +110,18 @@ export default {
         mutationObserver: true,
         refresh: true,
         loadmore: true
+      },
+      newPostTipsConfig: {
+        noData: false,
+        text: '这里空空如也'
+      },
+      newReplyTipsConfig: {
+        noData: false,
+        text: '这里空空如也'
+      },
+      essenceTipsConfig: {
+        noData: false,
+        text: '这里空空如也'
       }
     }
   },
@@ -118,7 +131,7 @@ export default {
     }
   },
   methods: {
-    getPostList(params, type) { //获取帖子列表 type为帖子类型
+    getPostList(params, type, isRefresh) { //获取帖子列表 type为帖子类型
       let that = this;
   
       let pager = null; //记录页面对象
@@ -131,7 +144,7 @@ export default {
           that.session = data.forum.name;
           //记录页数信息
           pager = data.pager;
-          if(Number(pager.cur_page) > Number(pager.total_page)) { //超过页叔
+          if(+pager.cur_page > +pager.total_page) { //超过页叔
             return false; 
           }
 
@@ -158,32 +171,33 @@ export default {
               postList = that.essenceList;
               break;
           }
+          // 刷新数据
+          if(isRefresh == true) postList = [];
 
-          if(params.page == 1) { //刷新或者第一次加载数据
-              postList = data.list;
-          } else {
-             postList =  data.list.concat(postList);
-          }
+          postList =  postList.concat(data.list);
           
           switch(type) {
             case 'newPost':
-              that.newPostList = postList;
+              that.newPostList = uniq.call(that, postList, 'tid'); //去重
               that.newPostPager = pager;
+              that.newPostTipsConfig.noData = that.newPostList.length == 0;  //是否显示空数据状态
               break;
             case 'newReply':
-              that.newReplyList = postList;
+              that.newReplyList = uniq.call(that, postList, 'tid'); //去重;
               that.newReplyPager = pager;
+              that.newReplyTipsConfig.noData = that.newReplyList.length == 0;  //是否显示空数据状态
               break;
             case 'essence':
-              that.essenceList = postList;
+              that.essenceList = uniq.call(that, postList, 'tid'); //去重;
               that.essencePager = pager;
+              that.essenceTipsConfig.noData = that.essenceList.length == 0;  //是否显示空数据状态
               break;
           }
           
           if(!that.$refs.list) return;
 
           // 判断是否有加载更多
-          that.$refs.list.loadmore = Number(pager.cur_page) < Number(pager.total_page); 
+          that.$refs.list.loadmore = +pager.cur_page < +pager.total_page; 
 
           that.$refs.list.refresh();
         } else {
@@ -220,7 +234,7 @@ export default {
       
       if(!that.$refs.list || !pager) return;
        // 判断是否有加载更多
-      that.$refs.list.loadmore = Number(pager.cur_page) < Number(pager.total_page); 
+      that.$refs.list.loadmore = +pager.cur_page < +pager.total_page; 
 
       that.$refs.list.refresh();
     },
@@ -234,7 +248,6 @@ export default {
       if(!(prevClass.indexOf('btn-newpost') !== -1 || prevClass.indexOf('btn-newreply') !== -1 )) { 
         return;
       }
-      
 
       if(that.showFloat) {  //置顶时
         if(!that.isListNewpostActive) { //因为isListNewpostActive延迟切换，所以为切换前逻辑
@@ -291,7 +304,7 @@ export default {
 
         if(!that.$refs.list || !pager) return;
          // 判断是否有加载更多
-        that.$refs.list.loadmore = Number(pager.cur_page) < Number(pager.total_page); 
+        that.$refs.list.loadmore = +pager.cur_page < +pager.total_page; 
 
         that.$refs.list.refresh();
       }, 10)
@@ -339,15 +352,26 @@ export default {
 
     onRefreshList() { //刷新数据
       let that = this;
-     
-      let type =  that.isListAllActive ? that.isListNewpostActive ? 'newPost' : 'newReply' : 'essence';
-
-      let params = that.isListAllActive ? that.isListNewpostActive ? that.newPostParams :  that.newReplyParams : that.essenceParams;
       
+      let type = "";
+      let params = null;
+      if(that.isListAllActive) {
+        if(that.isListNewpostActive) {
+          type = 'newPost';
+          params = that.newPostParams;
+        } else {
+          type = 'newReply';
+          params = that.newReplyParams;
+        }
+      } else {
+        type = 'essence';
+        params = that.essenceParams;
+      }
+
       params.page = 1;
 
       // 刷新当前版块数据
-      that.getPostList(params, type);
+      that.getPostList(params, type, true);
     },
 
     onLoadMore() { //加载更多数据
@@ -373,7 +397,7 @@ export default {
         pager = that.essencePager;
       }
 
-      params.page = Number(pager.cur_page) + 1;;
+      params.page = +pager.cur_page + 1;;
 
       // 加载更多当前版块数据
       that.getPostList(params, type);
@@ -389,44 +413,62 @@ export default {
 
       let url = '/postdetail/' + id
       this.$router.push(url)
+    },
+    init() {
+      let that = this
+
+      that.newPostParams = { //最新发表列表参数
+        version: 4,
+        module: 'forumdisplay',
+        fid: that.$route.params.fid,
+        filter: 'author',
+        orderby: "dateline",
+        page: 1
+      };
+
+      that.newReplyParams = { //最新回复列表参数
+        version: 4,
+        module: 'forumdisplay',
+        fid: that.$route.params.fid,
+        filter: 'lastpost',
+        orderby: 'lastpost',
+        page: 1
+      };
+
+      that.essenceParams = { //精华列表参数
+        version: 4,
+        module: 'forumdisplay',
+        fid: that.$route.params.fid,
+        filter: 'digest',
+        digest: 1,
+        page: 1
+      };
+      // 获取版块最新发表
+      that.getPostList(that.newPostParams, "newPost");
+
+      // 重置状态
+      that.showFloat = false;
+      that.isListAllActive = true;
+      that.isListNewpostActive = true;
+      that.topList = [];
+      that.newPostList = [];
+      that.newReplyList = [];
+      that.essenceList = [];
+      that.newPostTipsConfig.noData = false;
+      that.newReplyTipsConfig.noData = false;
+      that.essenceTipsConfig.noData = false;
+      that.$refs.list && that.$refs.list.myScroll.scrollTo(0, 0, 0);
     }
   },
-  mounted() {
-   
-  },
-  beforeMount () {
-    let that = this
-
-    that.newPostParams = { //最新发表列表参数
-      version: 4,
-      module: 'forumdisplay',
-      fid: that.$route.params.fid,
-      filter: 'author',
-      orderby: "dateline",
-      page: 1
-    };
-
-    that.newReplyParams = { //最新回复列表参数
-      version: 4,
-      module: 'forumdisplay',
-      fid: that.$route.params.fid,
-      filter: 'lastpost',
-      orderby: 'lastpost',
-      page: 1
-    };
-
-    that.essenceParams = { //精华列表参数
-      version: 4,
-      module: 'forumdisplay',
-      fid: that.$route.params.fid,
-      filter: 'digest',
-      digest: 1,
-      page: 1
-    };
-    // 获取版块最新发表
-    that.getPostList(that.newPostParams, "newPost");
-    
+  
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if(from && from.name !== 'postdetail') {  //不是从帖子详情跳转回来
+        vm.init();
+      }
+    })
   }
+  
   
 }
 </script>

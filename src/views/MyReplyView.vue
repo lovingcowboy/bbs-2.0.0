@@ -16,6 +16,7 @@
               <div class="line02 reply-origin">原贴：{{item.subject}}</div>
               <div class="line03 reply-time" v-html='item.dateline'></div>
             </div>
+            <tips :config="tipsConfig"></tips>
           </div>
         </list> 
       </div>
@@ -29,12 +30,14 @@ import Toast from '../components/toast'
 import Services from '../services'
 import Validate from '../js/lib/validate.js'
 import List from 'components/listview'
-// import Util from '../js/Util.js'
+import {uniq} from '../filters'
+import Tips from '../components/Tips.vue'
 export default {
   components: {
     Zheader,
     Toast,
-    List
+    List,
+    Tips
   },
   data () {
     return {
@@ -45,7 +48,11 @@ export default {
         refresh: false,
         loadmore: true
       },
-      myReplyList: []
+      myReplyList: [],
+      tipsConfig: {
+        noData: false,
+        text: '您还没有发表过回复哦！'
+      }
     }
   },
   filters: {
@@ -63,17 +70,18 @@ export default {
         if (_body.code === '200') {
           let data = _body.data
 
-        
-          that.myReplyList = that.myReplyList.concat(data.list);
-         
+          that.myReplyList = uniq.call(that, that.myReplyList.concat(data.list), 'tid');  //去重
+
+          that.tipsConfig.noData = that.myReplyList.length == 0;  //是否显示空数据状态
+
           //记录页数信息
           that.pager = data.pager;
+
           if(!that.$refs.list) return;
 
           // 判断是否有加载更多
-          that.$refs.list.loadmore = Number(that.pager.cur_page) < Number(that.pager.total_page);
+          that.$refs.list.loadmore = +that.pager.cur_page < +that.pager.total_page;
              
-          
           that.$refs.list.refresh();
           
         } else {
@@ -94,9 +102,10 @@ export default {
 
     onLoadMore() {
       let that = this;
-      this.params.page = Number(this.pager.cur_page) + 1;
+      this.params.page = +this.pager.cur_page + 1;
       this.getPostList(this.params);
     },
+
     goPostDetail(e) {
       let obj = Util.getElemetByTarget(e.target, 'reply-item', 'scroll-wrapper');
        
@@ -108,39 +117,49 @@ export default {
 
       let url = '/postdetail/' + id
       this.$router.push(url)
-    }
-  },
-  beforeMount () {
-    this.params = {
+    },
+
+    init() {
+      let that = this;
+      
+      this.params = {
         version: 4,
         module: 'mythread',
         type: 'reply',
         page: 1,
-
       }
-      // this.getPostList(this.params)
-    let that = this;
-    let uid = Util.getSessionStorage('uid');
-    let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
-    if (!uid && !isLogined_cookie) {
-      Validate.getLoginInfo(function(result) {
-        // console.info('result---', result)
-        if (result.isLogined === 1) {
-          that.getPostList(this.params)
-        } else {
-          that.$router.push('/main');
-          setTimeout(function() {
-            Toast('请登录！');
-          }, 1000);
-        }
+      
+      let uid = Util.getSessionStorage('uid');
+      let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
+      if (!uid && !isLogined_cookie) {
+        Validate.getLoginInfo(function(result) {
+          if (result.isLogined === 1) {
+            that.getPostList(this.params)
+          } else {
+            that.$router.push('/main');
+            setTimeout(function() {
+              Toast('请登录！');
+            }, 1000);
+          }
+        })
+      } else {
+        that.getPostList(this.params)
+      }
 
-      })
-    } else {
-      that.getPostList(this.params)
+      // 重置状态
+      that.myReplyList = [];
+      that.tipsConfig.noData = false;
+      that.$refs.list && that.$refs.list.myScroll.scrollTo(0, 0, 0);
     }
+  },
+
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if(from && from.name !== 'postdetail') {  //不是从帖子详情跳转回来
+        vm.init();
+      }
+    })
   }
-  
-  
 }
 </script>
 

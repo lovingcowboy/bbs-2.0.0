@@ -80,7 +80,7 @@ export default {
         that.formhash = _body.data.formhash; //发送消息验证使用
         if (_body.code === '200') {
           let data = _body.data;
-          if(Number(data.pager.cur_page) > Number(data.pager.total_page)) { //超过页叔
+          if(+data.pager.cur_page > +data.pager.total_page) { //超过页叔
             return false; 
           }
           //记录页数信息，每隔30s拉取数据的页数不记录
@@ -105,9 +105,9 @@ export default {
           if(!that.$refs.msglist) return;
 
           // 判断是否有加载更多
-          that.$refs.msglist.loadmore = Number(that.pager.cur_page) - 1 >= Number(that.pager.next);
+          that.$refs.msglist.loadmore = +that.pager.cur_page - 1 >= +that.pager.next;
              
-          let isScrollToEnd = Number(that.pager.cur_page) == Number(that.pager.total_page) ? true : false; //在首次加载则滑动到底部
+          let isScrollToEnd = +that.pager.cur_page == +that.pager.total_page ? true : false; //在首次加载则滑动到底部
           if(isRefresh)  //没拉取数据时，不刷新数据
             that.$refs.msglist.refresh(isScrollToEnd);
 
@@ -191,7 +191,7 @@ export default {
 
     onLoadMore() {
       let that = this;
-      this.params.page = Number(this.pager.cur_page) - 1;
+      this.params.page = +this.pager.cur_page - 1;
       this.getMessageDetail(this.params);
     },
 

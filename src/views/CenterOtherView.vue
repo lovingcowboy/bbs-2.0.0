@@ -59,9 +59,11 @@
                     <span>{{item.dateline}}</span>
                   </div>
                 </post-item>
+                <tips :config="tipsConfig"></tips>
               </ul>
             </div>
           </div>
+          
         </list> 
       </div>
     </div>
@@ -74,13 +76,15 @@ import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import Services from '../services'
 import List from 'components/listview'
-import {uniq} from '../filters';
+import {uniq} from '../filters'
+import Tips from '../components/Tips.vue'
 export default {
   components: {
     Zheader,
     Toast,
     List,
-    PostItem
+    PostItem,
+    Tips
   },
   data () {
     return {
@@ -93,7 +97,11 @@ export default {
       },
       userInfo: {},
       dynamicList: [],
-      dyListMinHeight: 0
+      dyListMinHeight: 0,
+      tipsConfig: {
+        noData: false,
+        text: '这位团粉很低调'
+      }
     }
   },
   methods: {
@@ -149,13 +157,14 @@ export default {
           
           that.dynamicList = that.dynamicList.concat(data.list);
           // that.dynamicList = uniq.call(that, that.dynamicList.concat(data.list), 'pid');  //去重
+          that.tipsConfig.noData = that.dynamicList.length == 0;  //是否显示空数据状态
 
           that.pager = data.pager;
           
           if(!that.$refs.list) return;
           
           // 判断是否有加载更多
-          that.$refs.list.loadmore = Number(that.pager.cur_page) < Number(that.pager.total_page);
+          that.$refs.list.loadmore = +that.pager.cur_page < +that.pager.total_page;
             
           that.$refs.list.refresh();
         } else {
@@ -175,15 +184,16 @@ export default {
     },
     uiSetListMinHeight() {
       let bodyHeight = Util.getElHeight('body');  //获取最大可视高度
-      let headerHeight = Util.getElHeight('.contetn-header');  //获取头部高度
-      // debugger
+      let headerHeight =  Util.getElHeight('#header');  //获取头部高度
+      let contentHeaderHeight = Util.getElHeight('.contetn-header');  //获取内容头部高度
+
       this.dyListMinHeight = Util.pxToRemAdapt(bodyHeight) -
-        (Util.pxToRemAdapt(headerHeight) + Util.pxToRem(20));
+        (Util.pxToRemAdapt(headerHeight) + Util.pxToRemAdapt(contentHeaderHeight) + Util.pxToRem(20));
     },
 
     onLoadMore() {  //加载更多
       let that = this;
-      this.params.page = Number(this.pager.cur_page) + 1;
+      this.params.page = +this.pager.cur_page + 1;
       this.getDynamicList(this.params);
     },
 
@@ -212,8 +222,7 @@ export default {
         uid: this.$route.params.id,
         page: 1
       }
-      
-      this.dynamicList = [];
+
       this.getUserInfo(this.params);  //获取用户信息
 
       this.uiSetListMinHeight();
@@ -221,14 +230,13 @@ export default {
       //当横屏时 重新计算最小高度 
       let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
       window.addEventListener(resizeEvt, this.uiSetListMinHeight, false);
-      
+       // 重置状态
+      that.dynamicList = [];
+      that.userInfo = {};
+      that.tipsConfig.noData = false;
       this.$refs.list && this.$refs.list.myScroll.scrollTo(0, 0, 0);
     }
     
-  },
-
-  mounted () {
-    this.init();
   },
 
   beforeRouteEnter (to, from, next) {
