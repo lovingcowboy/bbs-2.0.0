@@ -444,6 +444,7 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           window.history.back()
+          Util.setSessionStorage('reply', '')
         } else {
           let msg = '回复失败'
           if (_body.message) {

@@ -438,7 +438,7 @@ export default {
           avatar: this.thread.avatar,
           author: this.thread.author,
           message: this.thread.title,
-          pid: this.thread.pid,
+          pid: '',
           tid: this.thread.tid,
           fid: this.thread.fid
         }

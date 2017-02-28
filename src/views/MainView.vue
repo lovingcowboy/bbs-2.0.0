@@ -381,7 +381,8 @@ export default {
         'version': 4,
         'module': 'forum',
         'action': 'index_top',
-        'v_token': loginToken
+        'v_token': loginToken,
+        'notLoader': false
       }).then((response) => {
         console.info('getHeadData----', response)
         let _body = response.body
@@ -398,11 +399,13 @@ export default {
             }
           } else {
             that.userInfo.nickname = '欢迎来到团粉圈~'
+            that.isLogin = false
           }
           if (that.userInfo.is_sign === '1') {
             that.isSigned = true
           }
         } else {
+          that.isLogin = false
           let msg = '请求失败，请稍后重试'
           if (_body.message) {
             msg = _body.message
@@ -412,6 +415,7 @@ export default {
           })
         }
       }, (response) => {
+        that.isLogin = false
         console.info('2222', response)
       })
 
@@ -486,7 +490,7 @@ export default {
               }*/
             } else {
               // that.newList = that.newList.concat(data.list)
-              that.newList = uniq(that.newList.concat(data.list), "tid");  //去重
+              that.newList = uniq(that.newList.concat(data.list), "pid");  //去重
               that.newScrollConfig.status = 1
             }
             that.$refs.newList.refresh()
