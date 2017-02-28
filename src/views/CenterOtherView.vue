@@ -103,19 +103,18 @@ export default {
       tipsConfig: {
         noData: false,
         text: '这位团粉很低调'
-      }
+      },
+      isGetInfoDone: false,
+      isGetListDone: false
     }
   },
   methods: {
     getUserInfo(params) { //获得用户基本信息
       let that = this;
-
       params.dotype = 'profile';
-      params.notLoader = true;
 
-      Vue.http.options.before = function(request) {
-        that.loader && that.loader.show();
-      }
+      params.notLoader = true;
+      that.loader && that.loader.show();
 
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
@@ -138,29 +137,34 @@ export default {
           } else {  //没有版块
             that.userInfo.level_text = 'Lv.' + data.info.grouplevel + ' ' + data.info.grouptitle;
           }
+          
+          that.isGetListDone && that.loader && that.loader.hide();  //判断loader是否可隐藏
+          that.isGetInfoDone = true;  //设置请求已完成
 
-          that.getDynamicList(params);  //获取TA的动态
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
           });
 
-          that.loader && that.loader.hide();
+          that.isGetListDone && that.loader && that.loader.hide();  //判断loader是否可隐藏
+          that.isGetInfoDone = true;  //设置请求已完成
         }
       }, (response) => {
           Toast({
             'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
 
-          that.loader && that.loader.hide();
+          that.isGetListDone && that.loader && that.loader.hide();  //判断loader是否可隐藏
+          that.isGetInfoDone = true;  //设置请求已完成
       })
     },
 
     getDynamicList(params) {  //获取TA的动态
       let that = this;
+      params.dotype = 'thread';
 
-      params.dotype = "thread";
-      params.notLoader = true;  //不显示loading
+      params.notLoader = true;
+      that.loader && that.loader.show();
 
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
@@ -180,13 +184,18 @@ export default {
             
           that.$refs.list.refresh();
           that.loader && that.loader.hide();
+          
+          that.isGetInfoDone && that.loader && that.loader.hide();  //判断loader是否可隐藏
+          that.isGetListDone = true;  //设置请求已完成
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
           });
           
           that.$refs.list && that.$refs.list.refresh();
-          that.loader && that.loader.hide();
+
+          that.isGetInfoDone && that.loader &&  that.loader.hide(); //判断loader是否可隐藏
+          that.isGetListDone = true;  //设置请求已完成
         }
       }, (response) => {
           Toast({
@@ -194,7 +203,9 @@ export default {
           });
           
           that.$refs.list && that.$refs.list.refresh();
-          that.loader && that.loader.hide();
+
+          that.isGetInfoDone && that.loader &&  that.loader.hide(); //判断loader是否可隐藏
+          that.isGetListDone = true;  //设置请求已完成
       })
     },
     uiSetListMinHeight() {
@@ -207,8 +218,8 @@ export default {
     },
 
     onLoadMore() {  //加载更多
-      let that = this;
       this.params.page = +this.pager.cur_page + 1;
+      this.isGetListDone = false;
       this.getDynamicList(this.params);
     },
 
@@ -232,6 +243,9 @@ export default {
 
     init() {  //初始化调用
       let that = this;
+
+      that.loader = Loader(); //初始化loader
+
       this.params = {
         version: 4,
         module: 'memberother',
@@ -240,19 +254,21 @@ export default {
       }
 
       that.getUserInfo(that.params);  //获取用户信息
+      that.getDynamicList(that.params);  //获取TA的动态
 
       that.uiSetListMinHeight();
 
       //当横屏时 重新计算最小高度 
       let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
       window.addEventListener(resizeEvt, that.uiSetListMinHeight, false);
-       // 重置状态
+
+      // 重置状态
+      that.isGetInfoDone = false;
+      that.isGetListDone = false;
       that.dynamicList = [];
       that.userInfo = {};
       that.tipsConfig.noData = false;
       that.$refs.list && that.$refs.list.myScroll.scrollTo(0, 0, 0);
-
-      that.loader = Loader(); //初始化loader
     }
     
   },
