@@ -255,18 +255,28 @@
     margin: 0 pxToRem(10px);
     background-repeat: no-repeat, no-repeat;
     background-size: pxToRem(270px) pxToRem(160px), 100% 100%;
-    // background-image: url('../images/r-bg.png');
-    // background-repeat: no-repeat;
-    // background-size: pxToRem(270px) pxToRem(160px);
     background-position: center bottom, 0 0;
+    vertical-align: middle;
+    padding: pxToRem(20px);
+    position: relative;
     span {
       width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      // padding-bottom: pxToRem(20px);
+      // height: 100%;
+      // display: flex;
+      // flex-direction: column;
+      // align-items: center;
+      // justify-content: center;
+      white-space: normal;
+      line-height: 120%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
     }
   }
 }
