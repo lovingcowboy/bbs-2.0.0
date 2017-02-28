@@ -135,9 +135,7 @@ export default {
 
     this.onChangeTB(this.params);
     let that = this;
-    let uid = Util.getSessionStorage('uid');
-    let isLogined_cookie = Validate.getCookie('voHF_b718_auth');
-    if (!uid && !isLogined_cookie) {
+    if (!Validate.checkLogin()) {
       Validate.getLoginInfo(function(result) {
         // console.info('result---', result)
         if (result.isLogined === 1) {

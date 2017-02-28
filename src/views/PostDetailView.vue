@@ -363,9 +363,7 @@ export default {
       let that = this
       if (obj) {
         let type = obj.dataset.type
-        let uid = Util.getSessionStorage('uid')
-        let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
-        if (uid || isLogined_cookie) {
+        if (Validate.checkLogin()) {
           if (type === 'reply') {
             //回复
             that.goReply()
@@ -767,9 +765,9 @@ export default {
   },
   beforeMount () {
     let that = this;
-    let uid = Util.getSessionStorage('uid')
-    let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
-    if (!uid && !isLogined_cookie) {
+    // let uid = Util.getSessionStorage('uid')
+    // let isLogined_cookie = Validate.getCookie('voHF_b718_auth')
+    if (!Validate.checkLogin()) {
       Validate.getLoginInfo(function(result) {
        that.getPostData(1)
       })

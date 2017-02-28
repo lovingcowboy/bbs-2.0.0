@@ -432,9 +432,9 @@ export default {
 
     let that = this
     this.loader = Loader()
-    let uid = Util.getSessionStorage('uid')
-    let isLogined_cookie = Validate.getCookie('voHF_2132_auth')
-    if (!uid && !isLogined_cookie) {
+   /* let uid = Util.getSessionStorage('uid')
+    let isLogined_cookie = Validate.getCookie('voHF_2132_auth')*/
+    if (!Validate.checkLogin()) {
       Validate.getLoginInfo(function(result) {
         // console.info('result---', result)
         if(result.isLogined === 1) {

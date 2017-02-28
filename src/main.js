@@ -48,26 +48,29 @@ Vue.http.interceptors.push((request, next) => {
   })
 })
 router.beforeEach((to, from, next) => {
-  // console.info('to---', to)
-  var titleParams = {
-    titleContent: '团粉圈',
-    rightbuttonVisible: false,
-    rightbuttonContent: '',
-    rightbuttonTyppe: 1
-  };
-  if (to.name === 'postdetail' || to.name === 'reply') {
-    titleParams.titleContent = '详情'
-  } else if (to.name === 'mark') {
-    titleParams.titleContent = '评分'
-  } else if (to.name === 'post') {
-    titleParams.titleContent = '发帖'
-  }
-  Bbsbridge.appBbsLifeHook(null, null, function() {
-    // console.info("appbbs---------");
+  if (filters.isApp()) {
+    var titleParams = {
+      titleContent: '团粉圈',
+      rightbuttonVisible: false,
+      rightbuttonContent: '',
+      rightbuttonTyppe: 1
+    };
+    if (to.name === 'postdetail' || to.name === 'reply') {
+      titleParams.titleContent = '详情'
+    } else if (to.name === 'mark') {
+      titleParams.titleContent = '评分'
+    } else if (to.name === 'post') {
+      titleParams.titleContent = '发帖'
+    }
+    /* Bbsbridge.appBbsLifeHook(null, null, function() {
+       Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
+         console.info('setTitleComponent--------', data)
+       });
+     });*/
     Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
       console.info('setTitleComponent--------', data)
     });
-  });
+  }
   loader.show()
   next()
 })

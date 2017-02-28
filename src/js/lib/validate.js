@@ -34,6 +34,12 @@ var Validate = {
 			return returnValue;
 		}
 	},
+	checkLogin: function() {
+		let uid = Util.getSessionStorage('uid')
+		let isLogined_cookie = Validate.getCookie('voHF_2132_auth') //测试服务器
+		// let isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
+		return uid || isLogined_cookie
+	},
 	requesting: false,
 	bbsAppLogin: function(loginToken, callback) {
 		var me = this;
