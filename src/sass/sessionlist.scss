@@ -157,3 +157,24 @@
         }
     }
 }
+.post-add {
+  border-radius: 50%;
+  background-image: linear-gradient(0deg, rgb(25,166,255) 0%, rgb(40,201,255) 100%);
+  width: pxToRem(90px);
+  height: pxToRem(90px);
+  z-index: 100;
+  opacity: 0.8;
+  box-shadow: 0px pxToRem(4px) pxToRem(10px) 0px rgba( 29, 194, 255, .35);
+  position: absolute;
+  right: pxToRem(30px);
+  bottom: pxToRem(40px);
+  &:before {
+    content: "";
+    @include background('../images/edit-white.png', 38px, 44px);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: pxToRem(-19px);
+    margin-top: pxToRem(-22px);
+  }
+}

@@ -72,6 +72,7 @@
         </div>
       </div>
     </div>
+    <i class="post-add" @click="goPost();"></i>
   </div>
 </template>
 
@@ -83,6 +84,7 @@ import List from "components/listview"
 import Services from '../services'
 import {uniq} from '../filters';
 import Tips from '../components/Tips.vue'
+import Validate from '../js/lib/validate.js'
 export default {
   components: {
     Zheader,
@@ -402,6 +404,7 @@ export default {
       // 加载更多当前版块数据
       that.getPostList(params, type);
     },
+
     goPostDetail(e) { //帖子详情
       let obj = Util.getElemetByTarget(e.target, 'post-row', 'scroll-wrapper');
 
@@ -414,6 +417,15 @@ export default {
       let url = '/postdetail/' + id
       this.$router.push(url)
     },
+    
+    goPost() {  //跳转到发表帖子
+      if(!Validate.checkLogin()) {
+        Validate.openLogin()
+      } else {
+        this.$router.push('/post')
+      }
+    },
+
     init() {
       let that = this
 
@@ -458,6 +470,9 @@ export default {
       that.newReplyTipsConfig.noData = false;
       that.essenceTipsConfig.noData = false;
       that.$refs.list && that.$refs.list.myScroll.scrollTo(0, 0, 0);
+      
+      // 获取登录状态
+      Validate.checkLogin() || Validate.getLoginInfo();
     }
   },
   
