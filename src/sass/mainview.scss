@@ -135,18 +135,21 @@
   padding-left: pxToRem(30px);
   .tab {
     font-size: pxToRem($font-size-normal);
-    width: pxToRem(130px);
+    // width: pxToRem(130px);
+    width: pxToRem(70px);
+    margin-right: pxToRem(70px);
   }
   .active {
     color: $txt-color-blue;
     position: relative;
     &:before {
       content: "";
-      width: pxToRem(60px);
+      // width: pxToRem(60px);
+      width: 100%;
       height: 0;
       border-bottom: pxToRem(2px) solid $txt-color-blue;
       position: absolute;
-      left: pxToRem(35px);
+      left: 0;
       bottom: 0;
     }
   }

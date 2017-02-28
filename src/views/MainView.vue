@@ -606,6 +606,10 @@ export default {
         param.action = 'digest_threads'
       }
       this.getListData(param)
+    },
+    calculateHeight() {
+      //动态计算列表容器高度
+      this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop - document.querySelector('.header-bar').clientHeight);
     }
   },
   activated() {
@@ -622,16 +626,20 @@ export default {
   },
   mounted() {
     let that = this
-    //动态计算列表容器高度
-    // this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
-    this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop -document.querySelector('.header-bar').clientHeight);
+      /*//动态计算列表容器高度
+      // this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
+      this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop -document.querySelector('.header-bar').clientHeight);*/
+    that.calculateHeight()
+    //当横屏时 重新计算最小高度 
+    let resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+    window.addEventListener(resizeEvt, that.calculateHeight, false);
     let param = {
-      version: 4,
-      module: 'forum',
-      action: 'hot_threads',
-      page: 1
-    }
-    // that.getHeadData()
+        version: 4,
+        module: 'forum',
+        action: 'hot_threads',
+        page: 1
+      }
+      // that.getHeadData()
     that.getListData(param)
   }
 
