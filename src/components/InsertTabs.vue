@@ -532,7 +532,7 @@ export default {
     }
   }
   .img-add {
-    border: pxToRem(2px) dashed $txt-color-grey;
+    border: 2px dashed $txt-color-grey;
     font-size: pxToRem(60px);
     color: $txt-color-grey;
     background-image: url('../images/icon-plus.png');
