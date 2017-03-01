@@ -1,11 +1,5 @@
 <template>
 <li class="post-row c-event" data-type="itemclick" :data-id="data.tid">
-  <!-- <div class="item-title">
-    <span @click="onUserClick">
-      <img src="../images/pai.png"><font>{{data.name}}</font>{{data.act}}
-    </span>
-    <span>{{data.time}}</span>
-  </div> -->
   <slot name="itemhead"></slot>
   <div class="item-desc" >
     <div :class="['post', {'no-img': !+data.cover || data.cover == ''}]" >
