@@ -129,15 +129,18 @@
   line-height: pxToRem(78px);
   background-color: $color-white;
   color: $txt-color-grey;
-  text-align: center;
+  text-align: left;
   font-size: 0;
   white-space: nowrap;
   padding-left: pxToRem(30px);
+  position: relative;
   .tab {
     font-size: pxToRem($font-size-normal);
     // width: pxToRem(130px);
     width: pxToRem(70px);
     margin-right: pxToRem(70px);
+    // float: left;
+    position: relative;
   }
   .active {
     color: $txt-color-blue;
@@ -154,11 +157,13 @@
     }
   }
   .tab-module {
-    width: pxToRem(330px);
+    // width: pxToRem(330px);
     font-size: pxToRem($font-size-normal);
     text-align: right;
-    padding-right: pxToRem(30px);
-    position: relative;
+    // padding-right: pxToRem(30px);
+    position: absolute;
+    top: 0;
+    right: pxToRem(30px);
   }
   .icon-module {
     @include background('../images/icon-module.png', 26px, 26px);
