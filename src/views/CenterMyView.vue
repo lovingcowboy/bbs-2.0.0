@@ -380,7 +380,7 @@ export default {
       //app端插入图片
       let that = this
       
-      if (isNewVersion) {
+      if (that.isNewVersion) {
         Bbsbridge.exec('getThumbnail', 1, function(data) {
           data = JSON.parse(data)
           if (data.code == 200) {

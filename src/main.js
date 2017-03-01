@@ -44,6 +44,9 @@ Vue.http.interceptors.push((request, next) => {
 
   }
   next((response) => {
+    if (response.body && response.body.code === '401') {
+      router.push('/main')
+    }
     loader.hide()
   })
 })
@@ -62,14 +65,19 @@ router.beforeEach((to, from, next) => {
     } else if (to.name === 'post') {
       titleParams.titleContent = '发帖'
     }
-    /* Bbsbridge.appBbsLifeHook(null, null, function() {
-       Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
-         console.info('setTitleComponent--------', data)
-       });
-     });*/
-    Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
-      console.info('setTitleComponent--------', data)
-    });
+    //判断是否需要初始化app事件注册
+    if (window.WebViewJavascriptBridge) {
+      Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
+        console.info('setTitleComponent--------', data)
+      });
+    } else {
+      Bbsbridge.appBbsLifeHook(null, null, function() {
+        Bbsbridge.exec('setTitleComponent', titleParams, function(data) {
+          console.info('setTitleComponent--------', data)
+        });
+      });
+
+    }
   }
   loader.show()
   next()
