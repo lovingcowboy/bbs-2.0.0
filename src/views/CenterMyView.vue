@@ -387,7 +387,7 @@ export default {
             let thumbnailData = data.data
             if (thumbnailData.length > 0) {
               // 去除data:image/png;base64,前缀
-              that.onUploadAvatar(thumbnailData[0].photoUrl.substring('data:image/png;base64,'.length), 'app');
+              that.onUploadAvatar(thumbnailData[0].photoContent.substring('data:image/png;base64,'.length), 'app');
             } else {
               Toast('图片选择失败，请重新尝试！');
             }
