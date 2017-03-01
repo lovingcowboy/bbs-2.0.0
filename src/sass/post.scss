@@ -22,20 +22,29 @@
 		text-align: right;
 		position: relative;
 		float: right;
-		padding-left: pxToRem(36px);
-		&:before {
-			content: '?';
+		// padding-left: pxToRem(36px);
+		vertical-align: middle;
+		font-size: 0;
+		i{
+			vertical-align: middle;
+			line-height: initial;
+			display: inline-block;
+			font-size: pxToRem($font-size-small)
+		}
+		.icon-prule {
+			// content: '?';
 			width: pxToRem(26px);
 			height: pxToRem(28px);
 			border-radius: 50%;
 			border: 1px solid $txt-color-blue;
-			position: absolute;
-			top: 50%;
-			// right: pxToRem(110px);
-			left: 0;
-			margin-top: pxToRem(-14px);
+			// position: absolute;
+			// top: 50%;
+			// left: 0;
+			// margin-top: pxToRem(-14px);
 			text-align: center;
-			line-height: pxToRem(28px);
+			
+			margin-right: pxToRem(10px);
+			
 		}
 	}
 }

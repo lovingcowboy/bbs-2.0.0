@@ -14,7 +14,7 @@
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
     <div class="content" >
       <div class="pc">
-        <p class="p-txt1"><span>选择版块</span><span @click="showRule">发帖规则</span></p>
+        <p class="p-txt1"><span>选择版块</span><span @click="showRule"><i class="icon-prule">?</i><i>发帖规则</i></span></p>
         <div class="ml-container">
           <p class="msg-cont" v-if="hasModules">
               <i class="msg-default msg-item" v-for="(item, index) in moduleList" @click="selectModule(item.fid)" :class="{'active': moduleActive == item.fid}">{{item.name}}</i>
