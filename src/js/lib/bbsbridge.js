@@ -207,6 +207,7 @@
 
 		*/
 		exec: function(methodName, params, callback) {
+			console.info('exec --', methodName, params, callback)
 			try {
 				var handler = isIOS() ? iosHandler : androidHandler;
 				handler(methodName, params, callback);
