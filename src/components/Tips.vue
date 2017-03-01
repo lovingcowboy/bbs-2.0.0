@@ -46,8 +46,8 @@ export default {
     }
     .icon-pai-null {
         @include background('../images/pai-null.png',
-        300px,
-        273px);
+        223px,
+        219px);
         display: block;
         margin: auto;
     }
@@ -60,10 +60,10 @@ export default {
     } */
     .ec-txt {
         width: 100%;
-        font-size: pxToRem(34px);
-        color: $txt-color-black;
+        font-size: pxToRem(30px);
+        color: $txt-color-grey;
         // text-align: center;
-        margin: pxToRem(50px) 0 pxToRem(70px);
+        margin: pxToRem(40px) auto;
     }
     /* .ec-btns {
         display: flex;
