@@ -54,7 +54,7 @@
                 <post-item v-for="(item, index) in dynamicList" :data="item" >
                   <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid" class="c-event">
-                      <img src="../images/pai.png"><font class="author">{{item.author}}</font>{{item.type == "0" ? '回复了帖子' : '发布了帖子'}}
+                      <img :src="item.avatar"><font class="author">{{item.author}}</font>{{item.type == "0" ? '回复了帖子' : '发布了帖子'}}
                     </span>
                     <span>{{item.dateline}}</span>
                   </div>
