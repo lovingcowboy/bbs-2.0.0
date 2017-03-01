@@ -192,7 +192,7 @@ export default {
           if (data.code == 200) {
             let _data = data.data
             _data.forEach((item, i) => {
-              item.photoContent = "data:img/jpgbase64," + item.photoContent
+              item.photoContent = "data:img/jpg;base64," + item.photoContent
             })
             that.imgList = that.imgList.concat(_data)
             if (that.imgList.length >= 9) {
@@ -212,7 +212,7 @@ export default {
             if (data.code == 200) {
               let _data = data.data
               _data.forEach((item, i) => {
-                item.photoContent = "data:img/jpgbase64," + item.photoContent
+                item.photoContent = "data:img/jpg;base64," + item.photoContent
               })
               that.imgList = that.imgList.concat(_data)
               if (that.imgList.length >= 9) {
