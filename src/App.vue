@@ -37,9 +37,9 @@ export default {
     }
   },
   computed: {
-    // footer () {
-    //   return hasFooter(this.$route.name)
-    // }
+    isApp () {
+      return isApp()
+    }
   },
   // dynamically set transition based on route change
   watch: {
