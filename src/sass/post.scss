@@ -27,7 +27,7 @@
 		font-size: 0;
 		i{
 			vertical-align: middle;
-			line-height: initial;
+			line-height: pxToRem(28px);
 			display: inline-block;
 			font-size: pxToRem($font-size-small)
 		}
