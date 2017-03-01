@@ -34,7 +34,7 @@
         <span :class="[{'active': tabType === 0}, 'tab']" @click="triggerTab(0)">热门</span>
         <span :class="[{'active': tabType === 1}, 'tab']" @click="triggerTab(1)">最新</span>
         <span :class="[{'active': tabType === 2}, 'tab']" @click="triggerTab(2)">精华</span>
-        <span class="tab-module" @click="triggerModules(1)"><i class="icon-module"></i>板块</span>
+        <span class="tab-module" @click="triggerModules(1)"><i class="icon-module"></i><i>板块</i></span>
       </div>
       <div class="s-container" :style="{height: sHeight + 'rem', transform: scrollX}">
       <div class="scroll-list">

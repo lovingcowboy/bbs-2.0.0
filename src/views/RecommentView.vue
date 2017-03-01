@@ -11,8 +11,6 @@
     </zheader> 
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
     <div class="content" >
-     <textarea placeholder="帖子内容" class="i-content" id="postContent" v-model.trim="testData"></textarea>
-     <textarea placeholder="帖子内容" class="i-content" id="postContent2" v-model.trim="postContent" @blur="blurFun" @input="contentChangeFunc"></textarea>
      <list :config.once="recommentScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="recList">
       <div class="scroll-wrapper" slot="scrollContent" id="recommentScroll">
       <ul class="post-list" @click="listClickFunc($event)">
@@ -62,33 +60,13 @@ export default {
         mutationObserver: true,
         refresh: true,
         loadmore: true
-      },
-      testData: '',
-      postContent: '',
-      selectPostion :{
-          'selectionStart': 0,
-          'selectionEnd': 0
-        }
+      }
     }
   },
   computed: {
    
   },
   methods: {
-    blurFun () {
-      console.info('blurFun----')
-      let $target = event.currentTarget
-      if ($target.selectionStart || $target.selectionStart == '0') {
-        this.selectPostion = {
-          'selectionStart': $target.selectionStart,
-          'selectionEnd': $target.selectionEnd
-        }
-
-      }
-    },
-    contentChangeFunc () {
-      console.info('testData-----', postContent)
-    },
     headerRightBtnFun() {
       console.info('11111')
     },
@@ -182,14 +160,5 @@ export default {
 // @import '../sass/recomment.scss'
 .content {
   height: 100%;
-}
-textarea {
-  width: 100%;
-  height: 300px;
-  position:relative;
-  z-index:9999;
-      background-color: #999;
-      color:#fff;
-      font-size:pxToRem(30px);
 }
 </style>
