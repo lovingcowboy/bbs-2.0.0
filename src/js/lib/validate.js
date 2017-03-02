@@ -294,7 +294,8 @@ var Validate = {
 			ReturnUrl = ReturnUrl ? ReturnUrl : window.location.href;
 			ReturnUrl = encodeURIComponent(ReturnUrl);
 			//https://m.tuandai.com/user/login.aspx?UrlType=json&ReturnUrl={Url:"http://bbs87.tuandai.com:8080/index.php?code=2323&value=2323232"}
-			window.location.href = "https://m.tuandai.com/user/login.aspx?ReturnUrl=" + ReturnUrl;
+			// window.location.href = "https://m.tuandai.com/user/login.aspx?ReturnUrl=" + ReturnUrl;
+			window.location.href = 'http://10.100.11.110:9008/user/Login.aspx?ReturnUrl=' + ReturnUrl;
 		}
 	}
 }

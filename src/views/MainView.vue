@@ -382,8 +382,15 @@ export default {
       //获取用户登录数据
       let that = this
       let loginToken = Util.getParam('t')
-      Vue.http.options.before = function() {
+      /*Vue.http.options.before = function() {
         that.infoRequesting = true
+        that.loader.show()
+      }*/
+      that.infoRequesting = true
+      if (that.loader) {
+        that.loader.show()
+      } else {
+        that.loader = Loader()
         that.loader.show()
       }
       service.postData('/app/index.php', {
@@ -461,8 +468,15 @@ export default {
           return;
         }
       }
-      Vue.http.options.before = function() {
-        that.listRequesting = true
+      // Vue.http.options.before = function() {
+      //   that.listRequesting = true
+      // }
+      that.listRequesting = true
+      if (that.loader) {
+        that.loader.show()
+      } else {
+        that.loader = Loader()
+        that.loader.show()
       }
      
       service.postData('/app/index.php', param).then((response) => {
@@ -665,7 +679,7 @@ export default {
       }
       // that.getHeadData()
     that.getListData(param)
-    that.loader = Loader()
+   
   }
 
 
