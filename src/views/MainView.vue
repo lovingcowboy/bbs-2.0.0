@@ -167,6 +167,8 @@ import service from '../services'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
 import {ellipsisText, uniq} from '../filters'
+import Loader from '../components/loader'
+
 export default {
   name: 'mainView',
   components: {
@@ -226,7 +228,10 @@ export default {
         refresh: true,
         loadmore: true,
         status: 1
-      }
+      },
+      loader: null,
+      listRequesting: false,
+      infoRequesting: false
       
     }
   },
@@ -377,6 +382,10 @@ export default {
       //获取用户登录数据
       let that = this
       let loginToken = Util.getParam('t')
+      Vue.http.options.before = function() {
+        that.infoRequesting = true
+        that.loader.show()
+      }
       service.postData('/app/index.php', {
         'version': 4,
         'module': 'forum',
@@ -414,11 +423,19 @@ export default {
             message: msg
           })
         }
+        that.infoRequesting = false
+        console.info('infoRequesting=' + that.infoRequesting, '---listRequesting=' + that.listRequesting)
+        that.hideLoader()
       }, (response) => {
         that.isLogin = false
-        console.info('2222', response)
+        console.info('getHeadData---fail---', response)
+        that.infoRequesting = false
+        that.hideLoader()
       })
 
+    },
+    hideLoader () {
+      !this.infoRequesting && !this.listRequesting && this.loader.hide()
     },
     goLogin() {
       if (!this.isLogin) {
@@ -443,6 +460,9 @@ export default {
           that.$refs.essenceList.refresh()
           return;
         }
+      }
+      Vue.http.options.before = function() {
+        that.listRequesting = true
       }
      
       service.postData('/app/index.php', param).then((response) => {
@@ -548,8 +568,12 @@ export default {
           }*/
           
         }
+        that.listRequesting = false
+        that.hideLoader()
       }, (response) => {
-        // console.info('getListData fail------', response)
+        console.info('getListData fail------', response)
+        that.listRequesting = false
+        that.hideLoader()
       })
     },
     onInitList () {
@@ -641,6 +665,7 @@ export default {
       }
       // that.getHeadData()
     that.getListData(param)
+    that.loader = Loader()
   }
 
 
