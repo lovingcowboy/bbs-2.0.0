@@ -1,5 +1,5 @@
 <template>
-  <div class="v1-view">
+  <div class="post-view">
   <zheader 
     :header-title="'发帖'" 
     :has-back="true" 

@@ -1,5 +1,5 @@
 <template>
-  <div class="v1-view">
+  <div class="reply-view">
   <zheader 
     :header-title="'详情'" 
     :has-back="true" 

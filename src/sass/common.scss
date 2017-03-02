@@ -270,7 +270,7 @@ span {
 
 .post-view {
     background-image: url('../images/icon-view.png');
-    background-size: pxToRem(26px) pxToRem(18px);
+    background-size: pxToRem(30px) pxToRem(20px);
     padding-left: pxToRem(36px);
     background-repeat: no-repeat;
     background-position: left center;
@@ -278,7 +278,7 @@ span {
 
 .post-reply {
     background-image: url('../images/icon-msg.png');
-    background-size: pxToRem(22px) pxToRem(20px);
+    background-size: pxToRem(24px) pxToRem(22px);
     padding-left: pxToRem(32px);
     background-repeat: no-repeat;
     background-position: left center;
@@ -426,7 +426,9 @@ input::-webkit-inner-spin-button {
 }
 
 ::-webkit-scrollbar {
-    width: 0;
+    //滚动条不可见
+    // width: 0;
+    display: none;
 }
 
 .level {
@@ -443,43 +445,6 @@ input::-webkit-inner-spin-button {
     vertical-align: middle;
 }
 
-
-/* .wrapper {
-    position: absolute;
-    z-index: 1;
-    width: pxToRem(750px);
-    height: 100%;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    background-color: #fafafa;
-}
-
-.scroller {
-    position: absolute;
-    z-index: 1;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    width: 100%;
-    min-height: 100.15%;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    -webkit-touch-callout: none;
-    user-select: none;
-    text-size-adjust: none;
-} */
-
-
-/* .pull-down-el,
-.pull-up-el,
-.no-more {
-    
-    width: 100%;
-    height: pxToRem(60px);
-    line-height: pxToRem(60px);
-    text-align: center;
-    font-size: pxToRem(32px);
-    color: #999;
-} */
 
 .wrapper {
     position: absolute;

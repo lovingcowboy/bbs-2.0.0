@@ -1,5 +1,5 @@
 <template>
-  <div class="v1-view">
+  <div class="main-view">
   <zheader 
     :header-title="'团粉圈'" 
     :has-back="false" 
@@ -455,16 +455,19 @@ export default {
       if (param.action === 'hot_threads') {
         if (that.pageData.hot.curPage > that.pageData.hot.totalPage) {
           that.$refs.hotList.refresh()
+          that.$refs.hotList.loadmore = false
           return;
         }
       } else if (param.action === 'new_posts') {
         if (that.pageData.new.curPage > that.pageData.new.totalPage) {
           that.$refs.newList.refresh()
+          that.$refs.newList.loadmore = false
           return;
         }
       } else {
         if (that.pageData.essence.curPage > that.pageData.essence.totalPage) {
           that.$refs.essenceList.refresh()
+          that.$refs.essenceList.loadmore = false
           return;
         }
       }

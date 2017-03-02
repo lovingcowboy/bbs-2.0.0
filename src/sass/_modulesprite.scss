@@ -1,85 +1,48 @@
 @charset 'utf-8';
 @import "func";
 @import "variables";
-.icon-module-ceo {
+.icon-module-sprite {
   display: inline-block;
   background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
+  background-size:pxToRem(278px) pxToRem(278px);
   background-repeat:no-repeat;
-  background-position: pxToRem(-164px) pxToRem(-71px);
-  width: pxToRem(64px);
-  height: pxToRem(74px);
+  width: pxToRem(86px);
+  height: pxToRem(86px);
+}
+.icon-module-ceo {
+  @extend .icon-module-sprite;
+  background-position: pxToRem(0px) pxToRem(0px);
 }
 .icon-module-hot {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(-252px) pxToRem(0px);
-  width: pxToRem(56px);
-  height: pxToRem(84px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(-96px) pxToRem(0px);
 }
 .icon-module-invest {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(0px) pxToRem(-170px);
-  width: pxToRem(70px);
-  height: pxToRem(64px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(0px) pxToRem(-96px);
 }
 .icon-module-news {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(-80px) pxToRem(-170px);
-  width: pxToRem(72px);
-  height: pxToRem(62px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(-96px) pxToRem(-96px);
 }
 .icon-module-question {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(0px) pxToRem(-82px);
-  width: pxToRem(70px);
-  height: pxToRem(78px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(-192px) pxToRem(0px);
 }
 .icon-module-speak {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(0px) pxToRem(0px);
-  width: pxToRem(78px);
-  height: pxToRem(72px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(-192px) pxToRem(-96px);
 }
 .icon-module-suggest {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(-88px) pxToRem(-84px);
-  width: pxToRem(66px);
-  height: pxToRem(73px);
+ @extend .icon-module-sprite;
+  background-position: pxToRem(0px) pxToRem(-192px);
 }
 .icon-module-td-news {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(-88px) pxToRem(0px);
-  width: pxToRem(66px);
-  height: pxToRem(74px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(-96px) pxToRem(-192px);
 }
 .icon-module-video {
-  display: inline-block;
-  background-image: url(../images/modules.png);
-  background-size:pxToRem(308px) pxToRem(234px);
-  background-repeat:no-repeat;
-  background-position: pxToRem(-164px) pxToRem(0px);
-  width: pxToRem(78px);
-  height: pxToRem(61px);
+  @extend .icon-module-sprite;
+  background-position: pxToRem(-192px) pxToRem(-192px);
 }
 

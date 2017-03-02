@@ -1,5 +1,5 @@
 <template>
-  <div class="v1-view">
+  <div class="mark-view">
   <zheader 
     :header-title="'评分'" 
     :has-back="true" 

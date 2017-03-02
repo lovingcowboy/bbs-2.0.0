@@ -1,5 +1,5 @@
 <template>
-  <div class="v1-view">
+  <div class="recomment-view">
   <zheader 
     :header-title="'团粉圈'" 
     :has-back="true" 
@@ -94,6 +94,7 @@ export default {
       let that = this
       if(that.pageData.curPage > that.pageData.totalPage) {
          that.$refs.recList.refresh()
+         that.$refs.recList.loadmore = false
         return
       }
       let reqParam = {

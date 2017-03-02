@@ -1,5 +1,5 @@
 <template>
-  <div class="v1-view">
+  <div class="detail-view">
   <zheader 
     :header-title="'详情'" 
     :has-back="true" 
@@ -47,7 +47,7 @@
         </div>
       </div>
       </div>
-      <div class="rm-cont" >
+      <div class="rm-cont" v-show="getDataDone">
         <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
           <div :class="[{'active': tabType === 0}, 'ft-btn']" @click="triggerTab(0)">回复({{thread.replies}})</div>
           <div :class="[{'active': tabType === 1}, 'ft-btn']" @click="triggerTab(1)">评分({{thread.total_rate}})</div>
@@ -219,7 +219,7 @@ export default {
         loadmore: true
       },
       myScroller: null,
-      // isScrolling: false, //滚动条是否正在滚动
+      getDataDone: false, //进入页面请求数据是否完成
       scrollReply: 0, //回复列表滚动位置
       scrollMark: 0,//评分列表滚动位置
       markTipsConfig: { //情感图信息
@@ -478,8 +478,8 @@ export default {
         // tid = '147680'
         // console.info('id---', this.$route.params.id)
       if (page > that.replyData.totalPage) {
-        // that.ScrollConfig.loadmore = false
         that.$refs.detailList.refresh() //刷新list
+        that.$refs.detailList.loadmore = false
         return
       }
       service.postData('/app/index.php', {
@@ -547,6 +547,7 @@ export default {
           // that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
           that.replyListHeight = that.calculateHeight
           that.$refs.detailList.refresh() //刷新list
+          that.getDataDone = true
         } else {
           let msg = '请求失败，请稍后重试'
           if (_body.message) {
@@ -625,6 +626,7 @@ export default {
       Util.setSessionStorage('reply', JSON.stringify(param))
       this.goReply()
     },
+
     onInitList (scroller) {
       // console.info('scroller--------', scroller)
       let that = this
@@ -769,7 +771,14 @@ export default {
     }
   },
   mounted () {
-    this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.header-bar').offsetHeight - document.querySelector('.rm-tabs').offsetHeight - Util.pxToPx(116))
+    /*
+      .header-bar: 90
+      .rm-tabs: 80
+      .post-foot: 94
+      margin-bottom: 20
+    */
+    this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - Util.pxToPx(284))
+    console.info(this.rmHeight)
       
     // this.getPostData(1)
   }

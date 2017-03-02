@@ -160,10 +160,12 @@
 
 .rm-cont {
     width: 100%;
-    background-color: #fff;
+    // background-color: #fff;
     // margin-top: pxToRem(20px);
     overflow-x: hidden;
     overflow-y: auto;
+    padding-bottom: pxToRem(20px);
+    background-color: $color-white-light;
 }
 
 .rm-tabs {
@@ -173,6 +175,7 @@
     text-align: center;
     font-size: 0;
     border-bottom: 1px solid $border-color;
+    background-color: $color-white;
     .ft-btn {
         display: inline-block;
         width: 49.9%;
@@ -222,7 +225,8 @@
     }
 }
 #detailScroll {
-    bottom: pxToRem(116px);
+    bottom: pxToRem(96px);
+    background-color: $color-white-light;
 }
 
 .rm-u {
@@ -320,13 +324,14 @@
 
 .post-foot {
     width: 100%;
-    height: pxToRem(114px);
-    background-color: #f2f2f0;
+    height: pxToRem(94px);
+    // height: pxToRem(114px);
+    // background-color: #f2f2f0;
     position: absolute;
     left: 0;
     bottom: 0;
     font-size: 0;
-    padding-top: pxToRem(20px);
+    // padding-top: pxToRem(20px);
     .f-container {
         background-color: $color-white;
         height: pxToRem(94px);
