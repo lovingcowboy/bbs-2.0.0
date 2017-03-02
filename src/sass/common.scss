@@ -333,11 +333,11 @@ input::-webkit-inner-spin-button {
         left: 50%;
         transform: translate(-50%, -55%);
         width: pxToRem(630px);
-        height: pxToRem(400px);
+        // height: pxToRem(400px);
         border-radius: pxToRem(16px);
         background-color: #fff;
         z-index: 999;
-        padding: 0 pxToRem(40px);
+        // padding: 0 pxToRem(40px);
         font-size: 0;
         .dialog-title {
             text-align: center;
@@ -347,7 +347,7 @@ input::-webkit-inner-spin-button {
             line-height: pxToRem(100px);
         }
         .reply-content {
-            width: 100%;
+            width: pxToRem(550px);
             background-color: #f6f6f6;
             height: pxToRem(210px);
             resize: none;
@@ -358,6 +358,9 @@ input::-webkit-inner-spin-button {
             font-size: pxToRem($font-size-normal);
             padding: pxToRem(30px);
             color: $txt-color-black;
+            margin: auto;
+            margin-bottom: pxToRem(40px);
+            display: block;
         }
         .reply-content::-webkit-placeholder {
             color: $txt-color-grey-light;
@@ -365,8 +368,9 @@ input::-webkit-inner-spin-button {
         .btn-wrapper {
             font-size: 0;
             white-space: nowrap;
-            height: pxToRem(90px);
-            line-height: pxToRem(90px);
+            height: pxToRem(92px);
+            line-height: pxToRem(92px);
+            border-top: 1px solid $border-color;
             .btn-send,
             .btn-cancel {
                 display: inline-block;
@@ -377,7 +381,7 @@ input::-webkit-inner-spin-button {
             }
             .btn-cancel {
                 color: $txt-color-grey;
-                border-right: 1px solid $border-color;
+                // border-right: 1px solid $border-color;
             }
             .btn-send {
                 color: $txt-color-blue;
