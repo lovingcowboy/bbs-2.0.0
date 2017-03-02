@@ -1,5 +1,5 @@
 <template>
-  <div class="center-my-view">
+  <div class="centermy-view">
     <zheader 
       :header-title="'个人中心'" 
       :has-back="true" 

@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="mypost-view">
     <zheader 
       :header-title="'我的帖子'" 
       :has-back="true" 

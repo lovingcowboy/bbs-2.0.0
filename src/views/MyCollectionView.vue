@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="mycollection-view">
     <zheader 
       :header-title="'我的收藏'" 
       :has-back="true" 

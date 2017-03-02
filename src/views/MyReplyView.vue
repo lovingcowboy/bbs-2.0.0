@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="myreply-view">
     <zheader 
       :header-title="'我的回复'" 
       :has-back="true" 

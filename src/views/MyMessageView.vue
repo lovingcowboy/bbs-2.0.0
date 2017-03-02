@@ -1,5 +1,5 @@
 <template>
-  <div class="changetb-view">
+  <div class="mymessage-view">
     <zheader 
       :header-title="'我的消息'" 
       :has-back="true" 
