@@ -1,5 +1,8 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
+.content {
+    padding-bottom: pxToRem(50px);
+}
 .contetn-header {
     background-image: url("../images/bg-center-header.png");
     background-size: cover;
@@ -299,7 +302,7 @@
     color: $txt-color-black;
     background-color: #fff;
     font-size: pxToRem($font-size-normal);
-    margin-bottom: pxToRem(50px);
+    // margin-bottom: pxToRem(50px);
     margin-top: pxToRem(20px);
 }
 .logout-dialog {

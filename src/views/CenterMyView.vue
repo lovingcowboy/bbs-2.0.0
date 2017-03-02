@@ -13,7 +13,6 @@
           <div class="btn-edit edit-btn" v-show="!editing" @click="onEdit();"></div>
           <div class="btn-edit-done edit-btn" v-show="editing" @click="onEditDone();">完成</div>
           <div class="btn-edit-cancel edit-btn" v-show="editing" @click="onCancelEdit();">取消</div>
-
           <div class="avatar-wrapper">
             <div class="avatar-mask" v-show="editing && isApp" @click="chooseImgFun($event)"></div>
             <div class="avatar-mask" v-show="editing && !isApp">
@@ -270,9 +269,8 @@ export default {
       Services.postData('/app/index.php', params).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
+          Util.setSessionStorage('uid', '');  //设置uid为空
           that.$router.push("main")
-
-        
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
