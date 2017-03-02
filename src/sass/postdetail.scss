@@ -4,10 +4,16 @@
     height: 100%;
     overflow: hidden !important;
 }
+.pc-container {
+    padding-bottom: pxToRem(20px);
+    width: 100%;
+    background-color: $color-white-light;
+}
 .post-cont {
     width: 100%;
     background-color: $color-white;
     padding: pxToRem(40px) pxToRem(30px);
+    word-break: break-all;
 }
 
 .p-title {
@@ -155,7 +161,7 @@
 .rm-cont {
     width: 100%;
     background-color: #fff;
-    margin-top: pxToRem(20px);
+    // margin-top: pxToRem(20px);
     overflow-x: hidden;
     overflow-y: auto;
 }
@@ -183,7 +189,8 @@
 
 .float-tabs {
     position: absolute;
-    top: pxToRem(90px);
+    // top: pxToRem(90px);
+    top: 0;
     left: 0;
     background-color: $color-white;
 }
@@ -193,6 +200,7 @@
     white-space: nowrap;
     font-size: 0;
     // padding-bottom: pxToRem(116px);
+    background-color: $color-white;
     .rm-list {
         width: 100%;
         padding-left: pxToRem(30px);
@@ -367,6 +375,6 @@
     }
 }
 
-.wrapper {
-    background-color: $color-white-light;
-}
+// .wrapper {
+//     background-color: $color-white-light;
+// }

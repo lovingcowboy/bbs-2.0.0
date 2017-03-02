@@ -13,6 +13,7 @@
     <div class="content" >
     <list :config.once="ScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="detailList">
       <div class="scroll-wrapper" slot="scrollContent" id="hotScroll" @tap="onTapTagA">
+      <div class="pc-container">
       <div class="post-cont">
         <p class="p-title">{{thread.title}}</p>
         <p class="p-poster"><img :src="thread.avatar"><span>{{thread.author}}</span></p>
@@ -44,6 +45,7 @@
         
           <div class="v-btn" @click="goVote()">{{btnTxt}}</div>
         </div>
+      </div>
       </div>
       <div class="rm-cont" >
         <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
@@ -150,6 +152,10 @@
       </div>
       </list>
 
+      <nav class="rm-tabs float-tabs" v-show="showFloat">
+        <div :class="[{'active': tabType === 0}, 'ft-btn']" @click="triggerTab(0)">回复({{thread.replies}})</div>
+        <div :class="[{'active': tabType === 1}, 'ft-btn']" @click="triggerTab(1)">评分({{thread.total_rate}})</div>
+      </nav>
     </div>
     </div>
       <div class="post-foot">
@@ -160,10 +166,6 @@
           <!-- <i class="icon-share pf-evt" data-type="share"></i> -->
         </div>
       </div>
-      <nav class="rm-tabs float-tabs" v-show="showFloat">
-        <div :class="[{'active': tabType === 0}, 'ft-btn']" @click="triggerTab(0)">回复({{thread.replies}})</div>
-        <div :class="[{'active': tabType === 1}, 'ft-btn']" @click="triggerTab(1)">评分({{thread.total_rate}})</div>
-      </nav>
   </div>
 </template>
 
@@ -235,10 +237,14 @@ export default {
     calculateHeight () {
       //动态计算列表高度，防止切换tab时跳动
       let obj = this.tabType === 0 ? document.querySelector('.mark-list') : document.querySelector('.reply-list')
-      let h = Util.pxToRemAdapt(obj.clientHeight)
-      h = h < this.rmHeight ? h : this.rmHeight
-      //600为情感图最小高度
-      return h > Util.pxToRem(600) ? h : Util.pxToRem(600)
+      if (obj) {
+        let h = Util.pxToRemAdapt(obj.clientHeight)
+        h = h < this.rmHeight ? h : this.rmHeight
+          //600为情感图最小高度
+        return h > Util.pxToRem(600) ? h : Util.pxToRem(600)
+      } else {
+        return 0
+      }
     }
   },
 
@@ -251,33 +257,19 @@ export default {
       this.tabType = type
       if (type === 0) {
         //计算回复列表高度，防止tab切换时跳动
-        /*if (this.markListHeight === 0) {
-          this.markListHeight = Util.pxToRemAdapt(document.querySelector('.mark-list').clientHeight)
-        }
-        if (this.markListHeight < this.rmHeight) {
-          this.replyListHeight = this.markListHeight
-        } else {
-          this.replyListHeight = this.rmHeight
-        }*/
-        this.replyListHeight = this.calculateHeight
+        
+        (this.replyListHeight === this.calculateHeight) || (this.replyListHeight = this.calculateHeight)
         if (!this.replyData.list || this.replyData.list.length === 0) {
           this.getPostData(1)
         } else {
           this.$refs.detailList.refresh()
-          //tab置顶时滚动条滚动到上次位置
-          this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0) 
+            //tab置顶时滚动条滚动到上次位置
+          this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0)
         }
         this.$refs.detailList.loadmore = this.replyData.curPage <= this.replyData.totalPage
       } else if (type === 1) {
-        /*if (this.replyListHeight === 0) {
-          this.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
-        }
-        if (this.replyListHeight < this.rmHeight) {
-          this.markListHeight = this.replyListHeight
-        } else {
-          this.markListHeight = this.rmHeight
-        }*/
-        this.markListHeight = this.calculateHeight
+       
+        (this.markListHeight === this.calculateHeight) || (this.markListHeight = this.calculateHeight)
 
         if (!this.MarkData.list || this.MarkData.list.length === 0) {
           this.getMarkList(1)
@@ -637,8 +629,9 @@ export default {
       // console.info('scroller--------', scroller)
       let that = this
       let postHeight = 0
-      let postCont = document.querySelector('.post-cont') //帖子内容部分高度
-      let modifyNum = Util.pxToPx(20) //修正数值
+      let postCont = document.querySelector('.pc-container') //帖子内容部分高度
+      // let modifyNum = Util.pxToPx(20) //修正数值
+      let modifyNum = 0 //修正数值
       that.myScroller = scroller
       scroller.on('scroll', function() {
         // that.isScrolling = true
