@@ -340,7 +340,9 @@
 }
 .wrapper {
     background-color: $color-white-light;
-    padding-top: pxToRem(20px);
+}
+.scroll-wrapper {
+  padding-top: pxToRem(20px);
 }
 
 .scroll-list {
