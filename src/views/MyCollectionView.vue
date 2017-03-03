@@ -10,7 +10,7 @@
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
       <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
-        <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc($evnet);">
+        <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc($event);">
           <post-item v-for="(item, index) in collectionList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
