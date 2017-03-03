@@ -247,6 +247,27 @@ export default {
       } else {
         return 0
       }
+    },
+    calculateY () {
+      //切换tab时计算滚动条距离
+      let obj = document.querySelector('.pc-container')
+      let baseY = 0
+      if (obj) {
+        baseY = obj.clientHeight
+      }
+      let scrollY = this.tabType === 0 ? this.scrollReply : this.scrollMark
+      //显示浮动tab时，如果当前切换的tab的滚动位置大于基准位置，则返回基准位置
+      if (this.showFloat) {
+        if (scrollY > -baseY) {
+          return -baseY
+        } else {
+          return scrollY
+        }
+       
+      } else {
+        return scrollY
+      }
+      
     }
   },
 
@@ -266,7 +287,9 @@ export default {
         } else {
           this.$refs.detailList.refresh()
             //tab置顶时滚动条滚动到上次位置
-          this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0)
+          let scrollY = this.calculateY
+          // this.showFloat && this.myScroller.scrollTo(0, this.scrollReply, 0)
+          this.showFloat && this.myScroller.scrollTo(0, scrollY, 0)
         }
         this.$refs.detailList.loadmore = this.replyData.curPage <= this.replyData.totalPage
       } else if (type === 1) {
@@ -277,7 +300,9 @@ export default {
           this.getMarkList(1)
         } else {
           this.$refs.detailList.refresh()
-          this.showFloat && this.myScroller.scrollTo(0, this.scrollMark, 0)
+          let scrollY = this.calculateY
+          // this.showFloat && this.myScroller.scrollTo(0, this.scrollMark, 0)
+          this.showFloat && this.myScroller.scrollTo(0, scrollY, 0)
         }
         this.$refs.detailList.loadmore = false
       }
@@ -780,6 +805,7 @@ export default {
       margin-bottom: 20
     */
     this.rmHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - Util.pxToPx(284))
+    // this.baseY = document.querySelector('.pc-container').clientHeight
     console.info(this.rmHeight)
       
     // this.getPostData(1)

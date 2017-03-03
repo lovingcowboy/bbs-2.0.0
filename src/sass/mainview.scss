@@ -1,6 +1,10 @@
 @import "../sass/variables.scss";
 @import "../sass/func.scss";
 @import "../sass/modulesprite.scss";
+.content {
+  height: 100%;
+  overflow-y: hidden;
+}
 .u-info {
     width: 100%;
     height: pxToRem(166px);
