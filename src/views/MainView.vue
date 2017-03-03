@@ -422,12 +422,8 @@ export default {
           }
         } else {
           that.isLogin = false
-          let msg = '请求失败，请稍后重试'
-          if (_body.message) {
-            msg = _body.message
-          }
           Toast({
-            message: msg
+            message: _body && _body.message || '请求失败，请稍后重试'
           })
         }
         that.infoRequesting = false
@@ -438,6 +434,9 @@ export default {
         console.info('getHeadData---fail---', response)
         that.infoRequesting = false
         that.hideLoader()
+        Toast({
+          'message': response.body && response.body.message || '请求失败，请稍后重试'
+        });
       })
 
     },
@@ -481,6 +480,7 @@ export default {
         that.loader = Loader()
         that.loader.show()
       }
+      debugger
       service.postData('/app/index.php', param).then((response) => {
         // console.info('getListData----', response.body)
         let _body = response.body
@@ -492,13 +492,7 @@ export default {
               //第一页数据加载
               that.recommentPosts = data.list.recommend_threads
               that.hotList = data.list.hot_threads
-                // that.$refs.hotList.refreshDone()
-                //空数据情感图显示
-              /*if (that.hotList.length > 0) {
-                that.hotScrollConfig.status = -1
-              } else {
-                that.hotScrollConfig.status = 0
-              }*/
+               
             } else {
               //页数大于1时添加数据
               // that.hotList = that.hotList.concat(data.list.hot_threads)
@@ -518,12 +512,7 @@ export default {
             //最新
             if (that.pageData.new.curPage === 1) {
               that.newList = data.list
-              //空数据情感图显示
-              /*if (that.newList.length > 0) {
-                that.newScrollConfig.status = 1
-              } else {
-                that.newScrollConfig.status = 0
-              }*/
+              
             } else {
               // that.newList = that.newList.concat(data.list)
               that.newList = uniq(that.newList.concat(data.list), "pid");  //去重
@@ -540,12 +529,7 @@ export default {
             //精华
             if (that.pageData.essence.curPage === 1) {
               that.essenceList = data.list
-              //空数据情感图显示
-              /*if (that.essenceList.length > 0) {
-                that.essenceScrollConfig.status = 1
-              } else {
-                that.essenceScrollConfig.status = 0
-              }*/
+              
             } else {
               // that.essenceList = that.essenceList.concat(data.list)
               that.essenceList = uniq(that.essenceList.concat(data.list), "tid");  //去重
@@ -558,36 +542,54 @@ export default {
                 totalPage: +data.pager.total_page
               }
             }
-            /*that.pageData.essence = {
-              curPage: data.pager.cur_page,
-              totalPage: data.pager.total_page
-            }*/
+            
 
           }
         } else {
-          if (_body.message) {
-            Toast(_body.message)
+          Toast({
+            'message': _body && _body.message || '请求失败，请稍后重试'
+          });
+          let refsObj = null
+          switch (param.action) {
+            case 'hot_threads':
+              refsObj = that.$refs.hotList
+              break;
+            case 'new_posts':
+              refsObj = that.$refs.newList
+              break;
+            case 'digest_threads':
+              refsObj = that.$refs.essenceList
+              break;
           }
-          //异常数据情感图显示
-          /*if(param.action === 'hot_threads') {
-            if(that.pageData.hot.curPage === 1) {
-              that.hotScrollConfig.status = -1
-            }
-          }else if(param.action === 'new_posts') {
-            if(that.pageData.new.curPage === 1) {
-              that.newScrollConfig.status = -1
-            }
-          }else{
-            if(that.pageData.essence.curPage === 1) {
-              that.newScrollConfig.status = -1
-            }
-          }*/
-          
+          if (refsObj) {
+            refsObj.refresh()
+            refsObj.loadmore = false
+          }
+
         }
         that.listRequesting = false
         that.hideLoader()
       }, (response) => {
         console.info('getListData fail------', response)
+        Toast({
+          'message': response.body && response.body.message || '请求失败，请稍后重试'
+        });
+        let refsObj = null
+        switch (param.action) {
+          case 'hot_threads':
+            refsObj = that.$refs.hotList
+            break;
+          case 'new_posts':
+            refsObj = that.$refs.newList
+            break;
+          case 'digest_threads':
+            refsObj = that.$refs.essenceList
+            break;
+        }
+        if (refsObj) {
+          refsObj.refresh()
+          refsObj.loadmore = false
+        }
         that.listRequesting = false
         that.hideLoader()
       })

@@ -148,16 +148,15 @@ export default {
         if (_body.code === '200') {
           window.history.back()
         } else {
-          let msg = '请求失败，请稍后重试'
-          if (_body.message) {
-            msg = _body.message
-          }
           Toast({
-            message: msg
+            message: _body && _body.message || '请求失败，请稍后重试'
           })
         }
       }, (response) => {
         console.info('markPost fail-----', response)
+        Toast({
+          message: response.body && response.body.message || '请求失败，请稍后重试'
+        })
       })
 
       // window.history.back()

@@ -350,19 +350,14 @@ export default {
             that.voteData.allowvote = 0
             that.voteData.polloptions = _body.data.special_poll
           } else {
-            let msg = '请求失败，请稍后重试'
-            if (_body.message) {
-              msg = _body.message
-            }
             Toast({
-              message: msg
+              message: _body && _body.message || '请求失败，请稍后重试'
             })
           }
         }, (response) => {
           // console.info('goVote----fail---', response)
-          let msg = '请求失败，请稍后重试'
           Toast({
-            message: msg
+            message: response.body && response.body.message || '请求失败，请稍后重试'
           })
         })
 
@@ -432,19 +427,14 @@ export default {
             })
           }
         } else {
-          let msg = '请求失败，请稍后重试'
-          if (_body.message) {
-            msg = _body.message
-          }
           Toast({
-            message: msg
+            message: _body && _body.message || '请求失败，请稍后重试'
           })
         }
       }, (response) => {
         // console.info('goTriggerFav-------fail--', response)
-        let msg = '请求失败，请稍后重试'
         Toast({
-          message: msg
+          message: response.body && response.body.message || '请求失败，请稍后重试'
         })
       })
     },
@@ -482,19 +472,14 @@ export default {
           let url = '/postdetail/mark/' + that.thread.tid + '/' +  that.thread.pid
           this.$router.push(url)
         } else {
-          let msg = '请求失败，请稍后重试'
-          if (_body.message) {
-            msg = _body.message
-          }
           Toast({
-            message: msg
+            message: _body && _body.message || '请求失败，请稍后重试'
           })
         }
       }, (response) => {
         // console.info('init fail-----', response)
-        let msg = '请求失败，请稍后重试'
         Toast({
-          message: msg
+          message: response.body && response.body.message || '请求失败，请稍后重试'
         })
       })
      
@@ -576,20 +561,19 @@ export default {
           that.$refs.detailList.refresh() //刷新list
           that.getDataDone = true
         } else {
-          let msg = '请求失败，请稍后重试'
-          if (_body.message) {
-            msg = _body.message
-          }
           Toast({
-            message: msg
+            message: _body && _body.message || '请求失败，请稍后重试'
           })
+          that.$refs.detailList.refresh() //刷新list
+          that.$refs.detailList.loadmore = false
         }
       }, (response) => {
         // console.info('get post data fail------', response)
-        let msg = '请求失败，请稍后重试'
         Toast({
-          message: msg
+          message: response.body && response.body.message || '请求失败，请稍后重试'
         })
+        that.$refs.detailList.refresh() //刷新list
+        that.$refs.detailList.loadmore = false
       })
     },
     getMarkList (page) {
@@ -619,18 +603,14 @@ export default {
           }
           that.$refs.detailList.refresh()
         }else{
-          let msg = '请求失败，请稍后重试'
-          if(_body.message) {
-            Toast({
-              message: msg
-            })
-          }
+          Toast({
+            message: _body && _body.message || '请求失败，请稍后重试'
+          })
         }
       }, (response) => {
         // console.info('get mark data faild---', response)
-        let msg = '请求失败，请稍后重试'
         Toast({
-          message: msg
+          message: response.body && response.body.message || '请求失败，请稍后重试'
         })
       })
     },

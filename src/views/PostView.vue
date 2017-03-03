@@ -480,10 +480,7 @@ export default {
             let url = '/sessionlist/' + reqParam.fid
             that.$router.push(url)
           } else {
-            let msg = '发布失败，请稍候尝试！'
-            if (_body.message) {
-              msg = _body.message
-            }
+            let msg = _body && _body.message ||  '发布失败，请稍候尝试！'
             Toast(msg)
           }
         }, (response) => {
@@ -532,10 +529,7 @@ export default {
           that.moduleList = data.list
           that.hasModules = true
         } else {
-          let msg = '获取版块数据失败'
-          if (_body.message) {
-            msg = _body.message
-          }
+          let msg = _body && _body.message ||  '获取版块数据失败'
           Toast(msg)
           that.hasModules = false
         }

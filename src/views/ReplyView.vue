@@ -446,16 +446,15 @@ export default {
           window.history.back()
           Util.setSessionStorage('reply', '')
         } else {
-          let msg = '回复失败'
-          if (_body.message) {
-            msg = _body.message
-          }
           Toast({
-            message: msg
+            message: _body && _body.message || '回复失败'
           })
         }
       }, (response) => {
         console.info('postReply------fail---', response)
+        Toast({
+          message: response.body && response.body.message || '回复失败'
+        })
       })
         // window.history.back()
       

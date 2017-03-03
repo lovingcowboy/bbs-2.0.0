@@ -120,14 +120,16 @@ export default {
           }
           that.$refs.recList.refresh() //刷新list
         } else {
-          let msg = '请求失败，请稍后重试'
-          if (_body.message) {
-            msg = _body.message
-          }
+          let msg = _body && _body.message ||  '请求失败，请稍后重试'
           Toast(msg)
+          that.$refs.recList.refresh()
+          that.$refs.recList.loadmore = false
         }
       }, (response) => {
-        // console.info('getRecommentList------fail----', response)
+        console.info('getRecommentList------fail----', response)
+        Toast('请求失败，请稍后重试')
+        that.$refs.recList.refresh()
+        that.$refs.recList.loadmore = false
       })
     },
     onInitList(scroller) {
