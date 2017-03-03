@@ -34,7 +34,7 @@
       </div>
      
     </div>
-      <!-- hasVote:是否显示投票图标；imgList：添加图片列表； addImg：是否显示添加图片图标；canAddImg：web端是否可上传图片；emotionClickFunc：点击表情图片事件；imgDelFunc：删除图片事件；btnClickFunc：发表按钮点击事件；addImgFunc：上传图片-->
+      <!-- hasVote:是否显示投票图标；imgList：添加图片列表； addImg：是否显示添加图片图标；canAddImg：web端是否可上传图片；emotionClickFunc：点击表情图片事件；imgDelFunc：删除图片事件；btnClickFunc：发表按钮点击事件；addImgFunc：上传图片 ；showAddVote:是否显示投票选项-->
       <insert-tabs
         :hasVote="true"
         :imgList="imgList"
@@ -42,11 +42,13 @@
         :canAddImg="canAddImg"
         :postVote="postVote"
         :btnActive="canPost"
+        :showAddVote="showAddVote"
         @emotionClickFunc="insertEmo"
         @imgDelFunc="delImg"
         @btnClickFunc="goPost"
         @addImgFunc="addImgFunc"
-        @addVoteFunc="addVoteFunc"
+        @delVoteFunc="delVoteFunc"
+        ref="insertTabs"
       ></insert-tabs>
     </div>
   </div>
@@ -92,7 +94,8 @@ export default {
       comstart: false,
       postVote: null, //发起投票信息
       loader: null,
-      hasModules: true
+      hasModules: true,
+      showAddVote: false
     }
   },
   computed: {
@@ -511,9 +514,11 @@ export default {
       var url = '/postdetail/103601'
       this.$router.push(url)
     },
-    addVoteFunc(data) {
-      //添加投票
-      this.postVote = data
+    delVoteFunc(data) {
+      //删除投票
+      this.postVote = ''
+      Util.setSessionStorage('postVote', '')
+      // this.postVote = data
 
     },
     getModuleList() {
@@ -552,6 +557,16 @@ export default {
           this.isScrollActive = true
         }
       }*/
+  },
+  activated () {
+    let data = Util.getSessionStorage('postVote')
+    if (data) {
+      this.postVote = JSON.parse(data)
+
+      // this.showAddVote = true
+      this.$refs.insertTabs && this.$refs.insertTabs.showVoteFunc()
+    }
+    Util.setSessionStorage('postVote', '')
   },
   mounted () {
     let that = this

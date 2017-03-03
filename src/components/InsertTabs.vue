@@ -40,13 +40,13 @@
     </li>
   </ul>
 </section>
-<div class="add-vote-container" v-show="showAddVote">
+<!-- <div class="add-vote-container" v-show="showAddVote">
 <div class="avc-scroll">
   <header id="header" class="header-bar"><i class="icon-back" @click="completeAddVote('cancle')"></i>发帖</header>
   <section class="add-vote">
-    <!-- <div class="v-title">
+    <div class="v-title">
       <input type="text" name="vtitle" placeholder="请输入投票标题" v-model.trim="addVoteData.title"/>
-    </div> -->
+    </div>
     <div class="v-option v-row" v-for="(opt, index) in addVoteData.options">
       <div @click="delVoteOption(index)"><i class="icon-del"></i></div>
       <div>
@@ -60,7 +60,7 @@
     </div>
   </section>
 </div>
-</div>
+</div> -->
  
 </div>
 </template>
@@ -81,7 +81,7 @@ export default {
     return {
       showEmotion: false,
       showImgList: false,
-      showAddVote: false,
+      // showAddVote: false,
       showVote: false,
       addVoteData: {
         title: '',
@@ -218,165 +218,92 @@ export default {
 	props: ['hasVote', 'imgList', 'addImg', 'canAddImg', 'postVote', 'btnActive'],
 	methods: {
     triggerEmotion() {
-        this.showEmotion = !this.showEmotion
-        this.showImgList = false
-        this.showVote = false
-      },
-      emotionClickFunc(code) {
-        // console.info('code-----', code)
-        this.$emit('emotionClickFunc', code)
-      },
-      triggerImg() {
-        this.showEmotion = false
-        this.showImgList = !this.showImgList
-        this.showVote = false
-          // this.$emit('imgClickFunc')
-      },
-      imgDelFunc(index) {
-        this.$emit('imgDelFunc', index)
-      },
-      btnClickFunc() {
-        if (this.btnActive) {
-          this.$emit('btnClickFunc')
-        }
-
-      },
-      prevenDefault(e) {
-        console.info('prevenDefault---',this.canAddImg)
-        if (!this.canAddImg) {
-          e.preventDefault();
-        }
-      },
-      addImgFunc(e, type) {
-        console.info('-----addImgFunc')
-        this.$emit('addImgFunc', e, type)
-      },
-      triggerVote() {
-        // this.showAddVote = !this.showAddVote
-        this.showEmotion = false
-        this.showImgList = false
-        if (!this.postVote || this.postVote === '') {
-          this.showAddVote = true
-          this.showVote = false
-        } else {
-          this.showVote = !this.showVote
-        }
-      },
-      editVote () {
-        //编辑投票
-        if (this.postVote) {
-          // let data = this.postVote
-          let data = Util.myExtend(this.postVote);
-          this.addVoteData = data
-          // this.addVoteData = this.postVote
-        } 
-        this.showAddVote = true
-        this.showVote =false
-      },
-      delVote () {
-        //删除投票
-        this.addVoteData = {
-          title: '',
-          options: [{
-            id: 0,
-            text: ''
-          }, {
-            id: 1,
-            text: ''
-          }]
-        }
-        this.$emit('addVoteFunc', '')
-        this.showVote = false
-      },
-      completeAddVote(type) {
-        // console.info(this.addVoteData)
-        if (type === 'cancle') {
-          if (!this.postVote || this.postVote === '') {
-            this.addVoteData = {
-              title: '',
-              options: [{
-                id: 0,
-                text: ''
-              }, {
-                id: 1,
-                text: ''
-              }]
-            }
-          } else {
-            this.showVote = true
-          }
-        } else {
-          console.info('vote save edit')
-          let data = this.addVoteData
-         
-          //去除空白项
-          // data.options = data.options.filter((item, index) => {
-          //   return item.text != ''
-          // })
-
-         /* if(!data.title || data.title === '') {
-            Toast({
-              message: '请填写投票题目'
-            })
-            return
-          }*/
-          if(data.options.length < 2) {
-            Toast({
-              message: '至少要有两个投票选项'
-            })
-            return
-          }
-          if(data.options.length > 25) {
-            Toast({
-              message: '最多支持25个选项'
-            })
-            return
-          }
-          let flag = true
-          for(let opt of data.options) {
-            if(opt.text === '') {
-              flag = false
-              break
-            }
-          }
-          if(!flag) {
-            Toast({
-              message: '投票选项不可为空'
-            })
-            return
-          }
-          this.$emit('addVoteFunc', data)
-          this.showVote = true
-        }
-        this.showAddVote = false
-      },
-      addVoteOption() {
-        //添加投票选项
-        let opt = {
-          // id: this.addVoteData.options.length,
-          text: ''
-        }
-        this.addVoteData.options.push(opt)
-      },
-      delVoteOption(id) {
-        //删除投票选项
-        if(this.addVoteData.options.length <= 2)  {
-          Toast({
-            message: '至少要有两个投票选项'
-          })
-          return
-        }
-        this.addVoteData.options = this.addVoteData.options.filter((item, index) => {
-          return id != index
-        })
-        console.info(this.addVoteData.options.length , this.addVoteData.options)
+      this.showEmotion = !this.showEmotion
+      this.showImgList = false
+      this.showVote = false
+    },
+    emotionClickFunc(code) {
+      // console.info('code-----', code)
+      this.$emit('emotionClickFunc', code)
+    },
+    triggerImg() {
+      this.showEmotion = false
+      this.showImgList = !this.showImgList
+      this.showVote = false
+        // this.$emit('imgClickFunc')
+    },
+    imgDelFunc(index) {
+      this.$emit('imgDelFunc', index)
+    },
+    btnClickFunc() {
+      if (this.btnActive) {
+        this.$emit('btnClickFunc')
       }
 
-	},
-  beforeMount() {
-    
+    },
+    prevenDefault(e) {
+      console.info('prevenDefault---', this.canAddImg)
+      if (!this.canAddImg) {
+        e.preventDefault();
+      }
+    },
+    addImgFunc(e, type) {
+      console.info('-----addImgFunc')
+      this.$emit('addImgFunc', e, type)
+    },
+    triggerVote() {
+      // this.showAddVote = !this.showAddVote
+      this.showEmotion = false
+      this.showImgList = false
+      if (!this.postVote || this.postVote === '') {
+        // this.showAddVote = true
+        // this.showVote = true
+        Util.setSessionStorage('postVote', '')
+        this.$router.push('/post/addvote')
+      } else {
+        this.showVote = !this.showVote
+      }
+    },
+    showVoteFunc () {
+      this.showVote = true
+    },
+    editVote() {
+      //编辑投票
+      let data = ''
+      if (this.postVote) {
+        // let data = this.postVote
+        data = Util.myExtend(this.postVote);
+        this.addVoteData = data
+          // this.addVoteData = this.postVote
+        Util.setSessionStorage('postVote', JSON.stringify(data))
+      }
+      // this.showAddVote = true
+      // this.showVote =false
 
+      this.$router.push('/post/addvote')
+    },
+    delVote() {
+      //删除投票
+      // this.postVote = {
+      //   title: '',
+      //   options: [{
+      //     id: 0,
+      //     text: ''
+      //   }, {
+      //     id: 1,
+      //     text: ''
+      //   }]
+      // }
+      // this.$emit('addVoteFunc', '')
+      this.$emit('delVoteFunc', '')
+      this.showVote = false
+    }
+
+	},
+
+  mounted() {
   }
+
 }
 </script>
 <style lang="scss">
@@ -570,125 +497,125 @@ export default {
   }
 }
 
-.add-vote-container {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  right: 0;
-  bottom: 0;
-  background-color: $color-white-light;
-  z-index: 889;
-  padding-top: pxToRem(90px);
-  overflow: hidden;
-  .avc-scroll {
-    width: 100%;
-    height: 100%;
-    overflow: scroll;
-    padding: pxToRem(60px) 0 pxToRem(30px) 0;
-  }
-}
-.add-vote {
-  width: pxToRem(692px);
-  min-height: pxToRem(388px);
-  background-color: $color-white;
-  border-radius: pxToRem(10px);
-  margin: auto;
-  &>div {
-    width: 100%;
-    padding: 0 pxToRem(30px);
-  }
-  input {
-    width: 100%;
-    height: 100%;
-    color: $txt-color-black;
-  }
-  input::-webkit-input-placeholder {
-    color: $txt-color-grey;
-  }
-  .v-title {
-    height: pxToRem(110px);
-    input {
-      font-size: pxToRem(36px);
-      font-weight: bolder;
-    }
-  }
-  .v-icon {
-    width: pxToRem(36px);
-    height: pxToRem(36px);
-    position: absolute;
-    left: 0;
-    top: 50%;
-    margin-top: pxToRem(-18px);
-  }
-  .v-option {
-    font-size: 0;
-    white-space: nowrap;
-    &>div {
-      display: inline-block;
-      height: 100%;
-      vertical-align: bottom;
-    }
-    &>div:first-child {
-      width: pxToRem(60px);
-      position: relative;
-    }
-    &>div:last-child {
-      width: pxToRem(570px);
-    }
-    input {
-      font-size: pxToRem(30px);
-    }
-    .icon-del {
-      @extend .v-icon;
-    }
-  }
+// .add-vote-container {
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   right: 0;
+//   bottom: 0;
+//   background-color: $color-white-light;
+//   z-index: 889;
+//   padding-top: pxToRem(90px);
+//   overflow: hidden;
+//   .avc-scroll {
+//     width: 100%;
+//     height: 100%;
+//     overflow: scroll;
+//     padding: pxToRem(60px) 0 pxToRem(30px) 0;
+//   }
+// }
+// .add-vote {
+//   width: pxToRem(692px);
+//   min-height: pxToRem(388px);
+//   background-color: $color-white;
+//   border-radius: pxToRem(10px);
+//   margin: auto;
+//   &>div {
+//     width: 100%;
+//     padding: 0 pxToRem(30px);
+//   }
+//   input {
+//     width: 100%;
+//     height: 100%;
+//     color: $txt-color-black;
+//   }
+//   input::-webkit-input-placeholder {
+//     color: $txt-color-grey;
+//   }
+//   .v-title {
+//     height: pxToRem(110px);
+//     input {
+//       font-size: pxToRem(36px);
+//       font-weight: bolder;
+//     }
+//   }
+//   .v-icon {
+//     width: pxToRem(36px);
+//     height: pxToRem(36px);
+//     position: absolute;
+//     left: 0;
+//     top: 50%;
+//     margin-top: pxToRem(-18px);
+//   }
+//   .v-option {
+//     font-size: 0;
+//     white-space: nowrap;
+//     &>div {
+//       display: inline-block;
+//       height: 100%;
+//       vertical-align: bottom;
+//     }
+//     &>div:first-child {
+//       width: pxToRem(60px);
+//       position: relative;
+//     }
+//     &>div:last-child {
+//       width: pxToRem(570px);
+//     }
+//     input {
+//       font-size: pxToRem(30px);
+//     }
+//     .icon-del {
+//       @extend .v-icon;
+//     }
+//   }
 
-  .v-row {
-    width: 100%;
-    height: pxToRem(90px);
-    line-height: pxToRem(90px);
-    // padding-left: pxToRem(90px);
-    border-top: 1px dashed $border-color;
-  }
-  .v-bottom {
-    font-size: pxToRem($font-size-normal);
-  }
-  .v-add {
-    height: 100%;
-    width: pxToRem(250px);
-    padding-left: pxToRem(60px);
-    position: relative;
-    color: $txt-color-blue;
-    &:before {
-      content: "";
-      background-color: $txt-color-blue;
-      border-radius: 50%;
-      @extend .v-icon;
-      z-index: 100;
-    }
-    &:after {
-      content: "";
-      @include background('../images/icon-plus-white.png', 18px, 18px);
-      position: absolute;
-      left: pxToRem(10px);
-      top: 50%;
-      // margin-left: pxToRem(-9px);
-      margin-top: pxToRem(-9px);
-      z-index: 101; 
-    }
-  }
-  .v-btn {
-    width: pxToRem(120px);
-    text-align: right;
-    float: right;
-  }
-  .v-cancle {
-    color: $txt-color-grey;
-  }
-  .v-save {
-    color: $txt-color-blue;
-  }
-}
+//   .v-row {
+//     width: 100%;
+//     height: pxToRem(90px);
+//     line-height: pxToRem(90px);
+//     // padding-left: pxToRem(90px);
+//     border-top: 1px dashed $border-color;
+//   }
+//   .v-bottom {
+//     font-size: pxToRem($font-size-normal);
+//   }
+//   .v-add {
+//     height: 100%;
+//     width: pxToRem(250px);
+//     padding-left: pxToRem(60px);
+//     position: relative;
+//     color: $txt-color-blue;
+//     &:before {
+//       content: "";
+//       background-color: $txt-color-blue;
+//       border-radius: 50%;
+//       @extend .v-icon;
+//       z-index: 100;
+//     }
+//     &:after {
+//       content: "";
+//       @include background('../images/icon-plus-white.png', 18px, 18px);
+//       position: absolute;
+//       left: pxToRem(10px);
+//       top: 50%;
+//       // margin-left: pxToRem(-9px);
+//       margin-top: pxToRem(-9px);
+//       z-index: 101; 
+//     }
+//   }
+//   .v-btn {
+//     width: pxToRem(120px);
+//     text-align: right;
+//     float: right;
+//   }
+//   .v-cancle {
+//     color: $txt-color-grey;
+//   }
+//   .v-save {
+//     color: $txt-color-blue;
+//   }
+// }
 .show-vote-container {
   width: 100%;
   padding: pxToRem(30px) 0;
@@ -719,7 +646,7 @@ export default {
     font-weight: bolder;
   }
   .sv-option {
-    height: pxToRem(40px);
+    min-height: pxToRem(40px);
     margin-top: pxToRem(50px);
     line-height: pxToRem(40px);
     font-size: pxToRem($font-size-normal-small);

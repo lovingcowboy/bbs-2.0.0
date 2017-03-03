@@ -82,6 +82,7 @@
 	width: 100%;
 	padding-left: pxToRem(30px);
 	border-top: 1px solid $border-color;
+	position: relative;
 	.p-title {
 		width: 100%;
 		height: pxToRem(90px);

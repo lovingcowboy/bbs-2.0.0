@@ -93,6 +93,18 @@ const router = new Router({
             })
         },
         meta: {
+            keepAlive: true
+        }
+    }, {
+        path: '/post/addvote',
+        name: 'addvote',
+        component: function(resolve) {
+            require.ensure(['../views/AddVoteView.vue'], function(require) {
+                var AddVoteView = require('../views/AddVoteView.vue')
+                resolve(AddVoteView)
+            })
+        },
+        meta: {
             keepAlive: false
         }
     }, {
