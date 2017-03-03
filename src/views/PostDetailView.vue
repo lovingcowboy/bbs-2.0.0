@@ -161,8 +161,10 @@
       <div class="post-foot">
         <div class="f-container" @click="pfClickFunc($event)">
           <span class="f-reply pf-evt" data-type="reply">发表回复…</span>
-          <i :class="['pf-evt', +thread.yes_fav ? 'icon-zan-active': 'icon-zan']" data-type="fav"></i>
-          <i class="icon-mark pf-evt"  data-type="mark"></i>
+          <span :class="['pf-icon', 'pf-evt', {'active': +thread.yes_fav}]" data-type="fav"><i class="icon-zan"></i><span class="i-txt">收藏</span></span>
+          <span class="pf-icon pf-evt" data-type="mark"><i class="icon-mark"></i><span class="i-txt">评分</span></span>
+         <!--  <i :class="['pf-evt', +thread.yes_fav ? 'icon-zan-active': 'icon-zan']" data-type="fav" ></i>
+          <i class="icon-mark pf-evt"  data-type="mark" ></i> -->
           <!-- <i class="icon-share pf-evt" data-type="share"></i> -->
         </div>
       </div>

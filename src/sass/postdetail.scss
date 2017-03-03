@@ -338,6 +338,10 @@
         width: 100%;
         padding: 0 pxToRem(30px);
         white-space: nowrap;
+        vertical-align: middle;
+        &>* {
+            vertical-align: middle;
+        }
     }
     .f-reply {
         // width: pxToRem(380px);
@@ -346,17 +350,59 @@
         line-height: pxToRem(66px);
         border-radius: pxToRem(10px);
         background-color: #f6f6f6;
-        font-size: pxToRem($font-size-normal);
-        color: $txt-color-grey;
-        margin-top: pxToRem(14px);
+        font-size: pxToRem($font-size-normal-small);
+        color: $txt-color-grey-light;
+        // margin-top: pxToRem(14px);
         padding-left: pxToRem(30px);
+        margin-right: pxToRem(30px);
     }
-    i {
+    /* i {
         background-repeat: no-repeat;
         background-position: right center;
         width: pxToRem(100px);
         height: 100%;
         vertical-align: top;
+    } */
+    .pf-icon {
+        width: pxToRem(96px);
+        height: 100%;
+        text-align: center;
+        color: $txt-color-grey;
+        font-size: pxToRem(18px);
+        &>i {
+            width: 100%;
+            height: pxToRem(70px);
+            background-repeat: no-repeat;
+            background-position: center;
+            display: block;
+        }
+        .i-txt {
+            width: 100%;
+            height: pxToRem(24px);
+            display: block;
+        }
+       @at-root {
+        .active {
+            .icon-zan {
+                background-image: url('../images/icon-zan-active.png') !important;
+            }
+            .i-txt {
+                color: $txt-color-blue !important;
+            }
+        }
+       }
+       /*  padding-bottom: pxToRem(24px);
+        position: relative;
+        background-repeat: no-repeat;
+        background-position: center;
+        &:before {
+            content: attr(data-content);
+            width: 100%;
+            height: pxToRem(24px);
+            position: absolute;
+            left: 0;
+            bottom: pxToRem(0px);
+        } */
     }
     .icon-zan {
         background-image: url('../images/icon-zan.png');
@@ -368,7 +414,7 @@
     }
     .icon-mark {
         background-image: url('../images/icon-mark.png');
-        background-size: pxToRem(42px) pxToRem(40px);
+        background-size: pxToRem(36px) pxToRem(40px);
     }
     .icon-mark-active {
         background-image: url('../images/icon-mark-active.png');

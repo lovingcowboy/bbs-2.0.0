@@ -35,8 +35,8 @@
     <!-- <li class="sv-title">{{postVote.title}}</li> -->
     <li class="sv-option" v-for="opt in postVote.options"><i class="sv-radio"></i>{{opt.text}}</li>
     <li class="sv-btns">
-      <div class="sv-btn-edit" @click="editVote"><i class="sv-icon-edit"></i>编辑</div>
-      <div class="sv-btn-del" @click="delVote"><i class="sv-icon-del"></i>删除</div>
+      <div class="sv-btn-edit" @click="editVote"><i class="sv-icon-edit"></i><i class="sv-btn-text">编辑</i></div>
+      <div class="sv-btn-del" @click="delVote"><i class="sv-icon-del"></i><i class="sv-btn-text">删除</i></div>
     </li>
   </ul>
 </section>
@@ -694,7 +694,7 @@ export default {
   }
   .sv-bg {
     width: pxToRem(690px);
-    min-height: pxToRem(380px);
+    min-height: pxToRem(360px);
     background-color: $color-white;
     border-radius: pxToRem(10px);
     box-shadow: 0px pxToRem(4px) pxToRem(20px) 0px rgba( 0, 0, 0, .15 );
@@ -742,7 +742,10 @@ export default {
     }
     i {
       margin-right: pxToRem(20px);
-      vertical-align: text-bottom;
+      vertical-align: middle;
+    }
+    .sv-btn-text {
+      line-height: pxToRem($font-size-normal-small);
     }
     .sv-btn-edit {
       color: $txt-color-blue;
