@@ -480,7 +480,6 @@ export default {
         that.loader = Loader()
         that.loader.show()
       }
-      debugger
       service.postData('/app/index.php', param).then((response) => {
         // console.info('getListData----', response.body)
         let _body = response.body
