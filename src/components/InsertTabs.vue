@@ -41,7 +41,8 @@
   </ul>
 </section>
 <div class="add-vote-container" v-show="showAddVote">
-<header id="header" class="header-bar"><i class="icon-back" @click="completeAddVote('cancle')"></i>发帖</header>
+<div class="avc-scroll">
+  <header id="header" class="header-bar"><i class="icon-back" @click="completeAddVote('cancle')"></i>发帖</header>
   <section class="add-vote">
     <!-- <div class="v-title">
       <input type="text" name="vtitle" placeholder="请输入投票标题" v-model.trim="addVoteData.title"/>
@@ -58,6 +59,7 @@
       <span class="v-cancle v-btn" @click="completeAddVote('cancle')">取消</span>
     </div>
   </section>
+</div>
 </div>
  
 </div>
@@ -351,7 +353,7 @@ export default {
       addVoteOption() {
         //添加投票选项
         let opt = {
-          id: this.addVoteData.options.length,
+          // id: this.addVoteData.options.length,
           text: ''
         }
         this.addVoteData.options.push(opt)
@@ -365,9 +367,9 @@ export default {
           return
         }
         this.addVoteData.options = this.addVoteData.options.filter((item, index) => {
-          return item.id != id
+          return id != index
         })
-        // console.info(this.addVoteData.options)
+        console.info(this.addVoteData.options.length , this.addVoteData.options)
       }
 
 	},
@@ -576,8 +578,14 @@ export default {
   bottom: 0;
   background-color: $color-white-light;
   z-index: 889;
-  padding-top: pxToRem(150px);
-  
+  padding-top: pxToRem(90px);
+  overflow: hidden;
+  .avc-scroll {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    padding: pxToRem(60px) 0 pxToRem(30px) 0;
+  }
 }
 .add-vote {
   width: pxToRem(692px);
