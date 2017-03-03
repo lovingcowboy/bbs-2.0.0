@@ -90,7 +90,7 @@ export default {
   methods: {
     leftBtnFunc() {
       MessageBox({
-        message: '返回后回复内容不会保存，确定要返回吗？',
+        message: '返回后内容不会保存，确定要返回吗？',
         showCancelButton: true,
         closeOnClickModal: false
       }).then(action => {

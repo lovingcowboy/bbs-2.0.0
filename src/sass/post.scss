@@ -56,7 +56,8 @@
 }
 .msg-cont {
 	white-space: nowrap;
-	overflow: auto;
+	// overflow: auto;
+	overflow-x: auto;
 	height: pxToRem(96px);
 	margin-top: 0 !important;
 	position: relative;
