@@ -60,7 +60,8 @@ export default {
         mutationObserver: true,
         refresh: true,
         loadmore: true
-      }
+      },
+      hasData: false
     }
   },
   computed: {
@@ -119,6 +120,7 @@ export default {
             totalPage: +data.pager.total_page
           }
           that.$refs.recList.refresh() //刷新list
+          that.hasData = true
         } else {
           let msg = _body && _body.message ||  '请求失败，请稍后重试'
           Toast(msg)
@@ -148,7 +150,7 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      if (from && from.name !== 'postdetail' && from.name !== 'centerother') { //不是从帖子详跳转回来
+      if (from && from.name !== 'postdetail' && from.name !== 'centerother' || !vm.hasData) { //不是从帖子详跳转回来
         vm.getRecommentList(false);
         vm.$refs.recList && vm.$refs.recList.myScroll.scrollTo(0, 0, 0);
       }
