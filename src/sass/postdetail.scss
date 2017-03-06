@@ -85,6 +85,8 @@
         padding: 0 pxToRem(30px);
         height: pxToRem(32px);
         line-height: pxToRem(32px);
+        position: relative;
+        padding-left: pxToRem(92px);
     }
     input[type='radio'],
     input[type='checkbox'] {
@@ -110,8 +112,11 @@
         background-repeat: no-repeat;
         background-position: center;
         vertical-align: text-top;
-        margin-right: pxToRem(30px);
+        // margin-right: pxToRem(30px);
         display: inline-block;
+        position: absolute;
+        left: pxToRem(30px);
+        top: 0;
     }
     .icon-radio {
         border-radius: 50%;
@@ -125,7 +130,7 @@
         border-color: $txt-color-blue;
     }
     .vote-nums {
-        width: pxToRem(486px);
+        width: pxToRem(480px);
         height: pxToRem(10px);
         background-color: $border-color;
         margin-left: pxToRem(90px);
@@ -147,6 +152,7 @@
         font-size: pxToRem(20px);
         color: $txt-color-black;
         vertical-align: middle;
+        white-space: nowrap;
     }
 }
 

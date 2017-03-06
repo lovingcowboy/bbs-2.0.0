@@ -652,14 +652,27 @@ export default {
     font-size: pxToRem($font-size-normal-small);
     // padding: 0 pxToRem(30px);
     color: $txt-color-grey-dark;
-    .sv-radio {
+    position: relative;
+    padding-left: pxToRem(96px) !important;
+    &:before {
+      content: "";
       width: pxToRem(36px);
       height: pxToRem(36px);
       border-radius: 50%;
       border: pxToRem(2px) solid #e7e7e7;
-      margin-right: pxToRem(30px);
-      vertical-align: text-bottom;
+      display: inline-block;
+      position: absolute;
+      left: pxToRem(30px);
+      top: 0;
     }
+    // .sv-radio {
+    //   width: pxToRem(36px);
+    //   height: pxToRem(36px);
+    //   border-radius: 50%;
+    //   border: pxToRem(2px) solid #e7e7e7;
+    //   margin-right: pxToRem(30px);
+    //   vertical-align: text-bottom;
+    // }
   }
   .sv-btns {
     margin-top: pxToRem(50px);

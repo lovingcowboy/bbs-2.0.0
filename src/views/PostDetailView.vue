@@ -438,8 +438,9 @@ export default {
         })
       })
     },
-    goReply () {
-      let param = Util.getSessionStorage('reply')
+   
+    goReply (param) {
+      // let param = Util.getSessionStorage('reply')
       if (!param) {
         param = {
           avatar: this.thread.avatar,
@@ -449,8 +450,8 @@ export default {
           tid: this.thread.tid,
           fid: this.thread.fid
         }
-        Util.setSessionStorage('reply', JSON.stringify(param))
       }
+      Util.setSessionStorage('reply', JSON.stringify(param))
       let url = '/postdetail/reply/' + this.thread.tid
       this.$router.push(url)
     },
@@ -630,8 +631,8 @@ export default {
         pid: item.pid,
         fid: this.thread.fid
       }
-      Util.setSessionStorage('reply', JSON.stringify(param))
-      this.goReply()
+      // Util.setSessionStorage('reply', JSON.stringify(param))
+      this.goReply(param)
     },
 
     onInitList (scroller) {
