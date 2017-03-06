@@ -59,7 +59,8 @@ export default {
       tipsConfig: {
         noData: false,
         text: '您还没有发表过帖子哦！'
-      }
+      },
+      hasData: false
     }
   },
   methods: {
@@ -67,10 +68,12 @@ export default {
       let that = this;
 
       Services.postData('/app/index.php', params).then((response) => {
-        let _body = response.body
+        let _body = response.body;
         if (_body.code === '200') {
-          let data = _body.data
+          let data = _body.data;
 
+          that.hasData = true;  //有数据的标识
+          
           that.myPostList = uniq.call(that, that.myPostList.concat(data.list), 'tid');  //去重
 
           that.tipsConfig.noData = that.myPostList.length == 0;  //是否显示空数据状态
@@ -153,9 +156,10 @@ export default {
 
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      if(from && from.name !== 'postdetail') {  //不是从帖子详情跳转回来
+      //不是从帖子详情跳转回来，或者回来没有数据
+      if(from && from.name !== 'postdetail' || !vm.hasData) { 
         vm.init();
-      }
+      } 
     })
   }
   
