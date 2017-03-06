@@ -60,8 +60,7 @@ export default {
         loadmore: true
       },
       firstPageMsg: [],  //第一页的消息数据,
-      messageData: "",
-      selfInfo: {}
+      messageData: ""
     }
   },
   computed: {
@@ -151,28 +150,30 @@ export default {
       }
 
       Services.postData('/app/index.php', params).then((response) => {
-
-        let _body = response.body
+        let _body = response.body;
 
         if (_body.code === '200') {
-          let data = _body.data
-           
+          let data = _body.data;
+
           that.isShowDialog = false;
           that.isScrollActive = true;
           
           // 将消息存入消息列表
-          that.selfInfo.message = that.messageData;
-          that.selfInfo.pmid = data.list.pmid;
-          that.selfInfo.avatar = data.list.member_avatar;
-          that.selfInfo.isself = '1'; 
+          let selfInfo = {};
+          selfInfo.message = that.messageData;
+          selfInfo.pmid = data.list.pmid;
+          selfInfo.avatar = data.list.member_avatar;
+          selfInfo.isself = '1'; 
           
-          that.firstPageMsg.push(that.selfInfo);
+          that.firstPageMsg.push(selfInfo);
 
           if(that.firstPageMsg.length > 20) { //超过pageSize，则去除数组首个元素
             that.firstPageMsg.shift();
           }
-          that.messageList.push(that.selfInfo);
+          console.log(that.messageList);
+          that.messageList.push(selfInfo);
           that.$refs.msglist.refresh(true);
+          that.messageData = '';  //重置输入框内容
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
