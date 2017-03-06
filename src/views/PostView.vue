@@ -481,6 +481,7 @@ export default {
           let _body = response.body
           if (_body.code === '200') {
             let url = '/sessionlist/' + reqParam.fid
+            that.reset()
             that.$router.push(url)
           } else {
             let msg = _body && _body.message ||  '发布失败，请稍候尝试！'
@@ -547,7 +548,29 @@ export default {
     },
     reloadModules() {
       this.getModuleList()
-    }
+    },
+    reset() {
+
+      this.selectPostion = {
+        selectionStart: 0,
+        selectionEnd: 0
+      }
+      this.moduleList = []
+      this.moduleActive = 0
+      this.imgList = []
+      this.post = {
+        fid: '',
+        title: '',
+        content: ''
+      }
+      this.addImg = true
+      this.canAddImg = true
+      this.canPost = false
+      this.comstart = false
+      this.postVote = null
+      this.hasModules = true
+      this.showAddVote = false
+    },
       /*preventScroll (status) {
         //阻止页面滑动
         console.info('preventScroll----', typeof status)
@@ -557,7 +580,9 @@ export default {
           this.isScrollActive = true
         }
       }*/
+
   },
+  
   activated () {
     let data = Util.getSessionStorage('postVote')
     if (data) {
@@ -567,6 +592,7 @@ export default {
       this.$refs.insertTabs && this.$refs.insertTabs.showVoteFunc()
     }
     Util.setSessionStorage('postVote', '')
+    // this.init()
   },
   mounted () {
     let that = this

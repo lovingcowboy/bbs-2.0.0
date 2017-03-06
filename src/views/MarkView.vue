@@ -118,7 +118,7 @@ export default {
         if (this.markDetail.prestige > +this.markData.surplus_rate.extcredits1 || this.markDetail.prestige < +this.markData.rate_rule.extcredits1.min || this.markDetail.prestige > +this.markData.rate_rule.extcredits1.max || this.markDetail > +this.markData.rate_rule.extcredits1.mrpd) {
           isCorrect_prestige = false
         }
-        if (!isCorrect_score) {
+        if (!isCorrect_prestige) {
           Toast({
             message: '当前您的剩余可评分威望数量为' + this.markData.surplus_rate.extcredits1 + '，评分范围为' + this.markData.rate_rule.extcredits1.min + '~' + this.markData.rate_rule.extcredits1.max + '，每日评分上限为' + this.markData.rate_rule.extcredits1.mrpd
           })
@@ -173,10 +173,10 @@ export default {
     onSave () {
       this.isShowDialog = false
       this.isScrollActive = true
-      this.msgList.push(this.msgAdd)
+      this.markData.reasons.push(this.msgAdd)
       this.markDetail.msg = this.msgAdd
       this.msgAdd = ''
-      this.msgActive = this.msgList.length - 1
+      this.msgActive = this.markData.reasons.length - 1
     },
     init () {
       /*let reqParam = this.$route.params.reqParam
