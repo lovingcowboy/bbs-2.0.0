@@ -124,7 +124,8 @@ export default {
       essenceTipsConfig: {
         noData: false,
         text: '这里空空如也'
-      }
+      },
+      hasData: false
     }
   },
   computed: {
@@ -143,6 +144,9 @@ export default {
         let _body = response.body;
         if (_body.code === '200') {
           let data = _body.data;
+          
+          that.hasData = true;  //有数据的标识
+
           that.session = data.forum.name;
           //记录页数信息
           pager = data.pager;
@@ -478,9 +482,10 @@ export default {
   
   beforeRouteEnter (to, from, next) {
     next(vm => {
-      if(from && from.name !== 'postdetail') {  //不是从帖子详情跳转回来
+      //不是从帖子详情跳转回来，或者回来没有数据
+      if(from && from.name !== 'postdetail' || !vm.hasData) { 
         vm.init();
-      }
+      } 
     })
   }
   
