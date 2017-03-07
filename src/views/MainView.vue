@@ -412,7 +412,7 @@ export default {
             if (that.userInfo.notice && (+that.userInfo.notice) > 0) {
               that.hasUnRead = true
               // 超过99显示99+
-              that.unReadNum = that.userInfo.notice > 99 ? '99+' : that.userInfo.notice
+              that.unReadNum = +that.userInfo.notice > 99 ? '99+' : that.userInfo.notice
             }
           } else {
             that.userInfo.nickname = '欢迎来到团粉圈~'
