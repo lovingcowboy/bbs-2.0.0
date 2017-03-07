@@ -168,10 +168,10 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data;
-          // 记录个人消息未读数
-          that.newpm = data.newpm;
-          // 记录系统消息未读数
-          that.newsystem = data.newsystem; 
+          // 记录个人消息未读数，超过99，显示99+
+          that.newpm = data.newpm > 99 ? '99+' : data.newpm;
+          // 记录系统消息未读数，超过99，显示99+
+          that.newsystem = data.newsystem > 99 ? '99+' : data.newsystem; 
           
           // 刷新数据
           if(isRefresh == true)  that.personList = [];
@@ -212,8 +212,8 @@ export default {
           let data = _body.data
           // 系统消息清空
           that.newsystem = 0;
-          // 记录个人消息未读数
-          that.newpm = data.newpm; 
+          // 记录个人消息未读数，超过99，显示99+
+          that.newpm = data.newpm > 99 ? '99+' : data.newpm;
           
           // 刷新数据
           if(isRefresh == true)  that.systemList = [];
