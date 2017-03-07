@@ -30,7 +30,6 @@ import Toast from '../components/toast'
 import Services from '../services'
 import Validate from '../js/lib/validate.js'
 import List from 'components/listview'
-import {uniq} from '../filters'
 import Tips from '../components/Tips.vue'
 export default {
   components: {
@@ -73,7 +72,7 @@ export default {
 
           that.hasData = true;  //有数据的标识
           
-          that.myReplyList = uniq.call(that, that.myReplyList.concat(data.list), 'tid');  //去重
+          that.myReplyList = that.myReplyList.concat(data.list)
 
           that.tipsConfig.noData = that.myReplyList.length == 0;  //是否显示空数据状态
 
