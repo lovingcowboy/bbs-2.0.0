@@ -32,7 +32,7 @@
                 <post-item v-for="(item, index) in newPostList" :data="item">
                   <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid">
-                      <img :src="item.avatar"><font>{{item.author}}</font>
+                      <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
                     <span v-html="item.dateline"></span>
@@ -44,7 +44,7 @@
                 <post-item v-for="(item, index) in newReplyList" :data="item">
                   <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid">
-                      <img :src="item.avatar"><font>{{item.author}}</font>
+                      <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
                     <span v-html="item.dateline"></span>
@@ -56,7 +56,7 @@
               <post-item v-for="(item, index) in essenceList" :data="item">
               <div class="item-title" slot="itemhead">
                 <span data-type="userclick" :data-id="item.tid" >
-                  <img :src="item.avatar"><font>{{item.author}}</font>
+                  <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                   <label class="level">LV{{item.group_level}}  {{item.group_title}}</label>
                 </span>
                 <span v-html="item.dateline"></span>
@@ -82,7 +82,7 @@ import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import List from "components/listview"
 import Services from '../services'
-import {uniq} from '../filters';
+import {ellipsisText, uniq} from '../filters';
 import Tips from '../components/Tips.vue'
 import Validate from '../js/lib/validate.js'
 export default {

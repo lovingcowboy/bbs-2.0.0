@@ -584,6 +584,7 @@ export default {
   },
   
   activated () {
+    let that = this
     let data = Util.getSessionStorage('postVote')
     if (data) {
       this.postVote = JSON.parse(data)
@@ -592,10 +593,6 @@ export default {
       this.$refs.insertTabs && this.$refs.insertTabs.showVoteFunc()
     }
     Util.setSessionStorage('postVote', '')
-    // this.init()
-  },
-  mounted () {
-    let that = this
     this.loader = Loader()
       // this.getModuleList()
     if (!Validate.checkLogin()) {
@@ -614,6 +611,27 @@ export default {
     } else {
       that.getModuleList()
     }
+  },
+  mounted () {
+    // let that = this
+    // this.loader = Loader()
+    //   // this.getModuleList()
+    // if (!Validate.checkLogin()) {
+    //   Validate.getLoginInfo(function(result) {
+    //     // console.info('result---', result)
+    //     if (result.isLogined === 1) {
+    //       that.getModuleList()
+    //     } else {
+    //       that.$router.push('/main')
+    //       setTimeout(function() {
+    //         Toast('请登录！')
+    //       }, 1000)
+    //     }
+
+    //   })
+    // } else {
+    //   that.getModuleList()
+    // }
 
   }
 

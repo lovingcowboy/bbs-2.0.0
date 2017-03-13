@@ -18,7 +18,7 @@
         </div>
         <div class="u-det">
           <p class="u-name">{{userInfo.nickname}}</p>
-          <p class="u-data" v-if="isLogin"><span>{{userInfo.user_level}}大侠</span><span>{{userInfo.credits}}积分</span><span>{{userInfo.extcredits1}}威望</span></p>
+          <p class="u-data" v-if="isLogin"><span>LV{{userInfo.group_level}}{{userInfo.group_title}}</span><span>{{userInfo.credits}}积分</span><span>{{userInfo.extcredits1}}威望</span></p>
           <p class="u-data" v-else><span>{{userInfo.total_members}}会员</span><span>{{userInfo.total_post}}帖子</span></p>
         </div>
         <div class="u-sign">
@@ -279,12 +279,13 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data.member
-          that.userInfo.user_level = data.group_level
+          that.userInfo.group_level = data.group_level
+          that.userInfo.group_title = data.group_name
           that.userInfo.credits = data.credit
           that.userInfo.extcredits1 = data.extcredits1
           that.isSigned = true
           Toast({
-            message: '签到成功，积分+' + data.credit + '，威望+' + data.extcredits1,
+            message: '签到成功，积分+' + data.add_credit + '，威望+' + data.add_extcredits1,
             position: 'top'
           })
         } else {
