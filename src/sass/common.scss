@@ -358,8 +358,11 @@ input::-webkit-inner-spin-button {
             margin-bottom: pxToRem(40px);
             display: block;
         }
-        .reply-content::-webkit-placeholder {
+        .reply-content::-webkit-input-placeholder {
             color: $txt-color-grey-light;
+        }
+        .error::-webkit-input-placeholder {
+            color: red !important;
         }
         .btn-wrapper {
             font-size: 0;
@@ -480,7 +483,7 @@ input::-webkit-inner-spin-button {
         position: absolute;
         z-index: 1;
         border: 2px solid #d1d1d1;
-        border-radius: 50%;
+        border-radius: pxToRem(50px);
         top: 50%;
         transform: translateY(-50%);
         box-sizing: border-box;
@@ -514,7 +517,7 @@ input::-webkit-inner-spin-button {
         position: absolute;
         z-index: 1;
         border: 1px solid #d1d1d1;
-        border-radius: 50%;
+        border-radius: pxToRem(50px);
         top: 50%;
         transform: translateY(-50%);
         box-sizing: border-box;

@@ -21,7 +21,7 @@
         .avatar {
             width: pxToRem(160px);
             height: pxToRem(160px);
-            border-radius: 50%;
+            border-radius: pxToRem(160px);
             display: inline-block;
         }
         .userInfo-right {

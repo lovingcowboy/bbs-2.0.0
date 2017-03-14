@@ -35,7 +35,7 @@
 			// content: '?';
 			width: pxToRem(26px);
 			height: pxToRem(28px);
-			border-radius: 50%;
+			border-radius: pxToRem(26px);
 			border: 1px solid $txt-color-blue;
 			// position: absolute;
 			// top: 50%;

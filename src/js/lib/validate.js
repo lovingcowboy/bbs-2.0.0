@@ -37,7 +37,7 @@ var Validate = {
 	checkLogin: function() {
 		let uid = Util.getSessionStorage('uid')
 		let isLogined_cookie = Validate.getCookie('voHF_2132_auth') //测试服务器
-		// let isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
+			// let isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
 		return uid || isLogined_cookie
 	},
 	requesting: false,
@@ -192,22 +192,26 @@ var Validate = {
 
 			console.info("bbs_t=", bbs_token, "----bbs_s=", bbs_status);
 			//从url中获取loginToken登录
-			if (bbs_status) {
-				if (bbs_status == 1) {
-					//app已登录并获取到loginToken
-					me.bbsAppLogin(bbs_token, callback);
-					Util.setSessionStorage('v_token', bbs_token);
-				} else if (bbs_status == 2) {
-					//app已登录，但是未获取到loginToken
-					Util.setSessionStorage('v_token', '');
-					Util.setSessionStorage('dataReturn', 0)
-					console.info('app is logined, but can not get loginToken')
-					var loginInfo = {
-						isLogined: -1
-					}
-					callback.call(this, loginInfo);
-				}
 
+			if (bbs_status == 1) {
+				//app已登录并获取到loginToken
+				me.bbsAppLogin(bbs_token, callback);
+				Util.setSessionStorage('v_token', bbs_token);
+			} else if (bbs_status == 2) {
+				//app已登录，但是未获取到loginToken
+				Util.setSessionStorage('v_token', '');
+				Util.setSessionStorage('dataReturn', 0)
+				console.info('app is logined, but can not get loginToken')
+				var loginInfo = {
+					isLogined: -1
+				}
+				callback.call(this, loginInfo);
+			} else {
+				//app未登录
+				var loginInfo = {
+					isLogined: 0
+				}
+				callback.call(this, loginInfo);
 			}
 			/*else {
 				//获取app返回的loginToken登录

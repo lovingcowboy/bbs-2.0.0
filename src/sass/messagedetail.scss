@@ -20,7 +20,7 @@
             .avatar {
                 width: pxToRem(80px);
                 height: pxToRem(80px);
-                border-radius: 50%;
+                border-radius: pxToRem(80px);
                 display: inline-block;
                 vertical-align: text-top;
             }

@@ -45,7 +45,7 @@
         :showAddVote="showAddVote"
         @emotionClickFunc="insertEmo"
         @imgDelFunc="delImg"
-        @btnClickFunc="goPost"
+        @btnClickFunc="postBtnClickFunc"
         @addImgFunc="addImgFunc"
         @delVoteFunc="delVoteFunc"
         ref="insertTabs"
@@ -196,17 +196,19 @@ export default {
       //app端插入图片
       let that = this
       let _count = 9 - that.imgList.length
-      console.info('chooseImgFun----', _count)
+      // console.info('chooseImgFun----', _count)
 
       Bbsbridge.exec('getThumbnail', _count, function(data) {
         // alert("获取缩略图成功！")
         data = JSON.parse(data)
         if (data.code == 200) {
+          console.info('getThumbnail---data--', data)
           let _data = data.data
           _data.forEach((item, i) => {
             item.photoContent = "data:img/jpg;base64," + item.photoContent
           })
           that.imgList = that.imgList.concat(_data)
+          console.info('getThumbnail---imglist--', that.imgList)
           if (that.imgList.length >= 9) {
             that.addImg = false
           } else {
@@ -424,6 +426,7 @@ export default {
           _photos.push(_photo);
         }
 
+        console.info('photos---', _photos)
         if (_photos.length <= 0) {
           that.goPost();
           return;
@@ -437,7 +440,7 @@ export default {
             //  let _atid = _data.filter((d,index) => {return d.photoID == img.photoID});
             //  img.attachID = _atid[0].attachID});
             // console.log(that.imgList);
-
+            console.info('uploadPhoto---', _data, that.imgList)
             for (let i = 0; i < that.imgList.length; i++) {
               let _atid = _data.filter((img, index) => {
                 return img.photoID == that.imgList[i].photoID

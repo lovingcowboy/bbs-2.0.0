@@ -21,7 +21,7 @@
 	img {
 		width: pxToRem(70px);
 		height: pxToRem(70px);
-		border-radius: 50%;
+		border-radius: pxToRem(70px);
 		vertical-align: middle;
 		// margin-right: pxToRem(20px);
 		position: absolute;

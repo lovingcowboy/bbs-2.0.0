@@ -40,7 +40,7 @@
       <div class="masker" v-show="isShowDialog"></div>
       <div class="dialog-content">
         <div class="dialog-title">添加自定义留言</div>
-        <textarea class="reply-content" placeholder="请输入留言" v-model.trim="msgAdd"></textarea>
+        <textarea :class="['reply-content', {'error' : showError }]" placeholder="请输入留言" v-model.trim="msgAdd"></textarea>
         <div class="btn-wrapper">
           <div class="btn-cancel" @click="onCancel">取消</div>
           <div class="btn-send" @click="onSave">保存</div>
@@ -80,7 +80,8 @@ export default {
       formhash: '',
       markData: {
         surplus_rate: {}
-      }
+      },
+      showError: false //自定义留言错误提示
     }
   },
   computed: {
@@ -171,12 +172,18 @@ export default {
       this.msgAdd = ''
     },
     onSave () {
-      this.isShowDialog = false
-      this.isScrollActive = true
-      this.markData.reasons.push(this.msgAdd)
-      this.markDetail.msg = this.msgAdd
-      this.msgAdd = ''
-      this.msgActive = this.markData.reasons.length - 1
+      if (this.msgAdd) {
+        this.showError = false
+        this.isShowDialog = false
+        this.isScrollActive = true
+        this.markData.reasons.push(this.msgAdd)
+        this.markDetail.msg = this.msgAdd
+        this.msgAdd = ''
+        this.msgActive = this.markData.reasons.length - 1
+      } else {
+        this.showError = true
+        // Toast('请输入留言内容')
+      }
     },
     init () {
       /*let reqParam = this.$route.params.reqParam

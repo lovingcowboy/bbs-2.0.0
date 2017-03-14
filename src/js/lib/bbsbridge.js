@@ -35,8 +35,6 @@
 		window.WebViewJavascriptBridge.callHandler(
 			method, param,
 			function(responseData) {
-				console.log(responseData)
-				console.log(callback)
 				typeof callback === 'function' && callback.apply(this, arguments);
 				// if (callback && typeof callback == "function") {
 				// 	callback(responseData);

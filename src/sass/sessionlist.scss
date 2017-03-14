@@ -158,7 +158,7 @@
     }
 }
 .post-add {
-  border-radius: 50%;
+  border-radius: pxToRem(90px);
   background-image: linear-gradient(0deg, rgb(25,166,255) 0%, rgb(40,201,255) 100%);
   width: pxToRem(90px);
   height: pxToRem(90px);
