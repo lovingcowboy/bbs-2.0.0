@@ -61,13 +61,13 @@
             font-size: 0;
             clear: both;
             .left {
-                width: pxToRem(90px);
                 position: relative;
                 display: inline-block;
                 padding: pxToRem(22px) 0;
-                // margin-left: pxToRem(30px);
                 .avatar {
-                    width: 100%;
+                    width: pxToRem(92px);
+                    height: pxToRem(92px);
+                    border-radius: pxToRem(46px);
                 }
                 .point-new {
                     border: pxToRem(2px) solid #fff;

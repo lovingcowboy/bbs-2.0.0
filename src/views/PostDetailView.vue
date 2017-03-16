@@ -17,7 +17,19 @@
       <div class="post-cont">
         <p class="p-title">{{thread.title}}</p>
         <p class="p-poster"><img :src="thread.avatar"><span>{{thread.author}}</span></p>
-        <p class="p-msg"><span v-html="thread.create_time"></span><span class="post-view">{{thread.views}}</span><span class="post-reply">{{thread.replies}}</span></p>
+        <p class="p-msg">
+          <span v-html="thread.create_time"></span>
+          <span class="post-view">
+            <span class="icon-view"></span>
+            <span>{{thread.views}}</span>
+          </span>
+          <span class="post-reply">
+            <span class="icon-reply"></span>
+            <span>{{thread.replies}}</span>
+          </span>
+         <!--  <span class="post-view">{{thread.views}}</span>
+          <span class="post-reply">{{thread.replies}}</span> -->
+        </p>
         <p class="p-content" v-html="thread.message">
         </p>
         <div :class="['vote-cont', {'vote-disable': !voteData.allowvote}]" v-show="voteData && voteData.polloptions && voteData.polloptions.length > 0">

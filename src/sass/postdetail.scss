@@ -4,11 +4,13 @@
     height: 100%;
     overflow: hidden !important;
 }
+
 .pc-container {
     padding-bottom: pxToRem(20px);
     width: 100%;
     background-color: $color-white-light;
 }
+
 .post-cont {
     width: 100%;
     background-color: $color-white;
@@ -45,11 +47,25 @@
 
 .p-msg {
     width: 100%;
-    font-size: pxToRem($font-size-small);
     color: $txt-color-grey;
     margin: pxToRem(20px) 0;
+    font-size: 0;
     &>span {
+        vertical-align: middle;
+        display: inline-block;
+        font-size: pxToRem($font-size-small);
         margin-right: pxToRem(36px);
+        &.post-view,&.post-reply {
+            font-size: 0;
+        }
+        span {
+            vertical-align: middle;
+            display: inline-block;
+            font-size: pxToRem($font-size-small);
+            &.icon-reply, &.icon-view {
+                margin-right: pxToRem(10px);
+            }
+        }
     }
 }
 
@@ -60,7 +76,7 @@
     text-align: justify;
     line-height: 2;
     img {
-        max-width: 100% ;
+        max-width: 100%;
     }
 }
 
@@ -192,6 +208,7 @@
         color: $txt-color-blue !important;
     }
 }
+
 .hideTabs {
     visibility: hidden;
 }
@@ -218,6 +235,7 @@
         // max-height: pxToRem(500px);
         overflow-y: auto;
         position: relative;
+        word-break: break-all;
         &>li {
             padding: pxToRem(40px) 0;
             font-size: 0;
@@ -230,6 +248,7 @@
         max-width: 100%;
     }
 }
+
 #detailScroll {
     bottom: pxToRem(96px);
     background-color: $color-white-light;
@@ -393,17 +412,17 @@
             height: pxToRem(24px);
             display: block;
         }
-       @at-root {
-        .active {
-            .icon-zan {
-                background-image: url('../images/icon-zan-active.png') !important;
-            }
-            .i-txt {
-                color: $txt-color-blue !important;
+        @at-root {
+            .active {
+                .icon-zan {
+                    background-image: url('../images/icon-zan-active.png') !important;
+                }
+                .i-txt {
+                    color: $txt-color-blue !important;
+                }
             }
         }
-       }
-       /*  padding-bottom: pxToRem(24px);
+        /*  padding-bottom: pxToRem(24px);
         position: relative;
         background-repeat: no-repeat;
         background-position: center;

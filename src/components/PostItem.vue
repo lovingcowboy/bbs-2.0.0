@@ -7,18 +7,25 @@
       <p data-type="itemclick" >{{data.message}}</p>
     </div>
     <div class="p-img" v-show="data.cover && data.cover != ''">
-      <img :src="data.cover">
+      <div class="img-cover" :style="{'background-image': 'url('+ data.cover +')'}"></div>
     </div>
   </div>
   <div class="item-message">
-    <span class="post-view">{{data.views}}</span>
-    <span class="post-reply">{{data.replies}}</span>
+    <div class="post-view">
+      <span class="icon-view"></span>
+      <span>{{data.views}}</span>
+    </div>
+    <div class="post-reply">
+      <span class="icon-reply"></span>
+      <span>{{data.replies}}</span>
+    </div>
   </div>
 </li>
 </template>
 <script>
 
 export default {
+  
 	name: 'postItem',
 	props: ['data', 'index'],
 	methods: {
@@ -128,23 +135,36 @@ export default {
     width: pxToRem(240px);
     text-align: right;
     vertical-align: top;
-    img {
+    white-space: nowrap;
+    .img-cover {
       width: pxToRem(200px);
       height: pxToRem(200px);
+      background-position: 50% 50%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      margin-left: pxToRem(40px);
     }
   }
 }
 .item-message {
   width: 100%;
-  font-size: pxToRem($font-size-small);
   color: $txt-color-grey;
-  span {
+  font-size: 0;
+  div {
     width: pxToRem(152px);
-    // display: inline-block;
-    height: pxToRem(22px);
-    line-height: pxToRem(22px);
-    background-repeat: no-repeat;
-    background-position: left;
+    display: inline-block;
+    vertical-align: middle;
+    height: pxToRem(28px);
+    line-height: pxToRem(28px);
+    overflow: visible;
+    span {
+      font-size: pxToRem($font-size-small);
+      display: inline-block;
+      vertical-align: middle;
+      &:last-child {
+        margin-left: pxToRem(10px);
+      }
+    }
   } 
 }
 

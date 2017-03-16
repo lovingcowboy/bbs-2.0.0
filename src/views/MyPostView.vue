@@ -18,9 +18,16 @@
              <div class="line02">
                <div class="post-time">{{item.dateline}}</div>
                <div class="item-message">
-                 <span class="post-view">{{item.views}}</span>
-                 <span class="post-reply">{{item.replies}}</span>
+                 <div class="post-view">
+                   <span class="icon-view"></span>
+                   <span>{{item.views}}</span>
+                 </div>
+                 <div class="post-reply">
+                   <span class="icon-reply"></span>
+                   <span>{{item.replies}}</span>
+                 </div>
                </div>
+               
              </div>
             </div>
             <tips :config="tipsConfig"></tips>

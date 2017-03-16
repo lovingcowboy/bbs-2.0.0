@@ -24,7 +24,7 @@
                   <font class="top-label">置顶</font><font class="post-title">{{item.subject}}</font>
                 </div>
               </div>
-              <div class="btn-wrapper sticky-header" @tap="onSwitchList($event);" :style="{visibility: showFloat == true ? 'hidden' : 'visible'}">
+              <div class="btn-wrapper sticky-header" @tap="onSwitchList($event);" :style="{visibility: showFloat ? 'hidden' : 'visible'}">
                 <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
                 <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
               </div>
@@ -66,7 +66,7 @@
           </div>
         </list>    
         
-        <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat == true ? 'visible' : 'hidden'}" @click="onSwitchList($event);">
+        <div class="btn-wrapper sticky-header sticky" :style="{visibility: showFloat ? 'visible' : 'hidden'}" @click="onSwitchList($event);">
             <div class="btn-newpost" :class="{'active': isListNewpostActive}">最新发表</div>
             <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
         </div>
@@ -153,14 +153,17 @@ export default {
           if(+pager.cur_page > +pager.total_page) { //超过页叔
             return false; 
           }
-
+          
+          let list = Util.myExtend(data.list);
           // 获取置顶
           if(type !== 'essence') {  //不包括精华中的置顶
-            let i = 0; let length = data.list.length;
+            let i = 0, length = data.list.length;
             let topList = []; 
             for(; i < length; i++) {
               if(data.list[i].is_top == 1) {
                 topList.push(data.list[i]);
+
+                list.splice(i, 1); //移除置顶项
               }
             }
             that.topList = uniq.call(that, that.topList.concat(topList), 'tid');  //去重
@@ -178,9 +181,9 @@ export default {
               break;
           }
           // 刷新数据
-          if(isRefresh == true) postList = [];
+          if(isRefresh) postList = [];
 
-          postList =  postList.concat(data.list);
+          postList =  postList.concat(list);
           
           switch(type) {
             case 'newPost':

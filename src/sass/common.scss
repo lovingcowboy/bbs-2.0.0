@@ -268,20 +268,22 @@ span {
     text-align: center;
 }
 
-.post-view {
+.icon-view {
+    width: pxToRem(30px);
+    height: pxToRem(20px);
     background-image: url('../images/icon-view.png');
-    background-size: pxToRem(30px) pxToRem(20px);
-    padding-left: pxToRem(36px);
+    background-size: contain;
+    background-position: 50% 50%;
     background-repeat: no-repeat;
-    background-position: left center;
 }
 
-.post-reply {
+.icon-reply {
+     width: pxToRem(24px);
+    height: pxToRem(22px);
     background-image: url('../images/icon-msg.png');
-    background-size: pxToRem(24px) pxToRem(22px);
-    padding-left: pxToRem(32px);
+    background-size: contain;
+    background-position: 50% 50%;
     background-repeat: no-repeat;
-    background-position: left center;
 }
 
 input,
