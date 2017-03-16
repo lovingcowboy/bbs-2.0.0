@@ -161,6 +161,10 @@ export default {
       let that = this;
      
       let nickname = this.userInfo.username;
+      if(!nickname) {
+        Toast(' 昵称不能为空')
+        return;
+      }
       if(nickname == this.lastNickName) {//没有修改昵称
         that.editing = false;
         that.isEditing = '';

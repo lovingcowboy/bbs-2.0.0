@@ -665,8 +665,31 @@ export default {
       // })
 
     },
+    reset() {
+      this.tabType = 0
+      this.showVotes = false
+      this.replyData = { //回复内容
+        curPage: 1,
+        totalPage: 1,
+        list: []
+      },
+      this.MarkData = { //评分内容
+        curPage: 1,
+        totalPage: 1,
+        list: []
+      }
+      this.markTipsConfig = { //情感图信息
+        noData: false,
+        text: ''
+      }
+      this.replyTipsConfig = { //情感图信息
+        noData: false,
+        text: ''
+      }
+    },
     onRefreshList () {
       console.info('onRefreshList-------')
+      this.reset()
       this.getPostData(1, true)
     },
     onLoadMore () {

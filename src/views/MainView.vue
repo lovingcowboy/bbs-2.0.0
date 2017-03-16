@@ -166,7 +166,7 @@ import service from '../services'
 // import Util from '../js/Util.js'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
-import {ellipsisText, uniq} from '../filters'
+import {ellipsisText, uniq, isApp} from '../filters'
 import Loader from '../components/loader'
 
 export default {
@@ -235,7 +235,11 @@ export default {
       
     }
   },
-  computed: {},
+  computed: {
+    isApp() {
+      return isApp()
+    }
+  },
   methods: {
     headerRightBtnFun() {
       console.info('11111')
@@ -383,6 +387,7 @@ export default {
       //获取用户登录数据
       let that = this
       let loginToken = Util.getParam('t')
+      console.info('getHeadData--loginToken--', loginToken)
       /*Vue.http.options.before = function() {
         that.infoRequesting = true
         that.loader.show()
@@ -657,15 +662,6 @@ export default {
   },
   activated() {
     this.getHeadData()
-    /*let param = {
-      version: 4,
-      module: 'forum',
-      action: 'hot_threads',
-      page: 1
-    }
-    console.info('test----', this.hotList)
-    this.getListData(param)*/
-    // console.info('juan----', Validate.getCookie('tuandaiw'))
   },
   mounted() {
     let that = this
@@ -685,6 +681,11 @@ export default {
       // that.getHeadData()
     that.getListData(param)
    
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      console.info('beforeRouteEnter---' + new Date().getTime())
+    })
   }
 
 

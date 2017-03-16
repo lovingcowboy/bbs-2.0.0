@@ -275,9 +275,15 @@
         margin-top: pxToRem(10px);
     }
     .icon-msg-big {
-        @include background('../images/icon-msg-big.png',
-        37px,
-        34px);
+        // @include background('../images/icon-msg-big.png',
+        // 37px,
+        // 34px);
+        width: pxToRem(60px);
+        height: pxToRem(34px);
+        background-image: url('../images/icon-msg-big.png');
+        background-size: pxToRem(37px) pxToRem(34px);
+        background-repeat: no-repeat;
+        background-position: right;
         position: absolute;
         right: pxToRem(30px);
         top: 50%;
