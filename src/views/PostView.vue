@@ -453,7 +453,7 @@ export default {
           }
         });
       } else {
-        this.postReply()
+        this.goPost()
       }
     },
     goPost() {

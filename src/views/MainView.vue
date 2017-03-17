@@ -1,6 +1,6 @@
 <template>
   <div class="main-view">
-  <zheader 
+  <!-- <zheader 
     :header-title="'团粉圈'" 
     :has-back="false" 
     :has-rightbtn="false"
@@ -8,7 +8,7 @@
     :show="true"
     @right-btn-func="headerRightBtnFun"
     >
-    </zheader> 
+    </zheader>  -->
     <div class="scroll" :class="{'scroll-active': isScrollActive}">
     <div class="content">
       <div class="u-info">
@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import Zheader from '../components/Header.vue'
+// import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
 import service from '../services'
@@ -172,7 +172,7 @@ import Loader from '../components/loader'
 export default {
   name: 'mainView',
   components: {
-    Zheader,
+    // Zheader,
     Toast,
     PostItem,
     List
@@ -657,13 +657,15 @@ export default {
     },
     calculateHeight() {
       //动态计算列表容器高度
-      this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop - document.querySelector('.header-bar').clientHeight);
+      this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop /*- document.querySelector('.header-bar').clientHeight*/);
     }
   },
   activated() {
+    console.log('activated')
     this.getHeadData()
   },
   mounted() {
+    console.log('mounted')
     let that = this
       /*//动态计算列表容器高度
       // this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
@@ -683,6 +685,7 @@ export default {
    
   },
   beforeRouteEnter(to, from, next) {
+    console.log('beforeRouteEnter');
     next(vm => {
       console.info('beforeRouteEnter---' + new Date().getTime())
     })
