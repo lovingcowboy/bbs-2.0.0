@@ -43,15 +43,15 @@
         <div class="recommend-cont">
           <div class="r-title">
             <span>小编推荐</span>
-            <span @click="goRecomment">更多<i class="icon-arrow-grey"></i></span>
+            <span @tap="goRecomment">更多<i class="icon-arrow-grey"></i></span>
           </div>
-          <ul class="swiper-container">
-            <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid" :style="{'background-color': item.bgcolor}">
+          <ul class="swiper-container" >
+            <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid" :style="{'background-color': item.bgcolor}" @tap="goDetail(item.tid)">
               <span>{{item.subject}}</span>
             </li>
           </ul>
         </div>
-        <ul class="post-list" @click="listClickFunc($event)">
+        <ul class="post-list" @tap="listClickFunc($event)">
           <post-item v-for="(item, index) in hotList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
@@ -78,7 +78,7 @@
       <div class="scroll-list">
       <list :config.once="newScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="newList">
         <div class="scroll-wrapper" slot="scrollContent" id="newScroll">
-        <ul class="post-list" @click="listClickFunc($event)">
+        <ul class="post-list" @tap="listClickFunc($event)">
           <post-item v-for="item in newList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
@@ -95,7 +95,7 @@
       <div class="scroll-list">
       <list :config.once="essenceScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="essenceList">
         <div class="scroll-wrapper" slot="scrollContent" id="essenceScroll">
-        <ul class="post-list" @click="listClickFunc($event)">
+        <ul class="post-list" @tap="listClickFunc($event)">
           <post-item v-for="item in essenceList" :data="item">
             <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">

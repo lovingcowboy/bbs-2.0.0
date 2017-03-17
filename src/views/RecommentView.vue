@@ -13,7 +13,7 @@
     <div class="content" >
      <list :config.once="recommentScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="recList">
       <div class="scroll-wrapper" slot="scrollContent" id="recommentScroll">
-      <ul class="post-list" @click="listClickFunc($event)">
+      <ul class="post-list" @tap="listClickFunc($event)">
        <post-item v-for="(item, index) in recommentList" :data="item">
          <div class="item-title" slot="itemhead">
            <span data-type="userclick" :data-id="item.authorid" class="c-event">

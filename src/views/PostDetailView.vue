@@ -55,17 +55,17 @@
             </template>
           </template>
         
-          <div class="v-btn" @click="goVote()">{{btnTxt}}</div>
+          <div class="v-btn" @tap="goVote()">{{btnTxt}}</div>
         </div>
       </div>
       </div>
       <div class="rm-cont" v-show="getDataDone">
         <nav :class="['rm-tabs', {'hideTabs': showFloat}]">
-          <div :class="[{'active': tabType === 0}, 'ft-btn']" @click="triggerTab(0)">回复({{thread.replies}})</div>
-          <div :class="[{'active': tabType === 1}, 'ft-btn']" @click="triggerTab(1)">评分({{thread.total_rate}})</div>
+          <div :class="[{'active': tabType === 0}, 'ft-btn']" @tap="triggerTab(0)">回复({{thread.replies}})</div>
+          <div :class="[{'active': tabType === 1}, 'ft-btn']" @tap="triggerTab(1)">评分({{thread.total_rate}})</div>
         </nav>
         <div class="rm">
-          <ul class="reply-list rm-list" v-show="tabType === 0" @click="replyClick($event)" :style="{'min-height': replyListHeight + 'rem'}">
+          <ul class="reply-list rm-list" v-show="tabType === 0" @tap="replyClick($event)" :style="{'min-height': replyListHeight + 'rem'}">
             <li class="reply-row" v-for="(item, index) in replyData.list">
               <div class="rm-u">
                 <div class="u-avator">
