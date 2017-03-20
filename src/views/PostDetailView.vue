@@ -539,7 +539,7 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
-            //最后一页不不再出发loadmore事件
+            //最后一页不再触发loadmore事件
           that.$refs.detailList.loadmore = +data.pager.cur_page < +data.pager.total_page
           that.replyData.curPage = +data.pager.cur_page + 1
           that.replyData.totalPage = +data.pager.total_page

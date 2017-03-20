@@ -47,7 +47,7 @@
           </div>
           <ul class="swiper-container" >
             <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid" :style="{'background-color': item.bgcolor}" @tap="goDetail(item.tid)">
-              <span>{{item.subject}}</span>
+              <div class="rt-container"><span>{{item.subject}}</span></div>
             </li>
           </ul>
         </div>
