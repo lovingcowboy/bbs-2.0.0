@@ -251,14 +251,14 @@ export default {
     $route:function(to, from) {
       if(to.name == 'postdetail') { //如果变化是在帖子详情
         console.log('在帖子登录-----')
-        /*let that = this;
+        let that = this;
           if (!Validate.checkLogin()) {
           Validate.getLoginInfo(function(result) {
            that.getPostData(1)
           })
         }else{
           that.getPostData(1)
-        }*/
+        }
       }
     }
   },
