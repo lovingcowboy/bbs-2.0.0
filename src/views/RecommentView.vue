@@ -37,7 +37,7 @@ import PostItem from '../components/PostItem.vue'
 import Toast from '../components/toast'
 // import { ellipsisText } from '../filters'
 import List from "components/listview"
-import service from '../services'
+import Services from '../services'
 
 export default {
   name: 'recomment',
@@ -105,7 +105,7 @@ export default {
         notLoader: notLoader
       }
 
-      service.postData('/app/index.php',reqParam).then((response) => {
+      Services.postData('/app/index.php',reqParam).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data

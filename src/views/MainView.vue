@@ -162,7 +162,7 @@
 // import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import PostItem from '../components/PostItem.vue'
-import service from '../services'
+import Services from '../services'
 // import Util from '../js/Util.js'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
@@ -282,7 +282,7 @@ export default {
       //   message: '签到成功，积分+3，威望+5'
       // })
       let that = this
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         version: 4,
         module: 'member',
         action: 'sign'
@@ -396,6 +396,9 @@ export default {
       let that = this
       let loginToken = Util.getParam('t')
       console.info('getHeadData--loginToken--', loginToken)
+      if(!loginToken) {
+        loginToken = Util.getSessionStorage('bbs_token');
+      }
       /*Vue.http.options.before = function() {
         that.infoRequesting = true
         that.loader.show()
@@ -407,7 +410,7 @@ export default {
         that.loader = Loader()
         that.loader.show()
       }
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         'version': 4,
         'module': 'forum',
         'action': 'index_top',
@@ -495,7 +498,7 @@ export default {
         that.loader = Loader()
         that.loader.show()
       }
-      service.postData('/app/index.php', param).then((response) => {
+      Services.postData('/app/index.php', param).then((response) => {
         // console.info('getListData----', response.body)
         let _body = response.body
         if (_body.code === '200') {

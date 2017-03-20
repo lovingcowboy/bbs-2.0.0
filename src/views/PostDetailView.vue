@@ -187,7 +187,7 @@
 import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import Tips from '../components/Tips.vue'
-import service from '../services'
+import Services from '../services'
 import List from "components/listview"
 import Validate from '../js/lib/validate.js'
 // import Util from '../js/Util.js'
@@ -361,7 +361,7 @@ export default {
           })
           return
         }
-        service.postData('/app/index.php', {
+        Services.postData('/app/index.php', {
           version: 4,
           module: 'pollvote',
           fid: that.thread.fid,
@@ -439,7 +439,7 @@ export default {
         }
       }
 
-      service.postData('/app/index.php', reqParam).then((response) => {
+      Services.postData('/app/index.php', reqParam).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           if (+that.thread.yes_fav) {
@@ -484,7 +484,7 @@ export default {
     },
     goMark () {
       let that = this
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         version: 4,
         module: 'threadrate',
         action: 'rate',
@@ -522,7 +522,7 @@ export default {
         that.$refs.detailList.loadmore = false
         return
       }
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         version: 4,
         module: 'viewthread',
         tid: tid,
@@ -606,7 +606,7 @@ export default {
     },
     getMarkList (page) {
       let that = this
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         version: 4,
         module: 'threadrate',
         action: 'viewratings',

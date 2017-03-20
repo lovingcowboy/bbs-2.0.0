@@ -1,16 +1,17 @@
 // import Bbsbridge from '../lib/bbsbridge.js';
 import OpenAPI from '../../services/openapi.js';
-import service from '../../services'
+import Services from '../../services'
 import Toast from '../../components/toast/index.js';
 // import Vue from 'vue'
 
 var Validate = {
 	getCookie: function(name) {
 		var arr, reg = new RegExp("(^|)" + name + "=([^;]*)(;|$)");
-		if (arr = document.cookie.match(reg))
+		if (arr = document.cookie.match(reg)) {
 			return unescape(arr[2]);
-		else
+		} else {
 			return null;
+		}
 	},
 	getParam: function(name, url) {
 		if (!url) {
@@ -35,10 +36,10 @@ var Validate = {
 		}
 	},
 	checkLogin: function() {
-		let uid = Util.getSessionStorage('uid')
-		let isLogined_cookie = Validate.getCookie('voHF_2132_auth') //测试服务器
-			// let isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
-		return uid || isLogined_cookie
+		var uid = Util.getSessionStorage('uid');
+		var isLogined_cookie = Validate.getCookie('voHF_2132_auth'); //测试服务器
+		// var isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
+		return uid || isLogined_cookie;
 	},
 	requesting: false,
 	bbsAppLogin: function(loginToken, callback) {
@@ -46,12 +47,12 @@ var Validate = {
 		if (me.requesting) {
 			return;
 		}
-		let reqParam = {
+		var reqParam = {
 			version: 4,
 			module: "memebr",
 			action: 'app_login',
 			v_token: loginToken
-		}
+		};
 
 		Vue.http.options.before = function(request) {
 				Toast('用户信息同步中，请稍候...');
@@ -63,9 +64,9 @@ var Validate = {
 					Toast('用户信息同步中，请稍候...');
 				}
 			}*/
-		var loginInfo;
-		services.postData('/app/index.php', reqParam).then((response) => {
-			let v_data = response.body
+		var loginInfo = {};
+		Services.postData('/app/index.php', reqParam).then((response) => {
+			var v_data = response.body;
 			console.info("login---bbsAppLogin--", v_data);
 			if (v_data.code == "200") {
 
@@ -73,7 +74,7 @@ var Validate = {
 				// if (callback && typeof callback === "function") {
 				// 	callback.apply(this, arguments);
 				// }
-				loginInfo.isLogined = 1
+				loginInfo.isLogined = 1;
 				typeof callback === "function" && callback.call(this, loginInfo);
 				Toast('同步数据成功');
 
@@ -85,7 +86,7 @@ var Validate = {
 				// if (callback && typeof callback === "function") {
 				// 	callback.apply(this, arguments);
 				// }
-				loginInfo.isLogined = -1
+				loginInfo.isLogined = -1;
 				typeof callback === "function" && callback.call(this, loginInfo);
 			}
 			me.requesting = false;
@@ -93,7 +94,7 @@ var Validate = {
 			Toast("同步数据失败！");
 
 			Util.setSessionStorage('uid', '');
-			loginInfo.isLogined = -1
+			loginInfo.isLogined = -1;
 			typeof callback === "function" && callback.call(this, loginInfo);
 			// if (callback && typeof callback === "function") {
 			// 	callback.apply(this, arguments);
@@ -106,40 +107,40 @@ var Validate = {
 	bbsWebLogin: function(callback) {
 		var loginInfo = {
 			isLogined: 0
-		}
+		};
 		var tuandaiCookie = this.getCookie('tuandaiw');
 		if (!tuandaiCookie) {
 			typeof callback === "function" && callback.call(this, loginInfo);
 			return;
 		}
-		let reqParam = {
-				version: 4,
-				module: "member",
-				action: 'login',
-				tuandaiwang_cookie: tuandaiCookie
+		var reqParam = {
+			version: 4,
+			module: "member",
+			action: 'login',
+			tuandaiwang_cookie: tuandaiCookie
+		};
+		/*reqParam.beforeSend = function(request) {
+			if (request) {
+				console.info('beforeSend----', request)
+				Toast('用户信息同步中，请稍候...');
 			}
-			/*reqParam.beforeSend = function(request) {
-				if (request) {
-					console.info('beforeSend----', request)
-					Toast('用户信息同步中，请稍候...');
-				}
-			}*/
+		}*/
 		Vue.http.options.before = function(request) {
 			Toast('用户信息同步中，请稍候...');
 		}
 		service.postData('/app/index.php', reqParam).then((response) => {
-			let v_data = response.body
+			var v_data = response.body;
 			console.info("--bbsWebLogin====data--", v_data);
 			if (v_data.code == "200") {
 				Util.setSessionStorage('uid', v_data.data.member.uid);
 				Toast('同步数据成功');
-				loginInfo.isLogined = 1
+				loginInfo.isLogined = 1;
 				typeof callback === "function" && callback.call(this, loginInfo);
 			} else {
 				Util.setSessionStorage('uid', '');
 				console.info("login fail------", v_data.message);
 				Toast(v_data.message);
-				loginInfo.isLogined = -1
+				loginInfo.isLogined = -1;
 				typeof callback === "function" && callback.call(this, loginInfo);
 			}
 			// if (callback && typeof callback === "function") {
@@ -148,7 +149,7 @@ var Validate = {
 		}, (response) => {
 			Toast('同步数据失败！');
 			Util.setSessionStorage('uid', '');
-			loginInfo.isLogined = -1
+			loginInfo.isLogined = -1;
 			typeof callback === "function" && callback.call(this, loginInfo);
 			// if (callback && typeof callback === "function") {
 			// 	callback.apply(this, arguments);
@@ -176,7 +177,7 @@ var Validate = {
 	*/
 	getLoginInfo: function(callback) {
 		var me = this;
-		let dataReturn = Util.getSessionStorage('dataReturn'); //app的loginToken回调是否返回空数据 0表示返回空
+		var dataReturn = Util.getSessionStorage('dataReturn'); //app的loginToken回调是否返回空数据 0表示返回空
 		console.info("dataReturn-----", dataReturn);
 		//无法从app的loginToken回调中获取loginToken时，采用触屏版登录
 		if (Bbsbridge.isNewVersion() && dataReturn != 0) {
@@ -184,7 +185,7 @@ var Validate = {
 			var bbs_status = Util.getParam("s");
 			if (!bbs_token && !bbs_status) {
 				bbs_token = Util.getSessionStorage('bbs_token');
-				bbs_status = Util.getSessionStorage('bbs_status')
+				bbs_status = Util.getSessionStorage('bbs_status');
 			} else {
 				Util.setSessionStorage('bbs_token', bbs_token);
 				Util.setSessionStorage('bbs_status', bbs_status);
@@ -200,18 +201,18 @@ var Validate = {
 			} else if (bbs_status == 2) {
 				//app已登录，但是未获取到loginToken
 				Util.setSessionStorage('v_token', '');
-				Util.setSessionStorage('dataReturn', 0)
-				console.info('app is logined, but can not get loginToken')
+				Util.setSessionStorage('dataReturn', 0);
+				console.info('app is logined, but can not get loginToken');
 				var loginInfo = {
 					isLogined: -1
-				}
-				callback.call(this, loginInfo);
+				};
+				typeof callback === 'function' && callback.call(this, loginInfo);
 			} else {
 				//app未登录
 				var loginInfo = {
 					isLogined: 0
-				}
-				callback.call(this, loginInfo);
+				};
+				typeof callback === 'function' && callback.call(this, loginInfo);
 			}
 			/*else {
 				//获取app返回的loginToken登录
@@ -227,7 +228,7 @@ var Validate = {
 						//returncode == 1调用登陆接口
 						if (returncode == '1') {
 							// window.sessionStorage['v_token'] = v_token;
-							let uid;
+							var uid;
 							window.isAppLogined = true;
 							if (window.mySessionStorage) {
 								window.mySessionStorage['v_token'] = v_token;
@@ -279,9 +280,9 @@ var Validate = {
 	},
 	openLogin: function(ReturnUrl) {
 		var me = this;
-		let dataReturn = Util.getSessionStorage('dataReturn')
+		var dataReturn = Util.getSessionStorage('dataReturn');
 		if (Bbsbridge.isNewVersion() && dataReturn != 0) {
-			// let v_token;
+			// var v_token;
 			// if (window.mySessionStorage) {
 			// 	v_token = window.mySessionStorage['v_token'];
 			// } else {

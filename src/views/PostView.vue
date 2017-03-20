@@ -59,7 +59,7 @@ import Zheader from '../components/Header.vue'
 import Toast from '../components/toast'
 import InsertTabs from '../components/InsertTabs.vue'
 import { isApp, isAndroid } from '../filters'
-import service from '../services'
+import Services from '../services'
 import openapi from '../services/openapi.js'
 // import Bbsbridge from '../js/lib/bbsbridge.js'
 import Loader from '../components/loader'
@@ -480,7 +480,7 @@ export default {
         reqParam["attachnew[" + that.imgList[i].attachID + "][description]"] = "";
         reqParam.message = reqParam.message + "[attach]" + that.imgList[i].attachID + "[/attach]";
       }
-      service.postData('/app/index.php', reqParam).then((response) => {
+      Services.postData('/app/index.php', reqParam).then((response) => {
           let _body = response.body
           if (_body.code === '200') {
             let url = '/sessionlist/' + reqParam.fid
@@ -527,7 +527,7 @@ export default {
     },
     getModuleList() {
       let that = this
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         module: 'forum',
         action: 'forum_list',
         type: 'post'

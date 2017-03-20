@@ -52,7 +52,7 @@
 
 <script>
 import Zheader from '../components/Header.vue'
-import service from '../services'
+import Services from '../services'
 import Validate from '../js/lib/validate.js'
 import Toast from '../components/toast'
 export default {
@@ -132,7 +132,7 @@ export default {
         })
         return
       }*/
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         module: 'threadrate',
         action: 'rate',
         tid: that.$route.params.tid,
@@ -191,7 +191,7 @@ export default {
         return
       }
       reqParam = JSON.parse(reqParam)
-      service.postData('/app/index.php', {
+      Services.postData('/app/index.php', {
         version: 4,
         module: 'threadrate',
         action: 'rate',

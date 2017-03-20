@@ -46,7 +46,7 @@ import Toast from '../components/toast'
 import InsertTabs from '../components/InsertTabs.vue'
 import Vue from 'vue'
 import openapi from '../services/openapi.js'
-import service from '../services'
+import Services from '../services'
 // import Bbsbridge from '../js/lib/bbsbridge.js'
 import { isApp, isAndroid } from '../filters'
 import MessageBox from '../components/message-box'
@@ -440,7 +440,7 @@ export default {
         reqParam["attachnew[" + that.imgList[i].attachID + "][description]"] = "";
         reqParam.message = reqParam.message + "[attach]" + that.imgList[i].attachID + "[/attach]";
       }
-      service.postData('/app/index.php', reqParam).then((response) => {
+      Services.postData('/app/index.php', reqParam).then((response) => {
         let _body = response.body
         if (_body.code === '200') {
           window.history.back()
