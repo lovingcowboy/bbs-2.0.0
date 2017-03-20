@@ -128,6 +128,15 @@ export default {
       hasData: false
     }
   },
+  watch: {
+    $route:function(to, from) {
+      if(to.name == 'sessionlist') { //如果变化是在版块列表
+        // 获取登录状态
+        console.log('在版块列表登录')
+        Validate.checkLogin() || Validate.getLoginInfo();
+      }
+    }
+  },
   computed: {
     uiShowTop: function() {
       return this.topList.length !== 0

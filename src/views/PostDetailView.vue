@@ -247,6 +247,21 @@ export default {
       formhash: '' //用于验证数据合法性
     }
   },
+   watch: {
+    $route:function(to, from) {
+      if(to.name == 'postdetail') { //如果变化是在帖子详情
+        console.log('在帖子登录-----')
+        /*let that = this;
+          if (!Validate.checkLogin()) {
+          Validate.getLoginInfo(function(result) {
+           that.getPostData(1)
+          })
+        }else{
+          that.getPostData(1)
+        }*/
+      }
+    }
+  },
   computed: {
     calculateHeight () {
       //动态计算列表高度，防止切换tab时跳动

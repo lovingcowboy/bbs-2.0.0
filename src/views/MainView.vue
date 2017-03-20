@@ -240,6 +240,14 @@ export default {
       return isApp()
     }
   },
+  watch: {
+    $route:function(to, from) {
+      if(to.name == 'main') { //如果变化是在首页
+        this.getHeadData();
+      }
+      // 对路由变化作出响应...
+    }
+  },
   methods: {
     headerRightBtnFun() {
       console.info('11111')
@@ -660,12 +668,12 @@ export default {
       this.sHeight = Util.pxToRemAdapt(document.querySelector('.scroll').clientHeight - document.querySelector('.s-container').offsetTop /*- document.querySelector('.header-bar').clientHeight*/);
     }
   },
-  activated() {
-    console.log('activated')
+  /*activated() {
+    // debugger
+    console.log('activated');
     this.getHeadData()
-  },
+  },*/
   mounted() {
-    console.log('mounted')
     let that = this
       /*//动态计算列表容器高度
       // this.sHeight = Util.pxToRemAdapt(document.documentElement.clientHeight - document.querySelector('.s-container').offsetTop -90);
@@ -680,12 +688,12 @@ export default {
         action: 'hot_threads',
         page: 1
       }
-      // that.getHeadData()
+      that.getHeadData()
+      // console.log('mounted');
     that.getListData(param)
    
   },
   beforeRouteEnter(to, from, next) {
-    console.log('beforeRouteEnter');
     next(vm => {
       console.info('beforeRouteEnter---' + new Date().getTime())
     })
