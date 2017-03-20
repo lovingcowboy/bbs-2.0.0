@@ -132,7 +132,6 @@ export default {
     $route:function(to, from) {
       if(to.name == 'sessionlist') { //如果变化是在版块列表
         // 获取登录状态
-        console.log('在版块列表登录')
         Validate.checkLogin() || Validate.getLoginInfo();
       }
     }
@@ -494,7 +493,6 @@ export default {
       Validate.checkLogin() || Validate.getLoginInfo();
     }
   },
-  
   beforeRouteEnter (to, from, next) {
     next(vm => {
       //不是从帖子详情跳转回来，或者回来没有数据
