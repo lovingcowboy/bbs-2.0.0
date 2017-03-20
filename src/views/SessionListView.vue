@@ -159,11 +159,14 @@ export default {
           if(type !== 'essence') {  //不包括精华中的置顶
             let i = 0, length = data.list.length;
             let topList = []; 
+            let repeatCount = 0;
             for(; i < length; i++) {
               if(data.list[i].is_top == 1) {
                 topList.push(data.list[i]);
-
-                list.splice(i, 1); //移除置顶项
+                
+                list.splice(i - repeatCount, 1); //移除置顶项
+                // 记录重复个数
+                repeatCount++; 
               }
             }
             that.topList = uniq.call(that, that.topList.concat(topList), 'tid');  //去重
