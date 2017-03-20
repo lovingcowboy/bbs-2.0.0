@@ -695,13 +695,7 @@ export default {
       // console.log('mounted');
     that.getListData(param)
    
-  },
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      console.info('beforeRouteEnter---' + new Date().getTime())
-    })
   }
-
 
 }
 </script>

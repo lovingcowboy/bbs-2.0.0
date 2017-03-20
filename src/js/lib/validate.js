@@ -56,6 +56,7 @@ var Validate = {
 
 		Vue.http.options.before = function(request) {
 				Toast('用户信息同步中，请稍候...');
+				me.requesting = true;
 			}
 			/*reqParam.beforeSend = function(request) {
 				if (request) {
@@ -105,6 +106,10 @@ var Validate = {
 
 	},
 	bbsWebLogin: function(callback) {
+		var me = this;
+		if (me.requesting) {
+			return;
+		}
 		var loginInfo = {
 			isLogined: 0
 		};
@@ -127,6 +132,7 @@ var Validate = {
 		}*/
 		Vue.http.options.before = function(request) {
 			Toast('用户信息同步中，请稍候...');
+			me.requesting = true;
 		}
 		service.postData('/app/index.php', reqParam).then((response) => {
 			var v_data = response.body;
@@ -143,17 +149,14 @@ var Validate = {
 				loginInfo.isLogined = -1;
 				typeof callback === "function" && callback.call(this, loginInfo);
 			}
-			// if (callback && typeof callback === "function") {
-			// 	callback.apply(this, arguments);
-			// }
+
+			me.requesting = false;
 		}, (response) => {
 			Toast('同步数据失败！');
 			Util.setSessionStorage('uid', '');
 			loginInfo.isLogined = -1;
 			typeof callback === "function" && callback.call(this, loginInfo);
-			// if (callback && typeof callback === "function") {
-			// 	callback.apply(this, arguments);
-			// }
+			me.requesting = false;
 		})
 
 	},

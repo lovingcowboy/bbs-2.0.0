@@ -244,14 +244,13 @@ export default {
         noData: false,
         text: ''
       },
+      requesting: false, //是否正在请求数据
       formhash: '' //用于验证数据合法性
     }
   },
    watch: {
     $route:function(to, from) {
       if(to.name == 'postdetail') { //如果变化是在帖子详情
-        console.log('在帖子登录-----')
-        let that = this;
           if (!Validate.checkLogin()) {
           Validate.getLoginInfo(function(result) {
            that.getPostData(1)
@@ -512,8 +511,14 @@ export default {
       })
      
     },
-    getPostData (page, notLoader) {
+    getPostData(page, notLoader) {
       let that = this
+      if (that.requesting) {
+        return
+      } else {
+        that.requesting = true
+      }
+
       let tid = this.$route.params.id
         // tid = '147680'
         // console.info('id---', this.$route.params.id)
@@ -534,7 +539,7 @@ export default {
         let _body = response.body
         if (_body.code === '200') {
           let data = _body.data
-          //最后一页不不再出发loadmore事件
+            //最后一页不不再出发loadmore事件
           that.$refs.detailList.loadmore = +data.pager.cur_page < +data.pager.total_page
           that.replyData.curPage = +data.pager.cur_page + 1
           that.replyData.totalPage = +data.pager.total_page
@@ -550,7 +555,7 @@ export default {
               that.replyTipsConfig.noData = false
             }
 
-              //显示投票数据
+            //显示投票数据
             if (data.special_poll) {
               that.voteData = data.special_poll
               that.voteData.allowvote = +that.voteData.allowvote
@@ -584,7 +589,7 @@ export default {
 
           that.formhash = data.formhash
           Util.setSessionStorage('formhash', this.formhash)
-          // that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
+            // that.replyListHeight = Util.pxToRemAdapt(document.querySelector('.reply-list').clientHeight)
           that.replyListHeight = that.calculateHeight
           that.$refs.detailList.refresh() //刷新list
           that.getDataDone = true
@@ -595,6 +600,7 @@ export default {
           that.$refs.detailList.refresh() //刷新list
           that.$refs.detailList.loadmore = false
         }
+        that.requesting = false
       }, (response) => {
         // console.info('get post data fail------', response)
         Toast({
@@ -602,6 +608,7 @@ export default {
         })
         that.$refs.detailList.refresh() //刷新list
         that.$refs.detailList.loadmore = false
+        that.requesting = false
       })
     },
     getMarkList (page) {
