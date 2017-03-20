@@ -417,7 +417,7 @@ export default {
         pager = that.essencePager;
       }
 
-      params.page = +pager.cur_page + 1;;
+      params.page = +pager.cur_page + 1;
 
       // 加载更多当前版块数据
       that.getPostList(params, type);
@@ -432,20 +432,20 @@ export default {
       
       if(!id) return;
 
-      let url = '/postdetail/' + id
-      this.$router.push(url)
+      let url = '/postdetail/' + id;
+      this.$router.push(url);
     },
     
     goPost() {  //跳转到发表帖子
       if(!Validate.checkLogin()) {
-        Validate.openLogin()
+        Validate.openLogin();
       } else {
-        this.$router.push('/post')
+        this.$router.push('/post');
       }
     },
 
     init() {
-      let that = this
+      let that = this;
 
       that.newPostParams = { //最新发表列表参数
         version: 4,

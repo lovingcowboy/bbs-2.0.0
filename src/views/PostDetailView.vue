@@ -250,6 +250,7 @@ export default {
   },
    watch: {
     $route:function(to, from) {
+      let that = this
       if(to.name == 'postdetail') { //如果变化是在帖子详情
           if (!Validate.checkLogin()) {
           Validate.getLoginInfo(function(result) {
