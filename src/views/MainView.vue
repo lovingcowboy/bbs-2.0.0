@@ -144,10 +144,10 @@
               <i class="icon-module icon-module-td-news"></i>
               <span class="module-txt">团贷动态</span>
             </li>
-            <li class="p-module" data-id="44">
+            <!-- <li class="p-module" data-id="44">
               <i class="icon-module icon-module-video"></i>
               <span class="module-txt">团贷视频</span>
-            </li>
+            </li> -->
             <li class="p-module" data-id="67">
               <i class="icon-module icon-module-ceo"></i>
               <span class="module-txt">CEO专栏</span>

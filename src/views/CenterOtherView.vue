@@ -45,7 +45,7 @@
                   <span class="icon-prize"></span>
                   <font>{{userInfo.extcredits}}威望</font>
                 </div>
-                <div class="btn-message" @tap="onSendMsg();">发消息</div>
+                <!-- <div class="btn-message" @tap="onSendMsg();">发消息</div> -->
               </div>
             </div>
             <div class="dynamic" :style="{'min-height': dyListMinHeight + 'rem'}">
@@ -239,10 +239,10 @@ export default {
       this.$router.push(url)
     },
    
-    onSendMsg() { //发送消息 
+    /*onSendMsg() { //发送消息 
       let url = '/user/messagedetail/' + this.$route.params.id
       this.$router.push(url)
-    },
+    },*/
 
     init() {  //初始化调用
       let that = this;

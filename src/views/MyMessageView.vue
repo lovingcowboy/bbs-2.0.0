@@ -10,17 +10,17 @@
     <div class="scroll" :class="{'scroll-active': isScrollActive}">   
       <div class="content">
         <div class="tab">
-          <div class="tab-item btn-personmsg" :class="{'active': isShowProsonMsg}"  @click="onSwitchMsgList($event);">
+          <!-- <div class="tab-item btn-personmsg" :class="{'active': isShowProsonMsg}"  @click="onSwitchMsgList($event);">
             <font>个人消息</font>
             <span class="message-num" v-show="newpm == '0' ? false : true">{{newpm}}</span>
-          </div>
-          <div class="tab-item btn-systemmsg" :class="{'active': !isShowProsonMsg}" @click="onSwitchMsgList($event);">
+          </div> -->
+          <div class="tab-item btn-systemmsg" :class="{'active': true}" >
             <font>系统消息</font>
             <span class="message-num" v-show="newsystem == '0' ? false : true">{{newsystem}}</span>
           </div>
         </div>
         <div class="message-list-wrapper" :style="{'height': msgListMinHeight + 'rem'}">
-          <list :config.once="personScrollConfig"  @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="personlist" v-show="isShowProsonMsg">
+         <!--  <list :config.once="personScrollConfig"  @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="personlist" v-show="isShowProsonMsg">
             <div class="scroll-wrapper" slot="scrollContent"  @tap="goMessageDetail($event)">
               <div class="message-person-list" >
                 <div class="message-person-item" v-for="(item, index) in personList" :data-id="item.touid">
@@ -37,9 +37,9 @@
                 <tips :config="personTipsConfig"></tips>
               </div>
             </div>
-          </list> 
+          </list>  -->
 
-          <list :config.once="systemScrollConfig"  @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="systemlist"  v-show="!isShowProsonMsg">
+          <list :config.once="systemScrollConfig"  @refresh="onRefreshList();" @loadmore="onLoadMore();" ref="systemlist" >
             <div class="scroll-wrapper" slot="scrollContent">
             <div class="message-system-list">
               <div class="message-system-item" :class="{'isNew': item.new == '1' ? true : false}" v-for="(item, index) in systemList">
@@ -81,28 +81,28 @@ export default {
     return {
       isScrollActive: true,
       msgListMinHeight: 0,
-      isShowProsonMsg: true,
-      personScrollConfig: {
+      // isShowProsonMsg: true,
+     /* personScrollConfig: {
         wrapper: 'personMsgWrapper',
         mutationObserver: true,
         refresh: true,
         loadmore: true
-      },
+      },*/
       systemScrollConfig: {
         wrapper: 'systemMsgWrapper',
         mutationObserver: true,
         refresh: true,
         loadmore: true
       },
-      personList: [],
+      // personList: [],
       systemList: [],
       newpm: 0,
       newsystem: 0,
       fisrtShowSysMsg: true,
-      personTipsConfig: {
+      /*personTipsConfig: {
         noData: false,
         text: '您还没有收到过个人消息哦！'
-      },
+      },*/
       systemTipsConfig: {
         noData: false,
         text: '您还没有收到过系统消息哦！'
@@ -119,7 +119,7 @@ export default {
         (Util.pxToRemAdapt(headerHeight + tabHeight) + Util.pxToRem(20));
     },
     
-    onSwitchMsgList(e) { //切换消息类型 
+    /*onSwitchMsgList(e) { //切换消息类型 
       let target = e.currentTarget;
       let prevClass = target._prevClass;
       let that = this;
@@ -159,9 +159,9 @@ export default {
             that.isShowProsonMsg = false;
           }
         }
-    },
+    },*/
 
-    getPersonList(params, isRefresh) { //获取个人消息列表
+    /*getPersonList(params, isRefresh) { //获取个人消息列表
       let that = this;
 
       Services.postData('/app/index.php', params).then((response) => {
@@ -201,7 +201,7 @@ export default {
 
           that.$refs.personlist && that.$refs.personlist.refresh();
       })
-    },
+    },*/
       
     getSystemList(params, isRefresh) {  //获取系统消息列表
       let that = this;
@@ -247,26 +247,26 @@ export default {
     },
 
     onRefreshList() {   // 刷新数据
-      if(this.isShowProsonMsg) { //个人消息
+     /* if(this.isShowProsonMsg) { //个人消息
         this.personParams.page  = 1;
         this.getPersonList(this.personParams, true);  
-      } else {
+      } else {*/
         this.systemParams.page = 1;
         this.getSystemList(this.systemParams, true);
-      }
+      /*}*/
     },
 
     onLoadMore() {
-      if(this.isShowProsonMsg) { //个人消息
+      /*if(this.isShowProsonMsg) { //个人消息
         this.personParams.page  =  +this.personPager.cur_page + 1;;
         this.getPersonList(this.personParams);  
-      } else {
+      } else {*/
         this.systemParams.page  =  +this.systemPager.cur_page + 1;;
         this.getSystemList(this.systemParams);
-      }
+     /* }*/
     },
 
-    goMessageDetail(e) {
+    /*goMessageDetail(e) {
       let obj = Util.getElemetByTarget(e.target, 'message-person-item', 'scroll-wrapper');
        
       if (!obj) return;
@@ -278,7 +278,7 @@ export default {
       let url = '/user/messagedetail/' + id
 
       this.$router.push(url)
-    }
+    }*/
   },
 
   mounted() {
@@ -310,7 +310,8 @@ export default {
     if (!Validate.checkLogin()) {
       Validate.getLoginInfo(function(result) {
         if (result.isLogined === 1) {
-          that.getPersonList(that.personParams) 
+          // that.getPersonList(that.personParams); 
+          that.getSystemList(that.systemParams);
         } else {
           that.$router.push('/main');
           setTimeout(function() {
@@ -320,7 +321,8 @@ export default {
 
       })
     } else {
-      that.getPersonList(that.personParams) 
+      // that.getPersonList(that.personParams) 
+      that.getSystemList(that.systemParams);
     } 
   }
   

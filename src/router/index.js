@@ -192,7 +192,7 @@ const router = new Router({
         meta: {
             keepAlive: true
         }
-    }, {
+    }, /*{
         path: '/user/messagedetail/:id',
         name: 'messagedetail',
         component: function(resolve) {
@@ -204,7 +204,7 @@ const router = new Router({
         meta: {
             keepAlive: false
         }
-    }, {
+    },*/ {
         path: '/sessionlist/:fid',
         name: 'sessionlist',
         component: function(resolve) {
