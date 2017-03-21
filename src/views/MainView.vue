@@ -313,7 +313,11 @@ export default {
           })
         }
       }, (response) => {
-        console.info('sign fail-----', response)
+         Toast({
+            message: response && response.message || '请求失败，请稍后重试',
+            position: 'top'
+          })
+        // console.info('sign fail-----', response)
       })
     },
     goDetail(id) {
