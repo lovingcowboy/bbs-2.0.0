@@ -430,11 +430,15 @@ export default {
             if(that.userInfo.uid) {
               Util.setSessionStorage('uid', that.userInfo.uid)
             }
-            if (that.userInfo.notice && (+that.userInfo.notice) > 0) {
+
+            that.hasUnRead = that.userInfo.notice && (+that.userInfo.notice) > 0
+            that.unReadNum = +that.userInfo.notice > 99 ? '99+' : that.userInfo.notice
+
+            /*if (that.userInfo.notice && (+that.userInfo.notice) > 0) {
               that.hasUnRead = true
               // 超过99显示99+
               that.unReadNum = +that.userInfo.notice > 99 ? '99+' : that.userInfo.notice
-            }
+            }*/
           } else {
             that.userInfo.nickname = '欢迎来到团粉圈~'
             that.isLogin = false
