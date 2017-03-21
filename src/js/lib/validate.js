@@ -136,7 +136,7 @@ var Validate = {
 		// 	me.requesting = true;
 		// }
 		me.requesting = true;
-		service.postData('/app/index.php', reqParam).then((response) => {
+		Services.postData('/app/index.php', reqParam).then((response) => {
 			var v_data = response.body;
 			console.info("--bbsWebLogin====data--", v_data);
 			if (v_data.code == "200") {
