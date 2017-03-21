@@ -519,9 +519,8 @@ export default {
       } else {
         that.requesting = true
       }
-
+      
       let tid = this.$route.params.id
-        // tid = '147680'
         // console.info('id---', this.$route.params.id)
       if (page > that.replyData.totalPage) {
         that.$refs.detailList.refresh() //刷新list
@@ -538,6 +537,13 @@ export default {
       }).then((response) => {
         console.info('get post detail ----', response.body)
         let _body = response.body
+        
+        let _tid = window.location.hash.split('?')[0].split('/')[2]  //获取浏览器地址栏 tid
+
+        if(_body.data.tid !== _tid) { //如果帖子id不一致则不渲染数据
+          return
+        }
+
         if (_body.code === '200') {
           let data = _body.data
             //最后一页不再触发loadmore事件

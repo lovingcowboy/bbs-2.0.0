@@ -54,10 +54,11 @@ var Validate = {
 			v_token: loginToken
 		};
 
-		Vue.http.options.before = function(request) {
-				Toast('用户信息同步中，请稍候...');
-				me.requesting = true;
-			}
+		// Vue.http.options.before = function(request) {
+		// 		// Toast('用户信息同步中，请稍候...');
+		// 		// me.requesting = true;
+		// 	}
+		me.requesting = true;
 			/*reqParam.beforeSend = function(request) {
 				if (request) {
 					me.requesting = true;
@@ -130,10 +131,11 @@ var Validate = {
 				Toast('用户信息同步中，请稍候...');
 			}
 		}*/
-		Vue.http.options.before = function(request) {
-			Toast('用户信息同步中，请稍候...');
-			me.requesting = true;
-		}
+		// Vue.http.options.before = function(request) {
+		// 	// Toast('用户信息同步中，请稍候...');
+		// 	me.requesting = true;
+		// }
+		me.requesting = true;
 		service.postData('/app/index.php', reqParam).then((response) => {
 			var v_data = response.body;
 			console.info("--bbsWebLogin====data--", v_data);
