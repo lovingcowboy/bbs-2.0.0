@@ -51,7 +51,7 @@ var Validate = {
 			version: 4,
 			module: "memebr",
 			action: 'app_login',
-			v_token: loginToken
+			v_token: loginToken || 0
 		};
 
 		// Vue.http.options.before = function(request) {

@@ -423,7 +423,7 @@ export default {
         'version': 4,
         'module': 'forum',
         'action': 'index_top',
-        'v_token': loginToken,
+        'v_token': loginToken || 0,
         'notLoader': false
       }).then((response) => {
         console.info('getHeadData----', response)
@@ -545,7 +545,7 @@ export default {
               
             } else {
               // that.newList = that.newList.concat(data.list)
-              that.newList = uniq(that.newList.concat(data.list), "pid");  //去重
+              that.newList = uniq(that.newList.concat(data.list), "tid");  //去重
               that.newScrollConfig.status = 1
             }
             that.$refs.newList.refresh()
@@ -593,7 +593,7 @@ export default {
           }
           if (refsObj) {
             refsObj.refresh()
-            refsObj.loadmore = false
+            // refsObj.loadmore = false
           }
 
         }
@@ -618,7 +618,7 @@ export default {
         }
         if (refsObj) {
           refsObj.refresh()
-          refsObj.loadmore = false
+          // refsObj.loadmore = false
         }
         that.listRequesting = false
         that.hideLoader()
