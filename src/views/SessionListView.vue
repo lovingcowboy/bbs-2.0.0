@@ -47,7 +47,7 @@
                       <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
-                    <span v-html="item.dateline"></span>
+                    <span v-html="item.lastpost"></span>
                   </div>
                 </post-item>
               </ul>
@@ -498,7 +498,9 @@ export default {
       //不是从帖子详情跳转回来，或者回来没有数据
       if(from && from.name !== 'postdetail' || !vm.hasData) { 
         vm.init();
-      } 
+      } else {
+        vm.$refs.list && vm.$refs.list.refresh();
+      }
     })
   }
   

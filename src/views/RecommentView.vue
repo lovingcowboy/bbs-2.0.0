@@ -151,8 +151,10 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (from && from.name !== 'postdetail' && from.name !== 'centerother' || !vm.hasData) { //不是从帖子详跳转回来
-        vm.getRecommentList(false);
-        vm.$refs.recList && vm.$refs.recList.myScroll.scrollTo(0, 0, 0);
+        vm.getRecommentList(false)
+        vm.$refs.recList && vm.$refs.recList.myScroll.scrollTo(0, 0, 0)
+      } else {
+        vm.$refs.recList && vm.$refs.recList.refresh()
       }
     })
   }

@@ -243,9 +243,14 @@ export default {
   watch: {
     $route:function(to, from) {
       if(to.name == 'main') { //如果变化是在首页
-        this.getHeadData();
+        this.getHeadData()
+        
+        // 增加主动刷新list
+        this.$refs.hotList && this.$refs.hotList.refresh()
+        this.$refs.newList && this.$refs.newList.refresh()
+        this.$refs.essenceList && this.$refs.essenceList.refresh()
       }
-      // 对路由变化作出响应...
+
     }
   },
   methods: {
@@ -699,10 +704,14 @@ export default {
         action: 'hot_threads',
         page: 1
       }
-      that.getHeadData()
-      // console.log('mounted');
+    that.getHeadData()
+
     that.getListData(param)
-   
+
+    /*that.$refs.hotList && that.$refs.hotList.refresh()
+    that.$refs.newList && that.$refs.newList.refresh()
+    that.$refs.essenceList && that.$refs.essenceList.refresh()*/
+
   }
 
 }

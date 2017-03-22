@@ -166,7 +166,9 @@ export default {
       //不是从帖子详情跳转回来，或者回来没有数据
       if(from && from.name !== 'postdetail' || !vm.hasData) { 
         vm.init();
-      } 
+      } else {
+        vm.$refs.list && vm.$refs.list.refresh();
+      }
     })
   }
   

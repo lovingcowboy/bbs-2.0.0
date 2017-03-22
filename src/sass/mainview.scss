@@ -143,6 +143,7 @@
     white-space: nowrap;
     padding-left: pxToRem(30px);
     position: relative;
+    border-bottom: 1px solid $border-color;
     .tab {
         font-size: pxToRem($font-size-normal);
         // width: pxToRem(130px);
