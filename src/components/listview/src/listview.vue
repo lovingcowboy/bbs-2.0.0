@@ -92,7 +92,7 @@ import spinner from '../../Spinner.vue'
           }
           //下拉显示刷新
           let distance = Util.pxToPx(90);
-
+          
           if(this.y >= -Util.pxToPx(99)) {  //提前显示下拉刷新
             if(this.y > distance) {
               that.ricon = true;
@@ -109,6 +109,12 @@ import spinner from '../../Spinner.vue'
           } else {
             that.micon = false;
             that.ricon = false;
+
+          }
+
+          // 当高度与iscroll的滑动距离不相等的时候，刷新iscroll
+          if(this.scroller.offsetHeight != (this.wrapperHeight + Math.abs(this.maxScrollY))) {
+            this.refresh();
           }
 
         }); 
