@@ -37,8 +37,8 @@ var Validate = {
 	},
 	checkLogin: function() {
 		var uid = Util.getSessionStorage('uid');
-		var isLogined_cookie = Validate.getCookie('voHF_2132_auth'); //测试服务器
-		// var isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
+		// var isLogined_cookie = Validate.getCookie('voHF_2132_auth'); //测试服务器
+		var isLogined_cookie = Validate.getCookie('voHF_b718_auth'); //本地测试，正式地址
 		return uid || isLogined_cookie;
 	},
 	requesting: false,
@@ -49,7 +49,7 @@ var Validate = {
 		}
 		var reqParam = {
 			version: 4,
-			module: "memebr",
+			module: "member",
 			action: 'app_login',
 			v_token: loginToken || 0
 		};
@@ -304,8 +304,8 @@ var Validate = {
 			ReturnUrl = ReturnUrl ? ReturnUrl : window.location.href;
 			ReturnUrl = encodeURIComponent(ReturnUrl);
 			//https://m.tuandai.com/user/login.aspx?UrlType=json&ReturnUrl={Url:"http://bbs87.tuandai.com:8080/index.php?code=2323&value=2323232"}
-			// window.location.href = "https://m.tuandai.com/user/login.aspx?ReturnUrl=" + ReturnUrl;
-			window.location.href = 'http://10.100.11.110:9008/user/Login.aspx?ReturnUrl=' + ReturnUrl;
+			window.location.href = "https://m.tuandai.com/user/login.aspx?ReturnUrl=" + ReturnUrl;
+			// window.location.href = 'http://10.100.11.110:9008/user/Login.aspx?ReturnUrl=' + ReturnUrl;
 		}
 	}
 }
