@@ -115,6 +115,7 @@ export default {
           } else {
             that.recommentList = that.recommentList.concat(data.list)
           }
+          that.$refs.recList.loadmore = +data.pager.cur_page < +data.pager.total_page
           that.pageData = {
             curPage: +data.pager.cur_page + 1,
             totalPage: +data.pager.total_page

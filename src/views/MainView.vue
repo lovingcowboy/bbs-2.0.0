@@ -518,17 +518,20 @@ export default {
           let data = _body.data
           if (param.action === 'hot_threads') {
             //热门
+
             if (that.pageData.hot.curPage === 1) {
               //第一页数据加载
               that.recommentPosts = data.list.recommend_threads
               that.hotList = data.list.hot_threads
-               
+
             } else {
               //页数大于1时添加数据
               // that.hotList = that.hotList.concat(data.list.hot_threads)
-              that.hotList = uniq(that.hotList.concat(data.list.hot_threads), "tid");  //去重
+              that.hotList = uniq(that.hotList.concat(data.list.hot_threads), "tid"); //去重
               that.hotScrollConfig.status = 1
             }
+            // 判断是否有加载更多
+            that.$refs.hotList.loadmore = +data.pager.cur_page < +data.pager.total_page;
             that.$refs.hotList.refresh() //刷新list
             if (that.pageData.hot.curPage <= that.pageData.hot.totalPage) {
               that.pageData.hot = {
@@ -542,12 +545,13 @@ export default {
             //最新
             if (that.pageData.new.curPage === 1) {
               that.newList = data.list
-              
+
             } else {
               // that.newList = that.newList.concat(data.list)
-              that.newList = uniq(that.newList.concat(data.list), "tid");  //去重
+              that.newList = uniq(that.newList.concat(data.list), "tid"); //去重
               that.newScrollConfig.status = 1
             }
+            that.$refs.newList.loadmore = +data.pager.cur_page < +data.pager.total_page
             that.$refs.newList.refresh()
             if (that.pageData.new.curPage <= that.pageData.new.totalPage) {
               that.pageData.new = {
@@ -559,12 +563,13 @@ export default {
             //精华
             if (that.pageData.essence.curPage === 1) {
               that.essenceList = data.list
-              
+
             } else {
               // that.essenceList = that.essenceList.concat(data.list)
-              that.essenceList = uniq(that.essenceList.concat(data.list), "tid");  //去重
+              that.essenceList = uniq(that.essenceList.concat(data.list), "tid"); //去重
               that.essenceScrollConfig.status = 0
             }
+            that.$refs.essenceList.loadmore = +data.pager.cur_page < +data.pager.total_page
             that.$refs.essenceList.refresh()
             if (that.pageData.essence.curPage <= that.pageData.essence.totalPage) {
               that.pageData.essence = {
@@ -572,7 +577,7 @@ export default {
                 totalPage: +data.pager.total_page
               }
             }
-            
+
 
           }
         } else {
@@ -593,7 +598,7 @@ export default {
           }
           if (refsObj) {
             refsObj.refresh()
-            // refsObj.loadmore = false
+              // refsObj.loadmore = false
           }
 
         }
@@ -618,7 +623,7 @@ export default {
         }
         if (refsObj) {
           refsObj.refresh()
-          // refsObj.loadmore = false
+            // refsObj.loadmore = false
         }
         that.listRequesting = false
         that.hideLoader()
