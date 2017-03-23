@@ -7,6 +7,7 @@
     <meta name="format-detection" content="telephone=no">
     <title>团粉圈</title>
     <style type="text/css" media="screen" id="init_style"></style>
+    
     <script>
     (function(doc, win) {
         var dpr, rem, scale;
@@ -71,12 +72,15 @@
     <!-- built files will be auto injected -->
   </body>
     <script>
-        var _hmt = _hmt || [];
+        var _mtac = {};
         (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?109bac942824086f6b948675600fb8a2";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
+          var mta = document.createElement("script");
+          mta.src = "https://pingjs.qq.com/h5/stats.js?v2.0.4";
+          mta.setAttribute("name", "MTAH5");
+          mta.setAttribute("sid", "500420379");
+          mta.setAttribute("cid", "500420380");
+          var s = document.getElementsByTagName("script")[0];
+          s.parentNode.insertBefore(mta, s);
         })();
     </script>
 </html>
