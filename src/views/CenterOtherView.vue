@@ -52,11 +52,31 @@
               <div class="label">TA的动态</div>
                <ul class="post-list" @tap="goPostDetail($event);">
                 <post-item v-for="(item, index) in dynamicList" :data="item" >
-                  <div class="item-title" slot="itemhead">
+                  <!-- <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid" class="c-event">
                       <img :src="item.avatar"><font class="author">{{item.author}}</font>{{item.type == "0" ? '回复了帖子' : '发布了帖子'}}
                     </span>
                     <span>{{item.dateline}}</span>
+                  </div> -->
+                  <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid" >
+                      <div class="item-u">
+                          <img :src="item.avatar" class="i-avator">
+                          <font class="i-name">{{item.author, 3 | ellipsisText}}</font>
+                          <font v-if="item.first == '0'">回复了帖子</font>
+                          <font v-else>发表了帖子</font>
+                          <font>|</font>
+                          <font v-html="item.dateline"></font>
+                      </div>
+                      <div class="item-m">
+                          <div class="post-view">
+                              <i class="icon-view"></i>
+                              <span>{{item.views}}</span>
+                          </div>
+                          <div class="post-reply">
+                              <i class="icon-reply"></i>
+                              <span>{{item.replies}}</span>
+                          </div>
+                      </div>
                   </div>
                 </post-item>
                 <tips :config="tipsConfig"></tips>

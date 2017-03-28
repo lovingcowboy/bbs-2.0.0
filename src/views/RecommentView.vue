@@ -14,12 +14,31 @@
      <list :config.once="recommentScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="recList">
       <div class="scroll-wrapper" slot="scrollContent" id="recommentScroll">
       <ul class="post-list" @tap="listClickFunc($event)">
-       <post-item v-for="(item, index) in recommentList" :data="item">
-         <div class="item-title" slot="itemhead">
+       <post-item v-for="(item, index) in recommentList" :data="item" :line="2">
+         <!-- <div class="item-title" slot="itemhead">
            <span data-type="userclick" :data-id="item.authorid" class="c-event">
              <img :src="item.avatar"><font>{{item.nickname ,6 | ellipsisText}}</font><font class="level">LV{{item.group_level}} {{item.group_name}}</font>
            </span>
            <span v-html="item.dateline"></span>
+         </div> -->
+         <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid">
+             <div class="item-u">
+                 <img :src="item.avatar" class="i-avator">
+                 <font class="i-name">{{item.nickname, 3 | ellipsisText}}</font>
+                 <font class="level">LV{{item.group_level}} {{item.group_name}}</font>
+                 <font>|</font>
+                 <font v-html="item.dateline"></font>
+             </div>
+             <div class="item-m">
+                 <div class="post-view">
+                     <i class="icon-view"></i>
+                     <span>{{item.views}}</span>
+                 </div>
+                 <div class="post-reply">
+                     <i class="icon-reply"></i>
+                     <span>{{item.replies}}</span>
+                 </div>
+             </div>
          </div>
        </post-item>
      </ul>
@@ -168,5 +187,13 @@ export default {
 // @import '../sass/recomment.scss'
 .content {
   height: 100%;
+}
+.i-name {
+  margin-right: 0 !important;
+}
+.pi-title {
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient: vertical;
 }
 </style>

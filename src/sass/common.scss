@@ -434,18 +434,17 @@ input::-webkit-inner-spin-button {
 
 .level {
     color: $txt-color-grey;
-    font-size: pxToRem($font-size-tiny);
-    min-width: pxToRem(120px);
+    // font-size: pxToRem($font-size-tiny);
+    // min-width: pxToRem(120px);
     // height: pxToRem(26px);
     line-height: pxToRem($font-size-tiny);
-    padding: pxToRem(4px) pxToRem(20px);
+    padding: pxToRem(4px) pxToRem(10px);
     text-align: center;
     border-radius: pxToRem(13px);
     border: 1px solid $txt-color-grey-light;
     display: inline-block;
     vertical-align: middle;
 }
-
 
 .wrapper {
     position: absolute;

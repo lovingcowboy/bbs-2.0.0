@@ -292,6 +292,9 @@
         font-size: pxToRem($font-size-small);
         color: $txt-color-grey;
         margin-top: pxToRem(10px);
+        .r-floor {
+            margin-right: pxToRem(20px);
+        }
     }
     .icon-msg-big {
         // @include background('../images/icon-msg-big.png',

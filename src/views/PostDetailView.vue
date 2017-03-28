@@ -73,7 +73,7 @@
                 </div>
                 <div class="rm-det">
                   <p><span>{{item.author}}</span><span class="u-vip">LV{{item.group_level}} {{item.group_title}}</span></p>
-                  <p class="r-time" v-html="item.dateline"></p>
+                  <p class="r-time" ><font class="r-floor">{{item.number}}</font><font v-html="item.dateline"></font></p>
                 </div>
                 <i class="icon-msg-big r-event" :data-index="index"></i>
               </div>
@@ -670,7 +670,8 @@ export default {
         message: item.message,
         tid: item.tid,
         pid: item.pid,
-        fid: this.thread.fid
+        fid: this.thread.fid,
+        type: 'reply'
       }
       // Util.setSessionStorage('reply', JSON.stringify(param))
       this.goReply(param)

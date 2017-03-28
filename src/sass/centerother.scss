@@ -141,13 +141,16 @@
 .dynamic {
     width: 100%;
     background-color: $color-white;
-    padding-top: pxToRem(40px);
-    // padding-left: pxToRem(30px);
+    // padding-top: pxToRem(40px);
+    padding-left: pxToRem(30px);
     .label {
         font-size: pxToRem($font-size-normal);
         color: $txt-color-black;
-        margin-bottom: pxToRem(20px);
-        padding-left: pxToRem(30px);
+        // margin-bottom: pxToRem(20px);
+        height: pxToRem(90px);
+        line-height: pxToRem(90px);
+        // padding-left: pxToRem(30px);
+        border-bottom: 1px solid $border-color;
         &:before {
             border-left: pxToRem(8px) solid $txt-color-blue;
             content: "";
@@ -156,6 +159,7 @@
         }
     }
     .post-list {
+        padding-left: 0;
         .author {
             color: $txt-color-grey-dark;
         }

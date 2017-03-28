@@ -64,6 +64,7 @@
             <span class="icon icon-message"></span>
             <font>我的消息</font>
             <span class="icon-arrow-right"></span>
+            <i class="red-dot" v-show="+userInfo.notice > 0"></i>
           </li>
           <li class="urow" data-url="/user/mycollection">
             <span class="icon icon-heart"></span>

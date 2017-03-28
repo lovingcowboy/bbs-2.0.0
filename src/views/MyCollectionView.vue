@@ -11,13 +11,32 @@
       <div class="content">
       <list :config.once="scrollConfig" @loadmore="onLoadMore();" ref="list" >
         <div class="scroll-wrapper post-list" slot="scrollContent" @tap="listClickFunc($event);">
-          <post-item v-for="(item, index) in collectionList" :data="item">
-            <div class="item-title" slot="itemhead">
+          <post-item v-for="(item, index) in collectionList" :data="item" :line="2">
+            <!-- <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
                 <img :src="item.avatar"><font>{{item.author}}</font>
               </span>
               <span v-html="item.dateline"></span>
-            </div>
+            </div> -->
+            <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid">
+             <div class="item-u">
+                 <img :src="item.avatar" class="i-avator">
+                 <font class="i-name">{{item.author, 3 | ellipsisText}}</font>
+                 <!-- <font class="level">LV{{item.group_level}} {{item.group_name}}</font> -->
+                 <font>|</font>
+                 <font v-html="item.dateline"></font>
+             </div>
+             <div class="item-m">
+                 <div class="post-view">
+                     <i class="icon-view"></i>
+                     <span>{{item.views}}</span>
+                 </div>
+                 <div class="post-reply">
+                     <i class="icon-reply"></i>
+                     <span>{{item.replies}}</span>
+                 </div>
+             </div>
+         </div>
           </post-item>
           <tips :config="tipsConfig"></tips>
         </div>

@@ -53,39 +53,69 @@
         </div>
         <ul class="post-list" @tap="listClickFunc($event)">
           <post-item v-for="(item, index) in hotList" :data="item">
-            <div class="item-title" slot="itemhead">
+            <!-- <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
                 <img :src="item.avatar"><font >{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
+            </div> -->
+            <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid" >
+                <div class="item-u">
+                    <img :src="item.avatar" class="i-avator">
+                    <font class="i-name">{{item.nickname, 3 | ellipsisText}}</font>
+                    <font v-if="item.first == '0'">回复了帖子</font>
+                    <font v-else>发表了帖子</font>
+                    <font>|</font>
+                    <font v-html="item.dateline"></font>
+                </div>
+                <div class="item-m">
+                    <div class="post-view">
+                        <i class="icon-view"></i>
+                        <span>{{item.views}}</span>
+                    </div>
+                    <div class="post-reply">
+                        <i class="icon-reply"></i>
+                        <span>{{item.replies}}</span>
+                    </div>
+                </div>
             </div>
+
           </post-item>
         </ul>
         </div>
         </list>
-        <!-- <section class="error-container">
-          <div class="ec-cont">
-            <i :class="{'icon-pai-null': dataStatus.hot === 0, 'icon-pai-error': dataStatus.hot === -1}"></i>
-            <span class="ec-txt" v-show="dataStatus.hot === 0">这里空空如也！</span>
-            <span class="ec-txt" v-show="dataStatus.hot === -1">小π遇到了一点小问题！</span>
-            <div class="ec-btns">
-              <i class="ec-reload">刷新</i>
-              <i class="ec-main">返回首页</i>
-            </div>
-          </div>
-        </section> -->
+        
       </div>
       <div class="scroll-list">
       <list :config.once="newScrollConfig" @init="onInitList" @refresh="onRefreshList" @loadmore="onLoadMore" ref="newList">
         <div class="scroll-wrapper" slot="scrollContent" id="newScroll">
         <ul class="post-list" @tap="listClickFunc($event)">
           <post-item v-for="item in newList" :data="item">
-            <div class="item-title" slot="itemhead">
+            <!-- <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
-                <!-- <img src="../images/pai.png"><font>{{item.name}}</font>{{item.act}} -->
                 <img :src="item.avatar"><font>{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
+            </div> -->
+            <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid">
+                <div class="item-u">
+                    <img :src="item.avatar" class="i-avator">
+                    <font class="i-name">{{item.nickname, 3 | ellipsisText}}</font>
+                    <font v-if="item.first == '0'">回复了帖子</font>
+                    <font v-else>发表了帖子</font>
+                    <font>|</font>
+                    <font v-html="item.dateline"></font>
+                </div>
+                <div class="item-m">
+                    <div class="post-view">
+                        <i class="icon-view"></i>
+                        <span>{{item.views}}</span>
+                    </div>
+                    <div class="post-reply">
+                        <i class="icon-reply"></i>
+                        <span>{{item.replies}}</span>
+                    </div>
+                </div>
             </div>
           </post-item>
         </ul>
@@ -97,11 +127,31 @@
         <div class="scroll-wrapper" slot="scrollContent" id="essenceScroll">
         <ul class="post-list" @tap="listClickFunc($event)">
           <post-item v-for="item in essenceList" :data="item">
-            <div class="item-title" slot="itemhead">
+            <!-- <div class="item-title" slot="itemhead">
               <span data-type="userclick" :data-id="item.authorid" class="c-event">
                 <img :src="item.avatar"><font>{{item.nickname, 6 | ellipsisText}}</font><font v-if="item.first == '0'">回复了帖子</font><font v-else>发表了帖子</font>
               </span>
               <span v-html="item.dateline"></span>
+            </div> -->
+            <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid">
+                <div class="item-u">
+                    <img :src="item.avatar" class="i-avator">
+                    <font class="i-name">{{item.nickname, 3 | ellipsisText}}</font>
+                    <font v-if="item.first == '0'">回复了帖子</font>
+                    <font v-else>发表了帖子</font>
+                    <font>|</font>
+                    <font v-html="item.dateline"></font>
+                </div>
+                <div class="item-m">
+                    <div class="post-view">
+                        <i class="icon-view"></i>
+                        <span>{{item.views}}</span>
+                    </div>
+                    <div class="post-reply">
+                        <i class="icon-reply"></i>
+                        <span>{{item.replies}}</span>
+                    </div>
+                </div>
             </div>
           </post-item>
         </ul>

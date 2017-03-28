@@ -196,7 +196,8 @@
 
 .recommend-cont {
     width: 100%;
-    height: pxToRem(310px);
+    // height: pxToRem(310px);
+    height: pxToRem(260px);
     background-color: $color-white;
     margin-bottom: pxToRem(20px);
     padding: pxToRem(36px) 0;
@@ -281,8 +282,9 @@
         text-align: center;
         box-shadow: 0px pxToRem(10px) pxToRem(20px) 0px rgba( 0, 0, 0, .1);
         width: pxToRem(270px);
-        height: pxToRem(162px);
-        border-radius: pxToRem(20px);
+        // height: pxToRem(162px);
+        height: pxToRem(130px);
+        border-radius: pxToRem(14px);
         margin: 0 pxToRem(10px);
         background-repeat: no-repeat, no-repeat;
         background-size: pxToRem(270px) pxToRem(160px), 100% 100%;

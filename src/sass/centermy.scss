@@ -290,8 +290,20 @@
                 border: none;
             }
         }
+        .red-dot {
+            width: pxToRem(18px);
+            height: pxToRem(18px);
+            border-radius: pxToRem(18px);
+            background-color: #fa4c2f;
+            position: absolute;
+            top: 50%;
+            right: pxToRem(65px);
+            margin-top: pxToRem(-9px);
+        }
     }
 }
+
+
 
 .logoutbtn {
     width: 100%;

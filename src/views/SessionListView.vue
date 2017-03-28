@@ -29,37 +29,94 @@
                 <div class="btn-newreply" :class="{'active': !isListNewpostActive}">最新回复</div>
               </div>
               <ul class=" post-list list-newpost" v-show="isListNewpostActive">
-                <post-item v-for="(item, index) in newPostList" :data="item">
-                  <div class="item-title" slot="itemhead">
+                <post-item v-for="(item, index) in newPostList" :data="item" :line="2">
+                  <!-- <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid">
                       <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
                     <span v-html="item.dateline"></span>
+                  </div> -->
+                  <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.tid">
+                      <div class="item-u">
+                          <img :src="item.avatar" class="i-avator">
+                          <font class="i-name">{{item.author, 3 | ellipsisText}}</font>
+                          <font class="level">LV{{item.group_level}} {{item.group_title}}</font>
+                          <font>|</font>
+                          <font v-html="item.dateline"></font>
+                      </div>
+                      <div class="item-m">
+                          <div class="post-view">
+                              <i class="icon-view"></i>
+                              <span>{{item.views}}</span>
+                          </div>
+                          <div class="post-reply">
+                              <i class="icon-reply"></i>
+                              <span>{{item.replies}}</span>
+                          </div>
+                      </div>
                   </div>
                 </post-item>
               </ul>
 
               <ul class="list-newreply post-list" v-show="!isListNewpostActive">
-                <post-item v-for="(item, index) in newReplyList" :data="item">
-                  <div class="item-title" slot="itemhead">
+                <post-item v-for="(item, index) in newReplyList" :data="item" :line="2">
+                  <!-- <div class="item-title" slot="itemhead">
                     <span data-type="userclick" :data-id="item.tid">
                       <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                       <label class="level">LV{{item.group_level}} {{item.group_title}}</label>
                     </span>
                     <span v-html="item.lastpost"></span>
+                  </div> -->
+                  <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.tid">
+                      <div class="item-u">
+                          <img :src="item.avatar" class="i-avator">
+                          <font class="i-name">{{item.author, 3 | ellipsisText}}</font>
+                          <font class="level">LV{{item.group_level}} {{item.group_title}}</font>
+                          <font>|</font>
+                          <font v-html="item.dateline"></font>
+                      </div>
+                      <div class="item-m">
+                          <div class="post-view">
+                              <i class="icon-view"></i>
+                              <span>{{item.views}}</span>
+                          </div>
+                          <div class="post-reply">
+                              <i class="icon-reply"></i>
+                              <span>{{item.replies}}</span>
+                          </div>
+                      </div>
                   </div>
                 </post-item>
               </ul>
             </div>
             <ul class="list-essence post-list" v-show="!isListAllActive">
-              <post-item v-for="(item, index) in essenceList" :data="item">
-              <div class="item-title" slot="itemhead">
+              <post-item v-for="(item, index) in essenceList" :data="item" :line="2">
+             <!-- <div class="item-title" slot="itemhead">
                 <span data-type="userclick" :data-id="item.tid" >
                   <img :src="item.avatar"><font>{{item.author, 6 | ellipsisText}}</font>
                   <label class="level">LV{{item.group_level}}  {{item.group_title}}</label>
                 </span>
                 <span v-html="item.dateline"></span>
+              </div> -->
+              <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.tid">
+                  <div class="item-u">
+                      <img :src="item.avatar" class="i-avator">
+                      <font class="i-name">{{item.author, 3 | ellipsisText}}</font>
+                      <font class="level">LV{{item.group_level}} {{item.group_title}}</font>
+                      <font>|</font>
+                      <font v-html="item.dateline"></font>
+                  </div>
+                  <div class="item-m">
+                      <div class="post-view">
+                          <i class="icon-view"></i>
+                          <span>{{item.views}}</span>
+                      </div>
+                      <div class="post-reply">
+                          <i class="icon-reply"></i>
+                          <span>{{item.replies}}</span>
+                      </div>
+                  </div>
               </div>
             </post-item>
             </ul>

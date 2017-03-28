@@ -19,7 +19,7 @@
           <span><font>{{replyData.author}}：</font><font v-html="replyData.message"></font></span>
         </div>
         <div class="r-input">
-          <textarea :class="['input-area',{'warn': showWarn}]" placeholder="请输入…" v-model.trim="replyData.content" id="inputMsg" @blur="blurFun" @input="inputFunc"></textarea>
+          <textarea :class="['input-area',{'warn': showWarn}]" :placeholder="placeHolder" v-model.trim="replyData.content" id="inputMsg" @blur="blurFun" @input="inputFunc"></textarea>
         </div>
       </div>
       <!-- hasVote:是否显示投票图标；imgList：添加图片列表； addImg：是否显示添加图片图标；canAddImg：web端是否可上传图片；emotionClickFunc：点击表情图片事件；imgDelFunc：删除图片事件；btnClickFunc：发表按钮点击事件；addImgFunc：上传图片-->
@@ -76,7 +76,8 @@ export default {
       },
       showWarn: false, //显示错误提示
       canReply: false,
-      loader: null
+      loader: null,
+      placeHolder: '请输入评论内容...'
     }
   },
   computed: {
@@ -477,6 +478,9 @@ export default {
         tid: param.tid,
         fid: param.fid,
         content: ''
+      }
+      if(param.type === 'reply') {
+         that.placeHolder = '请输入回复内容...'
       }
       // Util.setSessionStorage('reply', '')
     }
