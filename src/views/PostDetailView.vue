@@ -77,7 +77,7 @@
                 </div>
                 <i class="icon-msg-big r-event" :data-index="index"></i>
               </div>
-              <p class="rm-txt2 rm-txt" v-if="item.reply_info"><span><font class="txt-blue">{{item.reply_info.nickname}}</font><font v-html="item.reply_info.content"></font></p>
+              <p class="rm-txt2 rm-txt" v-if="item.reply_info"><span><font class="txt-blue">{{item.reply_info.nickname}}</font><font v-html="item.reply_info.content"></font></span></p>
               <p class="rm-txt1 rm-txt" v-html="item.message"></p>
             </li>
             <!-- <li class="reply-row">
