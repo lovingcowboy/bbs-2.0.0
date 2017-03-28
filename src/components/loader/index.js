@@ -1,3 +1,11 @@
+/*
+loader
+author: Simona
+使用:
+let loader = Loader()
+loader.show()
+loader.hide()
+*/
 import Vue from 'vue'
 
 const LoaderConstructor = Vue.extend(require('./loader.vue'))
@@ -14,11 +22,18 @@ let getAnInstance = () => {
   })
 }
 
+let returnAnInstance = instance => {
+  if (instance) {
+    loaderPool.push(instance)
+  }
+}
+
 LoaderConstructor.prototype.show = function () {
   this.visible = true
 }
 LoaderConstructor.prototype.hide = function () {
   this.visible = false
+  returnAnInstance(this)
 }
 let Loader = (options = {}) => {
   let instance = getAnInstance()

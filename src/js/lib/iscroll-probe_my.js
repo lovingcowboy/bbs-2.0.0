@@ -1,4 +1,6 @@
 /*! iScroll v5.2.0 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
+
+import MutationObserver from './MutationObserver.js';
 (function (window, document, Math) {
 var rAF = window.requestAnimationFrame	||
 	window.webkitRequestAnimationFrame	||
@@ -313,19 +315,22 @@ function IScroll (el, options) {
 
 	if(this.options.mutationObserver) {
 		var that = this;
-		var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-		var observer = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				if ( that.options.probeType == 2 ) {
-					that._execEvent('scroll');
-				}
+		// var MutationObserver = MutationObserver || window.WebKitMutationObserver;
+		if(MutationObserver) {
+			var observer = new MutationObserver(function(mutations) {
+				mutations.forEach(function(mutation) {
+					if ( that.options.probeType == 2 ) {
+						that._execEvent('scroll');
+					}
+				});
 			});
-		});
 
-		observer.observe(this.scroller, {
-			attributes: true,
-			attributeFilter: ['style']
-		});
+			observer.observe(this.scroller, {
+				attributes: true,
+				attributeFilter: ['style']
+			});
+		}
+		
 	}
 
 	// Normalize options

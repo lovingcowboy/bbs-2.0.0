@@ -9,7 +9,7 @@
 @import "./../../sass/func.scss";
   .loader-wrapper {
       $length: 92px;
-      position: fixed;
+      position: absolute;
       width: pxToRem($length);
       height: pxToRem($length);
       left: 50%;

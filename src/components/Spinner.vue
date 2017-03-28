@@ -26,7 +26,7 @@ $duration: 1.4s;
   opacity:0;
   transition: opacity .15s ease;
   animation: rotator $duration linear infinite;
-  animation-play-state: paused;
+  // animation-play-state: paused;
   width: pxToRem(88px);
   height: pxToRem(88px);
 }
@@ -34,17 +34,25 @@ $duration: 1.4s;
 
 .spinner.show {
   opacity: 1;
-  animation-play-state: running;
+  // animation-play-state: running;
 
 }
   
 
 @keyframes rotator {
   0% {
-    transform: scale(0.5) rotate(0deg);
+    transform: scale(0.5) rotateZ(0deg);
   }
   100% {
-    transform: scale(0.5) rotate(270deg);
+    transform: scale(0.5) rotateZ(270deg);
+  }
+}
+@-webkit-keyframes rotator {
+  0% {
+    transform: scale(0.5) rotateZ(0deg);
+  }
+  100% {
+    transform: scale(0.5) rotateZ(270deg);
   }
 }
   
@@ -65,12 +73,29 @@ $duration: 1.4s;
   }
   50% {
     stroke-dashoffset: ($offset/2);
-    transform: rotate(135deg);
+    transform: rotateZ(135deg);
+
   }
     
   100% {
     stroke-dashoffset: $offset;
-    transform: rotate(450deg);
+    transform: rotateZ(450deg);
+  }
+    
+}
+
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: $offset;
+  }
+  50% {
+    stroke-dashoffset: ($offset/2);
+    transform: rotateZ(135deg);
+  }
+    
+  100% {
+    stroke-dashoffset: $offset;
+    transform: rotateZ(450deg);
   }
     
 }
