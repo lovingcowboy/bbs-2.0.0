@@ -51,13 +51,7 @@
             <div class="dynamic" :style="{'min-height': dyListMinHeight + 'rem'}">
               <div class="label">TA的动态</div>
                <ul class="post-list" @tap="goPostDetail($event);">
-                <post-item v-for="(item, index) in dynamicList" :data="item" >
-                  <!-- <div class="item-title" slot="itemhead">
-                    <span data-type="userclick" :data-id="item.tid" class="c-event">
-                      <img :src="item.avatar"><font class="author">{{item.author}}</font>{{item.type == "0" ? '回复了帖子' : '发布了帖子'}}
-                    </span>
-                    <span>{{item.dateline}}</span>
-                  </div> -->
+                <post-item v-for="(item, index) in dynamicList" :data="item">
                   <div class="item-message c-event" slot="itemMessage" data-type="userclick" :data-id="item.authorid" >
                       <div class="item-u">
                           <img :src="item.avatar" class="i-avator">
@@ -193,7 +187,7 @@ export default {
           let data = _body.data;
 
           that.hasData = true;  //有数据的标识
-
+          
           that.dynamicList = that.dynamicList.concat(data.list);
           // that.dynamicList = uniq.call(that, that.dynamicList.concat(data.list), 'pid');  //去重
           that.tipsConfig.noData = that.dynamicList.length == 0;  //是否显示空数据状态
@@ -204,9 +198,11 @@ export default {
           
           // 判断是否有加载更多
           that.$refs.list.loadmore = +that.pager.cur_page < +that.pager.total_page;
-            
-          that.$refs.list.refresh();
-          that.loader && that.loader.hide();
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[1];  
+          if('centerother' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.list.refresh();
+          }   
           
           that.isGetInfoDone && that.loader && that.loader.hide();  //判断loader是否可隐藏
           that.isGetListDone = true;  //设置请求已完成
@@ -215,7 +211,11 @@ export default {
             'message': _body && _body.message || '请求失败，请稍后重试'
           });
           
-          that.$refs.list && that.$refs.list.refresh();
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[1];  
+          if('centerother' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.list && that.$refs.list.refresh();
+          }   
 
           that.isGetInfoDone && that.loader &&  that.loader.hide(); //判断loader是否可隐藏
           that.isGetListDone = true;  //设置请求已完成
@@ -225,7 +225,11 @@ export default {
             'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
           
-          that.$refs.list && that.$refs.list.refresh();
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[1];  
+          if('centerother' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.list && that.$refs.list.refresh();
+          }   
 
           that.isGetInfoDone && that.loader &&  that.loader.hide(); //判断loader是否可隐藏
           that.isGetListDone = true;  //设置请求已完成

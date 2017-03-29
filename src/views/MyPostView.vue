@@ -93,20 +93,30 @@ export default {
           // 判断是否有加载更多
           that.$refs.list.loadmore = +that.pager.cur_page < +that.pager.total_page;
 
-          that.$refs.list.refresh();
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[2]  
+          if('mypost' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.list.refresh();
+          } 
         } else {
           Toast({
             'message': _body && _body.message || '请求失败，请稍后重试'
           });
-
-          that.$refs.list && that.$refs.list.refresh();
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[2]  
+          if('mypost' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.list && that.$refs.list.refresh();
+          } 
         }
       }, (response) => {
           Toast({
             'message': response.body && response.body.message || '请求失败，请稍后重试'
           });
-        
-          that.$refs.list && that.$refs.list.refresh();
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[2]  
+          if('mypost' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.list && that.$refs.list.refresh();
+          } 
       })
     },
 

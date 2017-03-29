@@ -262,22 +262,19 @@ export default {
         wrapper: 'hotScroll',
         mutationObserver: true,
         refresh: true,
-        loadmore: true,
-        status: 1 //列表数据状态-0：空数据；1-正常；-1：错误
+        loadmore: true
       },
       newScrollConfig: {
         wrapper: 'newScroll',
         mutationObserver: true,
         refresh: true,
-        loadmore: true,
-        status: 1
+        loadmore: true
       },
       essenceScrollConfig: {
         wrapper: 'essenceScroll',
         mutationObserver: true,
         refresh: true,
-        loadmore: true,
-        status: 1
+        loadmore: true
       },
       loader: null,
       listRequesting: false,
@@ -641,11 +638,15 @@ export default {
               //页数大于1时添加数据
               // that.hotList = that.hotList.concat(data.list.hot_threads)
               that.hotList = uniq(that.hotList.concat(data.list.hot_threads), "tid"); //去重
-              that.hotScrollConfig.status = 1
             }
             // 判断是否有加载更多
             that.$refs.hotList.loadmore = +data.pager.cur_page < +data.pager.total_page;
-            that.$refs.hotList.refresh() //刷新list
+            // that.$refs.hotList.refresh() //刷新list
+            //获取浏览器地址栏 routername
+            let routerName = window.location.hash.split('?')[0].split('/')[1]  
+            if('main' === routerName) { //如果不在该页面则不刷新list
+              that.$refs.hotList.refresh()
+            } 
             if (that.pageData.hot.curPage <= that.pageData.hot.totalPage) {
               that.pageData.hot = {
                 curPage: +data.pager.cur_page + 1,
@@ -662,10 +663,14 @@ export default {
             } else {
               // that.newList = that.newList.concat(data.list)
               that.newList = uniq(that.newList.concat(data.list), "tid"); //去重
-              that.newScrollConfig.status = 1
             }
             that.$refs.newList.loadmore = +data.pager.cur_page < +data.pager.total_page
-            that.$refs.newList.refresh()
+            //获取浏览器地址栏 routername
+            let routerName = window.location.hash.split('?')[0].split('/')[1]  
+            if('main' === routerName) { //如果不在该页面则不刷新list
+              that.$refs.newList.refresh()
+            } 
+            // that.$refs.newList.refresh()
             if (that.pageData.new.curPage <= that.pageData.new.totalPage) {
               that.pageData.new = {
                 curPage: +data.pager.cur_page + 1,
@@ -680,10 +685,14 @@ export default {
             } else {
               // that.essenceList = that.essenceList.concat(data.list)
               that.essenceList = uniq(that.essenceList.concat(data.list), "tid"); //去重
-              that.essenceScrollConfig.status = 0
             }
             that.$refs.essenceList.loadmore = +data.pager.cur_page < +data.pager.total_page
-            that.$refs.essenceList.refresh()
+            //获取浏览器地址栏 routername
+            let routerName = window.location.hash.split('?')[0].split('/')[1]  
+            if('main' === routerName) { //如果不在该页面则不刷新list
+              that.$refs.essenceList.refresh()
+            } 
+            // that.$refs.essenceList.refresh()
             if (that.pageData.essence.curPage <= that.pageData.essence.totalPage) {
               that.pageData.essence = {
                 curPage: +data.pager.cur_page + 1,
@@ -710,7 +719,12 @@ export default {
               break;
           }
           if (refsObj) {
-            refsObj.refresh()
+            // refsObj.refresh()
+            //获取浏览器地址栏 routername
+            let routerName = window.location.hash.split('?')[0].split('/')[1]  
+            if('main' === routerName) { //如果不在该页面则不刷新list
+              refsObj.refresh()
+            } 
               // refsObj.loadmore = false
           }
 
@@ -735,7 +749,12 @@ export default {
             break;
         }
         if (refsObj) {
-          refsObj.refresh()
+          // refsObj.refresh()
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[1]  
+          if('main' === routerName) { //如果不在该页面则不刷新list
+            refsObj.refresh()
+          } 
             // refsObj.loadmore = false
         }
         that.listRequesting = false

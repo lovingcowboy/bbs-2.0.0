@@ -135,18 +135,34 @@ export default {
             curPage: +data.pager.cur_page + 1,
             totalPage: +data.pager.total_page
           }
-          that.$refs.recList.refresh() //刷新list
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[1]  
+          if('recomment' === routerName) { //如果不在该页面则不刷新list
+              that.$refs.recList.refresh();
+          }
+
           that.hasData = true
         } else {
           let msg = _body && _body.message ||  '请求失败，请稍后重试'
           Toast(msg)
-          that.$refs.recList.refresh()
+          //获取浏览器地址栏 routername
+          let routerName = window.location.hash.split('?')[0].split('/')[1]  
+
+          if('recomment' === routerName) { //如果不在该页面则不刷新list
+              that.$refs.recList.refresh();
+          }
+          // that.$refs.recList.refresh()
           that.$refs.recList.loadmore = false
         }
       }, (response) => {
         console.info('getRecommentList------fail----', response)
         Toast('请求失败，请稍后重试')
-        that.$refs.recList.refresh()
+        //获取浏览器地址栏 routername
+        let routerName = window.location.hash.split('?')[0].split('/')[1]  
+
+        if('recomment' === routerName) { //如果不在该页面则不刷新list
+            that.$refs.recList.refresh();
+        }
         that.$refs.recList.loadmore = false
       })
     },
