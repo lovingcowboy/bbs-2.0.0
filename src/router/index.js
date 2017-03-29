@@ -68,7 +68,7 @@ const router = new Router({
             });
         },
         meta: {
-            keepAlive: false
+            keepAlive: true
         }
     }, {
         path: '/postdetail/mark/:tid/:pid',

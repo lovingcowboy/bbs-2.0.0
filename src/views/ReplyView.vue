@@ -79,6 +79,14 @@ export default {
       placeHolder: '请输入评论内容...'
     }
   },
+  watch: {
+    $route:function(to, from) {
+      if(from.name == 'reply') { //如果变化是在发帖列表
+        MessageBox.close()
+        
+      }
+    }
+  },
   computed: {
     isApp() {
       return isApp()
@@ -455,10 +463,10 @@ export default {
       })
         // window.history.back()
       
-    }
+    },
   },
-  beforeMount () {
-    let that = this;
+  activated () {
+    let that = this
     let param = Util.getSessionStorage('reply')
     if (param) {
       param = JSON.parse(param)

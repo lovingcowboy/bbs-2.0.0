@@ -283,11 +283,6 @@ export default {
       
     }
   },
-  computed: {
-    isApp() {
-      return isApp()
-    }
-  },
   watch: {
     $route:function(to, from) {
       if(to.name == 'main') { //如果变化是在首页
@@ -301,10 +296,12 @@ export default {
 
     }
   },
+  computed: {
+    isApp() {
+      return isApp()
+    }
+  },
   methods: {
-    headerRightBtnFun() {
-      console.info('11111')
-    },
     triggerTab(type) {
       //tab切换
       this.tabType = type
