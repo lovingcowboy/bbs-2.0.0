@@ -8,7 +8,6 @@
     :show="true"
     :hasLeftBtnFunc="true"
     @left-btn-func="leftBtnFunc"
-    @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
@@ -101,9 +100,6 @@ export default {
         }
       })
       // window.history.back()
-    },
-    headerRightBtnFun() {
-      console.info('11111')
     },
     blurFun(event) {
       let $target = event.currentTarget;

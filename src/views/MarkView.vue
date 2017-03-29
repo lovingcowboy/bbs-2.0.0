@@ -6,7 +6,6 @@
     :has-rightbtn="false"
     :prevent-back="false"
     :show="true"
-    @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
     <div class="scroll" :class="{'scroll-active': isScrollActive}">  
@@ -88,9 +87,6 @@ export default {
    
   },
   methods: {
-    headerRightBtnFun () {
-      console.info('11111')
-    },
     // mark (score, index) {
     //   // this.selectedMark = score
     //   this.markDetail.score = score

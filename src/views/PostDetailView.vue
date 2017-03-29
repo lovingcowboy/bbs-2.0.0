@@ -6,7 +6,6 @@
     :has-rightbtn="false"
     :prevent-back="false"
     :show="true"
-    @right-btn-func="headerRightBtnFun"
     >
     </zheader> 
     <div class="scroll" :class="{'scroll-active': isScrollActive}">
@@ -299,9 +298,6 @@ export default {
   },
 
   methods: {
-    headerRightBtnFun () {
-      console.info('11111')
-    },
     triggerTab (type) {
       //切换显示评论列表/评分列表 type为0表示为评论列表，1表示为评分列表
       this.tabType = type
