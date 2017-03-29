@@ -46,7 +46,7 @@
             <span @tap="goRecomment">更多<i class="icon-arrow-grey"></i></span>
           </div>
           <ul class="swiper-container" >
-            <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid" :style="{'background-color': item.bgcolor}" @tap="goDetail(item.tid)">
+            <li class="recomment-item recomment-bg" v-for="(item, index) in recommentPosts" :data-id="item.tid" :style="{'background-color': item.bgcolor}" @tap="goDetail(item.tid, 'recomment')">
               <div class="rt-container"><span>{{item.subject}}</span></div>
             </li>
           </ul>
@@ -281,7 +281,8 @@ export default {
       },
       loader: null,
       listRequesting: false,
-      infoRequesting: false
+      infoRequesting: false,
+      isDev: true //是否是开发环境
       
     }
   },
@@ -318,25 +319,33 @@ export default {
         module: 'forum',
         page: 1
       }
-      if (type === 0 && this.hotList.length < 1) {
-        param.action = 'hot_threads'
-        this.getListData(param)
+      if (type === 0) {
+        this.isDev || MtaH5.clickStat("homehot")
+        if (this.hotList.length < 1) {
+          param.action = 'hot_threads'
+          this.getListData(param)
+        }
 
-      } else if (type === 1 && this.newList.length < 1) {
-        param.action = 'new_posts'
-        this.getListData(param)
+      } else if (type === 1) {
+        this.isDev || MtaH5.clickStat("homenew")
+        if (this.newList.length < 1) {
+          param.action = 'new_posts'
+          this.getListData(param)
+        }
 
-      } else if (type === 2 && this.essenceList.length < 1) {
-        param.action = 'digest_threads'
-        this.getListData(param)
+      } else if (type === 2) {
+        this.isDev || MtaH5.clickStat("homeselected")
+        if (this.essenceList.length < 1) {
+          param.action = 'digest_threads'
+          this.getListData(param)
+
+        }
       }
     },
     sign () {
       //签到
-      // Toast({
-      //   message: '签到成功，积分+3，威望+5'
-      // })
       let that = this
+      that.isDev || MtaH5.clickStat("signin")
       Services.postData('/app/index.php', {
         version: 4,
         module: 'member',
@@ -375,14 +384,30 @@ export default {
         // console.info('sign fail-----', response)
       })
     },
-    goDetail(id) {
+    goDetail(id, type) {
       //跳转到帖子详情
       // console.info('id------', id)
+      if (type === 'recomment') {
+        this.isDev || MtaH5.clickStat("homerecommend")
+      } else {
+        switch (this.tabType) {
+          case 0:
+            this.isDev || MtaH5.clickStat("hotarticle")
+            break
+          case 1:
+            this.isDev || MtaH5.clickStat("newarticle")
+            break
+          case 2:
+            this.isDev || MtaH5.clickStat("selectedarticle")
+            break
+        }
+      }
       var url = '/postdetail/' + id
       this.$router.push(url)
     },
     goMyCenter() {
       //跳转到我的个人中心
+      this.isDev || MtaH5.clickStat("myavatar")
       if (this.isLogin) {
         var url = '/centermy'
         this.$router.push(url)
@@ -390,12 +415,14 @@ export default {
     },
     goUserCenter(id) {
       //跳转到其他人的个人中心
+      this.isDev || MtaH5.clickStat("otheravatar")
       var url = '/centerother/' + id
       this.$router.push(url)
     },
     goPost() {
       //跳转到发表帖子
       if (this.isLogin) {
+        this.isDev || MtaH5.clickStat("homepost")
         this.$router.push('/post')
       } else {
         Validate.openLogin()
@@ -425,7 +452,7 @@ export default {
       if (type === 0) {
         this.showModules = false
       } else {
-
+        this.isDev || MtaH5.clickStat("zonelist")
         this.showModules = true
       }
     },
@@ -434,6 +461,41 @@ export default {
       if (_module) {
         let moduleId = _module.dataset.id
         console.info(moduleId)
+        switch(+moduleId) {
+          case 29:
+          //投资交流
+          this.isDev || MtaH5.clickStat("zoneinvest")
+          break;
+          case 2:
+          //热门活动
+          this.isDev || MtaH5.clickStat("zoneactivity")
+          break;
+          case 25:
+          //有问必答
+          this.isDev || MtaH5.clickStat("zoneqa")
+          break;
+          case 65:
+          //团粉建言
+          this.isDev || MtaH5.clickStat("zonesugestion")
+          break;
+          case 27:
+          //畅所欲言
+          this.isDev || MtaH5.clickStat("zonefreechat")
+          break;
+          case 68:
+          //财经新闻
+          this.isDev || MtaH5.clickStat("zonefinancialnews")
+          break;
+          case 43:
+          //团贷动态
+          this.isDev || MtaH5.clickStat("zonetuandainews")
+          break;
+          case 67:
+          //CEO专栏
+          this.isDev || MtaH5.clickStat("zoneceo")
+          break;
+         
+        }
         let url = '/sessionlist/' + moduleId
         this.$router.push(url)
         this.showModules = false
@@ -448,6 +510,7 @@ export default {
       this.showModulesContainer = false
     },
     goRecomment() {
+      this.isDev || MtaH5.clickStat("morerecommend")
       this.$router.push('/recomment')
     },
     getHeadData() {
