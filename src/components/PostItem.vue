@@ -107,7 +107,7 @@ export default {
   width: 100%;
   // white-space: nowrap;
   // margin: pxToRem(40px) 0;
-  margin-bottom: pxToRem(32px);
+  margin-bottom: pxToRem(30px);
   font-size: 0;
   .no-img {
     width: 100% !important;
@@ -135,8 +135,8 @@ export default {
     &>p:last-child {
       font-size: pxToRem($font-size-small);
       color: $txt-color-grey;
-      // line-height: pxToRem(42px);
-      margin-top: pxToRem(32px);
+      line-height: pxToRem(34px);
+      margin-top: pxToRem(30px);
       // overflow: hidden;
       // text-overflow: ellipsis;
       // display: -webkit-box;
