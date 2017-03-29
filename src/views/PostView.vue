@@ -97,6 +97,13 @@ export default {
       showAddVote: false
     }
   },
+   watch: {
+    $route:function(to, from) {
+      if(from.name == 'post') { //如果变化是在发帖列表
+        MessageBox.close()
+      }
+    }
+  },
   computed: {
     isApp() {
       return isApp()
