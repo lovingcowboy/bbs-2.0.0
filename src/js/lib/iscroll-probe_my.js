@@ -699,7 +699,6 @@ IScroll.prototype = {
 	resetPosition: function (time) {
 		var x = this.x,
 			y = this.y;
-
 		time = time || 0;
 
 		if ( !this.hasHorizontalScroll || this.x > 0 ) {
@@ -709,7 +708,8 @@ IScroll.prototype = {
 		}
 
 		if ( !this.hasVerticalScroll || this.y > 0 ) {
-			y = 0;
+			if(this.hasVerticalScroll) //当垂直滑动距离不为0，为了防止刷新回到列表顶部
+				y = 0;
 		} else if ( this.y < this.maxScrollY ) {
 			y = this.maxScrollY;
 		}
