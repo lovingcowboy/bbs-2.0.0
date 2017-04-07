@@ -279,7 +279,7 @@ export default {
       loader: null,
       listRequesting: false,
       infoRequesting: false,
-      isDev: true //是否是开发环境
+      isDev: false //是否是开发环境
       
     }
   },
